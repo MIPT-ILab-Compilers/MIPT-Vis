@@ -1,0 +1,13 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+This page contains ref to the list of contacts of our project
+
+= Filling in form =
+At first you must fill in the form
+
+http://spreadsheets.google.com/viewform?key=pDFNkCgIEPVqfezkLoL-8Xw&hl=en
+
+= To search contacts =
+To search contacts you must have access to this list.
+http://spreadsheets.google.com/ccc?key=pDFNkCgIEPVqfezkLoL-8Xw&inv=evgeny.s.paramonov@gmail.com&t=3570660242408259997&guest
