@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary All contact information about the project
 
 = Introduction =
 This page contains ref to the list of contacts of our project
@@ -7,6 +7,8 @@ This page contains ref to the list of contacts of our project
 At first you must fill in the form
 
 http://spreadsheets.google.com/viewform?key=pDFNkCgIEPVqfezkLoL-8Xw&hl=en
+
+After this you will be added to the list of viewers.
 
 = To search contacts =
 To search contacts you must have access to this list.
