@@ -4,15 +4,15 @@
  * Copyright (C) 2009  Boris Shurygin
  */
 #include "utest_impl.h"
-#include <vector>
 #include <list>
+#include <vector>
 
 using namespace std;
 
 /*** Complex testing for markers */
 static bool UTestDFS( Graph *graph)
 {
-    NodeListItem* nodes = graph->DFS();
+	NodeListItem* nodes = graph->DFS();
     return true;
 }
 
@@ -145,4 +145,13 @@ bool UTestGraph()
 
     //Assert<Error>( 0);
     return true;
+}
+
+bool UTestReadGraph( char * filename)
+{
+	Graph * graph = ReadGraphFromXML( filename);
+	if ( graph == NULL) return false;
+	graph->DebugPrint();
+
+	return true;
 }

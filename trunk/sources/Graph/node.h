@@ -11,8 +11,17 @@
  */
 class Node: public Marked
 {
+public:
     /** Connection with inclusive graph */
     int id; // Unique id
+	char * color;
+	int x;
+	int y;
+	int width;
+	int height;
+	char * label;
+	char * shape;
+
     Graph * graph;// Pointer to graph
     NodeListItem my_it;//Item of graph's list
     
@@ -20,7 +29,6 @@ class Node: public Marked
     EdgeListItem *edges[ GRAPH_DIRS_NUM];
     EdgeListItem *e_it[ GRAPH_DIRS_NUM];
 
-protected:
     inline NodeListItem* GetGraphIt()
     {
         return &my_it;
@@ -36,7 +44,7 @@ protected:
     }
     friend class Graph;
 
-public:
+
     /**
      * Destructor
      */
