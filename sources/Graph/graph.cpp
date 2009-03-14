@@ -14,6 +14,7 @@ Graph::Graph()
     edge_next_id = 0;
     node_num = 0;
     edge_num = 0;
+	max_node_id = 0;
     nodes = NULL;
     edges = NULL;
     n_it = NULL;

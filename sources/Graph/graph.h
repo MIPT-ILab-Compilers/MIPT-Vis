@@ -12,10 +12,14 @@
  */
 class Graph: public MarkerManager
 {
+public:
     /* List of nodes and its iterator */
     NodeListItem* nodes;
     NodeListItem* n_it;
     unsigned long int node_num;
+	int default_node_size;
+	char * name;
+	int max_node_id;
     
     /** 
      *  Id of next node. Incremented each time you create a node,
@@ -33,7 +37,6 @@ class Graph: public MarkerManager
      */
     GraphNum edge_next_id;
 
-public:
     /** Constructor */
     Graph();
     
@@ -146,6 +149,7 @@ public:
     {
         return n_it == NULL;
     }
+
     /**
      * Print graph to stdout in DOT format
      */

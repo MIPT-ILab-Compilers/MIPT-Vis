@@ -6,6 +6,13 @@
 #ifndef EDGE_H
 #define EDGE_H
 
+#include <vector>
+
+typedef struct
+{
+	int x;
+    int y;
+} EdgePoint;
 /**
  *  Edge class implements basic concept of graph edge.
  *  It has two Nodes as its end points. As edge is member of 3 lists it
@@ -13,16 +20,24 @@
  */
 class Edge: public Marked
 {
+public:
     /** Graph part */
     int id; //Unique ID
+	int prob;
+	int thickness;
+	char * color;
+	char * style;
+	char * label;
+	vector<EdgePoint *> points;
+
     Graph * graph; //Graph
     EdgeListItem graph_it; //Position in Graph's list of edges
+	
 
     /** Nodes */
     Node *nodes[ GRAPH_DIRS_NUM]; //Adjacent nodes
     EdgeListItem n_it[ GRAPH_DIRS_NUM];//Position in each node's list
 
-protected:
     /** Graph and Node have access to Edge's members */
     friend class Graph;
     friend class Node;
@@ -89,7 +104,6 @@ protected:
      * Made private as it is low-level routine needed for implementation of edge-node relationship
      */
     void DetachFromNode( GraphDir dir);
-public:
     /** 
      *  Destructor. Delete edge from list in graph.
      *  Deletion from node lists MUST be performed manually.
