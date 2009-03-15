@@ -1,4 +1,4 @@
-Utils library. Various internal tools for MiptVis
+Graph library. Various internal tools for MiptVis
 Copyright (C) 2009  Boris Shurygin, MiptVis team ( see below)
 
 
