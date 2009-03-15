@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="&quot;$(SolutionDir)libxml\lib\libxml2.lib&quot;"
-				OutputFile="$(OutDir)$(ProjectName).exe"
+				OutputFile="$(OutDir)\$(ProjectName).exe"
 				LinkIncremental="2"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
