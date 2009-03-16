@@ -1,0 +1,54 @@
+#summary Rules for how you format the code and use the C/C++ syntax
+= Introduction =
+
+Proper usage of language syntax increases clarity in the code. It aids reading, makes developments easier and _just looks better_. Good formating exploits program structure by means of adjusting visual appearance of the code.
+
+=== Indentation ===
+
+Indentation unit is 4 spaces. Usage of tabs is bad style and should be avoided. 
+Usage of tab key however can be recomended provided that a text editor is configured to substitute tabs by 4 spaces automatically.
+*Example:*
+{{{
+if ( cond)
+{
+    for ( int i = 0; i < 10; i++)
+    {
+        some_var+= some_array[ i];  
+    }
+}
+}}}
+=== Spaces ===
+
+Usage of spaces should keep structure of expressions and statements clear.
+Space should be inserted after:
+  * Opening brace '(' if it's not followed by another brace '('. *Example:* `a = 1 + ( ( a + 1) + ( b + 2));`
+  * Semicolon ';'
+  * Comma ','
+  * Opening bracket '['
+  * Binary operators and ternary operator '? : '
+  * Postfix unary operators
+
+Generally, spaces should separate expressions, operators, statements, function calls.
+*Example:* 
+{{{
+a = atoi( ( char*)( my_ptr + ( offset * sizeof( myStruct))));
+}}}
+
+However space should *NOT* be used in:
+  * Array element, or field selection like `my_struct.field; my_ptr->field; my_arr[ 10];`
+  * Before semicolon ';' or comma ',' like `for ( a = 0, b = 0; a == b; a++, b++);`
+
+=== Braces ===
+Each curly brace is placed on a new line.
+*Example:*
+{{{
+/* Wrong */
+if ( condition){
+    return true;
+}
+/* Correct */
+if ( condition)
+{
+    return true;
+}
+}}}
