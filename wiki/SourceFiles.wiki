@@ -39,6 +39,16 @@ The long description is highly recommended to be added in comments after these. 
  */
 }}}
 
+=== Multiple inclusion protection ===
+All header files should have `#ifdef` protecting headers from multiple inclusion. Define should be header's file name in uppercase.
+
+*Example:*
+{{{
+#ifndef HEADER_NAME
+#define HEADER_NAME
+...
+#endif /* HEADER_NAME */
+}}}
 
 
   
