@@ -1,0 +1,25 @@
+#summary Coding convenstions for C/C++.
+
+= Introduction =
+
+This document lists conventions for various aspects of C/C++ coding in our project. In order to maintain code readable and ease writing project members should follow these propositions or add their own suggestions. What we want to achieve is a clear, simple code that should be easy to understand by all project members. Code should look familiar to those who are reading it for the first time. This can be achieved by maintaining uniform style through all of the source files.
+
+= Contents =
+_NOTE: This lists all article, most of them are not present at the moment_
+
+[SourceFiles File Conventions]
+  _Guidlines for file naming and internal structure_
+
+[Syntax Syntax Conventions]
+  _Rules for how you format the code: spaces, brackets, indentation, etc..._
+
+[Statements Statement Conventions]
+  _Rules for writing statements: if, if-else, for, while, do-while, switch, etc..._
+
+[Naming Naming Conventions]
+  _Guidlines for how you name functions, types, variable, etc..._
+
+[Practices Programming Practices]
+  _Some common programming practices_
+
+
