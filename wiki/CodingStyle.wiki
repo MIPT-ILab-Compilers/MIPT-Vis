@@ -15,7 +15,7 @@ _NOTE: This lists all article, most of them are not present at the moment_
   _Rules for writing statements: if, if-else, for, while, do-while, switch, etc..._
 [Naming Naming Conventions]
   _Guidlines for how you name functions, types, variable, etc..._
-[Comments Comments Suggestions ]
+[Comments Commenting Suggestions ]
   _Guidlines for writing comments_
 [Practices Programming Practices]
   _Some common programming practices_
