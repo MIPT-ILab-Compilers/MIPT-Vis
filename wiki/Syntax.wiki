@@ -3,6 +3,22 @@
 
 Proper usage of language syntax increases clarity in the code. It aids reading, makes developments easier and _just looks better_. Good formating exploits program structure by means of adjusting visual appearance of the code.
 
+=== Line length ===
+Lines of code should be not longer than 100 symbols *INCLUDING* comments. In addition it is highly recommended to avoid lines longer than 80 symbols.
+If it cannot be done - consider breaking the line and starting a new one.
+
+=== Line breaks ===
+Line breaks should try to maintain expression structure.
+
+*Example:*
+{{{
+a = b + ( VeryLongRoutineName( d + VeryVeryLongNameForSomeFunc()) 
+          * ( SomeOtherFunction() + AnotherFunc( my_var, his_var) 
+              - HowDoYouLikeIt() * ThatReallyComplex( real, imaginary)
+              - YouBetterFinishYourExpressionHereUseTemporaryVars()));
+                                               
+}}}
+
 === Indentation ===
 
 Indentation unit is 4 spaces. Usage of tabs is bad style and should be avoided. 
@@ -40,6 +56,7 @@ However space should *NOT* be used in:
 
 === Braces ===
 Each curly brace is placed on a new line.
+
 *Example:*
 {{{
 /* Wrong */
@@ -51,4 +68,27 @@ if ( condition)
 {
     return true;
 }
+}}}
+
+Huge blocks should have commented curly braces where possible.
+
+*Example:*
+{{{
+if ( condition == true) /** Common case */
+{
+    if ( a || ( b && c))
+    {
+        for ( ...)
+        {
+            ...
+        }
+        if ( ...)
+        {
+            for ( ...)
+            { 
+                ...
+            }
+        }
+    }
+} /** End of common case */    
 }}}
