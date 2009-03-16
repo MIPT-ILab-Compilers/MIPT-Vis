@@ -1,0 +1,16 @@
+#summary UnitTest project description.
+#labels Featured,Phase-Design,Phase-QA
+
+= Introduction =
+
+UnitTest project is used for the means of executing small tests for each module basic functionality. 
+
+
+= Details =
+
+UnitTest consists of routines that ideally should execute every piece of code in the project at least once. They also should check it's basic behaviour to ensure that every component operates correctly and sometimes check that related components are working together properly.
+
+= Discipline =
+Every developer is responsible for:
+  * Maintaning the UnitTest in working state. This is done by compiling and running project's target before commit. *NO COMMITS TO SOURCES WITHOUT TESTING*
+  * Writing unit test for all new functionality. Ideally tests should be present for every routine and every CF path in this routine.
