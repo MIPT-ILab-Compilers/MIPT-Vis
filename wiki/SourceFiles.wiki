@@ -29,6 +29,7 @@ All source files MUST begin with comments that consists of:
   #3 Relation to project
   #4 Copyright Notice
 The long description is highly recommended to be added in comments after these. Especially for files with a lot of code or non-trivial functionality/internal structure.
+
 *Example:*
 {{{
 /**
