@@ -1,0 +1,6 @@
+#summary Suggestions about naming system in project.
+
+= General Rules = 
+Mostly we would like to adopt [http://doc.trolltech.com/qq/qq13-apis.html QT Style API Design] and iherit naming system for it.
+
+_More rules will be given here explicitly. Read Qt Documentation for now_
