@@ -1,0 +1,43 @@
+#summary Guidlines for file naming and internal structure
+#labels Phase-Requirements
+
+= File Naming =
+All file names should be lowercase. Header files have extension `.h`, *pure* C files have `.c` and C++ or mixed files have `.cpp`.
+File names should reflect the functionality defined/implemented in it. File names can have prefixes for reflection of thier grouping.
+It is preferred that we have different names for different files, i.e. files from different project can have same name technically, but this is bad from style point of view.
+
+= File Structure =
+A file should consist of several section desribed below. Each section should be separated by blank line. Some sections should have identifying comment.
+
+Structure:
+  * Beginning comment
+  * multiple inclusion protection ( for headers)
+  * includes
+  * defines
+  * local data types definitions
+  * local functions prototypes ( if needed)
+  * local data
+  * externally visible functions implementation
+  * local functions implementation
+
+=== Beginning comment ===
+_reminder see_ [CommentRules Comment Rules]_page_
+
+All source files MUST begin with comments that consists of:
+  #1 File name
+  #2 Brief Description
+  #3 Relation to project
+  #4 Copyright Notice
+The long description is highly recommended to be added in comments after these. Especially for files with a lot of code or non-trivial functionality/internal structure.
+*Example:*
+{{{
+/**
+ * graph.cpp - Implementation of graph
+ * Core component of Graph representation
+ * Copyright 2009 MIPTVIS team
+ */
+}}}
+
+
+
+  
