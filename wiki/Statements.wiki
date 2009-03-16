@@ -1,7 +1,7 @@
 #summary Rules for writing statements
 
 = General Rules =
-The statements generally iherit rules that are applied for syntax. One important exception is that function calls are written without space between function name and opening brace for parameters.
+The statements generally inherit rules that are applied for syntax. One important exception is that function calls are written without space between function name and opening brace for parameters.
 For clarification purposes refer to 
 
 = Examples =
