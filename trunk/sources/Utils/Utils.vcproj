@@ -92,6 +92,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				RuntimeLibrary="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -127,14 +128,6 @@
 	<Files>
 		<File
 			RelativePath=".\asrt.h"
-			>
-		</File>
-		<File
-			RelativePath=".\graph_xml.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\graph_xml.h"
 			>
 		</File>
 		<File

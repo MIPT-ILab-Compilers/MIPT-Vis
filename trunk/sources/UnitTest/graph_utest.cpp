@@ -6,6 +6,8 @@
 #include "utest_impl.h"
 #include <list>
 #include <vector>
+#include "direct.h"
+#include <string.h>
 
 using namespace std;
 
@@ -147,9 +149,11 @@ bool UTestGraph()
     return true;
 }
 
-bool UTestReadGraph( char * filename)
+bool UTestReadGraph()
 {
-	Graph * graph = ReadGraphFromXML( filename);
+	char * file = _getcwd( NULL, 1024);
+	strcat_s( file, 1024,"/test_graph.xml");
+	Graph * graph = new Graph( file);
 	if ( graph == NULL) return false;
 	graph->DebugPrint();
 

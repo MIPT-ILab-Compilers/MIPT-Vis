@@ -6,6 +6,9 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <vector>
+#include <libxml/xmlreader.h>
+
 /**
  * Graph class decribes a graph.
  *  Like classical definition G = ( N, E) where N is set of nodes n and E is set of edges e = {n_i, n_j}
@@ -37,8 +40,24 @@ public:
      */
     GraphNum edge_next_id;
 
+	/** Initialization */
+	void Init();
+
     /** Constructor */
     Graph();
+
+	/**
+	 *  Constructor by XML file
+	 */
+	Graph( char * filename);
+
+	/**
+	 *  Reading form XML
+	 */
+	void InitNodesFromXmlDoc( xmlNode * a_node);
+	void InitEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes);
+	void InitFromXMLDoc( xmlNode * a_node);
+	void ReadFromXML(const char *filename);
     
     /** Create new node in graph */
     Node * NewNode();
@@ -159,6 +178,8 @@ public:
      * Obtain list of nodes in depth-first search order
      */
     NodeListItem* DFS(); 
+
+
 };
 
 #endif
