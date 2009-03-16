@@ -13,6 +13,6 @@
  * Graph library unit testing
  */
 bool UTestGraph();
-bool UTestReadGraph( char * filename);
+bool UTestReadGraph();
 
 #endif
