@@ -1,4 +1,5 @@
 #summary Coding convenstions for C/C++.
+#labels Featured
 
 = Introduction =
 
