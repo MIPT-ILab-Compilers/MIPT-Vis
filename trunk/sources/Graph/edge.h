@@ -13,22 +13,103 @@ typedef struct
 	int x;
     int y;
 } EdgePoint;
+
+class EdgeProperties
+{
+    int user_id;
+    int prob_priv;
+	int thickness_priv;
+	char * color_priv;
+	char * style_priv;
+	char * label_priv;
+	vector<EdgePoint *> points;
+public:
+    EdgeProperties()
+    {
+        /** Default values */
+        prob_priv = 1;
+	    thickness_priv = 1;
+	    color_priv = NULL;
+	    style_priv = NULL;
+	    label_priv = NULL;
+    }
+    inline int userId() const
+    {
+        return user_id;
+    }
+    inline int prob() const
+    {
+        return prob_priv;
+    }
+    inline int thickness() const
+    {
+        return thickness_priv;
+    }
+	inline char * color() const
+    {
+        return color_priv;
+    }
+	inline char * style() const
+	{
+        return style_priv;
+    }
+    inline char * label() const
+    {
+        return label_priv;
+    }
+    inline EdgePoint * point( int n) const
+    {
+        return points[ n];
+    }
+    /** Data writing routines */
+    inline void setUserId( int i)
+    {
+        user_id = i;
+    }
+    inline void setProb (int prob)
+    {
+        prob_priv = prob;
+    }
+	inline void setThickness( int thickness)
+    {
+        thickness_priv = thickness;
+    }
+	inline void setColor( char * color)
+    {
+        color_priv = color;
+    }
+	inline void setStyle( char * style)
+    {
+        style_priv = style;
+    }
+	inline void setLabel( char * label)
+    {
+        label_priv = label;
+    }
+    inline void setPoint( EdgePoint *p, int n)
+    {
+        points[ n] = p;
+    }
+    inline void addPoint( EdgePoint *p)
+    {
+        points.push_back( p);
+    }
+    inline void initPoints( int n)
+    {
+        points.resize( n, NULL);
+    }
+};
 /**
  *  Edge class implements basic concept of graph edge.
  *  It has two Nodes as its end points. As edge is member of 3 lists it
  *  has 3 corresponding list items pointing to it in these lists
  */
-class Edge: public Marked, public Numbered
+class Edge: public Marked, public Numbered, public EdgeProperties
 {
-public:
+
     /** Graph part */
     int id; //Unique ID
-	int prob;
-	int thickness;
-	char * color;
-	char * style;
-	char * label;
-	vector<EdgePoint *> points;
+
 
     Graph * graph; //Graph
     EdgeListItem graph_it; //Position in Graph's list of edges
@@ -53,6 +134,7 @@ public:
         SetPred( _pred);
         SetSucc( _succ);
     }
+public:
     /**
      * Get edge's unique ID
      */
