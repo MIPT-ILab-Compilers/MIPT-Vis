@@ -53,6 +53,18 @@ class Marked
     /** Markers */
     MarkerValue markers[ MAX_GRAPH_MARKERS];
 public:
+    
+    Marked()
+    {
+        MarkerIndex i;
+
+        /** Initialize markers */
+        for ( i = 0; i < MAX_GRAPH_MARKERS; i++)
+        {
+            markers [ i] = GRAPH_MARKER_CLEAN;
+        }
+    }
+
     /**
      * Mark node with marker. Return false if node is already marked. True otherwise.
      */

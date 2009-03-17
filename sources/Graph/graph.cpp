@@ -94,14 +94,20 @@ Graph::DebugPrint()
 /**
   * Recursive implementation of depth-first search visit routine
   */
-static inline NodeListItem* DfsVisitRec( Node* node, NodeListItem* item, Marker m)
+static inline NodeListItem*
+DfsVisitRec( Node* node,
+             NodeListItem* item,
+             Marker m,
+             Numeration n,
+             GraphNum* number)
 {
     NodeListItem* new_item = new NodeListItem( item, LIST_DIR_RDEFAULT, node);
     Edge *e;
-    
+
     /** Mark node to prevent search from visiting it again */
     node->Mark( m);
-    node->DebugPrint();// Print node ID. TODO: Remove this when numeration implementation finished.
+    node->SetNumber( n, *number);
+    *number = (*number) + 1;
 
     /** Visit Succs */
     for ( e = node->GetFirstSucc(); !node->EndOfSuccs(); e = node->GetNextSucc())
@@ -109,7 +115,7 @@ static inline NodeListItem* DfsVisitRec( Node* node, NodeListItem* item, Marker 
         Node* succ = e->GetSucc();
         if ( !succ->IsMarked( m))
         {
-            new_item = DfsVisitRec( succ, new_item, m);
+            new_item = DfsVisitRec( succ, new_item, m, n, number);
         }
     }
     return new_item;
@@ -118,10 +124,10 @@ static inline NodeListItem* DfsVisitRec( Node* node, NodeListItem* item, Marker 
 /**
  * Implementation of depth-first search. Starts from nodes without predecessors.
  */
-NodeListItem* Graph::DFS()
+NodeListItem* Graph::DFS( Numeration num)
 {
     Node *n;
-    GraphNum num = 0;
+    GraphNum number = 0;
     NodeListItem *item = NULL;
     Marker m = NewMarker();
 
@@ -131,7 +137,7 @@ NodeListItem* Graph::DFS()
         if( IsNullP( n->GetFirstPred()))
         {
             GraphAssert( !n->IsMarked( m));
-            item = DfsVisitRec( n, item, m);
+            item = DfsVisitRec( n, item, m, num, &number);
         }
     }   
     

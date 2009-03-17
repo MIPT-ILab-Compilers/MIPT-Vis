@@ -18,7 +18,7 @@ typedef struct
  *  It has two Nodes as its end points. As edge is member of 3 lists it
  *  has 3 corresponding list items pointing to it in these lists
  */
-class Edge: public Marked
+class Edge: public Marked, public Numbered
 {
 public:
     /** Graph part */

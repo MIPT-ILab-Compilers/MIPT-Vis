@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="Graph"
 	ProjectGUID="{04D4EEAD-2118-4889-9D9D-620C7C46F8ED}"
 	RootNamespace="Graph"
@@ -103,6 +103,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\libxml\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -181,6 +182,10 @@
 			</File>
 			<File
 				RelativePath=".\node.h"
+				>
+			</File>
+			<File
+				RelativePath=".\num.h"
 				>
 			</File>
 		</Filter>
