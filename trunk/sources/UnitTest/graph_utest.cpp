@@ -11,10 +11,12 @@
 
 using namespace std;
 
-/*** Complex testing for markers */
+/*** Simple joint testing for markers/numerations */
 static bool UTestDFS( Graph *graph)
 {
-	NodeListItem* nodes = graph->DFS();
+    Numeration n = graph->NewNum();
+    NodeListItem* nodes = graph->DFS( n);
+    graph->FreeNum( n);
     return true;
 }
 
@@ -36,6 +38,64 @@ static bool UTestNodeEdge()
     /**
      * 
      */
+    return true;
+}
+
+/**
+ * Check marker functionality
+ */
+static bool UTestNumerations()
+{
+    /**
+     * Check correct error reporting
+     *  1. Too many numerations
+     */
+    NumManager mgr1;
+    try
+    {
+        for ( int i = 0; i < MAX_NUMERATIONS + 1; i++)
+        {
+            mgr1.NewNum();
+        }
+    } catch ( NumErrorType error)
+    {
+        // thrown error type MUST match the expected one
+        Assert( error == NUM_ERROR_OUT_OF_INDEXES);
+    }
+
+    /** 2. Too big number */
+    NumManager mgr2;
+    Numeration num2 = mgr2.NewNum();
+    Numbered obj2; 
+    try
+    {
+        obj2.SetNumber( num2, -1);
+    } catch ( NumErrorType error)
+    {
+        // thrown error type MUST match the expected one
+        Assert( error == NUM_ERROR_NUMBER_OUT_OF_RANGE);
+    }
+    mgr2.FreeNum( num2);
+
+    /** 3. Functional testing */
+    NumManager mgr;
+    for ( int i = 0; i < MAX_NUMERATIONS + 2; i++)
+    {
+        Numeration n = mgr.NewNum();
+        mgr.FreeNum( n);
+    } 
+    Numeration num = mgr.NewNum();
+    Numeration num_unused = mgr.NewNum();
+    Numbered obj; 
+    Assert( obj.GetNumber( num) == NUMBER_NO_NUM);
+    Assert( obj.GetNumber( num_unused) == NUMBER_NO_NUM);
+    obj.SetNumber( num, 1);
+    Assert( obj.IsNumbered( num));
+    Assert( obj.GetNumber( num) == 1);
+    Assert( obj.GetNumber( num_unused) == NUMBER_NO_NUM);
+    obj.UnNumber( num);
+    Assert( obj.GetNumber( num) == NUMBER_NO_NUM);
+    Assert( obj.GetNumber( num_unused) == NUMBER_NO_NUM);    
     return true;
 }
 
@@ -126,8 +186,7 @@ bool UTestGraph()
     delete nodes[ 8];
     graph.DebugPrint();
     
-    if ( !UTestDFS( &graph))
-        return false;
+
     /**
      * Check graph's data structures consistency
      */
@@ -143,6 +202,18 @@ bool UTestGraph()
      * Check markers
      */
     if ( !UTestMarkers())
+        return false;
+
+    /**
+     * Check numerations 
+     */
+    if ( !UTestNumerations())
+        return false;
+   
+    /**
+     * Simple joint testing of graph's functionality/markers/numerations
+     */
+    if ( !UTestDFS( &graph))
         return false;
 
     //Assert<Error>( 0);

@@ -9,7 +9,7 @@
 /**
  * Node representation class. 
  */
-class Node: public Marked
+class Node: public Marked, public Numbered
 {
 public:
     /** Connection with inclusive graph */

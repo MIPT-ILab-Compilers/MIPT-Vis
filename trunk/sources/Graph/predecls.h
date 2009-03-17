@@ -13,7 +13,11 @@ class Graph;
 class Node;
 class Edge;
 
+/** Number type used for numbering nodes and edges in graph */
+typedef unsigned int GraphNum;
+
 #include "../Utils/utils_iface.h"
+#include "num.h"
 #include "marker.h"
 #include "graph_error.h"
 
@@ -41,9 +45,6 @@ RevDir( GraphDir dir)
     GraphAssert( GRAPH_DIRS_NUM == 2);
     return ( dir == GRAPH_DIR_UP)? GRAPH_DIR_DOWN: GRAPH_DIR_UP; 
 }
-
-/** Number type used for numbering nodes and edges in graph */
-typedef unsigned int GraphNum;
 
 #define GRAPH_MAX_NODE_NUM ( GraphNum)( -1)
 #define GRAPH_MAX_EDGE_NUM ( GraphNum)( -1)

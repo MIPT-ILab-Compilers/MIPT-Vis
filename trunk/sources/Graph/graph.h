@@ -13,7 +13,7 @@
  * Graph class decribes a graph.
  *  Like classical definition G = ( N, E) where N is set of nodes n and E is set of edges e = {n_i, n_j}
  */
-class Graph: public MarkerManager
+class Graph: public MarkerManager, public NumManager
 {
 public:
     /* List of nodes and its iterator */
@@ -177,7 +177,7 @@ public:
     /**
      * Obtain list of nodes in depth-first search order
      */
-    NodeListItem* DFS(); 
+    NodeListItem* DFS( Numeration n); 
 
 
 };
