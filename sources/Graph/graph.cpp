@@ -5,7 +5,6 @@
  */
 #include "graph_impl.h"
 
-
 /**
  *  Initialize
  */
@@ -15,8 +14,7 @@ void Graph::Init()
     edge_next_id = 0;
     node_num = 0;
     edge_num = 0;
-	max_node_id = 0;
-    nodes = NULL;
+	nodes = NULL;
     edges = NULL;
     n_it = NULL;
     e_it = NULL;
@@ -29,6 +27,20 @@ Graph::Graph()
 {
 	Init();
 }
+/**
+ * Allocation of memory for Edge
+ */
+void *Graph::CreateEdge( Node *pred, Node *succ)
+{
+    return new Edge( this, IncEdgeId(), pred, succ);
+}
+/**
+ * Allocation of memory for Node
+ */
+void *Graph::CreateNode()
+{
+    return new Node( this, IncNodeId());
+}
 
 /**
  * Creation node in graph
@@ -40,7 +52,7 @@ Graph::NewNode()
      * Check that we have available node id 
      */
     GraphAssert( edge_next_id < GRAPH_MAX_NODE_NUM);
-    Node *node_p = new Node( this, node_next_id++);
+    Node *node_p = ( Node *) CreateNode();
     NodeListItem* it = node_p->GetGraphIt();
     it->Attach( nodes);
     nodes = it;
@@ -59,7 +71,7 @@ Graph::NewEdge( Node * pred, Node * succ)
      * Check that we have available edge id 
      */
     GraphAssert( edge_next_id < GRAPH_MAX_NODE_NUM);
-    Edge *edge_p = new Edge( this, edge_next_id++, pred, succ);
+    Edge *edge_p = ( Edge *) CreateEdge( pred, succ);
     EdgeListItem* it = edge_p->GetGraphIt();
     it->Attach( edges);
     edges = it;
@@ -165,30 +177,30 @@ Graph::InitNodesFromXmlDoc( xmlNode * a_node)
 			{
 				if ( xmlStrEqual( props->name, xmlCharStrdup("id")))
 				{
-					node->id = strtoul( ( const char *)( props->children->content), NULL, 0);
-					if ( node->id > max_node_id)
-						max_node_id = node->id;
+					node->setUserId( strtoul( ( const char *)( props->children->content), NULL, 0));
+					if (  node->userId() > maxNodeId())
+						setMaxNodeId( node->userId());
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
 				{
-					node->color = ( char *)( props->children->content);
+					node->setColor( ( char *)( props->children->content));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("x")))
 				{
-					node->x = strtoul( ( const char *)( props->children->content), NULL, 0);
+					node->setX( strtoul( ( const char *)( props->children->content), NULL, 0));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("y")))
 				{
-					node->y = strtoul( ( const char *)( props->children->content), NULL, 0);
+					node->setY( strtoul( ( const char *)( props->children->content), NULL, 0));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("width")))
 				{
-					node->width = strtoul( ( const char *)( props->children->content), NULL, 0);
+					node->setWidth( strtoul( ( const char *)( props->children->content), NULL, 0));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("height")))
 				{
-					node->height = strtoul( ( const char *)( props->children->content), NULL, 0);
+					node->setHeight( strtoul( ( const char *)( props->children->content), NULL, 0));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("label")))
 				{
-					node->label = ( char *)( props->children->content);
+					node->setLabel( ( char *)( props->children->content));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("shape")))
 				{
-					node->shape = ( char *)( props->children->content);
+					node->setShape( ( char *)( props->children->content));
 				}
 			}
 		}
@@ -217,16 +229,16 @@ InitEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
 			}
 
 			if ( n == -1) continue;
-			edge->points[n] = new EdgePoint;
+			edge->setPoint( new EdgePoint, n);
 
 			for( props = cur_node->properties; props; props = props->next)
 			{
 				if ( xmlStrEqual( props->name, xmlCharStrdup("x")))
 				{
-					edge->points[n]->x = strtoul( ( const char *)( props->children->content), NULL, 0);
+					edge->point( n)->x = strtoul( ( const char *)( props->children->content), NULL, 0);
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("y")))
 				{
-					edge->points[n]->y = strtoul( ( const char *)( props->children->content), NULL, 0);
+					edge->point( n)->y = strtoul( ( const char *)( props->children->content), NULL, 0);
 				}
 			}
 		}
@@ -268,25 +280,29 @@ Graph::InitEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 			{
 				if ( xmlStrEqual( props->name, xmlCharStrdup("id")))
 				{
-					edge->id = strtoul( ( const char *)( props->children->content), NULL, 0);
+					edge->setUserId( 
+                        strtoul( ( const char *)( props->children->content), NULL, 0) );
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("prob")))
 				{
-					edge->prob = strtoul( ( const char *)( props->children->content), NULL, 0);
+					edge->setProb( 
+                        strtoul( ( const char *)( props->children->content), NULL, 0) );
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("thickness")))
 				{
-					edge->thickness = strtoul( ( const char *)( props->children->content), NULL, 0);
+					edge->setThickness(
+                        strtoul( ( const char *)( props->children->content), NULL, 0) );
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("points_num")))
 				{
-					edge->points.insert( edge->points.end(), strtoul( ( const char *)( props->children->content), NULL, 0) + 1, 0);
+                    edge->initPoints( 
+                        strtoul( ( const char *)( props->children->content), NULL, 0) + 1);
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
 				{
-					edge->color = ( char *)( props->children->content);
+					edge->setColor( ( char *)( props->children->content));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("style")))
 				{
-					edge->style = ( char *)( props->children->content);
+					edge->setStyle( ( char *)( props->children->content));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("label")))
 				{
-					edge->label = ( char *)( props->children->content);
+					edge->setLabel( ( char *)( props->children->content));
 				}
 			}
 			InitEdgePointsFromXMLDoc( edge, cur_node->children);
@@ -319,7 +335,7 @@ Graph::InitFromXMLDoc( xmlNode * a_node)
 					default_node_size = strtoul( ( const char *)( props->children->content), NULL, 0);
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("name")))
 				{
-					name = ( char *)( props->children->content);
+					setName( ( char *)( props->children->content));
 				}
 			}
 
@@ -327,7 +343,7 @@ Graph::InitFromXMLDoc( xmlNode * a_node)
 
 			nodes.insert(nodes.end(), ( max_node_id + 1), (Node *)NULL);
 			for ( node = GetFirstNode(); !EndOfNodes(); node = GetNextNode())
-				    nodes[ node->id] = node;
+				    nodes[ node->userId()] = node;
 
 			InitEdgesFromXmlDoc( cur_node->children, nodes);
 

@@ -7,21 +7,95 @@
 #define NODE_H
 
 /**
+ * Representation of various node attributes
+ */
+class NodeProperties
+{
+	int user_id;
+    char * color_priv;
+	int x_priv;
+	int y_priv;
+	int width_priv;
+	int height_priv;
+	char * label_priv;
+	char * shape_priv;
+public:
+    /** Data reading */
+    inline int userId() const
+    {
+        return user_id;
+    }
+    inline char * color() const 
+    {
+        return color_priv;
+    }
+	inline int x() const
+    {
+        return x_priv;
+    }
+	inline int y() const
+    { 
+        return y_priv;
+    }
+	inline int width() const 
+    {
+        return width_priv;
+    }
+	inline int height() const 
+    { 
+        return height_priv;
+    }
+	inline char * label() const
+    { 
+        return label_priv;
+    }
+	inline char * shape() const
+    { 
+        return shape_priv;
+    }
+    /** Data writing */ 
+    inline void setUserId( int i)
+    {
+        user_id = i;
+    }
+    inline void setColor( char * color)
+    {
+        color_priv = color;
+    }
+	inline void setX( int x) 
+    {
+        x_priv = x;
+    }
+	inline void setY( int y)
+    { 
+        y_priv = y;
+    }
+	inline void setWidth( int width)
+    { 
+        width_priv = width;
+    }
+	inline void setHeight( int height)
+    {
+        height_priv = height;
+    }
+	inline void setLabel( char * label) 
+    {
+        label_priv = label;
+    }
+	inline void setShape( char * shape) 
+    { 
+        shape_priv = shape;
+    }
+};
+
+/**
  * Node representation class. 
  */
-class Node: public Marked, public Numbered
+class Node: public Marked, public Numbered, public NodeProperties
 {
-public:
+
     /** Connection with inclusive graph */
     int id; // Unique id
-	char * color;
-	int x;
-	int y;
-	int width;
-	int height;
-	char * label;
-	char * shape;
-
     Graph * graph;// Pointer to graph
     NodeListItem my_it;//Item of graph's list
     
@@ -33,6 +107,7 @@ public:
     {
         return &my_it;
     }
+protected:
     /** We can't create nodes separately, do it through NewNode method of graph */
     Node( Graph *graph_p, int _id):id(_id), graph(graph_p), my_it()
     {
@@ -41,9 +116,10 @@ public:
         e_it[ GRAPH_DIR_UP] = NULL;
         e_it[ GRAPH_DIR_DOWN] = NULL;
         my_it.SetData( ( Node*)this);
+        setUserId( _id);
     }
     friend class Graph;
-
+public:
 
     /**
      * Destructor

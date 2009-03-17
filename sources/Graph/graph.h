@@ -10,19 +10,63 @@
 #include <libxml/xmlreader.h>
 
 /**
+ * Represents properties of a graph
+ */
+class GraphProperties
+{
+protected:
+	int default_node_size;
+	char * name_priv;
+	int max_node_id;    
+public:
+    GraphProperties()
+    {
+        default_node_size = 10;
+	    name_priv = NULL;
+	    max_node_id = 0; 
+    }
+    /**
+     * Data retrieving routines
+     */
+    inline int defaultNodeSize() const
+    {
+        return default_node_size;
+    }
+    inline char * name() const
+    {
+        return name_priv;
+    }
+	inline int maxNodeId() const
+    {
+        return max_node_id;  
+    }
+    /**
+     * Data saving routines
+     */
+    inline void setDefaultNodeSize( int sz)
+    {
+        default_node_size = sz;
+    }
+    inline void setName( char *nm)
+    {
+        name_priv = nm;
+    }
+	inline void setMaxNodeId( int max_id)
+    {
+        max_node_id = max_id;  
+    }
+};
+
+/**
  * Graph class decribes a graph.
  *  Like classical definition G = ( N, E) where N is set of nodes n and E is set of edges e = {n_i, n_j}
  */
-class Graph: public MarkerManager, public NumManager
+class Graph: public MarkerManager, public NumManager, public GraphProperties
 {
-public:
     /* List of nodes and its iterator */
     NodeListItem* nodes;
     NodeListItem* n_it;
     unsigned long int node_num;
-	int default_node_size;
-	char * name;
-	int max_node_id;
     
     /** 
      *  Id of next node. Incremented each time you create a node,
@@ -42,7 +86,18 @@ public:
 
 	/** Initialization */
 	void Init();
-
+protected:
+    /** Increment node_next_id and return previous one */
+    inline GraphNum IncNodeId()
+    {
+        return node_next_id++;
+    }
+    /** Increment edge_next_id and return previous one */
+    inline GraphNum IncEdgeId()
+    {
+        return edge_next_id++;
+    }
+public:
     /** Constructor */
     Graph();
 
@@ -59,6 +114,11 @@ public:
 	void InitFromXMLDoc( xmlNode * a_node);
 	void ReadFromXML(const char *filename);
     
+    /** Allocation of memory for Edge */
+    void * CreateEdge( Node * pred, Node * succ);
+    /** Allocation of memory for Node */
+    void * CreateNode();
+
     /** Create new node in graph */
     Node * NewNode();
 
