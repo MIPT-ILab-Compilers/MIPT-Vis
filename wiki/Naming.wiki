@@ -1,6 +1,49 @@
 #summary Suggestions about naming system in project.
 
 = General Rules = 
-Mostly we would like to adopt [http://doc.trolltech.com/qq/qq13-apis.html QT Style API Design] and iherit naming system for it.
+Mostly we would like to adopt [http://doc.trolltech.com/qq/qq13-apis.html QT Style API Design] and inherit naming system for it.
 
 _More rules will be given here explicitly. Read Qt Documentation for now_
+
+=== Types and Classes ===
+
+Type names should reflect entities they represents.
+A name should begin with an uppercase letter. To distinct parts of name use uppercase letter at the beginning of every part. 
+
+*Examples:* `NameOfTheClass`, `SomeMysteriousEntity`
+
+=== Function names ===
+Class methods and function names shound begin with a lowercase letter and highlight parts by uppercase letters. 
+
+*Example:* 
+{{{ 
+tryNotToGetWorried();
+tryNotToTurnOnTo();
+troublesThatUpsetYou();
+}}}
+
+=== Variables and Class Members ===
+Variables and class members should be all lowercase. Parts of name should be separated by `'_'`.
+
+*Example:* `very_important_var`.
+
+For private class members to let getter routines have simple name we can use suffix `_priv`.
+
+*Example:*
+{{{
+class MyClass
+{
+    int num_priv;
+public:
+    inline int num() const
+    {
+        return num_priv;
+    }
+}
+
+void f()
+{
+    MyClass my;
+    int a = my.num();
+}
+}}}
