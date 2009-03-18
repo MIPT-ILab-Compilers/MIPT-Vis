@@ -9,14 +9,14 @@ This document lists conventions for various aspects of C/C++ coding in our proje
 _NOTE: This lists all article, most of them are not present at the moment_
 
 [SourceFiles File Conventions]
-  _Guidlines for file naming and internal structure_
+  _Guidelines for file naming and internal structure_
 [Syntax Syntax Conventions]
   _Rules for how you format the code: spaces, brackets, indentation, etc..._
 [Statements Statement Conventions]
   _Rules for writing statements: if, if-else, for, while, do-while, switch, etc..._
 [Naming Naming Conventions]
-  _Guidlines for how you name functions, types, variable, etc..._
+  _Guidelines for how you name functions, types, variable, etc..._
 [Comments Commenting Suggestions ]
-  _Guidlines for writing comments_
+  _Guidelines for writing comments_
 [Practices Programming Practices]
   _Some common programming practices_
