@@ -1,3 +1,4 @@
+#summary Brief manual for SVN usage
 *1.* Create new directory for the project
 
 *2.* Run cmd.exe and change directory to the new created.
