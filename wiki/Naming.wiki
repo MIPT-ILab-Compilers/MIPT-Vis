@@ -13,7 +13,7 @@ A name should begin with an uppercase letter. To distinct parts of name use uppe
 *Examples:* `NameOfTheClass`, `SomeMysteriousEntity`
 
 === Function names ===
-Class methods and function names shound begin with a lowercase letter and highlight parts by uppercase letters. 
+Class methods and function names shound begin with a lowercase letter and highlight parts by uppercase letters. Exception for this rule is the Constructor and Destructor for classes - they aliased to the class names.
 
 *Example:* 
 {{{ 
@@ -21,6 +21,11 @@ tryNotToGetWorried();
 tryNotToTurnOnTo();
 troublesThatUpsetYou();
 }}}
+
+
+*Not all of the source code comply with that BUT it should.*
+It mostly applies to Get/Set routines so if you see `my_object->GetSmth()` feel free to turn it into `my_object->smth()` and change the declaration for routine.
+
 
 === Variables and Class Members ===
 Variables and class members should be all lowercase. Parts of name should be separated by `'_'`.
