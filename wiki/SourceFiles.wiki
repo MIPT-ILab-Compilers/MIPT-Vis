@@ -1,9 +1,9 @@
-#summary Guidlines for file naming and internal structure
+#summary Guidelines for file naming and internal structure
 #labels Phase-Requirements
 
 = File Naming =
 All file names should be lowercase. Header files have extension `.h`, *pure* C files have `.c` and C++ or mixed files have `.cpp`.
-File names should reflect the functionality defined/implemented in it. File names can have prefixes for reflection of thier grouping.
+File names should reflect the functionality defined/implemented in it. File names can have prefixes for reflection of their grouping.
 It is preferred that we have different names for different files, i.e. files from different project can have same name technically, but this is bad from style point of view.
 
 = File Structure =
