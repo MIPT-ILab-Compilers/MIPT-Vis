@@ -1,6 +1,7 @@
 Mentors:
 Lev Rumyantsev
 Boris Shurygin
+Ivan Sidorenko
 
 Members:
 Denis Anisimov
