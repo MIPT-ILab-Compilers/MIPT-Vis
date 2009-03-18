@@ -5,3 +5,4 @@ Boris Shurygin
 Members:
 Denis Anisimov
 Leukhin Evgeny
+Ivan Mashintsev
