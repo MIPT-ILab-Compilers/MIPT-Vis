@@ -21,7 +21,7 @@ Structure:
   * local functions implementation
 
 === Beginning comment ===
-_reminder see_ [CommentRules Comment Rules]_page_
+_reminder see_ [Comments Comment Rules]_page_
 
 All source files MUST begin with comments that consists of:
   #1 File name
