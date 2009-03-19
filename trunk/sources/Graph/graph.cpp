@@ -8,7 +8,7 @@
 /**
  *  Initialize
  */
-void Graph::Init()
+void Graph::init()
 {
     node_next_id = 0;
     edge_next_id = 0;
@@ -25,35 +25,35 @@ void Graph::Init()
  */
 Graph::Graph()
 {
-	Init();
+	init();
 }
 /**
  * Allocation of memory for Edge
  */
-void *Graph::CreateEdge( Node *pred, Node *succ)
+void *Graph::createEdge( Node *pred, Node *succ)
 {
-    return new Edge( this, IncEdgeId(), pred, succ);
+    return new Edge( this, incEdgeId(), pred, succ);
 }
 /**
  * Allocation of memory for Node
  */
-void *Graph::CreateNode()
+void *Graph::createNode()
 {
-    return new Node( this, IncNodeId());
+    return new Node( this, incNodeId());
 }
 
 /**
  * Creation node in graph
  */
 Node * 
-Graph::NewNode()
+Graph::newNode()
 {
     /**
      * Check that we have available node id 
      */
-    GraphAssert( edge_next_id < GRAPH_MAX_NODE_NUM);
-    Node *node_p = ( Node *) CreateNode();
-    NodeListItem* it = node_p->GetGraphIt();
+    graphassert( edge_next_id < GRAPH_MAX_NODE_NUM);
+    Node *node_p = ( Node *) createNode();
+    NodeListItem* it = node_p->getGraphIt();
     it->Attach( nodes);
     nodes = it;
     node_num++;
@@ -65,14 +65,14 @@ Graph::NewNode()
  * We do not support creation of edge with undefined endpoints
  */
 Edge * 
-Graph::NewEdge( Node * pred, Node * succ)
+Graph::newEdge( Node * pred, Node * succ)
 {
     /**
      * Check that we have available edge id 
      */
-    GraphAssert( edge_next_id < GRAPH_MAX_NODE_NUM);
-    Edge *edge_p = ( Edge *) CreateEdge( pred, succ);
-    EdgeListItem* it = edge_p->GetGraphIt();
+    graphassert( edge_next_id < GRAPH_MAX_NODE_NUM);
+    Edge *edge_p = ( Edge *) createEdge( pred, succ);
+    EdgeListItem* it = edge_p->getGraphIt();
     it->Attach( edges);
     edges = it;
     edge_num++;
@@ -85,20 +85,20 @@ Graph::NewEdge( Node * pred, Node * succ)
  *       of iterating through nodes and at iterating through edges of each node
  */
 void 
-Graph::DebugPrint()
+Graph::debugPrint()
 {
     Node *n;
     Edge *e;
     out( "digraph{");
     /** Print nodes */
-    for (  n = GetFirstNode(); !EndOfNodes(); n = GetNextNode())
+    for (  n = firstNode(); !endOfNodes(); n = nextNode())
     {
-        n->DebugPrint();
+        n->debugPrint();
     }
     /** Print edges */
-    for (  e = GetFirstEdge(); !EndOfEdges(); e = GetNextEdge())
+    for (  e = firstEdge(); !endOfEdges(); e = nextEdge())
     {
-        e->DebugPrint();
+        e->debugPrint();
     }
     out( "}");
 }
@@ -107,7 +107,7 @@ Graph::DebugPrint()
   * Recursive implementation of depth-first search visit routine
   */
 static inline NodeListItem*
-DfsVisitRec( Node* node,
+dfsVisitRec( Node* node,
              NodeListItem* item,
              Marker m,
              Numeration n,
@@ -116,18 +116,18 @@ DfsVisitRec( Node* node,
     NodeListItem* new_item = new NodeListItem( item, LIST_DIR_RDEFAULT, node);
     Edge *e;
 
-    /** Mark node to prevent search from visiting it again */
-    node->Mark( m);
-    node->SetNumber( n, *number);
+    /** mark node to prevent search from visiting it again */
+    node->mark( m);
+    node->setNumber( n, *number);
     *number = (*number) + 1;
 
     /** Visit Succs */
-    for ( e = node->GetFirstSucc(); !node->EndOfSuccs(); e = node->GetNextSucc())
+    for ( e = node->firstSucc(); !node->endOfSuccs(); e = node->nextSucc())
     {
-        Node* succ = e->GetSucc();
-        if ( !succ->IsMarked( m))
+        Node* succ = e->succ();
+        if ( !succ->isMarked( m))
         {
-            new_item = DfsVisitRec( succ, new_item, m, n, number);
+            new_item = dfsVisitRec( succ, new_item, m, n, number);
         }
     }
     return new_item;
@@ -141,19 +141,19 @@ NodeListItem* Graph::DFS( Numeration num)
     Node *n;
     GraphNum number = 0;
     NodeListItem *item = NULL;
-    Marker m = NewMarker();
+    Marker m = newMarker();
 
     /** Visit nodes */
-    for (  n = GetFirstNode(); !EndOfNodes(); n = GetNextNode())
+    for (  n = firstNode(); !endOfNodes(); n = nextNode())
     {
-        if( IsNullP( n->GetFirstPred()))
+        if( isNullP( n->firstPred()))
         {
-            GraphAssert( !n->IsMarked( m));
-            item = DfsVisitRec( n, item, m, num, &number);
+            graphassert( !n->isMarked( m));
+            item = dfsVisitRec( n, item, m, num, &number);
         }
     }   
     
-    FreeMarker( m);
+    freeMarker( m);
 
     return item;
 }
@@ -162,7 +162,7 @@ NodeListItem* Graph::DFS( Numeration num)
  *  Init graph nodes
  */
 void
-Graph::InitNodesFromXmlDoc( xmlNode * a_node)
+Graph::initNodesFromXmlDoc( xmlNode * a_node)
 {
 	xmlNode * cur_node;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next)
@@ -170,7 +170,7 @@ Graph::InitNodesFromXmlDoc( xmlNode * a_node)
 		if ( cur_node->type == XML_ELEMENT_NODE
 			 && xmlStrEqual( cur_node->name, xmlCharStrdup("node")))
 		{
-			Node *node = NewNode();
+			Node *node = newNode();
 			xmlAttr * props;
 
 			for( props = cur_node->properties; props; props = props->next)
@@ -210,7 +210,7 @@ Graph::InitNodesFromXmlDoc( xmlNode * a_node)
  *  Init edge points
  */
 static void
-InitEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
+initEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
 {
 	xmlNode * cur_node;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next)
@@ -250,7 +250,7 @@ InitEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
  *  Init graph edges
  */
 void
-Graph::InitEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
+Graph::initEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 {
 	xmlNode * cur_node;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next)
@@ -274,7 +274,7 @@ Graph::InitEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 				}
 			}
 			if ( from == -1 || to == -1) continue;
-			edge = NewEdge( nodes[from], nodes[to]);
+			edge = newEdge( nodes[from], nodes[to]);
 			/** Parse other properties */
 			for( props = cur_node->properties; props; props = props->next)
 			{
@@ -305,7 +305,7 @@ Graph::InitEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 					edge->setLabel( ( char *)( props->children->content));
 				}
 			}
-			InitEdgePointsFromXMLDoc( edge, cur_node->children);
+			initEdgePointsFromXMLDoc( edge, cur_node->children);
 		}
 	}
 }
@@ -314,7 +314,7 @@ Graph::InitEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
  * Initializes graph form xmlDoc root node
  */
 void
-Graph::InitFromXMLDoc( xmlNode * a_node)
+Graph::initFromXMLDoc( xmlNode * a_node)
 {
     xmlNode *cur_node = NULL;
 	vector<Node *> nodes;
@@ -339,13 +339,13 @@ Graph::InitFromXMLDoc( xmlNode * a_node)
 				}
 			}
 
-			InitNodesFromXmlDoc( cur_node->children);
+			initNodesFromXmlDoc( cur_node->children);
 
 			nodes.insert(nodes.end(), ( max_node_id + 1), (Node *)NULL);
-			for ( node = GetFirstNode(); !EndOfNodes(); node = GetNextNode())
+			for ( node = firstNode(); !endOfNodes(); node = nextNode())
 				    nodes[ node->userId()] = node;
 
-			InitEdgesFromXmlDoc( cur_node->children, nodes);
+			initEdgesFromXmlDoc( cur_node->children, nodes);
 
 			is_found = true;
 		}
@@ -357,7 +357,7 @@ Graph::InitFromXMLDoc( xmlNode * a_node)
  *  Build graph from xml file.
  */
 void
-Graph::ReadFromXML(const char *filename)
+Graph::readFromXML(const char *filename)
 {
     xmlDoc *doc = NULL;
 	xmlNode *root_element = NULL;
@@ -374,10 +374,10 @@ Graph::ReadFromXML(const char *filename)
     if (doc == NULL)
         printf("error: could not parse file %s\n", filename);
 
-    /* Get the root element node */
+    /* get the root element node */
     root_element = xmlDocGetRootElement(doc);
 
-	InitFromXMLDoc( root_element);
+	initFromXMLDoc( root_element);
 
     /* Free the document */
     xmlFreeDoc(doc);
@@ -391,6 +391,6 @@ Graph::ReadFromXML(const char *filename)
  */
 Graph::Graph( char * filename)
 {
-	Init();
-	ReadFromXML( filename);
+	init();
+	readFromXML( filename);
 }

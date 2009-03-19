@@ -8,14 +8,14 @@
 /**
  * If pointer is not null
  */
-inline bool IsNotNullP( void *pointer)
+inline bool isNotNullP( void *pointer)
 {
     return pointer != NULL;
 }
 /**
  * If pointer is null
  */
-inline bool IsNullP( void *pointer)
+inline bool isNullP( void *pointer)
 {
     return pointer == NULL;
 }
@@ -24,7 +24,7 @@ inline bool IsNullP( void *pointer)
  * Abs template 
  * operators "<" and "-" must be defined for parameter class
  */
-template<class Value> inline Value Abs( Value val)
+template<class Value> inline Value abs(Value val)
 {
     if( val < 0)
         return -val;

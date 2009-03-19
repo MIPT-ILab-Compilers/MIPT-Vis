@@ -12,51 +12,51 @@ Node::~Node()
 {
     Edge *edge;
     
-    /** Delete incidient edges */
-    for ( edge = GetFirstSucc(); !EndOfSuccs();)
+    /** delete incidient edges */
+    for ( edge = firstSucc(); !endOfSuccs();)
     {
-        Edge* next = GetNextSucc();
-        edge->DetachFromNode( GRAPH_DIR_DOWN);// Edge is detached from succ node
+        Edge* next = nextSucc();
+        edge->detachFromNode( GRAPH_DIR_DOWN);// Edge is detached from succ node
         delete edge;
         edge = next;
     }
-    for ( edge = GetFirstPred(); !EndOfPreds();)
+    for ( edge = firstPred(); !endOfPreds();)
     {
-        Edge* next = GetNextPred();
-        edge->DetachFromNode( GRAPH_DIR_UP);// Edge is detached from pred node
+        Edge* next = nextPred();
+        edge->detachFromNode( GRAPH_DIR_UP);// Edge is detached from pred node
         delete edge;
         edge = next;
     }
-    /** Delete myself from graph */
-    graph->DeleteNode( &my_it);
+    /** delete myself from graph */
+    graph->deleteNode( &my_it);
 }
 
 /**
  * Add an edge to this node in specified direction
  */
 void
-Node::AddEdgeInDir( Edge *edge, GraphDir dir)
+Node::addEdgeInDir( Edge *edge, GraphDir dir)
 {
-    GraphAssert( IsNotNullP( edge));
-    EdgeListItem *it = edge->GetNodeIt( RevDir( dir));
+    graphassert( isNotNullP( edge));
+    EdgeListItem *it = edge->getNodeIt( revDir( dir));
     it->Attach( edges[ dir]);
     edges[ dir] = it;
 }
 
 /**
- * Delete edge pointed by iterator in specidied direction
+ * delete edge pointed by iterator in specidied direction
  */
 void
-Node::DeleteEdgeInDir( GraphDir dir, EdgeListItem* it)
+Node::deleteEdgeInDir( GraphDir dir, EdgeListItem* it)
 {
-    GraphAssert( IsNotNullP( it));
+    graphassert( isNotNullP( it));
     if( edges[ dir] == it)
     {
-        edges[ dir] = it->GetNext();
+        edges[ dir] = it->next();
     }
     if( e_it[ dir] == it)
     {
-        e_it[ dir] = it->GetNext();
+        e_it[ dir] = it->next();
     }
     it->Detach();
 }
@@ -65,7 +65,7 @@ Node::DeleteEdgeInDir( GraphDir dir, EdgeListItem* it)
  * Print node in Dot format to stdout
  */
 void
-Node::DebugPrint()
+Node::debugPrint()
 {
-    out("%u;", GetId());
+    out("%u;", id());
 }

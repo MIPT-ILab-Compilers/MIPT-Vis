@@ -66,9 +66,9 @@ public:
     }
 
     /**
-     * Mark node with marker. Return false if node is already marked. True otherwise.
+     * mark node with marker. Return false if node is already marked. True otherwise.
      */
-    inline bool Mark( Marker marker)
+    inline bool mark( Marker marker)
     {
         if ( markers[ marker.index] == marker.value)
         {
@@ -81,7 +81,7 @@ public:
     /**
      * Return true if node is marked with this marker
      */
-    inline bool IsMarked( Marker marker)
+    inline bool isMarked( Marker marker)
     {
         if ( markers[ marker.index] == marker.value)
         {
@@ -93,7 +93,7 @@ public:
     /**
      * Return true if node has been marked with this marker and unmarks it
      */
-    inline bool Unmark( Marker marker)
+    inline bool unmark( Marker marker)
     {
         if ( markers[ marker.index] == marker.value)
         {
@@ -121,7 +121,7 @@ class MarkerManager
     /**
      * Find free index
      */
-    inline MarkerIndex FindFreeIndex()
+    inline MarkerIndex findFreeIndex()
     {
         MarkerIndex i = 0;
         /** Search for free marker index */
@@ -139,7 +139,7 @@ class MarkerManager
     /**
      * Increment marker value
      */
-    inline MarkerValue GetNextValue()
+    inline MarkerValue nextValue()
     {
         if ( last == GRAPH_MARKER_LAST)
         {
@@ -154,7 +154,7 @@ class MarkerManager
     /**
      * Check if this value is busy
      */
-    inline bool IsValueBusy( MarkerValue val)
+    inline bool isValueBusy( MarkerValue val)
     {
         /** Check all markers */
         for ( MarkerIndex i = 0; i < MAX_GRAPH_MARKERS; i++)
@@ -168,13 +168,13 @@ class MarkerManager
     /**
      * Return next free value
      */
-    inline MarkerValue FindNextFreeValue()
+    inline MarkerValue findNextFreeValue()
     {
         MarkerIndex i = 0;
         bool reached_limit = false;
         MarkerValue res = last;
         
-        while( IsValueBusy( res))
+        while( isValueBusy( res))
         {
             /** 
              * If we reached checked GRAPH_MARKER_LAST twice,
@@ -182,11 +182,11 @@ class MarkerManager
              */
             if ( res == GRAPH_MARKER_LAST)
             {
-                Assert< MarkerErrorType> ( !reached_limit, 
+                assert< MarkerErrorType> ( !reached_limit, 
                                            M_ERROR_OUT_OF_VALUES);
                 reached_limit = true;            
             }
-            res = GetNextValue();
+            res = nextValue();
         }
         return res;
     }
@@ -213,14 +213,14 @@ public:
      * Acquire new marker. Markers MUST be freed after use,
      * otherwise you run to markers number limit.
      */
-    Marker NewMarker()
+    Marker newMarker()
     {
         try {
             Marker new_marker;
                 
-            new_marker.index = FindFreeIndex();
+            new_marker.index = findFreeIndex();
             is_used[ new_marker.index] = true;
-            new_marker.value = FindNextFreeValue();
+            new_marker.value = findNextFreeValue();
             markers[ new_marker.index] = new_marker.value;
             return new_marker;
         } catch ( MarkerErrorType type)
@@ -230,16 +230,16 @@ public:
             {
                 case M_ERROR_GENERIC:    
                 default:
-                    Assert(0);
+                    assert(0);
             }
-            Assert(0);
+            assert(0);
         }
-        return NewMarker();
+        return newMarker();
     }
     /**
      * Free marker
      */
-    inline void FreeMarker( Marker m)
+    inline void freeMarker( Marker m)
     {
         is_used[ m.index] = false;
     }

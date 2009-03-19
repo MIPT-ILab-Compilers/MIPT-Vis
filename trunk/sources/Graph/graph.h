@@ -85,15 +85,15 @@ class Graph: public MarkerManager, public NumManager, public GraphProperties
     GraphNum edge_next_id;
 
 	/** Initialization */
-	void Init();
+	void init();
 protected:
     /** Increment node_next_id and return previous one */
-    inline GraphNum IncNodeId()
+    inline GraphNum incNodeId()
     {
         return node_next_id++;
     }
     /** Increment edge_next_id and return previous one */
-    inline GraphNum IncEdgeId()
+    inline GraphNum incEdgeId()
     {
         return edge_next_id++;
     }
@@ -109,38 +109,38 @@ public:
 	/**
 	 *  Reading form XML
 	 */
-	void InitNodesFromXmlDoc( xmlNode * a_node);
-	void InitEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes);
-	void InitFromXMLDoc( xmlNode * a_node);
-	void ReadFromXML(const char *filename);
+	void initNodesFromXmlDoc( xmlNode * a_node);
+	void initEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes);
+	void initFromXMLDoc( xmlNode * a_node);
+	void readFromXML(const char *filename);
     
     /** Allocation of memory for Edge */
-    void * CreateEdge( Node * pred, Node * succ);
+    void * createEdge( Node * pred, Node * succ);
     /** Allocation of memory for Node */
-    void * CreateNode();
+    void * createNode();
 
     /** Create new node in graph */
-    Node * NewNode();
+    Node * newNode();
 
     /**
      * Create edge between two nodes.
      * We do not support creation of edge with undefined endpoints
      */
-    Edge * NewEdge( Node * pred, Node * succ);
+    Edge * newEdge( Node * pred, Node * succ);
     
     /**
      * Remove node from node list of graph
      */
-    inline void DeleteNode( NodeListItem* it)
+    inline void deleteNode( NodeListItem* it)
     {
-        GraphAssert( IsNotNullP( it));
+        graphassert( isNotNullP( it));
         if( nodes == it)
         {
-           nodes = it->GetNext();
+           nodes = it->next();
         }
         if( n_it == it)
         {
-            n_it = it->GetNext();
+            n_it = it->next();
         }
         it->Detach();
     }
@@ -148,16 +148,16 @@ public:
     /**
      * Remove edge from edge list of graph
      */
-    inline void DeleteEdge( EdgeListItem* it)
+    inline void deleteEdge( EdgeListItem* it)
     {
-        GraphAssert( IsNotNullP( it));
+        graphassert( isNotNullP( it));
         if( edges == it)
         {
-            edges = it->GetNext();
+            edges = it->next();
         }
         if( e_it == it)
         {
-            e_it = it->GetNext();
+            e_it = it->next();
         }
         it->Detach();
     }
@@ -165,7 +165,7 @@ public:
     /**
      * Return node quantity
      */
-    inline size_t GetNodeCount() const
+    inline size_t getNodeCount() const
     {
         return node_num;
     }
@@ -173,7 +173,7 @@ public:
     /**
      * Return edge quantity
      */
-    inline size_t GetEdgeCount() const
+    inline size_t getEdgeCount() const
     {
         return edge_num;
     }
@@ -182,23 +182,23 @@ public:
      *
      * Initialize iterator with first edge and return this edge
      */
-    inline Edge* GetFirstEdge() 
+    inline Edge* firstEdge() 
     {
         e_it = edges;
-        return e_it->GetData();
+        return e_it->data();
     }
     /**
      * Advance iterator to next edge and return this edge. If end reached return NULL
      */
-    inline Edge* GetNextEdge()
+    inline Edge* nextEdge()
     {
-        e_it = e_it->GetNext();
-        return (e_it != NULL)? e_it->GetData() : NULL;
+        e_it = e_it->next();
+        return (e_it != NULL)? e_it->data() : NULL;
     }
     /**
      * return true if end of edge list is reached
      */
-    inline bool EndOfEdges()
+    inline bool endOfEdges()
     {
         return e_it == NULL;
     }
@@ -207,24 +207,24 @@ public:
      *
      * Initialize iterator with first node and return this node
      */
-    inline Node* GetFirstNode()
+    inline Node* firstNode()
     {
         n_it = nodes;
-        return n_it->GetData();
+        return n_it->data();
     }
     /** 
      * Advance iterator to next node and return this node. If end reached return NULL
      */
-    inline Node* GetNextNode()
+    inline Node* nextNode()
     {
-        n_it = n_it->GetNext();
-        return ( n_it != NULL)? n_it->GetData() : NULL;
+        n_it = n_it->next();
+        return ( n_it != NULL)? n_it->data() : NULL;
     }
     
     /**
      * return true if end of edge list is reached
      */
-    inline bool EndOfNodes()
+    inline bool endOfNodes()
     {
         return n_it == NULL;
     }
@@ -232,14 +232,12 @@ public:
     /**
      * Print graph to stdout in DOT format
      */
-    void DebugPrint();
+    void debugPrint();
 
     /**
      * Obtain list of nodes in depth-first search order
      */
     NodeListItem* DFS( Numeration n); 
-
-
 };
 
 #endif
