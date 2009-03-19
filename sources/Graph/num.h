@@ -9,9 +9,9 @@
  * Then if you have some class representing a container for this objects you derive it from
  * the 'NumManager' class. Altarnatively you can create an instance of NumManager directly.
  * When you want to numerate objects derived from 'Numbered' you ask NumManager ( or derived)
- * for new numeration using NumManager::NewNum(). Then use Numbered::SetNumber and 
- * Numbered::GetNumber to number objects and retrieve object number.
- * When you done with using numbers free the numeration by calling NumManager::FreeNum().
+ * for new numeration using NumManager::newNum(). Then use Numbered::setNumber and 
+ * Numbered::number to number objects and retrieve object number.
+ * When you done with using numbers free the numeration by calling NumManager::freeNum().
  * You can have not more than MAX_NUMERATIONS ( usually 10) at one time so if you forget to 
  * free a numeration you'll run into exception telling you that there are no free numeration
  * indexes left.
@@ -85,15 +85,16 @@ public:
     }
 
     /**
-     * Mark node with num. Return false if node is already numbered. True otherwise.
+     * mark node with num. Return false if node is already numbered. True otherwise.
      */
-    inline bool SetNumber( Numeration num, GraphNum number)
+    inline bool setNumber( Numeration num,
+                           GraphNum new_number)
     {
-        if ( number >= NUMBER_MAX)
+        if ( new_number >= NUMBER_MAX)
             throw NUM_ERROR_NUMBER_OUT_OF_RANGE;
 
         nums[ num.index] = num.value;
-        numbers[ num.index] = number;
+        numbers[ num.index] = new_number;
         if ( nums[ num.index] == num.value)
         {
             return false;
@@ -104,7 +105,7 @@ public:
     /**
      * Return number in given numeration or NO_NUM if it was not numbered yet
      */
-    inline GraphNum GetNumber( Numeration num)
+    inline GraphNum number( Numeration num)
     {
         if ( nums[ num.index] == num.value)
         {
@@ -116,7 +117,7 @@ public:
     /**
      * Return true if node is numbered in this numeration
      */
-    inline bool IsNumbered( Numeration num)
+    inline bool isNumbered( Numeration num)
     {
         if ( nums[ num.index] == num.value)
         {
@@ -128,7 +129,7 @@ public:
     /**
      * Return true if node has been numbered in this numeration and unmarks it
      */
-    inline bool UnNumber( Numeration num)
+    inline bool unNumber( Numeration num)
     {
         if ( nums[ num.index] == num.value)
         {
@@ -156,7 +157,7 @@ class NumManager
     /**
      * Find free index
      */
-    inline NumIndex FindFreeIndex()
+    inline NumIndex findFreeIndex()
     {
         NumIndex i = 0;
         /** Search for free num index */
@@ -174,7 +175,7 @@ class NumManager
     /**
      * Increment num value
      */
-    inline NumValue GetNextValue()
+    inline NumValue nextValue()
     {
         if ( last == NUM_VAL_LAST)
         {
@@ -189,7 +190,7 @@ class NumManager
     /**
      * Check if this value is busy
      */
-    inline bool IsValueBusy( NumValue val)
+    inline bool isValueBusy( NumValue val)
     {
         /** Check all nums */
         for ( NumIndex i = 0; i < MAX_NUMERATIONS; i++)
@@ -203,13 +204,13 @@ class NumManager
     /**
      * Return next free value
      */
-    inline NumValue FindNextFreeValue()
+    inline NumValue findNextFreeValue()
     {
         NumIndex i = 0;
         bool reached_limit = false;
         NumValue res = last;
         
-        while( IsValueBusy( res))
+        while( isValueBusy( res))
         {
             /** 
              * If we reached checked NUM_VAL_LAST twice,
@@ -218,11 +219,11 @@ class NumManager
              */
             if ( res == NUM_VAL_LAST)
             {
-                Assert< NumErrorType> ( !reached_limit, 
+                assert< NumErrorType> ( !reached_limit, 
                                            NUM_ERROR_OUT_OF_VALUES);
                 reached_limit = true;            
             }
-            res = GetNextValue();
+            res = nextValue();
         }
         return res;
     }
@@ -249,13 +250,13 @@ public:
      * Acquire new num. Nums MUST be freed after use,
      * otherwise you run to numerations number limit.
      */
-    Numeration NewNum()
+    Numeration newNum()
     {
         Numeration new_num;
             
-        new_num.index = FindFreeIndex();
+        new_num.index = findFreeIndex();
         is_used[ new_num.index] = true;
-        new_num.value = FindNextFreeValue();
+        new_num.value = findNextFreeValue();
         nums[ new_num.index] = new_num.value;
         return new_num;
     }
@@ -263,7 +264,7 @@ public:
     /**
      * Free num
      */
-    inline void FreeNum( Numeration n)
+    inline void freeNum( Numeration n)
     {
         is_used[ n.index] = false;
     }

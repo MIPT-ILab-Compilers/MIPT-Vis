@@ -46,7 +46,8 @@ public:
         edge = NULL;
     }
     /** Graph-level error constructor */
-    GraphError( GraphErrorType tp, Graph *g): type( tp), graph( g)
+    GraphError( GraphErrorType tp, Graph *g):
+        type( tp), graph( g)
     {
         node1 = NULL;
         node2 = NULL;
@@ -57,7 +58,8 @@ public:
      * Complete constructor. Parameters can be NULL except for the type;
      */
     GraphError( GraphErrorType tp, Graph *g, Node* n1, Node *n2, Edge* e):
-    type( tp), graph( g), node1( n1), node2(n2), edge(e){};
+        type( tp), graph( g), node1( n1), node2(n2), edge(e)
+    {};
     
     /** Printing routine */
     void PrintMessage();
@@ -66,8 +68,8 @@ public:
 /**
  * Default assert in Graph library
  */
-inline void GraphAssert( bool asrt)
+inline void graphassert( bool asrt)
 {
-    Assert<int> (asrt);
+    assert<int> (asrt);
 }
 #endif

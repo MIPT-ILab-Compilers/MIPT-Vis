@@ -95,7 +95,7 @@ class Node: public Marked, public Numbered, public NodeProperties
 {
 
     /** Connection with inclusive graph */
-    int id; // Unique id
+    int unique_id; // Unique id is given by graph and cannot be modified
     Graph * graph;// Pointer to graph
     NodeListItem my_it;//Item of graph's list
     
@@ -103,19 +103,20 @@ class Node: public Marked, public Numbered, public NodeProperties
     EdgeListItem *edges[ GRAPH_DIRS_NUM];
     EdgeListItem *e_it[ GRAPH_DIRS_NUM];
 
-    inline NodeListItem* GetGraphIt()
+    inline NodeListItem* getGraphIt()
     {
         return &my_it;
     }
 protected:
     /** We can't create nodes separately, do it through NewNode method of graph */
-    Node( Graph *graph_p, int _id):id(_id), graph(graph_p), my_it()
+    Node( Graph *graph_p, int _id):
+         unique_id( _id), graph( graph_p), my_it()
     {
         edges[ GRAPH_DIR_UP] = NULL;
         edges[ GRAPH_DIR_DOWN] = NULL;
         e_it[ GRAPH_DIR_UP] = NULL;
         e_it[ GRAPH_DIR_DOWN] = NULL;
-        my_it.SetData( ( Node*)this);
+        my_it.setData( ( Node*)this);
         setUserId( _id);
     }
     friend class Graph;
@@ -127,17 +128,17 @@ public:
     ~Node();
     
     /**
-     * Get node's unique ID
+     * get node's unique ID
      */
-    inline int GetId() const
+    inline int id() const
     {
-        return id;
+        return unique_id;
     }
 
     /**
-     * Get node's corresponding graph
+     * get node's corresponding graph
      */
-    inline Graph * GetGraph() const
+    inline Graph * getGraph() const
     {
         return graph;
     }
@@ -145,30 +146,30 @@ public:
     /**
      * Add edge to node in specified direction
      */
-    void AddEdgeInDir( Edge *edge, GraphDir dir);
+    void addEdgeInDir( Edge *edge, GraphDir dir);
 
     /**
      * Add predecessor edge
      */
-    inline void AddPred( Edge *edge)
+    inline void addPred( Edge *edge)
     {
-        AddEdgeInDir( edge, GRAPH_DIR_UP);
+        addEdgeInDir( edge, GRAPH_DIR_UP);
     }
 
     /**
      * Add successor edge
      */
-    inline void AddSucc( Edge *edge) 
+    inline void addSucc( Edge *edge) 
     {
-        AddEdgeInDir( edge, GRAPH_DIR_DOWN);
+        addEdgeInDir( edge, GRAPH_DIR_DOWN);
     }
 
     /**
      *  Iteration through edges routines.
      *
-     *  Set iterator to beginning of edge list and return first edge
+     *  set iterator to beginning of edge list and return first edge
      */
-    inline Edge* GetFirstEdgeInDir( GraphDir dir)
+    inline Edge* firstEdgeInDir( GraphDir dir)
     {
         e_it[ dir ] = edges[ dir ];
         
@@ -176,79 +177,79 @@ public:
         {
             return NULL;
         }
-        return e_it[ dir ]->GetData();
+        return e_it[ dir ]->data();
     }
     /**
      * Advance iterator and return next edge in specified direction
      * NOTE: If end of list is reached we return NULL for first time and fail if called once again
      */
-    inline Edge* GetNextEdgeInDir( GraphDir dir)
+    inline Edge* nextEdgeInDir( GraphDir dir)
     {
-        e_it[ dir] = e_it[ dir]->GetNext();
-        return (e_it[ dir] != NULL )? e_it[ dir]->GetData() : NULL;
+        e_it[ dir] = e_it[ dir]->next();
+        return (e_it[ dir] != NULL )? e_it[ dir]->data() : NULL;
     }
     /**
      * Return true if iterator of list points to one-after-last element
      */
-    inline bool EndOfEdgesInDir( GraphDir dir)
+    inline bool endOfEdgesInDir( GraphDir dir)
     {
         return e_it [ dir] == NULL;
     }
 
     /** 
      * Corresponding iterators for successors/predeccessors.
-     * NOTE: See GetFirstEdgeInDir and other ...InDir routines for details
+     * NOTE: See firstEdgeInDir and other ...InDir routines for details
      */
-    inline Edge* GetFirstSucc()
+    inline Edge* firstSucc()
     {
-        return GetFirstEdgeInDir( GRAPH_DIR_DOWN);
+        return firstEdgeInDir( GRAPH_DIR_DOWN);
     }
-    inline Edge* GetNextSucc()
+    inline Edge* nextSucc()
     {
-        return GetNextEdgeInDir( GRAPH_DIR_DOWN);
+        return nextEdgeInDir( GRAPH_DIR_DOWN);
     }
-    inline bool EndOfSuccs()
+    inline bool endOfSuccs()
     {
-        return EndOfEdgesInDir( GRAPH_DIR_DOWN);
+        return endOfEdgesInDir( GRAPH_DIR_DOWN);
     }
-    inline Edge* GetFirstPred()
+    inline Edge* firstPred()
     {
-        return GetFirstEdgeInDir( GRAPH_DIR_UP);
+        return firstEdgeInDir( GRAPH_DIR_UP);
     }
-    inline Edge* GetNextPred()
+    inline Edge* nextPred()
     {
-        return GetNextEdgeInDir( GRAPH_DIR_UP);
+        return nextEdgeInDir( GRAPH_DIR_UP);
     }
-    inline bool EndOfPreds()
+    inline bool endOfPreds()
     {
-        return EndOfEdgesInDir( GRAPH_DIR_UP);
+        return endOfEdgesInDir( GRAPH_DIR_UP);
     }
 
     /**
      * Deletion of edge in specified direction
      */
-    void DeleteEdgeInDir( GraphDir dir, EdgeListItem* it);
+    void deleteEdgeInDir( GraphDir dir, EdgeListItem* it);
     
     /**
-     * Delete predecessor edge
+     * delete predecessor edge
      */
-    inline void DeletePred( EdgeListItem* it)
+    inline void deletePred( EdgeListItem* it)
     {
-        DeleteEdgeInDir( GRAPH_DIR_UP, it);
+        deleteEdgeInDir( GRAPH_DIR_UP, it);
     }
     
     /**
-     * Delete successor edge
+     * delete successor edge
      */
-    inline void DeleteSucc( EdgeListItem* it)
+    inline void deleteSucc( EdgeListItem* it)
     {
-        DeleteEdgeInDir( GRAPH_DIR_DOWN, it);
+        deleteEdgeInDir( GRAPH_DIR_DOWN, it);
     }
 
     /**
      * Print node in DOT format to stdout
      */
-    void DebugPrint();
+    void debugPrint();
 
 };
 #endif

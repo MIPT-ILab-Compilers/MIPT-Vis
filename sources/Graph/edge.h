@@ -8,12 +8,18 @@
 
 #include <vector>
 
+/**
+ * Representation of a point on 2d surface.
+ */
 typedef struct
 {
 	int x;
     int y;
 } EdgePoint;
 
+/**
+ * Implements collection of edge properties and provides accessors for them
+ */
 class EdgeProperties
 {
     int user_id;
@@ -108,7 +114,7 @@ class Edge: public Marked, public Numbered, public EdgeProperties
 {
 
     /** Graph part */
-    int id; //Unique ID
+    int unique_id; //Unique ID
 
 
     Graph * graph; //Graph
@@ -124,50 +130,51 @@ class Edge: public Marked, public Numbered, public EdgeProperties
     friend class Node;
 
     /** Constructors are made private, only nodes and graph can create edges */
-    Edge( Graph *graph_p, int _id, Node *_pred, Node* _succ): id(_id), graph(graph_p), graph_it()
+    Edge( Graph *graph_p, int _id, Node *_pred, Node* _succ):
+        unique_id( _id), graph( graph_p), graph_it()
     {
-        graph_it.SetData( (Edge*) this);
+        graph_it.setData( (Edge*) this);
         n_it[ GRAPH_DIR_UP] = EdgeListItem();
         n_it[ GRAPH_DIR_DOWN] = EdgeListItem();
-        n_it[ GRAPH_DIR_UP].SetData( (Edge*)this);
-        n_it[ GRAPH_DIR_DOWN].SetData( (Edge*)this);
-        SetPred( _pred);
-        SetSucc( _succ);
+        n_it[ GRAPH_DIR_UP].setData( (Edge*)this);
+        n_it[ GRAPH_DIR_DOWN].setData( (Edge*)this);
+        setPred( _pred);
+        setSucc( _succ);
     }
 public:
     /**
-     * Get edge's unique ID
+     * get edge's unique ID
      */
-    inline int GetId() const
+    inline int id() const
     {
-        return id;
+        return unique_id;
     }
 
     /**
-     * Get edge's corresponding graph
+     * get edge's corresponding graph
      */
-    inline Graph * GetGraph() const
+    inline Graph * getGraph() const
     {
         return graph;
     }
 
     /** Pivate routines dealing with iterators */
-    void SetGraphIt( EdgeListItem g_it)
+    void setGraphIt( EdgeListItem g_it)
     {
         graph_it = g_it;
     }
     /** 
      * Return iterator pointing to this edge in graph's edge list
      */
-    EdgeListItem *GetGraphIt()
+    EdgeListItem *getGraphIt()
     {
         return &graph_it;
     }
 
     /** 
-     * Set iterator pointing to this edge in graph's edge list
+     * set iterator pointing to this edge in graph's edge list
      */
-    void SetListIt( GraphDir dir, EdgeListItem it)
+    void setListIt( GraphDir dir, EdgeListItem it)
     {
         n_it[ dir] = it;
     }
@@ -176,7 +183,7 @@ public:
      * Return iterator pointing to this edge in node's edge
      * list in corresponding direction
      */
-    EdgeListItem *GetNodeIt( GraphDir dir)
+    EdgeListItem *getNodeIt( GraphDir dir)
     {
         return &n_it[ dir];
     }
@@ -185,17 +192,17 @@ public:
      * Detach edge from a node.
      * Made private as it is low-level routine needed for implementation of edge-node relationship
      */
-    void DetachFromNode( GraphDir dir);
+    void detachFromNode( GraphDir dir);
     /** 
-     *  Destructor. Delete edge from list in graph.
+     *  Destructor. delete edge from list in graph.
      *  Deletion from node lists MUST be performed manually.
      *  Example: 
      *      Graph graph;
-     *      Edge * edge = graph.NewEdge();
+     *      Edge * edge = graph.newEdge();
      *  
      *      //Typical deletion of edge is done by consequent calls of
-     *      edge->DetachFromNode( GRAPH_DIR_UP);
-     *      edge->DetachFromNode( GRAPH_DIR_DOWN);
+     *      edge->detachFromNode( GRAPH_DIR_UP);
+     *      edge->detachFromNode( GRAPH_DIR_DOWN);
      *      delete edge;
      */
     ~Edge();
@@ -205,13 +212,13 @@ public:
      * Note that node treats this edge in opposite direction. I.e. an edge that has node in
      * GRAPH_DIR_UP is treated as edge in GRAPH_DIR_DOWN directions inside that node
      */
-    void SetNode( Node *n, GraphDir dir)
+    void setNode( Node *n, GraphDir dir)
     {
-        GraphAssert( IsNotNullP( n));
+        graphassert( isNotNullP( n));
         nodes[ dir] = n;
         if ( n != NULL)
         {
-            n->AddEdgeInDir( (Edge *)this, 
+            n->addEdgeInDir( (Edge *)this, 
                 ((dir == GRAPH_DIR_UP)? GRAPH_DIR_DOWN : GRAPH_DIR_UP));
         }
     }
@@ -219,43 +226,43 @@ public:
     /**
      * Connect edge with given node as a predecessor
      */
-    inline void SetPred( Node *n)
+    inline void setPred( Node *n)
     {
-        SetNode( n, GRAPH_DIR_UP);
+        setNode( n, GRAPH_DIR_UP);
     }
     /**
      * Connect edge with given node as a successor
      */
-    inline void SetSucc( Node *n)
+    inline void setSucc( Node *n)
     {
-        SetNode( n, GRAPH_DIR_DOWN);
+        setNode( n, GRAPH_DIR_DOWN);
     }
 
     /**
-     * Get node in specified direction
+     * get node in specified direction
      */
-    inline Node *GetNode( GraphDir dir) const 
+    inline Node *getNode( GraphDir dir) const 
     {
         return nodes[ dir];
     }
     /**
-     * Get predecessor of edge
+     * get predecessor of edge
      */
-    inline Node *GetPred() const 
+    inline Node *pred() const 
     {
-        return GetNode( GRAPH_DIR_UP);
+        return getNode( GRAPH_DIR_UP);
     }
     /**
-     * Get successor of edge
+     * get successor of edge
      */
-    inline Node *GetSucc() const 
+    inline Node *succ() const 
     {
-        return GetNode( GRAPH_DIR_DOWN);
+        return getNode( GRAPH_DIR_DOWN);
     }
     /**
      * Print edge in dot fomat to stdout
      */
-    void DebugPrint();
+    void debugPrint();
 };
 
 #endif

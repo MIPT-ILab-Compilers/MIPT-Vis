@@ -25,9 +25,9 @@ enum ListDir
  * Return direction that is reverse to given one
  */
 inline ListDir
-ListRDir( ListDir dir)
+listRDir( ListDir dir)
 {
-    Assert( LIST_DIR_NUM == 2);
+    assert( LIST_DIR_NUM == 2);
     return ( dir == LIST_DIR_DEFAULT)? LIST_DIR_RDEFAULT: LIST_DIR_DEFAULT; 
 }
 
@@ -42,65 +42,65 @@ template <class Data> class ListItem
     Data *data_p;
 public:
     
-    /**Get data */
-    inline Data *GetData() const
+    /**get data */
+    inline Data *data() const
     {
         return data_p;
     }
-    /** Set data */
-    inline void SetData( Data* d)
+    /** set data */
+    inline void setData( Data* d)
     {
         data_p = d;
     }
     
-    /** Get neighbour */
-    inline ListItem<Data> * GetPeerInDir( ListDir dir) const
+    /** get neighbour */
+    inline ListItem<Data> * peerInDir( ListDir dir) const
     {
         return peer[ dir];
     }
     
-    /** Set neighbour */
-    inline void SetPeerInDir( ListItem<Data> *p, ListDir dir)
+    /** set neighbour */
+    inline void setPeerInDir( ListItem<Data> *p, ListDir dir)
     {
         peer[ dir] = p;
     }
     /** Default peers gets */
     /** Return next peer in default direction */
-    inline ListItem<Data> *GetNext() const
+    inline ListItem<Data> *next() const
     {
-        return GetPeerInDir( LIST_DIR_DEFAULT);
+        return peerInDir( LIST_DIR_DEFAULT);
     }
     /** Return prev peer in default direction */
-    inline ListItem<Data>* GetPrev() const
+    inline ListItem<Data>* prev() const
     {
-        return GetPeerInDir( LIST_DIR_RDEFAULT);
+        return peerInDir( LIST_DIR_RDEFAULT);
     }
     /** Default peer sets */
-    inline void SetNext( ListItem<Data> *n)
+    inline void setNext( ListItem<Data> *n)
     {
-        SetPeerInDir( n, LIST_DIR_DEFAULT);
+        setPeerInDir( n, LIST_DIR_DEFAULT);
     }
-    inline void SetPrev( ListItem<Data> *p)
+    inline void setPrev( ListItem<Data> *p)
     {
-        SetPeerInDir( p, LIST_DIR_RDEFAULT);
+        setPeerInDir( p, LIST_DIR_RDEFAULT);
     }
     
     /** Attach this item to peeer in given direction */
     inline void AttachInDir( ListItem<Data>* p, ListDir dir)
     {
-        ListDir rdir = ListRDir( dir);
-        SetPeerInDir( p, dir);
-        SetPeerInDir( NULL, rdir);
+        ListDir rdir = listRDir( dir);
+        setPeerInDir( p, dir);
+        setPeerInDir( NULL, rdir);
 
-        if ( IsNotNullP( p))
+        if ( isNotNullP( p))
         {
-            ListItem<Data>* rdir_peer = p->GetPeerInDir( rdir);
-            if ( IsNotNullP( rdir_peer))
+            ListItem<Data>* rdir_peer = p->peerInDir( rdir);
+            if ( isNotNullP( rdir_peer))
             {
-                rdir_peer->SetPeerInDir( this, dir);
+                rdir_peer->setPeerInDir( this, dir);
             }
-            p->SetPeerInDir( this, rdir);
-            SetPeerInDir( rdir_peer, rdir);
+            p->setPeerInDir( this, rdir);
+            setPeerInDir( rdir_peer, rdir);
         }
     }
     
@@ -114,45 +114,45 @@ public:
     inline void Detach()
     {
         /** Correct links in peers */
-        if ( IsNotNullP( peer[ LIST_DIR_DEFAULT]))
+        if ( isNotNullP( peer[ LIST_DIR_DEFAULT]))
         {
-            peer[ LIST_DIR_DEFAULT]->SetPeerInDir( peer[ LIST_DIR_RDEFAULT], LIST_DIR_RDEFAULT);
+            peer[ LIST_DIR_DEFAULT]->setPeerInDir( peer[ LIST_DIR_RDEFAULT], LIST_DIR_RDEFAULT);
         }
-        if ( IsNotNullP( peer[ LIST_DIR_RDEFAULT]))
+        if ( isNotNullP( peer[ LIST_DIR_RDEFAULT]))
         {
-            peer[ LIST_DIR_RDEFAULT]->SetPeerInDir( peer[ LIST_DIR_DEFAULT], LIST_DIR_DEFAULT);
+            peer[ LIST_DIR_RDEFAULT]->setPeerInDir( peer[ LIST_DIR_DEFAULT], LIST_DIR_DEFAULT);
         }
-        SetPeerInDir( NULL, LIST_DIR_DEFAULT);
-        SetPeerInDir( NULL, LIST_DIR_RDEFAULT);
+        setPeerInDir( NULL, LIST_DIR_DEFAULT);
+        setPeerInDir( NULL, LIST_DIR_RDEFAULT);
     }
 
     /** Default constructor */
     ListItem()
     {
-        SetData( NULL);
-        SetPeerInDir( NULL, LIST_DIR_DEFAULT);
-        SetPeerInDir( NULL, LIST_DIR_RDEFAULT);
+        setData( NULL);
+        setPeerInDir( NULL, LIST_DIR_DEFAULT);
+        setPeerInDir( NULL, LIST_DIR_RDEFAULT);
     };
 
     /** Constructor from data pointer */
     ListItem( Data* d)
     {
-        SetData( d);
-        SetPeerInDir( NULL, LIST_DIR_DEFAULT);
-        SetPeerInDir( NULL, LIST_DIR_RDEFAULT);
+        setData( d);
+        setPeerInDir( NULL, LIST_DIR_DEFAULT);
+        setPeerInDir( NULL, LIST_DIR_RDEFAULT);
     };
 
     /** Insert element before the given one */
     ListItem( ListItem<Data> *peer, Data* d)
     {
-        SetData( d);
+        setData( d);
         AttachInDir( peer, LIST_DIR_DEFAULT);
     }
 
     /** Insert element in given direction */
     ListItem( ListItem<Data> *peer, ListDir dir, Data *d)
     {
-        SetData( d);
+        setData( d);
         AttachInDir( peer, dir);
     }
 

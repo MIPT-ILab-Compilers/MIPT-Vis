@@ -40,14 +40,14 @@ enum GraphDir
  * Return direction that is reverse to given one
  */
 inline GraphDir
-RevDir( GraphDir dir)
+revDir( GraphDir dir)
 {
-    GraphAssert( GRAPH_DIRS_NUM == 2);
+    graphassert( GRAPH_DIRS_NUM == 2);
     return ( dir == GRAPH_DIR_UP)? GRAPH_DIR_DOWN: GRAPH_DIR_UP; 
 }
 
-#define GRAPH_MAX_NODE_NUM ( GraphNum)( -1)
-#define GRAPH_MAX_EDGE_NUM ( GraphNum)( -1)
+const GraphNum GRAPH_MAX_NODE_NUM  = ( GraphNum)( -1);
+const GraphNum GRAPH_MAX_EDGE_NUM  = ( GraphNum)( -1);
 
 typedef ListItem< Node> NodeListItem;
 typedef ListItem< Edge> EdgeListItem;

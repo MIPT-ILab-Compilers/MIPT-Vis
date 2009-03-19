@@ -7,12 +7,12 @@
 
 /**
  * Edge destructor.
- * Delete edge from graph's list of edges
+ * delete edge from graph's list of edges
  */
 
 Edge::~Edge()
 {
-    graph->DeleteEdge( &graph_it);
+    graph->deleteEdge( &graph_it);
 }
 
 /**
@@ -20,17 +20,17 @@ Edge::~Edge()
  */
 
 void
-Edge::DebugPrint()
+Edge::debugPrint()
 {
     /**
      * Check that edge is printable
      * TODO: Implements graph states and in 'in process' state print node as '?'
      *       Examples of such prints: 4->? ?->3 ?->?
      */
-    GraphAssert( IsNotNullP( GetPred()));
-    GraphAssert( IsNotNullP( GetSucc()));
+    graphassert( isNotNullP( pred()));
+    graphassert( isNotNullP( succ()));
 
-    out("%u->%u;", GetPred()->GetId(), GetSucc()->GetId());
+    out("%u->%u;", pred()->id(), succ()->id());
 }
 
 /**
@@ -38,8 +38,8 @@ Edge::DebugPrint()
  */
 
 void
-Edge::DetachFromNode( GraphDir dir)
+Edge::detachFromNode( GraphDir dir)
 {
-    Node *n = GetNode( dir);
-    n->DeleteEdgeInDir( RevDir( dir), &n_it[ dir]);
+    Node *n = getNode( dir);
+    n->deleteEdgeInDir( revDir( dir), &n_it[ dir]);
 }

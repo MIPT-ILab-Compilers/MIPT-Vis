@@ -8,10 +8,10 @@
 int main(int argc, char **argv)
 {
 	//Test graph package
-    if ( !UTestGraph())
+    if ( !uTestGraph())
         return -1;
 
-    if ( !UTestReadGraph( ))
+    if ( !uTestReadGraph( ))
 		return -1;
 
     return 0;	

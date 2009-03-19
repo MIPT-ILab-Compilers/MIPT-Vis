@@ -1,5 +1,5 @@
 /**
- * File: graph_utest.cpp - Implementation of testing of Graph library, 
+ * File: graph_uTest.cpp - Implementation of testing of Graph library, 
  * internal representation of graphs in MiptVis tool.
  * Copyright (C) 2009  Boris Shurygin
  */
@@ -12,25 +12,25 @@
 using namespace std;
 
 /*** Simple joint testing for markers/numerations */
-static bool UTestDFS( Graph *graph)
+static bool uTestDFS( Graph *graph)
 {
-    Numeration n = graph->NewNum();
+    Numeration n = graph->newNum();
     NodeListItem* nodes = graph->DFS( n);
-    graph->FreeNum( n);
+    graph->freeNum( n);
     return true;
 }
 
  /**
   * TODO: Check graph's data structures being consistent with node and edge functionality
   */
-static bool UTestGraphOwn()
+static bool uTestGraphOwn()
 {
     return true;
 }
 /**
  * TODO: Check consistency of Node and Edge classes interoperation
  */
-static bool UTestNodeEdge()
+static bool uTestNodeEdge()
 {
     /**
      * TODO: Check that node and edge remain correct after basic edge/node creation/deletion
@@ -44,7 +44,7 @@ static bool UTestNodeEdge()
 /**
  * Check marker functionality
  */
-static bool UTestNumerations()
+static bool uTestNumerations()
 {
     /**
      * Check correct error reporting
@@ -55,102 +55,102 @@ static bool UTestNumerations()
     {
         for ( int i = 0; i < MAX_NUMERATIONS + 1; i++)
         {
-            mgr1.NewNum();
+            mgr1.newNum();
         }
     } catch ( NumErrorType error)
     {
         // thrown error type MUST match the expected one
-        Assert( error == NUM_ERROR_OUT_OF_INDEXES);
+        assert( error == NUM_ERROR_OUT_OF_INDEXES);
     }
 
     /** 2. Too big number */
     NumManager mgr2;
-    Numeration num2 = mgr2.NewNum();
+    Numeration num2 = mgr2.newNum();
     Numbered obj2; 
     try
     {
-        obj2.SetNumber( num2, -1);
+        obj2.setNumber( num2, -1);
     } catch ( NumErrorType error)
     {
         // thrown error type MUST match the expected one
-        Assert( error == NUM_ERROR_NUMBER_OUT_OF_RANGE);
+        assert( error == NUM_ERROR_NUMBER_OUT_OF_RANGE);
     }
-    mgr2.FreeNum( num2);
+    mgr2.freeNum( num2);
 
     /** 3. Functional testing */
     NumManager mgr;
     for ( int i = 0; i < MAX_NUMERATIONS + 2; i++)
     {
-        Numeration n = mgr.NewNum();
-        mgr.FreeNum( n);
+        Numeration n = mgr.newNum();
+        mgr.freeNum( n);
     } 
-    Numeration num = mgr.NewNum();
-    Numeration num_unused = mgr.NewNum();
+    Numeration num = mgr.newNum();
+    Numeration num_unused = mgr.newNum();
     Numbered obj; 
-    Assert( obj.GetNumber( num) == NUMBER_NO_NUM);
-    Assert( obj.GetNumber( num_unused) == NUMBER_NO_NUM);
-    obj.SetNumber( num, 1);
-    Assert( obj.IsNumbered( num));
-    Assert( obj.GetNumber( num) == 1);
-    Assert( obj.GetNumber( num_unused) == NUMBER_NO_NUM);
-    obj.UnNumber( num);
-    Assert( obj.GetNumber( num) == NUMBER_NO_NUM);
-    Assert( obj.GetNumber( num_unused) == NUMBER_NO_NUM);    
+    assert( obj.number( num) == NUMBER_NO_NUM);
+    assert( obj.number( num_unused) == NUMBER_NO_NUM);
+    obj.setNumber( num, 1);
+    assert( obj.isNumbered( num));
+    assert( obj.number( num) == 1);
+    assert( obj.number( num_unused) == NUMBER_NO_NUM);
+    obj.unNumber( num);
+    assert( obj.number( num) == NUMBER_NO_NUM);
+    assert( obj.number( num_unused) == NUMBER_NO_NUM);    
     return true;
 }
 
 /**
  * Check marker functionality
  */
-static bool UTestMarkers()
+static bool uTestMarkers()
 {
     Graph graph;
-    Node *dummy = graph.NewNode();
+    Node *dummy = graph.newNode();
     delete dummy;
-    Node *pred = graph.NewNode();
-    Node *succ = graph.NewNode();
-    Edge *edge = graph.NewEdge( pred, succ);
-    Marker m = graph.NewMarker();
-    Marker m2 = graph.NewMarker();
+    Node *pred = graph.newNode();
+    Node *succ = graph.newNode();
+    Edge *edge = graph.newEdge( pred, succ);
+    Marker m = graph.newMarker();
+    Marker m2 = graph.newMarker();
 
     Marker m_array[ MAX_GRAPH_MARKERS];
     
-    Assert( !pred->IsMarked( m));
-    Assert( !succ->IsMarked( m));
-    Assert( !edge->IsMarked( m));
-    Assert( !pred->IsMarked( m2));
+    assert( !pred->isMarked( m));
+    assert( !succ->isMarked( m));
+    assert( !edge->isMarked( m));
+    assert( !pred->isMarked( m2));
     
-    pred->Mark( m);
-    succ->Mark( m);
-    edge->Mark( m);
-    edge->Mark( m2);
+    pred->mark( m);
+    succ->mark( m);
+    edge->mark( m);
+    edge->mark( m2);
 
-    Assert( pred->IsMarked( m));
-    Assert( succ->IsMarked( m));
-    Assert( edge->IsMarked( m));
-    Assert( edge->IsMarked( m2));
-    edge->Unmark( m);
+    assert( pred->isMarked( m));
+    assert( succ->isMarked( m));
+    assert( edge->isMarked( m));
+    assert( edge->isMarked( m2));
+    edge->unmark( m);
 
     /** Check that different markers have different behaviour */
-    Assert( edge->IsMarked( m2));
-    Assert( !edge->IsMarked( m));
+    assert( edge->isMarked( m2));
+    assert( !edge->isMarked( m));
     
-    graph.FreeMarker( m);
-    graph.FreeMarker( m2);
+    graph.freeMarker( m);
+    graph.freeMarker( m2);
     
     for ( MarkerIndex i = 0; i < MAX_GRAPH_MARKERS; i++)
     {
-        m_array [ i] = graph.NewMarker();
+        m_array [ i] = graph.newMarker();
     }
     for ( MarkerIndex i = 0; i < MAX_GRAPH_MARKERS; i++)
     {
-        graph.FreeMarker( m_array[ i]);
+        graph.freeMarker( m_array[ i]);
     }
-    m = graph.NewMarker();
-    graph.FreeMarker( m);
+    m = graph.newMarker();
+    graph.freeMarker( m);
     
     Node *n;
-    for (  n = graph.GetFirstNode(); !graph.EndOfNodes(); n = graph.GetNextNode())
+    for (  n = graph.firstNode(); !graph.endOfNodes(); n = graph.nextNode())
     {
         delete n;
     }
@@ -160,7 +160,7 @@ static bool UTestMarkers()
 /**
  * Unit tests for Graph library
  */
-bool UTestGraph()
+bool uTestGraph()
 {
     Graph graph;
 
@@ -172,61 +172,61 @@ bool UTestGraph()
     /** Create nodes and edges */
     for ( int i =0; i<20; i++)
     {
-        nodes.push_back( graph.NewNode());
+        nodes.push_back( graph.newNode());
         if ( i > 0)
         {
-            graph.NewEdge( nodes[ i - 1], nodes[ i]);
+            graph.newEdge( nodes[ i - 1], nodes[ i]);
         }
         if ( i > 1 && i % 2 == 0)
         {
-            graph.NewEdge( nodes[ i - 2], nodes[ i]);
+            graph.newEdge( nodes[ i - 2], nodes[ i]);
         }
     }
-    graph.NewEdge( nodes[ 8], nodes[ 4]);
+    graph.newEdge( nodes[ 8], nodes[ 4]);
     delete nodes[ 8];
-    graph.DebugPrint();
+    graph.debugPrint();
     
 
     /**
      * Check graph's data structures consistency
      */
-     if ( !UTestGraphOwn())
+     if ( !uTestGraphOwn())
          return false;
     /**
      * Check node-edge consistency
      */
-    if ( !UTestNodeEdge())
+    if ( !uTestNodeEdge())
          return false;
 
     /**
      * Check markers
      */
-    if ( !UTestMarkers())
+    if ( !uTestMarkers())
         return false;
 
     /**
      * Check numerations 
      */
-    if ( !UTestNumerations())
+    if ( !uTestNumerations())
         return false;
    
     /**
      * Simple joint testing of graph's functionality/markers/numerations
      */
-    if ( !UTestDFS( &graph))
+    if ( !uTestDFS( &graph))
         return false;
 
-    //Assert<Error>( 0);
+    //assert<Error>( 0);
     return true;
 }
 
-bool UTestReadGraph()
+bool uTestReadGraph()
 {
 	char * file = _getcwd( NULL, 1024);
 	strcat_s( file, 1024,"/test_graph.xml");
 	Graph * graph = new Graph( file);
 	if ( graph == NULL) return false;
-	graph->DebugPrint();
+	graph->debugPrint();
 
 	return true;
 }

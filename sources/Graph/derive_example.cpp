@@ -23,21 +23,21 @@ class DGraph: public Graph
 {
 public:
     
-    void *CreateNode()
+    void *createNode()
     {
-        return new DNode( this, IncNodeId());
+        return new DNode( this, incNodeId());
     }
-    DNode *NewNode()
+    DNode *newNode()
     {
-        return static_cast< DNode *>( Graph::NewNode());
+        return static_cast< DNode *>( Graph::newNode());
     }
-    DNode * GetFirstNode()
+    DNode * firstNode()
     {
-        return static_cast< DNode *>( Graph::GetFirstNode());
+        return static_cast< DNode *>( Graph::firstNode());
     }
-    DNode * GetNextNode()
+    DNode * nextNode()
     {
-        return static_cast< DNode *>( Graph::GetNextNode());
+        return static_cast< DNode *>( Graph::nextNode());
     }
 };
 
