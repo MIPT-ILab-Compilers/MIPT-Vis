@@ -12,3 +12,4 @@ Anatoly Urban
 Dmitry Ustyugov
 Maksim Popov
 Nikita Ivanov
+Aleksey Mineev
