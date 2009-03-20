@@ -1,2 +1,0 @@
-#summary Specification for testing process
-To be determined... At least project UnitTest must be compilable and execute with return code 0.
