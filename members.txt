@@ -11,3 +11,4 @@ Ivan Mashintsev
 Anatoly Urban
 Dmitry Ustyugov
 Maksim Popov
+Nikita Ivanov
