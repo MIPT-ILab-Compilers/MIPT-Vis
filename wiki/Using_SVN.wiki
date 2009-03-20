@@ -9,7 +9,7 @@ _svn checkout https://mipt-vis.googlecode.com/svn/trunk/ mipt-vis --username GNA
 
 GNAME - your google account, for example vasya.pupkin
 
-Enter password from GoogleCode account when promted.
+Enter password from googleCode account when promted.
 
 *4.* Edit/Add/Remove sources
 
