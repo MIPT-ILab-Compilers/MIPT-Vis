@@ -17,7 +17,7 @@ Enter password from googleCode account when prompted.
 
 _svn update https://mipt-vis.googlecode.com/svn/trunk/ mipt-vis --username GNAME_
 
-This command takes from the server changes which were made form the moment you checked out the project( or did last update) up to now. Some conflicts with your local modifications may arise. You should resolve them ( read man from url below on how to do this) before running the following command. Also before commit you should run the [http://code.google.com/p/mipt-vis/wiki/Testing_Process  testing process] to be sure you didn't broke the project.
+This command takes from the server changes which were made form the moment you checked out the project( or did last update) up to now. Some conflicts with your local modifications may arise. You should resolve them ( read man from url below on how to do this) before running the following command. Also before commit you should run the TestingProcess to be sure you didn't broke the project.
 
 _svn commit https://mipt-vis.googlecode.com/svn/trunk/ mipt-vis --username GNAME_
 
