@@ -1,4 +1,4 @@
-#summary describes structure of XML which represents a graph
+#summary Describes structure of XML which represents a graph
 
 === General XML information ==
 You can read about xml here: [http://ru.wikipedia.org/wiki/Xml General XML information]. But I recommend you to take a look at the following example at first.
