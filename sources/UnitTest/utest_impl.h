@@ -13,6 +13,6 @@
  * Graph library unit testing
  */
 bool uTestGraph();
-bool uTestReadGraph();
+bool uTestGraphXML();
 
 #endif

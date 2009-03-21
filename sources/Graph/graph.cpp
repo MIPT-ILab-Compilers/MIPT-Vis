@@ -18,6 +18,7 @@ void Graph::init()
     edges = NULL;
     n_it = NULL;
     e_it = NULL;
+	xml_doc = NULL;
 }
 
 /**
@@ -162,7 +163,7 @@ NodeListItem* Graph::DFS( Numeration num)
  *  Init graph nodes
  */
 void
-Graph::initNodesFromXmlDoc( xmlNode * a_node)
+Graph::readNodesFromXmlDoc( xmlNode * a_node)
 {
 	xmlNode * cur_node;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next)
@@ -206,11 +207,12 @@ Graph::initNodesFromXmlDoc( xmlNode * a_node)
 		}
 	}
 }
+
 /**
  *  Init edge points
  */
 static void
-initEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
+readEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
 {
 	xmlNode * cur_node;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next)
@@ -250,7 +252,8 @@ initEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
  *  Init graph edges
  */
 void
-Graph::initEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
+
+Graph::readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 {
 	xmlNode * cur_node;
     for (cur_node = a_node; cur_node; cur_node = cur_node->next)
@@ -305,7 +308,7 @@ Graph::initEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 					edge->setLabel( ( char *)( props->children->content));
 				}
 			}
-			initEdgePointsFromXMLDoc( edge, cur_node->children);
+			readEdgePointsFromXMLDoc( edge, cur_node->children);
 		}
 	}
 }
@@ -314,7 +317,7 @@ Graph::initEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
  * Initializes graph form xmlDoc root node
  */
 void
-Graph::initFromXMLDoc( xmlNode * a_node)
+Graph::readFromXMLDoc( xmlNode * a_node)
 {
     xmlNode *cur_node = NULL;
 	vector<Node *> nodes;
@@ -332,21 +335,19 @@ Graph::initFromXMLDoc( xmlNode * a_node)
 			{
 				if ( xmlStrEqual( props->name, xmlCharStrdup("default_node_size")))
 				{
-					default_node_size = strtoul( ( const char *)( props->children->content), NULL, 0);
+					setDefaultNodeSize( strtoul( ( const char *)( props->children->content), NULL, 0));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("name")))
 				{
 					setName( ( char *)( props->children->content));
 				}
 			}
 
-			initNodesFromXmlDoc( cur_node->children);
-
+			readNodesFromXmlDoc( cur_node->children);
 			nodes.insert(nodes.end(), ( max_node_id + 1), (Node *)NULL);
 			for ( node = firstNode(); !endOfNodes(); node = nextNode())
 				    nodes[ node->userId()] = node;
 
-			initEdgesFromXmlDoc( cur_node->children, nodes);
-
+			readEdgesFromXmlDoc( cur_node->children, nodes);
 			is_found = true;
 		}
     }
@@ -377,13 +378,12 @@ Graph::readFromXML(const char *filename)
     /* get the root element node */
     root_element = xmlDocGetRootElement(doc);
 
-	initFromXMLDoc( root_element);
+	readFromXMLDoc( root_element);
 
-    /* Free the document */
-    xmlFreeDoc(doc);
-    /* Cleanup function for the XML library */
+	this->xml_doc = doc;
+
+	/* Cleanup function for the XML library */
     xmlCleanupParser();
-
 }
 
 /**
@@ -393,4 +393,65 @@ Graph::Graph( char * filename)
 {
 	init();
 	readFromXML( filename);
+}
+
+/**
+ *  Write nodes
+ */
+void
+Graph::writeNodesByXMLWriter( xmlTextWriterPtr writer)
+{
+	Node * node;
+	for ( node = firstNode(); !endOfNodes(); node = nextNode())
+	{
+		node->writeByXMLWriter( writer);
+	}
+}
+
+/**
+ *  Write edges
+ */
+void
+Graph::writeEdgesByXMLWriter( xmlTextWriterPtr writer)
+{
+	Edge * edge;
+	for ( edge = firstEdge(); !endOfEdges(); edge = nextEdge())
+	{
+	}
+}
+
+/**
+ *  Write graph to xml file
+ */
+void
+Graph::writeToXML( const char *filename)
+{
+	xmlTextWriterPtr writer;
+
+
+    /* Create a new XmlWriter for uri, with no compression. */
+    writer = xmlNewTextWriterFilename( filename, 0);
+    assert( writer != NULL);
+    
+    xmlTextWriterStartDocument( writer, NULL, NULL, NULL);
+	xmlTextWriterStartElement( writer, BAD_CAST "graph");
+
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "name", BAD_CAST name());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "default_node_size", "%d", defaultNodeSize());
+
+	writeNodesByXMLWriter( writer);
+    writeEdgesByXMLWriter( writer);
+
+	xmlTextWriterEndDocument( writer);
+}
+
+
+/**
+ *  Constructor by XML filename
+ */
+Graph::~Graph()
+{
+    /* Free the document */
+    if ( xml_doc != NULL)xmlFreeDoc( xml_doc);
+
 }

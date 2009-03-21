@@ -69,3 +69,12 @@ Node::debugPrint()
 {
     out("%u;", id());
 }
+
+/**
+ *  Write to xml
+ */
+void
+Node::writeByXMLWriter( xmlTextWriterPtr writer)
+{
+	xmlTextWriterWriteElement( writer, BAD_CAST "label", BAD_CAST label());
+}

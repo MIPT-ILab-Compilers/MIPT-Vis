@@ -1,23 +1,45 @@
 <?xml version="1.0"?>
+<!-- Graph represantaion by XML -->
+<!-- Most of the entries and properties are clear by the name. See comment below -->
+
+<!-- Graph -->
+<!-- default_node_size is applied for all nodes in graph -->
+<!-- if their width/height are not specified -->
 <graph name='CFG' default_node_size='50'>
+  <!-- Node -->
+  <!--  Label will be displayed on node  -->
   <node id='1' color='red' x='320' y='240' width='640' height='480' label='start node' shape='rectangle'>
+    <!--  Oper  -->
+    <!--  Just a string for now.  -->
     <oper> R0 = ADD( R1, R2) </oper>
     <oper> R1 = SUB( R4, R0) </oper>
     <oper> BRU 0x864715FE </oper>
   </node>
+  <!-- Node -->
   <node id='2' color='red' x='320' y='240' width='640' height='480' label='loop' shape='rectangle'>
-  </node>    
+  </node>
+  <!-- Node -->    
   <node id='3' color='red' x='320' y='240' width='640' height='480' label='exit node' shape='rectangle'>
   </node>
+  <!-- Edge -->
+  <!-- from and to are nodes connected by the edge. -->
+  <!-- prob is probability that propgram control flow will go -->
+  <!-- through this edge among the others going from its predecessor. -->
+  <!-- At the moment the edge consists of points through which it should go. -->
+  <!-- Notice that the order of the points is important! -->
   <edge id='1' from='1' to='2' prob='100' thickness='10' color='green' style='solid' label="simple edge" points_num='2'>
-    <point n='1' x='100' y='200'/>
+      <!-- Point -->
+      <!-- Includes its number as it is important -->
+      <point n='1' x='100' y='200'/>
     <point n='2' x='101' y='201'/>
   </edge>
+  <!-- Edge -->
   <edge id='2' from='2' to='3' prob='1' thickness='1' color='blue' style='dotted' label="loop exit" points_num='3'>
     <point n='1' x='103' y='203'/>
     <point n='2' x='104' y='204'/>
     <point n='3' x='105' y='205'/>
   </edge>
+  <!-- Edge -->
   <edge id='3' from='2' to='2' prob='99' thickness='9' color='red' style='solid' label="back edge" points_num='2'>
     <point n='1' x='106' y='206'/>
     <point n='2' x='107' y='207'/>
