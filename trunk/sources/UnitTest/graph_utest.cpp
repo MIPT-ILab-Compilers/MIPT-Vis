@@ -220,7 +220,8 @@ bool uTestGraph()
     return true;
 }
 
-bool uTestReadGraph()
+
+bool uTestGraphXML()
 {
 	char * file = _getcwd( NULL, 1024);
 	strcat_s( file, 1024,"/test_graph.xml");
@@ -228,5 +229,11 @@ bool uTestReadGraph()
 	if ( graph == NULL) return false;
 	graph->debugPrint();
 
+	file = _getcwd( NULL, 1024);
+	strcat_s( file, 1024,"/test_out.xml");
+	graph->writeToXML( file);
+
+	delete graph;
+	
 	return true;
 }

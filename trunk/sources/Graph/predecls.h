@@ -20,6 +20,9 @@ typedef unsigned int GraphNum;
 #include "num.h"
 #include "marker.h"
 #include "graph_error.h"
+#include <libxml/xmlreader.h>
+#include <libxml/encoding.h>
+#include <libxml/xmlwriter.h>
 
 /** 
  * namespaces import

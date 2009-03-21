@@ -7,7 +7,7 @@
 #define GRAPH_H
 
 #include <vector>
-#include <libxml/xmlreader.h>
+
 
 /**
  * Represents properties of a graph
@@ -101,18 +101,23 @@ public:
     /** Constructor */
     Graph();
 
-	/**
-	 *  Constructor by XML file
-	 */
+	/** Constructor by XML file */
 	Graph( char * filename);
+
+	~Graph();
 
 	/**
 	 *  Reading form XML
 	 */
-	void initNodesFromXmlDoc( xmlNode * a_node);
-	void initEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes);
-	void initFromXMLDoc( xmlNode * a_node);
+	xmlDoc *xml_doc;
+	void readNodesFromXmlDoc( xmlNode * a_node);
+	void readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes);
+	void readFromXMLDoc( xmlNode * a_node);
 	void readFromXML(const char *filename);
+
+	void writeToXML(const char *filename);
+	void writeNodesByXMLWriter( xmlTextWriterPtr writer);
+	void writeEdgesByXMLWriter( xmlTextWriterPtr writer);
     
     /** Allocation of memory for Edge */
     void * createEdge( Node * pred, Node * succ);

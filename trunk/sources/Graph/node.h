@@ -98,6 +98,8 @@ class Node: public Marked, public Numbered, public NodeProperties
     int unique_id; // Unique id is given by graph and cannot be modified
     Graph * graph;// Pointer to graph
     NodeListItem my_it;//Item of graph's list
+
+	void writeByXMLWriter( xmlTextWriterPtr writer);
     
     //Lists of edges and iterators for them
     EdgeListItem *edges[ GRAPH_DIRS_NUM];

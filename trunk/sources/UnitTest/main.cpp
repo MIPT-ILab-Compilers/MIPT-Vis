@@ -11,7 +11,7 @@ int main(int argc, char **argv)
     if ( !uTestGraph())
         return -1;
 
-    if ( !uTestReadGraph( ))
+    if ( !uTestGraphXML())
 		return -1;
 
     return 0;	
