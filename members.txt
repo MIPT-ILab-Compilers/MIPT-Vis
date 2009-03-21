@@ -14,3 +14,5 @@ Maksim Popov
 Nikita Ivanov
 Aleksey Mineev
 Alexey Grebenkin
+Dan Stefanov
+Andrey Rudko
