@@ -33,7 +33,7 @@ See comments {{{<!-- Comment -->}}} below:
   </node>
   <!-- Edge -->
   <!-- from and to are nodes connected by the edge. -->
-  <!-- prob is probability that propgram control flow will go -->
+  <!-- prob is probability that program control flow will go -->
   <!-- through this edge among the others going from its predecessor. -->
   <!-- At the moment the edge consists of points through which it should go. -->
   <!-- Notice that the order of the points is important! -->
