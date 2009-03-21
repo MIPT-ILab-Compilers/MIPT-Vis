@@ -17,3 +17,5 @@ Alexey Grebenkin
 Dan Stefanov
 Andrey Rudko
 Aleksandr Alekseev
+Trebuhin Vadim
+Oreshko Vasily
