@@ -38,9 +38,9 @@ See comments {{{<!-- Comment -->}}} below:
   <!-- At the moment the edge consists of points through which it should go. -->
   <!-- Notice that the order of the points is important! -->
   <edge id='1' from='1' to='2' prob='100' thickness='10' color='green' style='solid' label="simple edge" points_num='2'>
-      <!-- Point -->
-      <!-- Includes its number as it is important -->
-      <point n='1' x='100' y='200'/>
+    <!-- Point -->
+    <!-- Includes its number as it is important -->
+    <point n='1' x='100' y='200'/>
     <point n='2' x='101' y='201'/>
   </edge>
   <!-- Edge -->
