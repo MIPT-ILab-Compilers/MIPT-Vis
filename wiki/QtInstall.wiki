@@ -15,3 +15,10 @@ We are asking you to be kind to share the installation with your teammates if th
   # DO NOT check "Download and install minimal MiniGW installation"
   # After installation finishes go to *start->control panel->system->advanced->environment variables->system variables* and add to the 'path' variable at the end
 *;C:\Qt\4.5.0\bin*
+=== Build ===
+  # Find in your start menu *Microsoft Visual Studio 2005->Visual Studio Tools->Visual Studio 2005 Command Prompt* and run it
+  # Type in the command prompt
+  **cd C:\Qt\4.5.0*
+  **configure -qt-zlib*
+  # Type 'y' then prompted ( if you agree with the licence of course)
+  # Configure starts building an environment. Please wait, it can take a while( Depends of your system's calculation power :) )
