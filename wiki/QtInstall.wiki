@@ -22,3 +22,4 @@ We are asking you to be kind to share the installation with your teammates if th
   **configure -qt-zlib*
   # Type 'y' then prompted ( if you agree with the licence of course)
   # Configure starts building an environment. Please wait, it can take a while( Depends of your system's calculation power :) )
+  # Type 'nmake'. It will take a while once more
