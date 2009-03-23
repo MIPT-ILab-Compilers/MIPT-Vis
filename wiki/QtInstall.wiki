@@ -6,7 +6,7 @@ Download installation file:
 http://www.qtsoftware.com/downloads/windows-cpp
 
 It's of 166MB.
-We are asking you to be kind to share the installation with your teammates if they are unable to download so big file.
+We are asking you to be kind to share the installation with your teammates if they are unable to download such a big file.
 
 === Install ===
 
@@ -21,5 +21,5 @@ We are asking you to be kind to share the installation with your teammates if th
   **cd C:\Qt\4.5.0*
   **configure -qt-zlib*
   # Type 'y' then prompted ( if you agree with the licence of course)
-  # Configure starts building an environment. Please wait, it can take a while( Depends of your system's calculation power :) )
+  # Configure starts building an environment. Please wait, it can take a while( Depends on your system's computational power :) )
   # Type 'nmake'. It will take a while once more
