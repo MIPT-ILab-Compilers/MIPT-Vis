@@ -14,5 +14,8 @@ int main(int argc, char **argv)
     if ( !uTestGraphXML())
 		return -1;
 
+	if ( !uTestGUI( argc, argv))
+		return -1;
+
     return 0;	
 }

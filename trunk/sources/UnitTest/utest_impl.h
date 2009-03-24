@@ -14,5 +14,6 @@
  */
 bool uTestGraph();
 bool uTestGraphXML();
+bool uTestGUI( int argc, char * argv[]);
 
 #endif
