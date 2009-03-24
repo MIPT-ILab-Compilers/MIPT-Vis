@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="UnitTest"
 	ProjectGUID="{A93B99CA-DC51-4B2F-803E-849B4B065CE3}"
 	RootNamespace="UnitTest"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;$(SolutionDir)libxml\lib\libxml2.lib&quot;"
+				AdditionalDependencies="&quot;QtCore4.lib&quot; &quot;QtGui4.lib&quot; &quot;$(SolutionDir)libxml\lib\libxml2.lib&quot;"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				LinkIncremental="2"
 				IgnoreAllDefaultLibraries="false"
@@ -139,7 +139,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;$(SolutionDir)libxml\lib\libxml2.lib&quot;"
+				AdditionalDependencies="&quot;QtCore4.lib&quot; &quot;QtGui4.lib&quot; &quot;$(SolutionDir)libxml\lib\libxml2.lib&quot;"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"

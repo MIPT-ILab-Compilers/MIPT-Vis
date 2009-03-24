@@ -8,6 +8,8 @@
 #include <vector>
 #include "direct.h"
 #include <string.h>
+#include <QtGui/QApplication>
+#include <QtGui/QLabel>
 
 using namespace std;
 
@@ -235,5 +237,14 @@ bool uTestGraphXML()
 
 	delete graph;
 	
+	return true;
+}
+
+bool uTestGUI( int argc, char * argv[])
+{
+	QApplication app( argc, argv);
+	QLabel *label = new QLabel("Qt works!");
+	label->show();
+	app.exec();
 	return true;
 }
