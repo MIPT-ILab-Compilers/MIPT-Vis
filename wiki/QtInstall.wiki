@@ -12,7 +12,7 @@ We are asking you to be kind to share the installation with your teammates if th
 
   # Run the installation.
   # Choose C:\Qt\4.5.0 as the install directory ( otherwise you will have to change include directories and paths to used object files in the mipt-vis project)
-  # DO NOT check "Download and install minimal MiniGW installation"
+  # Do check "Download and install minimal MiniGW installation"! Otherwise you will be unable to build Qt libraries.
   # After installation finishes go to *start->control panel->system->advanced->environment variables->system variables* and add to the 'path' variable at the end
 *;C:\Qt\4.5.0\bin*
 === Build ===
