@@ -8,8 +8,7 @@
 #include <vector>
 #include "direct.h"
 #include <string.h>
-#include <QtGui/QApplication>
-#include <QtGui/QLabel>
+
 
 using namespace std;
 
@@ -223,28 +222,24 @@ bool uTestGraph()
 }
 
 
-bool uTestGraphXML()
+bool uTestChain( int argc, char * argv[])
 {
-	char * file = _getcwd( NULL, 1024);
+	/** Test xml reading */
+    char * file = _getcwd( NULL, 1024);
 	strcat_s( file, 1024,"/test_graph.xml");
 	Graph * graph = new Graph( file);
 	if ( graph == NULL) return false;
 	graph->debugPrint();
 
+	/** Test GUI */
+	showGraph( argc, argv, graph);
+
+	/** Test writing to xml */
 	file = _getcwd( NULL, 1024);
 	strcat_s( file, 1024,"/test_out.xml");
 	graph->writeToXML( file);
 
 	delete graph;
 	
-	return true;
-}
-
-bool uTestGUI( int argc, char * argv[])
-{
-	QApplication app( argc, argv);
-	QLabel *label = new QLabel("Qt works!");
-	label->show();
-	app.exec();
 	return true;
 }
