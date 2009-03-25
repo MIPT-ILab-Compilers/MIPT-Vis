@@ -11,10 +11,7 @@ int main(int argc, char **argv)
     if ( !uTestGraph())
         return -1;
 
-    if ( !uTestGraphXML())
-		return -1;
-
-	if ( !uTestGUI( argc, argv))
+    if ( !uTestChain( argc, argv))
 		return -1;
 
     return 0;	
