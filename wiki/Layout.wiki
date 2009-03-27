@@ -1,4 +1,5 @@
 #summary Layout module overview.
+#labels Phase-Design
 
 = Layout Project =
 
@@ -13,6 +14,17 @@ Layout tries to achieve several goals:
 
 = Core algorithm =
 The implementation is based on the idea of laying directed acyclic graph. The placement of nodes employs the assumption that graph has general direction of edges. The nodes are vertically arranged according to their rank which is essentially some reflection of distance from entry node. This ensures that graph has general direction of edges from top to bottom ( goal 1). Every edge now has corresponding rank interval ( rank( succ) - rank( pred) ). Dummy nodes are inserted for edges with rank interval greater than 1.
-To minimize edge crossings we try to minimize edge crossings between ranks. To do this we employ barycentric/median heuristic. As crossings number depends solely on relative positions of nodes in two adjacent ranks barycentric/median method arranges nodes according to _average = sum of preds positions / number of preds_ ( barycentric) or _median position among predecessors_ ( median heuristic).
+To minimize edge crossings we try to minimize edge crossings between ranks. To do this we employ barycentric/median heuristic. As crossings number depends solely on relative positions of nodes in two adjacent ranks barycentric/median method arranges nodes according to _average = sum of preds positions / number of preds_ ( barycentric) or _median position among predecessors_ ( median heuristic). After relative positions are defined the absolute coordinates are calculated by series of passes up and down the ranks. The final step and an optional step is edge drawing.
+
+=== Making Graph Acyclic ===
+
+=== Ranking ===
+
+=== Intra-rank ordering ===
+
+=== Coordinates calculation ===
+
+=== Edge routing ===
+
 
 *NOT FINISHED*
