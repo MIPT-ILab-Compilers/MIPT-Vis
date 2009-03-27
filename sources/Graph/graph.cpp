@@ -252,7 +252,6 @@ readEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
  *  Init graph edges
  */
 void
-
 Graph::readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 {
 	xmlNode * cur_node;
@@ -417,6 +416,7 @@ Graph::writeEdgesByXMLWriter( xmlTextWriterPtr writer)
 	Edge * edge;
 	for ( edge = firstEdge(); !endOfEdges(); edge = nextEdge())
 	{
+		edge->writeByXMLWriter( writer);
 	}
 }
 
@@ -435,12 +435,16 @@ Graph::writeToXML( const char *filename)
     
     xmlTextWriterStartDocument( writer, NULL, NULL, NULL);
 	xmlTextWriterStartElement( writer, BAD_CAST "graph");
+	xmlTextWriterWriteString( writer, BAD_CAST "\n");
 
 	xmlTextWriterWriteAttribute( writer, BAD_CAST "name", BAD_CAST name());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "default_node_size", "%d", defaultNodeSize());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "default_node_size",
+		                               "%d", defaultNodeSize());
 
 	writeNodesByXMLWriter( writer);
     writeEdgesByXMLWriter( writer);
+
+	xmlTextWriterEndElement( writer);
 
 	xmlTextWriterEndDocument( writer);
 }
