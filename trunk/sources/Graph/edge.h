@@ -67,6 +67,10 @@ public:
     {
         return points[ n];
     }
+    inline int pointsNum() const
+    {
+		return ((int)points.size() - 1);
+    }
     /** Data writing routines */
     inline void setUserId( int i)
     {
@@ -119,8 +123,10 @@ class Edge: public Marked, public Numbered, public EdgeProperties
 
     Graph * graph; //Graph
     EdgeListItem graph_it; //Position in Graph's list of edges
-	
 
+	void writeByXMLWriter( xmlTextWriterPtr writer);
+	void writePointsByXMLWriter( xmlTextWriterPtr writer);
+	
     /** Nodes */
     Node *nodes[ GRAPH_DIRS_NUM]; //Adjacent nodes
     EdgeListItem n_it[ GRAPH_DIRS_NUM];//Position in each node's list

@@ -76,5 +76,18 @@ Node::debugPrint()
 void
 Node::writeByXMLWriter( xmlTextWriterPtr writer)
 {
-	xmlTextWriterWriteElement( writer, BAD_CAST "label", BAD_CAST label());
+	xmlTextWriterWriteString( writer, BAD_CAST "\t");
+	xmlTextWriterStartElement( writer, BAD_CAST "node");
+
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "id", "%d", id());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "x", "%d", x());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "y", "%d", y());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "width", "%d", width());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "height", "%d", height());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST shape());
+	
+	xmlTextWriterEndElement( writer);
+    xmlTextWriterWriteString( writer, BAD_CAST "\n");
 }
