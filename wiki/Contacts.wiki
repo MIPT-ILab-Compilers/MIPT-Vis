@@ -1,14 +1,36 @@
-#summary All contact information about the project
+#summary Describes different ways of communication in team
 
-= Introduction =
-This page contains ref to the list of contacts of our project
+= Contact list =
 
-= Filling in form =
-At first you must fill in the form
+All contacts of team members are listed [http://spreadsheets.google.com/ccc?key=pDFNkCgIEPVqfezkLoL-8Xw&hl=ru here]
+There are:
+ * Name, surname
+ * E-mail(Gtalk account)
+ * Skype
+ * Jabber
+ * Other contacts
 
-http://spreadsheets.google.com/viewform?key=pDFNkCgIEPVqfezkLoL-8Xw&hl=en
+= Using Jabber =
 
-After this you will be added to the list of viewers.
+There are many Jabber clients: Psy, Miranda, Gajim, Kopete... You can choose any of them, but there will be described using of Gajim because it is available on many platforms and has very simple interface.
 
-= To search contacts =
-will be posted later
+== Installing Gajim ==
+
+ # First, [http://gajim.org/downloads.php download] disribution for you system and install it.
+ # When insallation finishes you will be asked for you jabber account.
+  * If you have not such account, click on *I want to register for a new account*. Then select jabber server (for MIPT students it is convinient to have an account on local *talk.mipt.ru* server). Type your desirable username and password and if there is no conflicts with this username your account will be created.
+  * If you already have a jabber account just select *I already have an account I want to use*. Then type your username, server and password.
+
+== Using conferences ==
+
+Go to *Actions->Join Group Chat...->Join new group chat*.
+Type here:
+ * Your nickname(any)
+ * Room: mipt-vis@conference.jabber.mipt.ru
+ * Password: intel
+ * Check *Join this room automatically when I connect*
+You will be prompted that bookmark has been added successfully. To start a group chat click on it in your roster window. You can manage other options for group chat trough the settings button in chat window and in the bookmark section of the actions menu.
+
+== Other features ==
+
+If you want to stay connected with contacts in other IM systems you can use ICQ/Mail.ru/XMPP transport. Also with all jabber clients you can connect to you Gmail(Gtalk) account.
