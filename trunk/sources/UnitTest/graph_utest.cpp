@@ -226,20 +226,23 @@ bool uTestChain( int argc, char * argv[])
 {
 	/** Test xml reading */
     char * file = _getcwd( NULL, 1024);
-	strcat_s( file, 1024,"/test_graph.xml");
-	Graph * graph = new Graph( file);
-	if ( graph == NULL) return false;
-	graph->debugPrint();
+    strcat_s( file, 1024,"/test_graph.xml");
+    Graph * graph = new Graph( file);
+    if ( graph == NULL) return false;
+    graph->debugPrint();
 
 	/** Test GUI */
-	showGraph( argc, argv, graph);
+    showGraph( argc, argv, graph);
 
-	/** Test writing to xml */
-	file = _getcwd( NULL, 1024);
-	strcat_s( file, 1024,"/test_out.xml");
-	graph->writeToXML( file);
+    /** Test Scene with rectangles */
+    showScene( argc, argv, graph);
 
-	delete graph;
+    /** Test writing to xml */
+    file = _getcwd( NULL, 1024);
+    strcat_s( file, 1024,"/test_out.xml");
+    graph->writeToXML( file);
+
+    delete graph;
 	
-	return true;
+    return true;
 }
