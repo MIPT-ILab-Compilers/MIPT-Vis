@@ -3,8 +3,8 @@
  * an internal representation of graphs in MiptVis tool.
  * Copyright (C) 2009  Lev Rumyantsev, Ivan Mashintsev
  */
-#ifndef LAYOUT_IFACE_H
-#define LAYOUT_IFACE_H
+#ifndef GUI_IFACE_H
+#define GUI_IFACE_H
 
 #include "predecls.h"
 
