@@ -3,7 +3,7 @@
  * Copyright (C) 2009  Ivan Mashintsev
  */
 #include "gui_impl.h"
-#include <QtGui/QtGui>
+
 
 /**
  * Constructor for class Text. Create element of the class

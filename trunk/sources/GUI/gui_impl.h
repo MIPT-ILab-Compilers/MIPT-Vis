@@ -8,9 +8,11 @@
 /**
  * GUI implementation
  */
+#include <QtGui/QtGui>
 #include "gui_iface.h"
 #include "scene.h"
 #include "text_item.h"
 #include "rectangle.h"
+#include <QtGui/QApplication>
 
 #endif

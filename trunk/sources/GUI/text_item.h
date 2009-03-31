@@ -2,8 +2,8 @@
  * File: GUI/text_item.h - Implementational header for text item of GUI in MiptVis tool.
  * Copyright (C) 2009  Ivan Mashintsev
  */
-#ifndef TEXTITEM_H
-#define TEXTITEM_H
+#ifndef TEXT_ITEM_H
+#define TEXT_ITEM_H
 #include <QtGui/QGraphicsTextItem>
 
 /**

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="GUI"
 	ProjectGUID="{759BD0F4-2B39-4F27-91E0-8C988CC89734}"
 	RootNamespace="GUI"
@@ -142,6 +142,18 @@
 			Name="Generated files"
 			>
 			<File
+				RelativePath=".\tmp\moc\release_shared\moc_rectangle.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\tmp\moc\debug_shared\moc_rectangle.cpp"
 				>
 				<FileConfiguration
@@ -165,10 +177,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\tmp\moc\release_shared\moc_rectangle.cpp"
+				RelativePath=".\tmp\moc\debug_shared\moc_scene.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -199,103 +211,99 @@
 					/>
 				</FileConfiguration>
 			</File>
+		</Filter>
+		<Filter
+			Name="Interface"
+			>
 			<File
-				RelativePath=".\tmp\moc\debug_shared\moc_scene.cpp"
+				RelativePath=".\gui_iface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\gui_impl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\predecls.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Source Files"
+			>
+			<File
+				RelativePath=".\gui.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rectangle.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\rectangle.h"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
+					Name="Debug|Win32"
 					>
 					<Tool
-						Name="VCCLCompilerTool"
+						Name="VCCustomBuildTool"
+						Description="MOC rectangle.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 rectangle.h -o tmp\moc\debug_shared\moc_rectangle.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="moc.exe;rectangle.h"
+						Outputs="tmp\moc\debug_shared\moc_rectangle.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC rectangle.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 rectangle.h -o tmp\moc\release_shared\moc_rectangle.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="moc.exe;rectangle.h"
+						Outputs="tmp\moc\release_shared\moc_rectangle.cpp"
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\scene.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\scene.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC scene.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 scene.h -o tmp\moc\debug_shared\moc_scene.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="moc.exe;scene.h"
+						Outputs="tmp\moc\debug_shared\moc_scene.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC scene.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 scene.h -o tmp\moc\release_shared\moc_scene.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="moc.exe;scene.h"
+						Outputs="tmp\moc\release_shared\moc_scene.cpp"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\text_item.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\text_item.h"
+				>
+			</File>
 		</Filter>
-		<File
-			RelativePath=".\gui.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\gui_iface.h"
-			>
-		</File>
-		<File
-			RelativePath=".\gui_impl.h"
-			>
-		</File>
-		<File
-			RelativePath=".\predecls.h"
-			>
-		</File>
-		<File
-			RelativePath=".\rectangle.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\rectangle.h"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="MOC rectangle.h"
-					CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 rectangle.h -o tmp\moc\debug_shared\moc_rectangle.cpp&#x0D;&#x0A;"
-					AdditionalDependencies="moc.exe;rectangle.h"
-					Outputs="tmp\moc\debug_shared\moc_rectangle.cpp"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="MOC rectangle.h"
-					CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 rectangle.h -o tmp\moc\release_shared\moc_rectangle.cpp&#x0D;&#x0A;"
-					AdditionalDependencies="moc.exe;rectangle.h"
-					Outputs="tmp\moc\release_shared\moc_rectangle.cpp"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\scene.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\scene.h"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="MOC scene.h"
-					CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 scene.h -o tmp\moc\debug_shared\moc_scene.cpp&#x0D;&#x0A;"
-					AdditionalDependencies="moc.exe;scene.h"
-					Outputs="tmp\moc\debug_shared\moc_scene.cpp"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-					Description="MOC scene.h"
-					CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 scene.h -o tmp\moc\release_shared\moc_scene.cpp&#x0D;&#x0A;"
-					AdditionalDependencies="moc.exe;scene.h"
-					Outputs="tmp\moc\release_shared\moc_scene.cpp"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath=".\text_item.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\text_item.h"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
