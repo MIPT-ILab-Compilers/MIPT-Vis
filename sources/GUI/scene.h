@@ -6,7 +6,6 @@
 #define SCENE_H
 #include <QtGui/QGraphicsScene>
 
-
 /**
  * Class Scene
  */

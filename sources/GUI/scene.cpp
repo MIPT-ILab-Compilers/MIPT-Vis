@@ -3,7 +3,7 @@
  * Copyright (C) 2009  Ivan Mashintsev
  */
 #include "gui_impl.h"
-#include <QtGui/QtGui>
+
 
 /**
  * Create rectengle with editable text after double click mouse

@@ -3,8 +3,7 @@
  * Copyright (C) 2009  Lev Rumyantsev, Ivan Mashintsev
  */
 #include "gui_impl.h"
-#include <QtGui/QApplication>
-#include <QtGui/QtGui>
+
 
 /**
  * Test function for Qt. It create a window with text "Qt works!"
