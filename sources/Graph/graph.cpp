@@ -114,6 +114,7 @@ dfsVisitRec( Node* node,
              Numeration n,
              GraphNum* number)
 {
+    /** Attach the element to the list with already visited elements*/
     NodeListItem* new_item = new NodeListItem( item, LIST_DIR_RDEFAULT, node);
     Edge *e;
 
@@ -122,18 +123,19 @@ dfsVisitRec( Node* node,
     node->setNumber( n, *number);
     *number = (*number) + 1;
 
-    /** Visit Succs */
+    /** Visit Succs skipping already visited */
     for ( e = node->firstSucc(); !node->endOfSuccs(); e = node->nextSucc())
     {
         Node* succ = e->succ();
         if ( !succ->isMarked( m))
         {
+            /** Continue DFS recursively with the successor */
             new_item = dfsVisitRec( succ, new_item, m, n, number);
         }
     }
     return new_item;
 }
-
+           
 /**
  * Implementation of depth-first search. Starts from nodes without predecessors.
  */
@@ -142,18 +144,35 @@ NodeListItem* Graph::DFS( Numeration num)
     Node *n;
     GraphNum number = 0;
     NodeListItem *item = NULL;
+    /** Create a marker to distinguish visited nodes from unvisited ones */
     Marker m = newMarker();
 
-    /** Visit nodes */
+    /** 
+     * Visit all nodes and call dfsVisitRec for each node that doesn't have predecessors.
+     * The other nodes are skipped here, but they will be visited in dfsVisitRec.
+     * If the graph is connected, we'll call dfsVisitRec only once - for the start node.
+     */
     for (  n = firstNode(); !endOfNodes(); n = nextNode())
     {
+        /** 
+         * If firstPred is Null, then the node n has no predecessors, =>
+         * we should start DFS from this node.
+         */
         if( isNullP( n->firstPred()))
         {
             graphassert( !n->isMarked( m));
+            /** 
+             * Start DFS from node n, using marker m and numeration num.
+             * item is a list that at the end will contain all nodes in DF order.
+             * number is the number of the last visited node.
+             */
             item = dfsVisitRec( n, item, m, num, &number);
         }
     }   
-    
+    /** 
+     * TODO: introduce assert(all nodes have been visited) 
+     */
+
     freeMarker( m);
 
     return item;
