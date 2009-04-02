@@ -138,6 +138,14 @@ public:
         }
         return false;
     }
+        
+    /**
+     * Clears value for given index
+     */
+    inline void clear( NumIndex i)
+    {
+           nums[ i] = NUM_VAL_CLEAN;
+    }
 };
 
 
@@ -202,6 +210,11 @@ class NumManager
     }
 
     /**
+     * MUST BE implemented in inhereted class 
+     */
+    virtual void clearNumerationsInObjects() = 0;
+
+    /**
      * Return next free value
      */
     inline NumValue findNextFreeValue()
@@ -221,13 +234,25 @@ class NumManager
             {
                 assert< NumErrorType> ( !reached_limit, 
                                            NUM_ERROR_OUT_OF_VALUES);
+                clearNumerationsInObjects();
                 reached_limit = true;            
             }
             res = nextValue();
         }
         return res;
     }
-
+protected:
+    /**
+     * Clears unused markers in given object
+     */
+    inline void clearUnusedNumerations( Numbered *n_obj)
+    {
+        for ( NumIndex i = 0; i < MAX_NUMERATIONS; i++)
+        {
+            if ( !is_used [ i])
+                n_obj->clear( i);
+        }
+    }
 public:
 
     /**
