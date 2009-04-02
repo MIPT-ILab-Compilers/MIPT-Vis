@@ -467,10 +467,48 @@ Graph::writeToXML( const char *filename)
 
 	xmlTextWriterEndDocument( writer);
 }
-
+/**
+ * Implementation for numerations cleanup
+ */
+void
+Graph::clearNumerationsInObjects()
+{
+    Node *n;
+    Edge *e;
+    /** Clean markers in nodes */
+    for (  n = firstNode(); !endOfNodes(); n = nextNode())
+    {
+        clearUnusedNumerations( static_cast<Numbered *>(n));
+    }
+    /** Clean markers in edges */
+    for (  e = firstEdge(); !endOfEdges(); e = nextEdge())
+    {
+        clearUnusedNumerations( static_cast<Numbered *>(n));
+    }
+}
 
 /**
- *  Constructor by XML filename
+ * Implementation for markers cleanup
+ */
+void
+Graph::clearMarkersInObjects()
+{
+    Node *n;
+    Edge *e;
+    /** Clean markers in nodes */
+    for (  n = firstNode(); !endOfNodes(); n = nextNode())
+    {
+        clearUnusedMarkers( static_cast<Marked *>(n));
+    }
+    /** Clean markers in edges */
+    for (  e = firstEdge(); !endOfEdges(); e = nextEdge())
+    {
+        clearUnusedMarkers( static_cast<Marked *>(n));
+    }
+}
+
+/**
+ *  Destructor of graph class
  */
 Graph::~Graph()
 {

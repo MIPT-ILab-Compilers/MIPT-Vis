@@ -47,11 +47,23 @@ static bool uTestNodeEdge()
  */
 static bool uTestNumerations()
 {
+    /** 
+     * Every class that can be a numerations manager should implement
+     * the routine for clearing numerations in objects
+     */
+    class NumMgrInst: public NumManager
+    {
+        /** Implementation of clearing - empty TODO: implement and test it */
+        void clearNumerationsInObjects()
+        {
+        
+        }
+    };
     /**
      * Check correct error reporting
      *  1. Too many numerations
      */
-    NumManager mgr1;
+    NumMgrInst mgr1;
     try
     {
         for ( int i = 0; i < MAX_NUMERATIONS + 1; i++)
@@ -65,7 +77,7 @@ static bool uTestNumerations()
     }
 
     /** 2. Too big number */
-    NumManager mgr2;
+    NumMgrInst mgr2;
     Numeration num2 = mgr2.newNum();
     Numbered obj2; 
     try
@@ -79,7 +91,7 @@ static bool uTestNumerations()
     mgr2.freeNum( num2);
 
     /** 3. Functional testing */
-    NumManager mgr;
+    NumMgrInst mgr;
     for ( int i = 0; i < MAX_NUMERATIONS + 2; i++)
     {
         Numeration n = mgr.newNum();

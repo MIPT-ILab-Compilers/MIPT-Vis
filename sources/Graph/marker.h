@@ -102,6 +102,13 @@ public:
         }
         return false;
     }
+    /**
+     * Clears value for given index
+     */
+    inline void clear( MarkerIndex i)
+    {
+           markers[ i] = GRAPH_MARKER_CLEAN;
+    }
 };
 
 
@@ -152,6 +159,11 @@ class MarkerManager
     }
  
     /**
+     * MUST BE implemented in inhereted class 
+     */
+    virtual void clearMarkersInObjects() = 0;
+
+    /**
      * Check if this value is busy
      */
     inline bool isValueBusy( MarkerValue val)
@@ -184,13 +196,25 @@ class MarkerManager
             {
                 assert< MarkerErrorType> ( !reached_limit, 
                                            M_ERROR_OUT_OF_VALUES);
+                clearMarkersInObjects();
                 reached_limit = true;            
             }
             res = nextValue();
         }
         return res;
     }
-
+protected:
+    /**
+     * Clears unused markers in given object
+     */
+    inline void clearUnusedMarkers( Marked *m_obj)
+    {
+        for ( MarkerIndex i = 0; i < MAX_GRAPH_MARKERS; i++)
+        {
+            if ( !is_used [ i])
+                m_obj->clear( i);
+        }
+    }
 public:
 
     /**

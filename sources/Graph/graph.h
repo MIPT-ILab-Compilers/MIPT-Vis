@@ -243,6 +243,16 @@ public:
      * Obtain list of nodes in depth-first search order
      */
     NodeListItem* DFS( Numeration n); 
+
+    /**
+     * Clear unused markers from marked objects
+     */
+    void clearMarkersInObjects();
+
+    /**
+     * Clear unused numerations from numbered objects
+     */
+    void clearNumerationsInObjects();
 };
 
 #endif
