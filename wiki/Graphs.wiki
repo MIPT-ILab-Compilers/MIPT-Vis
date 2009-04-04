@@ -1,0 +1,28 @@
+#summary Some information about graphs, searches, dominators
+
+= Graphs =
+
+== Basic definitions and types ==
+ 
+=== Graph ===
+*A graph* is an ordered pair *G: = ( V,E)* comprising a set V of *vertices* ( or *nodes*, or *points*) together with a set E of *edges* ( or *lines*), which are 2-element subsets of V.
+The nodes x,y of G are *adjacent*, or *neighbours*, if xy is an edge of G. Two edges are adjacent, if they have an end in common. If all the verticles of G are pairwise adjacent, then G is *complete*.
+
+=== Subgraph ===
+Let G1 = ( V1,E1) and G2 = ( V2,E2) be two graphs. If E1 contains E2 and V1 contains V2, then G2 is a *subgraph* of G1 ( and G1 is a *supergraph* of G2).
+
+=== Directed graph ===
+*A directed graph* is an ordered pair D: = (V,A) with
+  # V a set whose elements are called vertices or nodes,a nd
+  # A a set of ordered pairs of vertices, called *arcs*, *directed edges*, or *arrows*.
+An arc a = ( x,y) is considered to be directed from x to y; y is called the head and x is called the tail of the arc; y is said to be a *direct successor* of x, and x is said to be a *direct predecessor* of y. If a path leads from x to y, then y is said to be a *successor* of x and reachable from x, and x is said to be a *predecessor* of y. The arc ( y,x) is called the arc ( x,y) *inverted*.
+
+=== Weighted graph ===
+A graph is a *weighted graph* if a number ( weight) is assigned to each edge. Such weights might represent, for example, costs, lengths or capacities, etc. depending on the problem.
+The weight of the graph is sum of the weights given to all edges.
+
+=== Connected graph ===
+A non-empty graph G is called *connected* if any two of its vertices are linked by a path in G. If G is connected, we call a subgraph of G itself connected ( in G).
+The verticles of a connected graph G can always be enumerated.
+
+== This page is not finished! ==
