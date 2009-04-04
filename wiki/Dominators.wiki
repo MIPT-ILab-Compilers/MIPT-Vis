@@ -1,0 +1,32 @@
+=Dominators, postdominators, dominance frontier=
+
+    1) A flowgraph G = (V,A, r) is a directed graph with |V | = n vertices and |A| = m
+arcs such that every vertex is reachable from a distinguished root vertex r 2 V .
+A vertex w *dominates* a vertex v if every path from r to v includes w. Our goal
+is to find for each vertex v in V the set *Dom(v)* of all vertices that dominate v.
+Certain applications require computing the *postdominators* of G, defined as the
+dominators in the graph obtained from G by reversing all arc orientations.
+
+    2) A node _d_ *strictly dominates* a node _n_ if _d_ dominates _n_ and _d_ does not equal _n_.
+
+    3) The *immediate dominator* or idom of a node _n_ is the unique node that strictly dominates _n_ but does not strictly dominate any other node that strictly dominates n.
+
+    4) The *dominance frontier* of a node _n_ is the set of all nodes _w_ such that n dominates a predecessor of _w_, but n does not strictly dominate _w_. 
+{{{
+(DF(S) = sum( x from S) of DF(x)
+}}}
+
+    5) A node _z_ *post-dominates* node _n_ if after going through _n_, you're always going to go through _z_.
+
+    6) A *dominator tree* is a tree where each node's children are those nodes it immediately dominates. Because the immediate dominator is unique, it is a tree. The start node is the top of the tree.
+
+    7) The dominator of the start node is the start node itself. The set of dominators for any other node n is the intersection of the set of dominators for all predecessors p of n. The node n is also in the set of dominators for n.
+
+    8) *Iterated dominance* frontier: 
+{{{
+( DF+(S) = lim( i->iternity) of DFi(S)) where 
+        DF1(S) = DF(S) DFi+1(S) = DF(S logic+ DFi(S))
+}}}
+
+*EXAMPLES:*
+will be here soon
