@@ -1,27 +1,26 @@
 #summary Some info about dominators, postdominators, dominance frontier (DF) and iterated DF
 =Dominators, postdominators, dominance frontier=
 
-    1) A flowgraph G = (V,A, r) is a directed graph with |V | = n vertices and |A| = m
-arcs such that every vertex is reachable from a distinguished root vertex r 2 V .
-A vertex w *dominates* a vertex v if every path from r to v includes w. Our goal
-is to find for each vertex v in V the set *Dom(v)* of all vertices that dominate v.
-Certain applications require computing the *postdominators* of G, defined as the
-dominators in the graph obtained from G by reversing all arc orientations.
+    1) A flowgraph _G = (V, A, r)_ is a directed graph with |_V_| = n vertices and |_A_| = m edges such that every vertex is reachable from a distinguished root vertex _r_ from _V_ .
+A vertex _w_ *dominates* a vertex _v_ if every path from _r_ to _v_ includes _w_. Our goal
+is to find the set *Dom(v)* of all vertices that dominate _v_ for each vertex _v_ from _V_.
+Certain applications require computing of the *postdominators* for _G_, defined as the
+dominators in the graph obtained from _G_ by reversing the orientation of each edge.
 
     2) A node _d_ *strictly dominates* a node _n_ if _d_ dominates _n_ and _d_ does not equal _n_.
 
-    3) The *immediate dominator* or idom of a node _n_ is the unique node that strictly dominates _n_ but does not strictly dominate any other node that strictly dominates n.
+    3) The *immediate dominator* or idom of a node _n_ is the unique node that strictly dominates _n_ but does not strictly dominate any other node that strictly dominates _n_.
 
-    4) The *dominance frontier* of a node _n_ is the set of all nodes _w_ such that n dominates a predecessor of _w_, but n does not strictly dominate _w_. 
+    4) The *dominance frontier* of a node _n_ is the set of all nodes _w_ such that _n_ dominates a predecessor of _w_, but _n_ does not strictly dominate _w_. 
 {{{
 (DF(S) = sum( x from S) of DF(x)
 }}}
 
     5) A node _z_ *post-dominates* node _n_ if after going through _n_, you're always going to go through _z_.
 
-    6) A *dominator tree* is a tree where each node's children are those nodes it immediately dominates. Because the immediate dominator is unique, it is a tree. The start node is the top of the tree.
+    6) A *dominator tree* is a tree in which each node's children are those nodes that it immediately dominates. As the immediate dominator is unique, it is a tree. The start node is the top of the tree.
 
-    7) The dominator of the start node is the start node itself. The set of dominators for any other node n is the intersection of the set of dominators for all predecessors p of n. The node n is also in the set of dominators for n.
+    7) The dominator of the start node is the start node itself. The set of dominators for any other node _n_ is the intersection of the set of dominators for all predecessors _p_ of _n_. The node _n_ is also in the set of dominators for _n_.
 
     8) *Iterated dominance* frontier: 
 {{{
