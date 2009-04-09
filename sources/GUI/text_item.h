@@ -6,15 +6,32 @@
 #define TEXT_ITEM_H
 #include <QtGui/QGraphicsTextItem>
 
+class Line;
 /**
  * Class Text. Text item is assosiated with node and is able to edit
  */
 class Text:public QGraphicsTextItem
 {
+private:
+    QList<Line *> lines;
+    QPolygonF myPolygon;
 public:
-    Text( QGraphicsItem * parent = 0);
+    Text( QGraphicsItem * parent = 0, QGraphicsScene *scene = 0);
+    inline QPolygonF polygon() const
+    {
+        return myPolygon;
+    };
+    void removeLine(Line *line);
+    void removeLines();
+    void addLine(Line *line);
+    QRectF boundingRect() const;
 protected:
-    void focusInEvent( QFocusEvent * event);
-    void focusOutEvent ( QFocusEvent * event );
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    void focusInEvent ( QFocusEvent * event);
+    void focusOutEvent ( QFocusEvent * event);
+    void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
+    void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent *event);
 };
 #endif

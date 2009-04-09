@@ -13,6 +13,9 @@
 #include "scene.h"
 #include "text_item.h"
 #include "rectangle.h"
+#include <math.h>
+#include "line.h"
 #include <QtGui/QApplication>
+#include <QtCore/QLineF>
 
 #endif
