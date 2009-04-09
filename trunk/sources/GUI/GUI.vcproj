@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="GUI"
 	ProjectGUID="{759BD0F4-2B39-4F27-91E0-8C988CC89734}"
 	RootNamespace="GUI"
@@ -211,6 +211,41 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\tmp\moc\release_shared\moc_text_item.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\tmp\moc\debug_shared\moc_text_item.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<Filter
 			Name="Interface"
@@ -234,6 +269,36 @@
 			<File
 				RelativePath=".\gui.cpp"
 				>
+			</File>
+			<File
+				RelativePath=".\line.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\line.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies=""
+						Outputs=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description=""
+						CommandLine=""
+						AdditionalDependencies=""
+						Outputs=""
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\rectangle.cpp"
@@ -302,6 +367,28 @@
 			<File
 				RelativePath=".\text_item.h"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC text_item.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 text_item.h -o tmp\moc\debug_shared\moc_text_item.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="moc.exe;text_item.h"
+						Outputs="tmp\moc\debug_shared\moc_text_item.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC text_item.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 text_item.h -o tmp\moc\release_shared\moc_text_item.cpp&#x0D;&#x0A;"
+						AdditionalDependencies="moc.exe;text_item.h"
+						Outputs="tmp\moc\release_shared\moc_text_item.cpp"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>

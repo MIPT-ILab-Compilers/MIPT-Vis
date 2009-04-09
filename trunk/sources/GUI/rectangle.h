@@ -6,12 +6,24 @@
 #define RECTANGLE_H
 #include <QtGui/QGraphicsRectItem>
 
+class Line;
 /**
  * Class Rectangle. Node is movable. Double click create new node
  */
-class Rectangle:public QGraphicsRectItem
+class Rectangle:public Text
 {
+private:
+    QList<Line *> lines;
+    QPolygonF myPolygon;
 public:
-    Rectangle( QGraphicsItem * parent = 0);
+    Rectangle( QGraphicsItem * parent = 0, QGraphicsScene *scene = 0);
+    void removeLine(Line *line);
+    void removeLines();
+    void addLine(Line *line);
+protected:
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent *event);
+    void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
+    void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
 };
 #endif
