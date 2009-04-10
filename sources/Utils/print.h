@@ -19,7 +19,7 @@ namespace PrintUtils
         va_start( args, format);
         vfprintf( stdout, format, args);
         va_end( args);
-        fprintf( stderr, "\n");
+        fprintf( stdout, "\n");
     }
     /** Print to console's STDERR */
     inline void err( const char* format, ...)

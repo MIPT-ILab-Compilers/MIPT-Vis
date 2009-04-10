@@ -55,7 +55,7 @@ Graph::newNode()
     graphassert( edge_next_id < GRAPH_MAX_NODE_NUM);
     Node *node_p = ( Node *) createNode();
     NodeListItem* it = node_p->getGraphIt();
-    it->Attach( nodes);
+    it->attach( nodes);
     nodes = it;
     node_num++;
     return node_p;
@@ -74,7 +74,7 @@ Graph::newEdge( Node * pred, Node * succ)
     graphassert( edge_next_id < GRAPH_MAX_NODE_NUM);
     Edge *edge_p = ( Edge *) createEdge( pred, succ);
     EdgeListItem* it = edge_p->getGraphIt();
-    it->Attach( edges);
+    it->attach( edges);
     edges = it;
     edge_num++;
     return edge_p;

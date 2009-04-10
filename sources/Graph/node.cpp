@@ -39,7 +39,7 @@ Node::addEdgeInDir( Edge *edge, GraphDir dir)
 {
     graphassert( isNotNullP( edge));
     EdgeListItem *it = edge->getNodeIt( revDir( dir));
-    it->Attach( edges[ dir]);
+    it->attach( edges[ dir]);
     edges[ dir] = it;
 }
 
@@ -58,7 +58,7 @@ Node::deleteEdgeInDir( GraphDir dir, EdgeListItem* it)
     {
         e_it[ dir] = it->next();
     }
-    it->Detach();
+    it->detach();
 }
 
 /**
