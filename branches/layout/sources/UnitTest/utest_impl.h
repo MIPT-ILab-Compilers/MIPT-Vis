@@ -16,4 +16,9 @@
 bool uTestGraph();
 bool uTestChain( int argc, char * argv[]);
 
+/**
+ * Utils library unit testing
+ */
+bool uTestList();
+
 #endif

@@ -62,8 +62,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="&quot;QtCore4.lib&quot; &quot;QtGui4.lib&quot; &quot;$(SolutionDir)libxml\lib\libxml2.lib&quot;"
+				ShowProgress="0"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				LinkIncremental="2"
+				GenerateManifest="true"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
@@ -75,6 +77,8 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
+				UseFAT32Workaround="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -188,6 +192,10 @@
 		</File>
 		<File
 			RelativePath=".\utest_impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\utils_utest.cpp"
 			>
 		</File>
 	</Files>

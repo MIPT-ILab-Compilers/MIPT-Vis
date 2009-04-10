@@ -151,6 +151,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\graph_internal.h"
+			>
+		</File>
+		<File
 			RelativePath=".\layout_iface.h"
 			>
 		</File>

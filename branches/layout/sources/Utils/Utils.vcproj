@@ -155,6 +155,10 @@
 			RelativePath=".\utils_iface.h"
 			>
 		</File>
+		<File
+			RelativePath=".\utils_impl.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
