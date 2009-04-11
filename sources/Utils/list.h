@@ -384,7 +384,6 @@ public:
         while( l_head != NULL)
         {
             deleteItem( l_head);
-            l_head = l_head->next();
         }
     }
 };
