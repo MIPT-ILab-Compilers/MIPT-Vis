@@ -24,10 +24,10 @@ bool showScene( int argc, char * argv[], Graph * graph)
 {
     QApplication app2( argc, argv);
     Scene * scene = new Scene();
-    scene->setSceneRect( QRectF( 0, 0, 1000, 1000));
+    scene->setSceneRect( QRectF( 0, 0, 550, 500));
     QGraphicsView * view = new QGraphicsView( scene);
     view->setWindowTitle
-        ( "Double click on a free space to create a node. And one click on a text of the node to edit it");
+        ( "Double click on a free space to create a node. And double click on a text to edit it");
     view->show();
     app2.exec();
     return true;
