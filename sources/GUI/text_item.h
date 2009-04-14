@@ -7,31 +7,42 @@
 #include <QtGui/QGraphicsTextItem>
 
 class Line;
+
 /**
- * Class Text. Text item is assosiated with node and is able to edit
+ * Class Text. Class Text represents the node of the graph
  */
 class Text:public QGraphicsTextItem
 {
 private:
     QList<Line *> lines;
     QPolygonF myPolygon;
+    QColor myColor;
+    qreal myAdjust;
 public:
-    Text( QGraphicsItem * parent = 0, QGraphicsScene *scene = 0);
+    Text( QString * text = 0, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
     inline QPolygonF polygon() const
     {
         return myPolygon;
     };
-    void removeLine(Line *line);
+    inline void setMyColor( QColor color)
+    {
+        myColor = color;
+    };
+    inline void setMyAdjust( qreal adjust)
+    {
+        myAdjust = adjust;
+    };
+    void removeLine( Line * line);
     void removeLines();
-    void addLine(Line *line);
+    void addLine( Line * line);
     QRectF boundingRect() const;
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
+    QVariant itemChange( GraphicsItemChange change, const QVariant &value);
     void focusInEvent ( QFocusEvent * event);
     void focusOutEvent ( QFocusEvent * event);
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
-    void mouseReleaseEvent( QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
 };
 #endif

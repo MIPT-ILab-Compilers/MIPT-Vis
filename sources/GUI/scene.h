@@ -20,10 +20,11 @@ public:
 protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent);
 private:
+    int number;
     mode myMode;
-    QGraphicsLineItem *line;
+    QGraphicsLineItem * line;
 };
 #endif

@@ -6,12 +6,14 @@
 
 
 /**
- * Constructor for class Rectangle. Create node with default properties 
+ * Constructor for class Rectangle. 
  */
-Rectangle::Rectangle( QGraphicsItem * parent, QGraphicsScene *scene):Text( parent, scene)
+Rectangle::Rectangle( QGraphicsItem * parent, QGraphicsScene * scene):Text( new QString(""), parent, scene)
 {
     setPlainText( "");
-    setTextWidth ( 5); //Set width of node
+    setMyColor( Qt::blue);
+    setTextWidth ( 22); //Set width of node
+    setMyAdjust( -5);
     setFlag( QGraphicsItem::ItemIsMovable, true); // Set node can move
     setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
     setTextInteractionFlags( Qt::NoTextInteraction);
@@ -29,14 +31,14 @@ void Rectangle::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 /**
  * 
  */
-void Rectangle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void Rectangle::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
     update();
     QGraphicsTextItem::mouseReleaseEvent( event);
 }
 
 /**
- * Edit text in the node after double click mouse
+ * 
  */
 void Rectangle::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
@@ -44,21 +46,23 @@ void Rectangle::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 }
 
 /**
- * 
+ * Remove line for the rectangle
  */
-void Rectangle::removeLine( Line *line)
+void Rectangle::removeLine( Line * line)
 {
     int index = lines.indexOf( line);
-    if (index != -1)
+    if ( index != -1)
+    {
         lines.removeAt( index);
+    }
 }
 
 /**
- * 
+ * Remove all lines for the rectangle
  */
 void Rectangle::removeLines()
 {
-    foreach (Line *line, lines)
+    foreach ( Line * line, lines)
     {
         line->startItem()->removeLine( line);
         line->endItem()->removeLine( line);
@@ -68,21 +72,21 @@ void Rectangle::removeLines()
 }
 
 /**
- * 
+ * Add line for the rectangle
  */
-void Rectangle::addLine(Line *line)
+void Rectangle::addLine( Line * line)
 {
     lines.append( line);
 }
 
 /**
- * 
+ * If rectangle's position changed this function run
  */
-QVariant Rectangle::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant Rectangle::itemChange( GraphicsItemChange change, const QVariant &value)
 {
-    if(change == QGraphicsItem::ItemPositionChange)
+    if( change == QGraphicsItem::ItemPositionChange)
     {
-        foreach( Line *line, lines)
+        foreach( Line * line, lines)
         {
             line->updatePosition();
         }

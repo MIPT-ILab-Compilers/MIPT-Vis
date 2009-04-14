@@ -6,7 +6,7 @@
 
 
 /**
- * Create rectengle with editable text after double click mouse
+ * Create element after double click mouse.
  */
 void Scene::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
@@ -18,13 +18,13 @@ void Scene::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         {
             myMode = insertRect;
             Rectangle *rect = new Rectangle();
-            Text *endItem = (qgraphicsitem_cast<Line *> (selectedItems().first()))->endItem();
+            Text *endItem = ( qgraphicsitem_cast<Line *> ( selectedItems().first()))->endItem();
             Text *startItem = rect;
             rect->setPos( mouseEvent->scenePos());
             rect->setZValue( 2);
             addItem( rect);
-            (qgraphicsitem_cast<Line *> (selectedItems().first()))->setEndItem( rect);
-            Line *line = new Line( rect, endItem);
+            ( qgraphicsitem_cast<Line *> ( selectedItems().first()))->setEndItem( rect);
+            Line * line = new Line( rect, endItem);
             line->setColor( Qt::red);
             startItem->addLine( line);
             endItem->addLine( line);
@@ -36,9 +36,11 @@ void Scene::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
     }
     else
     {
-        Text * node = new Text();
+        QString text =  QString( "Node %1").arg( number);
+        number++;
+        Text * node = new Text( &text);
         node->setPos( mouseEvent->scenePos());
-        node->setZValue(1);  
+        node->setZValue( 1);  
         addItem( node);
         QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
     }
@@ -49,8 +51,12 @@ void Scene::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
  */
 Scene::Scene( QObject * parent):QGraphicsScene( parent)
 {
+    number = 0;
 }
 
+/**
+ * Create line after right button clicked
+ */
 void Scene::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
     if( mouseEvent->button() & Qt::RightButton)
@@ -63,7 +69,10 @@ void Scene::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
     QGraphicsScene::mousePressEvent( mouseEvent);
 }
 
-void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
+/**
+ * Move line when move mouse.
+ */
+void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent * mouseEvent)
 {
     if ( myMode == insertLine && line != 0)
     {
@@ -76,6 +85,9 @@ void Scene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
 }
 
+/**
+ * Insert line on the scene after release the mouse.
+ */
 void Scene::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
     if ( line != 0 && myMode == insertLine)
