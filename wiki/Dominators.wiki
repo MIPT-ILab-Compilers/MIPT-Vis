@@ -32,6 +32,6 @@ dominators in the graph obtained from _G_ by reversing the orientation of each e
 
 http://bahus.3ka.mipt.ru/gallery/data/private/15.04.09/energy_211510.jpg
 
-http://bahus.3ka.mipt.ru/gallery/data/private/15.04.09/energy_211617.jpg
+http://bahus.3ka.mipt.ru/gallery/data/private/15.04.09/energy_220023.jpg
 
 http://bahus.3ka.mipt.ru/gallery/data/private/15.04.09/energy_211652.jpg
