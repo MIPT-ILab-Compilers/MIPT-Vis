@@ -52,6 +52,7 @@ void Scene::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 Scene::Scene( QObject * parent):QGraphicsScene( parent)
 {
     number = 0;
+	line = NULL;
 }
 
 /**
