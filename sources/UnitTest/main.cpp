@@ -4,13 +4,14 @@
  */
 #include "utest_impl.h"
 
-
 int main(int argc, char **argv)
 {
 	//Test graph package
     if ( !uTestGraph())
         return -1;
 
+	if ( !TestforBFS())
+		return -1;
     if ( !uTestChain( argc, argv))
 		return -1;
 

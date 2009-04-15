@@ -21,6 +21,13 @@ static bool uTestDFS( Graph *graph)
     return true;
 }
 
+static bool uTestBFS( Graph *graph)
+{
+	if ( !graph->BFS())
+        return false;
+	return true;
+}
+
  /**
   * TODO: Check graph's data structures being consistent with node and edge functionality
   */
@@ -167,6 +174,41 @@ static bool uTestMarkers()
     {
         delete n;
     }
+    return true;
+}
+
+
+/**
+ * Test for BFS
+ */
+bool TestforBFS()
+{
+	Graph graph;
+	vector<Node *> nodes;
+	/**
+	 *Create nodes and edges
+	 */
+
+	for ( int i =0; i<20; i++)
+    {
+        nodes.push_back( graph.newNode());
+        if ( i > 0)
+        {
+            graph.newEdge( nodes[ i - 1], nodes[ i]);
+        }
+        if ( i > 1 && i % 2 == 0)
+        {
+            graph.newEdge( nodes[ i - 2], nodes[ i]);
+        }
+    }
+    graph.newEdge( nodes[ 8], nodes[ 4]);
+    delete nodes[ 8];
+    graph.debugPrint();
+
+	printf("\n");
+	if ( !uTestBFS( &graph))
+		return false;
+	printf("\n");
     return true;
 }
 
