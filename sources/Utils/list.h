@@ -170,6 +170,15 @@ template <class Data> class List
     int l_size;
 
 private:
+    /** Function to move element from one list &p1 to another &p2 */
+    inline void moveItem( ListItem<Data> **p1, ListItem<Data> **p2)
+    {
+        (*p1)->setPrev( *p2);
+        (*p2)->setNext( *p1);
+        (*p2) = (*p1);
+        (*p1) = (*p1)->next();
+    }
+
     /** Internal constructor */
     List( ListItem<Data>* p_head, ListItem<Data>* p_tail)
     {
@@ -199,7 +208,7 @@ private:
         // Define internal variables
         ListItem<Data>* first = *first_p;
         ListItem<Data>* last = *last_p;
-        ListItem<Data> *p, *p1, *p2, *last_ext = last->next();
+        ListItem<Data> *p, *p1, *p2, *last_ext = last->next(), *first_ext = first->prev();
         p1 = first;
         p2 = middle;
         // Find first element
@@ -215,47 +224,26 @@ private:
         }
         // Change external pointer to the first element
         *first_p = p;
+        p->setPrev( first_ext);
+        if ( first_ext != NULL) first_ext->setNext( p); 
         // Work with elements from the first list
         while ( p1 != middle)
         {
             // If there are no elements in the second list, attach elements only from the first
-            if ( p2 == last_ext)
-            {
-                p1->setPrev( p);
-                p->setNext( p1);
-                p = p1;
-                p1 = p1->next();
-            }
+            if ( p2 == last_ext) { moveItem( &p1, &p);}
             else
             {
                 // If there are such, compare
-                if ( comp( p1->data(), p2->data()) <= 0)
-                {
-                    p1->setPrev( p);
-                    p->setNext( p1);
-                    p = p1;
-                    p1 = p1->next();
-                }
-                else
-                {
-                    p2->setPrev( p);
-                    p->setNext( p2);
-                    p = p2;
-                    p2 = p2->next();
-                }
+                if ( comp( p1->data(), p2->data()) <= 0) { moveItem( &p1, &p);}
+                else { moveItem( &p2, &p);}
             }
         }
         // Work with elements from the second list
         // If there are such, attach them all
-        while ( p2 != last_ext)
-        {
-            p2->setPrev( p);
-            p->setNext( p2);
-            p = p2;
-            p2 = p2->next();
-        }
+        while ( p2 != last_ext) { moveItem( &p2, &p);}
         // Change external pointer to the last element
         p->setNext( last_ext);
+        if ( last_ext != NULL) last_ext->setPrev( p); 
         *last_p = p;
     };
 
@@ -307,6 +295,28 @@ public:
         if (p == l_tail) l_tail = p->prev();
         delete p;
         l_size--;
+    }
+    
+    /** Check correctness of ListItem pointers and size of the list */
+    inline bool isCorrect()
+    {
+        int s=0;
+        ListItem<Data>* p;
+        p = l_head;
+        while ( p != l_tail->next())
+        {
+            //check previous element
+            if ( p->prev() == NULL){ if ( p != l_head) return false;}
+            else if ( p->prev()->next() != p) return false;
+            //check next element
+            if ( p->next() == NULL){ if ( p != l_tail) return false;}
+            else if ( p->next()->prev() != p) return false;
+            //count elements
+            s++;
+            p = p->next();
+        }
+        if ( s != l_size) return false;
+        return true;
     }
 
     /**
