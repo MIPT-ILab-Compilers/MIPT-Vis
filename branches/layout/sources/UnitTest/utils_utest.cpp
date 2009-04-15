@@ -24,7 +24,7 @@ int CompInt( const void *x, const void *y)
  * Print the integer list to the standart output
  */
 
-void PrintListInt( List<int>* list)
+void printListInt( List<int>* list)
 {
     ListItem<int>* p = list->head();
     while (p != NULL)
@@ -50,22 +50,42 @@ bool uTestList()
     
     // Print test list
     out( "Test list before sorting: ");
-    PrintListInt( &testList);
+    printListInt( &testList);
+    if ( !testList.isCorrect())
+    {
+        out("Pointers test has failed after creation");
+        return false;
+    }
     
     // Delete and add tests
     out( "Delete first element: ");
     testList.deleteItem( testList.head());
-    PrintListInt( &testList);
+    printListInt( &testList);
+    if ( !testList.isCorrect())
+    {
+        out("Pointers test has failed after deleting");
+        return false;
+    }
 
     out( "Add an element to the end: ");
     testList.addItem( new int( rand()%100));
-    PrintListInt( &testList);
+    printListInt( &testList);
+    if ( !testList.isCorrect())
+    {
+        out("Pointers test has failed after adding");
+        return false;
+    }
 
     // Sort test
     testList.sort( CompInt);
     
     out( "After sorting: ");
-    PrintListInt( &testList);
-
+    printListInt( &testList);
+    if ( !testList.isCorrect())
+    {
+        out("Pointers test has failed after sorting");
+        return false;
+    }
+    out("All list tests has passed successfully");
     return true;
 }
