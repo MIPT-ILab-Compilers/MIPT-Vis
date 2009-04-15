@@ -4,6 +4,7 @@
  * Copyright (C) 2009  Boris Shurygin
  */
 #include "graph_impl.h"
+#include <deque>
 
 /**
  *  Initialize
@@ -135,7 +136,50 @@ dfsVisitRec( Node* node,
     }
     return new_item;
 }
-           
+
+/**
+ * Implementation of breadth-first search. Starts from node without predecessors.
+ */
+bool Graph::BFS()
+{
+	deque<Node*> q;    //queue with two ends
+	Node *child;
+	Node *n;
+	Edge *e;
+	/** Create a marker to distinguish visited nodes from unvisited ones */
+    Marker m = newMarker();
+	
+	for (  n = firstNode(); !endOfNodes(); n = nextNode())
+    {
+        /** 
+         * If firstPred is Null, then the node n has no predecessors, =>
+         * we should start DFS from this node.
+         */
+    if( isNullP( n->firstPred()))
+        {
+            graphassert( !n->isMarked( m));
+            /** 
+             * Start DFS from node n, using marker m and numeration num.
+             * item is a list that at the end will contain all nodes in DF order.
+             * number is the number of the last visited node.
+             */
+            q.push_back( n);
+	       while ( !q.empty())
+	       {
+			   n = q.front();
+			   q.pop_front();
+		       for ( e = n->firstSucc(); !n->endOfSuccs(); e = n->nextSucc())
+		       {
+			       child = e->succ();
+			       if ( !child->isMarked( m)) continue;
+			       q.push_back( child);
+			   }
+		   }
+		}
+	}      
+	return true;
+}
+
 /**
  * Implementation of depth-first search. Starts from nodes without predecessors.
  */

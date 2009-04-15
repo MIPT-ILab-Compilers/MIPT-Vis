@@ -243,6 +243,10 @@ public:
      * Obtain list of nodes in depth-first search order
      */
     NodeListItem* DFS( Numeration n); 
+	/**
+     * Obtain list of nodes in breadth-first search order
+     */
+    bool BFS(); 
 
     /**
      * Clear unused markers from marked objects
