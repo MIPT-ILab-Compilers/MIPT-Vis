@@ -1,0 +1,23 @@
+#Some info about edges 
+
+=Egdes in graph=
+
+Consider a directed graph G = (V, E). After a DFS of graph G we can put each edge into one of four classes:
+
+              * A *tree edge* is an edge in a DFS-tree.
+
+              * A *back edge* connects a vertex to an ancestor in a DFS-tree. Note that a self-loop is a back edge.
+
+              * A *forward edge*  is a nontree edge that connects a vertex to a descendent in a DFS-tree.
+
+              * A *cross edge* is any other edge in graph G. It connects vertices in two different DFS-tree or two vertices in the same DFS-tree neither of which is the ancestor of the other.
+
+
+Consider vertex _u_ and vertex _v_ in V(G) after a DFS. Suppose vertex _v_ in some DFS-tree. Then we have d(u) < d(v) < f(v) < f(u) because of the following reasons:
+
+             * Vertex _u_ was discovered before vertex _v_; and
+             * Vertex _v_ was fully explored before vertex _u_ was fully explored.
+
+*Lemma 1*    _An Edge (u, v) is a back edge if and only if d(v) < d(u) < f(u) < f(v)._
+
+*Lemma 2*   _An edge (u, v) is a cross edge if and only if d(v) < f(v) < d(u) < f(v)._
