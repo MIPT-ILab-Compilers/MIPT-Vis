@@ -1,4 +1,4 @@
-#summary Some information about graphs, searches, dominators
+#summary Some information about graphs
 
 = Graphs =
 
@@ -24,5 +24,3 @@ The weight of the graph is sum of the weights given to all edges.
 === Connected graph ===
 A non-empty graph G is called *connected* if any two of its vertices are linked by a path in G. If G is connected, we call a subgraph of G itself connected ( in G).
 The verticles of a connected graph G can always be enumerated.
-
-== This page is not finished! ==
