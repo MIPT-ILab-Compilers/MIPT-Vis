@@ -23,5 +23,3 @@ Consider vertex _u_ and vertex _v_ in V(G) after a DFS. Suppose vertex _v_ in so
 *Lemma 2*   _An edge (u, v) is a cross edge if and only if d(v) < f(v) < d(u) < f(v)._
 
 *EXAMPLES:*
-
-http://bahus.3ka.mipt.ru/gallery/data/private/16.04.09/energy_113647.jpg
