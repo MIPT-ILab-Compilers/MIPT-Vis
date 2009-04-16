@@ -192,6 +192,10 @@ public:
     virtual inline Edge* firstEdge() 
     {
         e_it = edges;
+		if ( e_it == NULL)
+		{
+		    return NULL;
+		}
         return e_it->data();
     }
     /**
@@ -217,6 +221,10 @@ public:
     virtual inline Node* firstNode()
     {
         n_it = nodes;
+		if ( n_it == NULL)
+		{
+		    return NULL;
+		}
         return n_it->data();
     }
     /** 
