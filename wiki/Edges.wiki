@@ -1,4 +1,4 @@
-#Some info about edges 
+#summary Some information about type of edges
 
 =Egdes in graph=
 
