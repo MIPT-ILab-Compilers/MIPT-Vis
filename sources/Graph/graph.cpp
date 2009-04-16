@@ -5,6 +5,7 @@
  */
 #include "graph_impl.h"
 #include <deque>
+#include <stack>
 
 /**
  *  Initialize
@@ -138,6 +139,49 @@ dfsVisitRec( Node* node,
 }
 
 /**
+ * Implementation of depth-first search visit routine with using a stack
+ */
+static inline NodeListItem*
+dfsVisitStack( Node* node,
+             NodeListItem* item,
+             Marker m,
+             Numeration n,
+             GraphNum* number)
+{
+    /** Attach the element to the list with already visited elements*/
+    NodeListItem* new_item = new NodeListItem( item, LIST_DIR_RDEFAULT, node);
+    Edge *e;
+	stack<Node *> st;
+	st.push( node);
+	while ( st.empty())
+	{
+		/** Execute the node from a stack 
+         * If the top of stack isn't the node without predecessors,
+	     * then current node is the last successor of its predecessor
+	     */
+		node = st.top();
+		st.pop();
+        /** Mark node to prevent search from visiting it again */
+        node->mark( m);
+        node->setNumber( n, *number);
+        *number = (*number) + 1;
+
+        /** Visit Succs skipping already visited */
+        for ( e = node->firstSucc(); !node->endOfSuccs(); e = node->nextSucc())
+        {
+            Node* succ = e->succ();
+            if ( !succ->isMarked( m))
+            {
+                /** Writing Succs in a stack */
+				st.push( succ);
+                
+            }
+        }
+	}
+    return new_item;
+}
+
+/**
  * Implementation of breadth-first search. Starts from node without predecessors.
  */
 bool Graph::BFS()
@@ -153,14 +197,14 @@ bool Graph::BFS()
     {
         /** 
          * If firstPred is Null, then the node n has no predecessors, =>
-         * we should start DFS from this node.
+         * we should start BFS from this node.
          */
     if( isNullP( n->firstPred()))
         {
             graphassert( !n->isMarked( m));
             /** 
-             * Start DFS from node n, using marker m and numeration num.
-             * item is a list that at the end will contain all nodes in DF order.
+             * Start BFS from node n, using marker m and numeration num.
+             * item is a list that at the end will contain all nodes in BF order.
              * number is the number of the last visited node.
              */
             q.push_back( n);
@@ -210,7 +254,14 @@ NodeListItem* Graph::DFS( Numeration num)
              * item is a list that at the end will contain all nodes in DF order.
              * number is the number of the last visited node.
              */
-            item = dfsVisitRec( n, item, m, num, &number);
+            /** 
+             * Start DFS using a stack
+             */
+            item = dfsVisitStack( n, item, m, num, &number);
+            /** 
+             * Start DFS using recursion
+             */
+			// item = dfsVisitRec( n, item, m, num, &number);
         }
     }   
     /** 
