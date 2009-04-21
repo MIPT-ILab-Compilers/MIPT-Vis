@@ -11,8 +11,8 @@ int main(int argc, char **argv)
     if ( !uTestGraph())
         return -1;
 
-    //if ( !uTestChain( argc, argv))
-	//	return -1;
+    if ( !uTestChain( argc, argv))
+		return -1;
 
     //Test list implementation
     if ( !uTestList())
