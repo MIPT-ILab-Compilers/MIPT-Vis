@@ -1,0 +1,9 @@
+#summary Creating svn patches.
+
+The best way to create svn patch is by using TortoiseSVN which you can get by link on [http://code.google.com/p/mipt-vis/wiki/UsingSVN this page]
+
+   # Make modifications in your working copy of the project ( including adding, renaming and removing of files)
+   # Right click of the root folder of the project ( possibly mipt-vis)
+   # Choose TortoiseSVN->Create Patch
+   # DO NOT change the default selections of files! It corresponds to files that are under svn control
+   # Save the patch and send it to the reviewer for Review
