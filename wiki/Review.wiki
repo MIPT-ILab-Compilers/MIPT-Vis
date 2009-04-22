@@ -1,5 +1,5 @@
 #summary describes review process
 
-= Proccess =
+=== Proccess ===
 
 To make sure your modifications correspond to general coding style they must be reviewed by someone. To make the process easier deleloper should send his modifications by SvnPatch. The reason for this is that SvnPatch includes only files that are under [http://code.google.com/p/mipt-vis/wiki/UsingSVN svn] control so it will not include any other files locally created by you or by your Visual Studio or by something else. On the other side patch will show if you forgot to add some new created files to the svn by svn add command. The other reason is that SvnPatch - is a single file that can be easly applied to any clean working copy. It mustn't be exctracted like archieve of files( that someone can suggest to use istead of patch). It can add or remove files from svn control, that archieve of couse can't do. Also patch includes only differences in files so for large files the patch usually is not so big.
