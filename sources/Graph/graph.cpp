@@ -183,10 +183,13 @@ dfsVisitStack( Node* node,
 
 /**
  * Implementation of breadth-first search. Starts from node without predecessors.
+ * Fuction return last node without predessors
  */
-bool Graph::BFS()
+NodeListItem* Graph::BFS( Numeration num)
 {
 	deque<Node*> q;    //queue with two ends
+    GraphNum number = 0;
+    NodeListItem *item = NULL;
 	Node *child;
 	Node *n;
 	Edge *e;
@@ -199,9 +202,11 @@ bool Graph::BFS()
          * If firstPred is Null, then the node n has no predecessors, =>
          * we should start BFS from this node.
          */
+
     if( isNullP( n->firstPred()))
         {
             graphassert( !n->isMarked( m));
+			item = new NodeListItem( item, LIST_DIR_RDEFAULT, n);
             /** 
              * Start BFS from node n, using marker m and numeration num.
              * item is a list that at the end will contain all nodes in BF order.
@@ -212,6 +217,9 @@ bool Graph::BFS()
 	       {
 			   n = q.front();
 			   q.pop_front();
+			   n->setNumber( num,number);
+		       number = ( number) + 1;
+		       n->mark( m);
 		       for ( e = n->firstSucc(); !n->endOfSuccs(); e = n->nextSucc())
 		       {
 			       child = e->succ();
@@ -221,7 +229,8 @@ bool Graph::BFS()
 		   }
 		}
 	}      
-	return true;
+	freeMarker( m);
+	return item;
 }
 
 /**

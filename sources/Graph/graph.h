@@ -256,7 +256,7 @@ public:
 	/**
      * Obtain list of nodes in breadth-first search order
      */
-    virtual bool BFS(); 
+    virtual NodeListItem* BFS( Numeration n);
 
     /**
      * Clear unused markers from marked objects
