@@ -23,9 +23,13 @@ static bool uTestDFS( Graph *graph)
 
 static bool uTestBFS( Graph *graph)
 {
-	if ( !graph->BFS())
-        return false;
-	return true;
+	//if ( !graph->BFS())
+    //    return false;
+	//return true;
+	Numeration n = graph->newNum();
+    NodeListItem* nodes = graph->BFS( n);
+    graph->freeNum( n);
+    return true;
 }
 
  /**
@@ -181,7 +185,7 @@ static bool uTestMarkers()
 /**
  * Test for BFS
  */
-bool TestforBFS()
+bool uTestforBFS()
 {
 	Graph graph;
 	vector<Node *> nodes;
