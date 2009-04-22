@@ -15,5 +15,5 @@
  */
 bool uTestGraph();
 bool uTestChain( int argc, char * argv[]);
-bool TestforBFS();
+bool uTestforBFS();
 #endif

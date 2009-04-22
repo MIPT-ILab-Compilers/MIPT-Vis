@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     if ( !uTestGraph())
         return -1;
 
-	if ( !TestforBFS())
+	if ( !uTestforBFS())
 		return -1;
     if ( !uTestChain( argc, argv))
 		return -1;
