@@ -192,6 +192,10 @@
 				RelativePath=".\num.h"
 				>
 			</File>
+			<File
+				RelativePath=".\ReadMe.txt"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Interface"
@@ -211,10 +215,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
