@@ -133,7 +133,7 @@ class Edge: public Marked, public Numbered, public EdgeProperties
     /** Graph and Node have access to Edge's members */
     friend class Graph;
     friend class Node;
-
+protected:
     /** Constructors are made private, only nodes and graph can create edges */
     Edge( Graph *graph_p, int _id, Node *_pred, Node* _succ):
         unique_id( _id), graph( graph_p), graph_it()

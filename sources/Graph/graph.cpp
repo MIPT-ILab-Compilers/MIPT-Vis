@@ -42,7 +42,7 @@ void *Graph::createEdge( Node *pred, Node *succ)
  */
 void *Graph::createNode()
 {
-    return new Node( this, incNodeId());
+    return new Node( (Graph *)this, incNodeId());
 }
 
 /**

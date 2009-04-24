@@ -23,7 +23,7 @@ bool showGraph( int argc, char * argv[], Graph * graph)
 bool showScene( int argc, char * argv[], Graph * graph)
 {
     QApplication app2( argc, argv);
-    Scene * scene = new Scene();
+    GuiGraph * scene = new GuiGraph();
     scene->setSceneRect( QRectF( 0, 0, 550, 500));
     QGraphicsView * view = new QGraphicsView( scene);
     view->setWindowTitle
