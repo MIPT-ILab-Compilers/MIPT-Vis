@@ -7,11 +7,11 @@
 #define GUI_IFACE_H
 
 #include "predecls.h"
-#include "GuiNode.h"
-#include "GuiPoint.h"
-#include "GuiEdge.h"
-#include "GuiGraph.h"
-#include "GuiEdgePart.h"
+#include "gui_node.h"
+#include "gui_point.h"
+#include "gui_edge.h"
+#include "gui_graph.h"
+#include "gui_edge_part.h"
 
 
 bool showGraph( int argc, char * argv[], Graph * graph);

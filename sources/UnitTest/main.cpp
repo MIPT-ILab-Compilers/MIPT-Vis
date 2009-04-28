@@ -6,12 +6,14 @@
 
 int main(int argc, char **argv)
 {
-	//Test graph package
+	/** Test graph package */
     if ( !uTestGraph())
         return -1;
 
 	if ( !uTestforBFS())
 		return -1;
+
+	/** Test GUI */
     if ( !uTestGui( argc, argv))
 		return -1;
 

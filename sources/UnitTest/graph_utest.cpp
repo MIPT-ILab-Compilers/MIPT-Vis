@@ -282,15 +282,19 @@ bool uTestGraph()
 
 bool uTestGui( int argc, char * argv[])
 {
-    QApplication app2( argc, argv);
+    QApplication app( argc, argv);
+
     char * file = _getcwd( NULL, 1024);
     strcat_s( file, 1024, "/test_graph2.xml");
     GuiGraph * graph = new GuiGraph( file);
-    if ( graph == NULL) return false;
+
+    if ( graph == NULL)
+		return false;
+
     graph->debugPrint();
 
     /** Test Scene with nodes */
-    showScene( argc, argv, graph, &app2);
+    showScene( argc, argv, graph, &app);
 
     /** Test writing to xml */
     file = _getcwd( NULL, 1024);

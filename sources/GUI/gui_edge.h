@@ -32,8 +32,7 @@ public:
     void showPoints();
     void hidePoints();
     void updatePosition();
-    void writeByXMLWriter( xmlTextWriterPtr writer);
-	void writePointsByXMLWriter( xmlTextWriterPtr writer);
+
 protected:
     void mousePressEvent( QGraphicsSceneMouseEvent * event);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);

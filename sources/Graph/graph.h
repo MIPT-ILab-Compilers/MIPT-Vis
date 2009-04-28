@@ -99,10 +99,10 @@ protected:
     }
         
     /** Allocation of memory for Edge */
-    virtual void * createEdge( Node * pred, Node * succ);
+    virtual Edge * createEdge( Node * pred, Node * succ);
     
     /** Allocation of memory for Node */
-    virtual void * createNode();
+    virtual Node * createNode();
 
 public:
     /** Constructor */
