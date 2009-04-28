@@ -10,16 +10,6 @@
  */
 
 #include "gui_iface.h"
-#include "GuiNode.h"
-#include "GuiPoint.h"
-#include "GuiEdge.h"
-#include "GuiGraph.h"
-#include "GuiEdgePart.h"
-#include <math.h>
-#include <QtGui/QtGui>
-#include <QtGui/QApplication>
-#include <QtCore/QLineF>
-
 
 const qreal Pi = 3.14;
 

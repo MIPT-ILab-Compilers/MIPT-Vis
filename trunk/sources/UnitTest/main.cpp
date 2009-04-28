@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 
 	if ( !uTestforBFS())
 		return -1;
-    if ( !uTestChain( argc, argv))
+    if ( !uTestGui( argc, argv))
 		return -1;
 
     return 0;	

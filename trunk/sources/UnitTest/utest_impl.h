@@ -14,6 +14,6 @@
  * Graph library unit testing
  */
 bool uTestGraph();
-bool uTestChain( int argc, char * argv[]);
+bool uTestGui( int argc, char * argv[]);
 bool uTestforBFS();
 #endif

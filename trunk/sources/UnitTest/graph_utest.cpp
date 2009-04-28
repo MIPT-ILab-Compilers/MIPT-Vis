@@ -280,20 +280,17 @@ bool uTestGraph()
 }
 
 
-bool uTestChain( int argc, char * argv[])
+bool uTestGui( int argc, char * argv[])
 {
-	/** Test xml reading */
+    QApplication app2( argc, argv);
     char * file = _getcwd( NULL, 1024);
-    strcat_s( file, 1024,"/test_graph.xml");
-    Graph * graph = new Graph( file);
+    strcat_s( file, 1024, "/test_graph2.xml");
+    GuiGraph * graph = new GuiGraph( file);
     if ( graph == NULL) return false;
     graph->debugPrint();
 
-	/** Test GUI */
-    showGraph( argc, argv, graph);
-
-    /** Test Scene with rectangles */
-    showScene( argc, argv, graph);
+    /** Test Scene with nodes */
+    showScene( argc, argv, graph, &app2);
 
     /** Test writing to xml */
     file = _getcwd( NULL, 1024);

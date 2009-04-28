@@ -160,7 +160,13 @@ GuiPoint * GuiEdgePart::addPoint( QPointF p)
     setSelected( false);
     if ( edge != NULL)
     {
-        edge->addPoint( point);    
+        int n = edge->pointsNum() + 1;
+        edge->addPoint( point);
+        edge->addEdgePart( seg);
+        edge->initPoints( n + 1);
+        edge->setPoint( new EdgePoint(), n);
+        edge->point( n)->x = p.x();
+		edge->point( n)->y = p.y();
     }
     updatePosition();
     return point;
