@@ -102,3 +102,24 @@ QVariant GuiNode::itemChange( GraphicsItemChange change, const QVariant &value)
     }
     return value;
 }
+
+/**
+ *  Write to xml
+ */
+void GuiNode::writeByXMLWriter( xmlTextWriterPtr writer)
+{
+	xmlTextWriterWriteString( writer, BAD_CAST "\t");
+	xmlTextWriterStartElement( writer, BAD_CAST "node");
+
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "id", "%d", id());
+    xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "x", "%d", (int)QGraphicsItem::x());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "y", "%d", (int)QGraphicsItem::y());
+    xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "width", "%d", (int)(GuiNode::boundingRect()).width());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "height", "%d", (int)(GuiNode::boundingRect()).height());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
+    xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST NodeProperties::shape());
+	
+	xmlTextWriterEndElement( writer);
+    xmlTextWriterWriteString( writer, BAD_CAST "\n");
+}

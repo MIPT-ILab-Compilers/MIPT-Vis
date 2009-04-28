@@ -7,7 +7,7 @@
 /**
  * Class GuiEdge. GuiEdge is movable. Double click create new point on the GuiEdge
  */
-class GuiEdge:public QGraphicsLineItem, Edge
+class GuiEdge:public QGraphicsLineItem, public Edge
 {
 public:
     inline GuiPoint * startItem() const
@@ -27,10 +27,13 @@ public:
         startPoint = startItem;
     }
     void addPoint( GuiPoint * point);
+    void addEdgePart( GuiEdgePart * part);
     void initPoint( GuiNode * startItem, GuiNode * endItem);
     void showPoints();
     void hidePoints();
     void updatePosition();
+    void writeByXMLWriter( xmlTextWriterPtr writer);
+	void writePointsByXMLWriter( xmlTextWriterPtr writer);
 protected:
     void mousePressEvent( QGraphicsSceneMouseEvent * event);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);

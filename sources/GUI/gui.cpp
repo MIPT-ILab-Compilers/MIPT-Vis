@@ -20,15 +20,18 @@ bool showGraph( int argc, char * argv[], Graph * graph)
 /** 
  * Test scene with rectangles and text
  */
-bool showScene( int argc, char * argv[], Graph * graph)
+bool showScene( int argc, char * argv[], GuiGraph * graph, QApplication * app)
 {
-    QApplication app2( argc, argv);
-    GuiGraph * scene = new GuiGraph();
-    scene->setSceneRect( QRectF( 0, 0, 550, 500));
-    QGraphicsView * view = new QGraphicsView( scene);
+    graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
+    QGraphicsView * view = new QGraphicsView( graph);
+    view->setCacheMode( QGraphicsView::CacheBackground );
+    view->setViewportUpdateMode( QGraphicsView::SmartViewportUpdate);
+    view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    view->setOptimizationFlags( QGraphicsView::DontSavePainterState | QGraphicsView::DontClipPainter);
+    view->centerOn( graph->getNodeItem());
     view->setWindowTitle
         ( "Double click on a free space to create a node. And double click on a text to edit it");
     view->show();
-    app2.exec();
+    app->exec();
     return true;
 }
