@@ -56,7 +56,7 @@ public:
     };
     void addEdge( GuiEdge * line);
     QRectF boundingRect() const;
-    void writeByXMLWriter( xmlTextWriterPtr writer);
+
     int type() const
     {
         return Type;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="GUI"
 	ProjectGUID="{759BD0F4-2B39-4F27-91E0-8C988CC89734}"
 	RootNamespace="GUI"
@@ -142,109 +142,16 @@
 			Name="Generated files"
 			>
 			<File
-				RelativePath=".\tmp\moc\release_shared\moc_GuiGraph.cpp"
+				RelativePath=".\tmp\moc\moc_gui_graph.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\tmp\moc\debug_shared\moc_GuiGraph.cpp"
+				RelativePath=".\tmp\moc\moc_gui_node.cpp"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\tmp\moc\release_shared\moc_GuiNode.cpp"
+				RelativePath=".\tmp\moc\moc_gui_point.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\tmp\moc\debug_shared\moc_GuiNode.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\tmp\moc\release_shared\moc_GuiPoint.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\tmp\moc\debug_shared\moc_GuiPoint.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -271,21 +178,37 @@
 				>
 			</File>
 			<File
-				RelativePath=".\GuiEdge.cpp"
+				RelativePath=".\gui_edge.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GuiEdge.h"
+				RelativePath=".\gui_edge.h"
+				>
+			</File>
+			<File
+				RelativePath=".\gui_edge_part.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\gui_edge_part.h"
+				>
+			</File>
+			<File
+				RelativePath=".\gui_graph.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\gui_graph.h"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-						AdditionalDependencies=""
-						Outputs=""
+						Description="MOC gui_graph.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_graph.h -o tmp\moc\moc_gui_graph.cpp"
+						AdditionalDependencies="gui_graph.h"
+						Outputs=" tmp\moc\moc_gui_graph.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -293,37 +216,29 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-						AdditionalDependencies=""
-						Outputs=""
+						Description="MOC gui_graph.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_graph.h -o tmp\moc\moc_gui_graph.cpp"
+						AdditionalDependencies="gui_graph.h"
+						Outputs=" tmp\moc\moc_gui_graph.cpp"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GuiEdgePart.cpp"
+				RelativePath=".\gui_node.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GuiEdgePart.h"
-				>
-			</File>
-			<File
-				RelativePath=".\GuiGraph.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GuiGraph.h"
+				RelativePath=".\gui_node.h"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC GuiGraph.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 GuiGraph.h -o tmp\moc\debug_shared\moc_GuiGraph.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="moc.exe;GuiGraph.h"
-						Outputs="tmp\moc\debug_shared\moc_GuiGraph.cpp"
+						Description="MOC gui_node.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_node.h -o tmp\moc\moc_gui_node.cpp"
+						AdditionalDependencies="gui_node.h"
+						Outputs="tmp\moc\moc_gui_node.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -331,29 +246,29 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC GuiGraph.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 GuiGraph.h -o tmp\moc\release_shared\moc_GuiGraph.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="moc.exe;GuiGraph.h"
-						Outputs="tmp\moc\release_shared\moc_GuiGraph.cpp"
+						Description="MOC gui_node.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_node.h -o tmp\moc\moc_gui_node.cpp"
+						AdditionalDependencies="gui_node.h"
+						Outputs="tmp\moc\moc_gui_node.cpp"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GuiNode.cpp"
+				RelativePath=".\gui_point.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GuiNode.h"
+				RelativePath=".\gui_point.h"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC GuiNode.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 GuiNode.h -o tmp\moc\debug_shared\moc_GuiNode.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="moc.exe;GuiNode.h"
-						Outputs="tmp\moc\debug_shared\moc_GuiNode.cpp"
+						Description="MOC gui_point.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_point.h -o tmp\moc\moc_gui_point.cpp"
+						AdditionalDependencies="gui_point.h"
+						Outputs="tmp\moc\moc_gui_point.cpp"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -361,40 +276,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="MOC GuiNode.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 GuiNode.h -o tmp\moc\release_shared\moc_GuiNode.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="moc.exe;GuiNode.h"
-						Outputs="tmp\moc\release_shared\moc_GuiNode.cpp"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GuiPoint.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\GuiPoint.h"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC GuiPoint.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 GuiPoint.h -o tmp\moc\debug_shared\moc_GuiPoint.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="moc.exe;GuiPoint.h"
-						Outputs="tmp\moc\debug_shared\moc_GuiPoint.cpp"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="MOC GuiPoint.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 GuiPoint.h -o tmp\moc\release_shared\moc_GuiPoint.cpp&#x0D;&#x0A;"
-						AdditionalDependencies="moc.exe;GuiPoint.h"
-						Outputs="tmp\moc\release_shared\moc_GuiPoint.cpp"
+						Description="MOC gui_point.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_point.h -o tmp\moc\moc_gui_point.cpp"
+						AdditionalDependencies="gui_point.h"
+						Outputs="tmp\moc\moc_gui_point.cpp"
 					/>
 				</FileConfiguration>
 			</File>

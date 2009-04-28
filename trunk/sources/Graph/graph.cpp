@@ -33,14 +33,14 @@ Graph::Graph()
 /**
  * Allocation of memory for Edge
  */
-void *Graph::createEdge( Node *pred, Node *succ)
+Edge *Graph::createEdge( Node *pred, Node *succ)
 {
     return new Edge( this, incEdgeId(), pred, succ);
 }
 /**
  * Allocation of memory for Node
  */
-void *Graph::createNode()
+Node *Graph::createNode()
 {
     return new Node( (Graph *)this, incNodeId());
 }
@@ -331,45 +331,7 @@ Graph::readNodesFromXmlDoc( xmlNode * a_node)
 	}
 }
 
-/**
- *  Init edge points
- */
-static void
-readEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
-{
-	xmlNode * cur_node;
-    for (cur_node = a_node; cur_node; cur_node = cur_node->next)
-	{
-		if ( cur_node->type == XML_ELEMENT_NODE
-			 && xmlStrEqual( cur_node->name, xmlCharStrdup("point")))
-		{
-			xmlAttr * props;
-			int n = -1;
-			for( props = cur_node->properties; props; props = props->next)
-			{
-				if ( xmlStrEqual( props->name, xmlCharStrdup("n")))
-				{
-					n = strtoul( ( const char *)( props->children->content), NULL, 0);
-				}
-			}
 
-			if ( n == -1) continue;
-			edge->setPoint( new EdgePoint, n);
-
-			for( props = cur_node->properties; props; props = props->next)
-			{
-				if ( xmlStrEqual( props->name, xmlCharStrdup("x")))
-				{
-					edge->point( n)->x = strtoul( ( const char *)( props->children->content), NULL, 0);
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("y")))
-				{
-					edge->point( n)->y = strtoul( ( const char *)( props->children->content), NULL, 0);
-				}
-			}
-		}
-	}
-
-}
 
 /**
  *  Init graph edges
@@ -430,7 +392,7 @@ Graph::readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 					edge->setLabel( ( char *)( props->children->content));
 				}
 			}
-			readEdgePointsFromXMLDoc( edge, cur_node->children);
+			edge->readEdgePointsFromXMLDoc( cur_node->children);
 		}
 	}
 }

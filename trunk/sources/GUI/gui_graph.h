@@ -18,23 +18,14 @@ public:
     GuiGraph( char * filename, QObject * parent = 0);
     enum mode { insertLine, moveItem, insertRect};
     enum type { node, point, edge};
-    void * createNode();
-    void * createEdge( GuiNode * pred, GuiNode * succ);
-    GuiNode * newNode();
-    GuiEdge * newEdge( GuiNode * pred, GuiNode * succ);
+    GuiNode * createNode();
+    GuiEdge * createEdge( Node * pred, Node * succ);
     void initPos();
-    void readFromXML( const char *filename);
-    void readFromXMLDoc( xmlNode * a_node);
-    void readEdgesFromXmlDoc( xmlNode * a_node, QVector< GuiNode *> nodes);
-    void readNodesFromXmlDoc( xmlNode * a_node);
-    void writeToXML( const char *filename);
-	void writeNodesByXMLWriter( xmlTextWriterPtr writer);
-	void writeEdgesByXMLWriter( xmlTextWriterPtr writer);
+
     inline QGraphicsItem * getNodeItem()
     {
-        if( guiNodes.first() != NULL)
-            return guiNodes.first();
-        return (QGraphicsItem *) NULL;
+		GuiNode * gui_node_p = ( GuiNode *)firstNode();
+        return gui_node_p;       
     }
 protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
@@ -46,9 +37,5 @@ private:
     mode myMode;
     QGraphicsLineItem * line;
     xmlDoc * xml_doc;
-    /* List of edges and its iterator */
-    QList< GuiEdge *> guiEdges;
-    /* List of nodes and its iterator */
-    QList< GuiNode *> guiNodes;
 };
 #endif

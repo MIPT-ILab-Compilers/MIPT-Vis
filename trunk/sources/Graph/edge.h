@@ -123,6 +123,7 @@ class Edge: public Marked, public Numbered, public EdgeProperties
     Graph * graph; //Graph
     EdgeListItem graph_it; //Position in Graph's list of edges
 
+	virtual void readEdgePointsFromXMLDoc( xmlNode * a_node);
 	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
 	virtual void writePointsByXMLWriter( xmlTextWriterPtr writer);
 	
