@@ -9,6 +9,8 @@
  */
 bool showScene( int argc, char * argv[], GuiGraph * graph, QApplication * app)
 {
+    if(!graph || !app)
+        return false;
     graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
 
     QGraphicsView * view = new QGraphicsView( graph);
@@ -16,7 +18,8 @@ bool showScene( int argc, char * argv[], GuiGraph * graph, QApplication * app)
     view->setViewportUpdateMode( QGraphicsView::FullViewportUpdate);
     view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     view->setOptimizationFlags( QGraphicsView::DontSavePainterState | QGraphicsView::DontClipPainter);
-    view->centerOn( graph->getNodeItem());
+    if(graph->getNodeItem())
+        view->centerOn( graph->getNodeItem());
     view->setWindowTitle( "test_graph2.xml");
     view->show();
 
