@@ -120,12 +120,12 @@ class Edge: public Marked, public Numbered, public EdgeProperties
     /** Graph part */
     int unique_id; //Unique ID
 
-
     Graph * graph; //Graph
     EdgeListItem graph_it; //Position in Graph's list of edges
 
-	void writeByXMLWriter( xmlTextWriterPtr writer);
-	void writePointsByXMLWriter( xmlTextWriterPtr writer);
+	virtual void readEdgePointsFromXMLDoc( xmlNode * a_node);
+	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
+	virtual void writePointsByXMLWriter( xmlTextWriterPtr writer);
 	
     /** Nodes */
     Node *nodes[ GRAPH_DIRS_NUM]; //Adjacent nodes
@@ -159,7 +159,7 @@ public:
     /**
      * get edge's corresponding graph
      */
-    inline Graph * getGraph() const
+    virtual inline Graph * getGraph() const
     {
         return graph;
     }
@@ -172,7 +172,7 @@ public:
     /** 
      * Return iterator pointing to this edge in graph's edge list
      */
-    EdgeListItem *getGraphIt()
+    virtual EdgeListItem *getGraphIt()
     {
         return &graph_it;
     }
@@ -189,7 +189,7 @@ public:
      * Return iterator pointing to this edge in node's edge
      * list in corresponding direction
      */
-    EdgeListItem *getNodeIt( GraphDir dir)
+    virtual EdgeListItem *getNodeIt( GraphDir dir)
     {
         return &n_it[ dir];
     }
@@ -211,14 +211,14 @@ public:
      *      edge->detachFromNode( GRAPH_DIR_DOWN);
      *      delete edge;
      */
-    ~Edge();
+    virtual ~Edge();
 
     /**
      * Connect edge to a node in specified direction.
      * Note that node treats this edge in opposite direction. I.e. an edge that has node in
      * GRAPH_DIR_UP is treated as edge in GRAPH_DIR_DOWN directions inside that node
      */
-    void setNode( Node *n, GraphDir dir)
+    virtual void setNode( Node *n, GraphDir dir)
     {
         graphassert( isNotNullP( n));
         nodes[ dir] = n;
@@ -232,14 +232,14 @@ public:
     /**
      * Connect edge with given node as a predecessor
      */
-    inline void setPred( Node *n)
+    virtual inline void setPred( Node *n)
     {
         setNode( n, GRAPH_DIR_UP);
     }
     /**
      * Connect edge with given node as a successor
      */
-    inline void setSucc( Node *n)
+    virtual inline void setSucc( Node *n)
     {
         setNode( n, GRAPH_DIR_DOWN);
     }
@@ -247,28 +247,28 @@ public:
     /**
      * get node in specified direction
      */
-    inline Node *getNode( GraphDir dir) const 
+    virtual inline Node *getNode( GraphDir dir) const 
     {
         return nodes[ dir];
     }
     /**
      * get predecessor of edge
      */
-    inline Node *pred() const 
+    virtual inline Node *pred() const 
     {
         return getNode( GRAPH_DIR_UP);
     }
     /**
      * get successor of edge
      */
-    inline Node *succ() const 
+    virtual inline Node *succ() const 
     {
         return getNode( GRAPH_DIR_DOWN);
     }
     /**
      * Print edge in dot fomat to stdout
      */
-    void debugPrint();
+    virtual void debugPrint();
 };
 
 #endif

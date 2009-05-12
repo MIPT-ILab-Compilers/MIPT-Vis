@@ -8,7 +8,7 @@
 <graph name='CFG' default_node_size='50'>
   <!-- Node -->
   <!--  Label will be displayed on node  -->
-  <node id='1' color='red' x='320' y='240' width='640' height='480' label='start node' shape='rectangle'>
+  <node id='0' color='indigo' x='1' y='1009' width='640' height='480' label='START NODE' shape='rectangle'>
     <!--  Oper  -->
     <!--  Just a string for now.  -->
     <oper> R0 = ADD( R1, R2) </oper>
@@ -16,32 +16,270 @@
     <oper> BRU 0x864715FE </oper>
   </node>
   <!-- Node -->
-  <node id='2' color='red' x='320' y='240' width='640' height='480' label='loop' shape='rectangle'>
+  <node id='1' color='yellow' x='3' y='1010' width='640' height='480' label='GLOBAL ENTER JUMP NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->
+  <node id='2' color='yellow' x='16' y='1011' width='640' height='480' label='GLOBAL ENTER JUMP NODE' shape='rectangle'>
   </node>
   <!-- Node -->    
-  <node id='3' color='red' x='320' y='240' width='640' height='480' label='exit node' shape='rectangle'>
+  <node id='4' color='yellow' x='42' y='1013' width='640' height='480' label='GLOBAL ENTER IF NODE' shape='rectangle'>
   </node>
+  <!-- Node -->    
+  <node id='5' color='blue' x='65' y='1014' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='6' color='green' x='79' y='1015' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='7' color='light green' x='93' y='1016' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='8' color='green' x='143' y='1017' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='9' color='blue' x='62' y='1018' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='10' color='green' x='203' y='1019' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='11' color='green' x='208' y='1020' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='12' color='green' x='216' y='1021' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='13' color='green' x='225' y='1022' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='14' color='green' x='239' y='1023' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='15' color='light green' x='373' y='1024' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='16' color='green' x='586' y='1025' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='17' color='green' x='598' y='1026' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='18' color='light green' x='620' y='1027' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='19' color='green' x='672' y='1028' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='20' color='green' x='686' y='1029' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='21' color='green' x='696' y='1030' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='22' color='green' x='706' y='1031' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='23' color='green' x='710' y='1032' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='24' color='green' x='718' y='1033' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='25' color='light green' x='725' y='1034' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='26' color='green' x='744' y='1035' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='27' color='green' x='752' y='1036' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='29' color='green' x='205' y='1038' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='31' color='light green' x='831' y='1040' width='640' height='480' label='IF NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='32' color='blue' x='845' y='1041' width='640' height='480' label='JUMP NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='33' color='green' x='213' y='1042' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='43' color='blue' x='1247' y='1248' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='45' color='blue' x='1358' y='1359' width='640' height='480' label='NODE' shape='rectangle'>
+  </node>
+  <!-- Node -->    
+  <node id='35' color='indigo' x='1044' y='2' width='640' height='480' label='STOP NODE' shape='rectangle'>
+  </node>
+
   <!-- Edge -->
   <!-- from and to are nodes connected by the edge. -->
   <!-- prob is probability that propgram control flow will go -->
   <!-- through this edge among the others going from its predecessor. -->
   <!-- At the moment the edge consists of points through which it should go. -->
   <!-- Notice that the order of the points is important! -->
-  <edge id='1' from='1' to='2' prob='100' thickness='10' color='green' style='solid' label="simple edge" points_num='2'>
+  <edge id='1' from='0' to='1' prob='34' thickness='1' color='yellow' style='dotted' label="Ent" points_num='0'>
       <!-- Point -->
       <!-- Includes its number as it is important -->
-      <point n='1' x='100' y='200'/>
-    <point n='2' x='101' y='201'/>
   </edge>
   <!-- Edge -->
-  <edge id='2' from='2' to='3' prob='1' thickness='1' color='blue' style='dotted' label="loop exit" points_num='3'>
-    <point n='1' x='103' y='203'/>
-    <point n='2' x='104' y='204'/>
-    <point n='3' x='105' y='205'/>
+  <edge id='2' from='0' to='2' prob='33' thickness='1' color='yellow' style='dotted' label="Ent" points_num='0'>
   </edge>
   <!-- Edge -->
-  <edge id='3' from='2' to='2' prob='99' thickness='9' color='red' style='solid' label="back edge" points_num='2'>
-    <point n='1' x='106' y='206'/>
-    <point n='2' x='107' y='207'/>
+  <edge id='3' from='0' to='4' prob='33' thickness='1' color='yellow' style='dotted' label="Ent" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='4' from='4' to='5' prob='50' thickness='1' color='blue' style='dotted' label="1013. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='5' from='4' to='9' prob='50' thickness='1' color='blue' style='dotted' label="64. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='6' from='5' to='6' prob='100' thickness='1' color='blue' style='dotted' label="1014. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='7' from='6' to='7' prob='100' thickness='1' color='green' style='dotted' label="1015. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='8' from='7' to='8' prob='50' thickness='1' color='green' style='dotted' label="1016. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='9' from='7' to='7' prob='50' thickness='1' color='red' style='dotted' label="142. brcz" points_num='2'>
+    <point n='1' x='90' y='1014'/>
+    <point n='2' x='96' y='1014'/>
+  </edge>
+  <!-- Edge -->
+  <edge id='10' from='8' to='45' prob='50' thickness='1' color='blue' style='dotted' label="1017. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='11' from='8' to='6' prob='50' thickness='1' color='red' style='dotted' label="184. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='12' from='45' to='9' prob='100' thickness='1' color='blue' style='dotted' label="1359. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='13' from='9' to='10' prob='100' thickness='1' color='blue' style='dotted' label="1018. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='14' from='10' to='29' prob='50' thickness='1' color='green' style='dotted' label="207. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='15' from='10' to='11' prob='50' thickness='1' color='green' style='dotted' label="1019. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='16' from='11' to='33' prob='50' thickness='1' color='green' style='dotted' label="215. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='17' from='11' to='12' prob='50' thickness='1' color='green' style='dotted' label="1020. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='18' from='12' to='13' prob='100' thickness='1' color='green' style='dotted' label="1021. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='19' from='13' to='14' prob='100' thickness='1' color='green' style='dotted' label="1022. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='20' from='14' to='15' prob='100' thickness='1' color='green' style='dotted' label="1023. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='21' from='15' to='15' prob='50' thickness='1' color='red' style='dotted' label="585. brcz" points_num='2'>
+    <point n='1' x='370' y='1020'/>
+    <point n='2' x='376' y='1020'/>
+  </edge>
+  <!-- Edge -->
+  <edge id='22' from='15' to='16' prob='50' thickness='1' color='green' style='dotted' label="1024. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='23' from='16' to='14' prob='50' thickness='1' color='red' style='dotted' label="597. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='24' from='16' to='17' prob='50' thickness='1' color='green' style='dotted' label="1025. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='25' from='33' to='21' prob='100' thickness='1' color='green' style='dotted' label="1042. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='26' from='1' to='35' prob='100' thickness='1' color='indigo' style='dotted' label="878. exit" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='27' from='2' to='35' prob='100' thickness='1' color='indigo' style='dotted' label="22. exit" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='28' from='17' to='18' prob='100' thickness='1' color='green' style='dotted' label="1026. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='29' from='18' to='18' prob='50' thickness='1' color='red' style='dotted' label="671. brcz" points_num='2'>
+    <point n='1' x='617' y='1024'/>
+    <point n='2' x='623' y='1024'/>
+  </edge>
+  <!-- Edge -->
+  <edge id='30' from='18' to='19' prob='50' thickness='1' color='green' style='dotted' label="1027. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='31' from='19' to='13' prob='50' thickness='1' color='red' style='dotted' label="685. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='32' from='19' to='20' prob='50' thickness='1' color='green' style='dotted' label="1028. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='33' from='20' to='21' prob='100' thickness='1' color='green' style='dotted' label="1029. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='34' from='21' to='29' prob='50' thickness='1' color='green' style='dotted' label="705. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='35' from='21' to='22' prob='50' thickness='1' color='green' style='dotted' label="1030. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='36' from='22' to='23' prob='100' thickness='1' color='green' style='dotted' label="1031. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='37' from='23' to='24' prob='100' thickness='1' color='green' style='dotted' label="1032. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='38' from='24' to='25' prob='100' thickness='1' color='green' style='dotted' label="1033. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='39' from='25' to='25' prob='50' thickness='1' color='red' style='dotted' label="743. brcz" points_num='2'>
+    <point n='1' x='722' y='1030'/>
+    <point n='2' x='728' y='1030'/>
+  </edge>
+  <!-- Edge -->
+  <edge id='40' from='25' to='26' prob='50' thickness='1' color='green' style='dotted' label="1034. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='41' from='26' to='27' prob='50' thickness='1' color='green' style='dotted' label="1035. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='42' from='26' to='24' prob='50' thickness='1' color='red' style='dotted' label="751. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='43' from='27' to='29' prob='50' thickness='1' color='green' style='dotted' label="1036. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='44' from='27' to='23' prob='50' thickness='1' color='red' style='dotted' label="765. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='45' from='29' to='10' prob='50' thickness='1' color='red' style='dotted' label="824. brcz" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='46' from='29' to='43' prob='50' thickness='1' color='blue' style='dotted' label="1038. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='47' from='43' to='31' prob='100' thickness='1' color='blue' style='dotted' label="1248. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='48' from='31' to='32' prob='50' thickness='1' color='blue' style='dotted' label="1040. end" points_num='0'>
+  </edge>
+  <!-- Edge -->
+  <edge id='49' from='31' to='31' prob='50' thickness='1' color='red' style='dotted' label="844. brcz" points_num='2'>
+    <point n='1' x='828' y='1037'/>
+    <point n='2' x='834' y='1037'/>
+  </edge>
+  <!-- Edge -->
+  <edge id='50' from='32' to='35' prob='100' thickness='1' color='indigo' style='dotted' label="864. exit" points_num='0'>
   </edge>
  </graph>

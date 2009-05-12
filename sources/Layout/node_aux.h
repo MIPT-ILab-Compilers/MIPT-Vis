@@ -49,10 +49,7 @@ public:
 	 /**
      * Get node's corresponding auxiliary graph
      */
-    inline GraphAux * getGraph() const
-    {
-		return static_cast< GraphAux *>( Node::getGraph());
-    }
+    inline GraphAux * getGraph() const;
 
     /**
   	 * Add an edge to this node in specified direction

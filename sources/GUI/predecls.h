@@ -6,6 +6,17 @@
 #ifndef GUI_PREDECLS_H
 #define GUI_PREDECLS_H
 
+class GuiGraph;
+class GuiNode;
+class GuiEdge;
+class GuiEdgePart;
+
+#include <math.h>
+#include "direct.h"
+#include <QtGui/QtGui>
+#include <QtGui/QApplication>
+#include <QtCore/QLineF>
+
 #include "../Utils/utils_iface.h"
 #include "../Graph/graph_iface.h"
 

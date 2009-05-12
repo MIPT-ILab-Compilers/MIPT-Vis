@@ -7,9 +7,15 @@
 #define GUI_IFACE_H
 
 #include "predecls.h"
+#include "gui_node.h"
+#include "gui_point.h"
+#include "gui_edge.h"
+#include "gui_graph.h"
+#include "gui_edge_part.h"
+
 
 bool showGraph( int argc, char * argv[], Graph * graph);
 
-bool showScene( int argc, char * argv[], Graph * graph);
+bool showScene( int argc, char * argv[], GuiGraph * graph, QApplication * app);
 
 #endif

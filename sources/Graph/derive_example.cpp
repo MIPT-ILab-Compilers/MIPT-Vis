@@ -23,14 +23,14 @@ class DGraph: public Graph
 {
 public:
     
-    void *createNode()
+    DNode *createNode()
     {
         return new DNode( this, incNodeId());
     }
-    DNode *newNode()
+/*    DNode *newNode()
     {
         return static_cast< DNode *>( Graph::newNode());
-    }
+    }*/
     DNode * firstNode()
     {
         return static_cast< DNode *>( Graph::firstNode());

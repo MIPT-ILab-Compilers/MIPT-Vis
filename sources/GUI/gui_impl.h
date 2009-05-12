@@ -8,14 +8,9 @@
 /**
  * GUI implementation
  */
-#include <QtGui/QtGui>
+
 #include "gui_iface.h"
-#include "scene.h"
-#include "text_item.h"
-#include "rectangle.h"
-#include <math.h>
-#include "line.h"
-#include <QtGui/QApplication>
-#include <QtCore/QLineF>
+
+const qreal Pi = 3.14;
 
 #endif
