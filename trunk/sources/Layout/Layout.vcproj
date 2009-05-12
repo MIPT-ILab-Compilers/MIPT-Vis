@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="Layout"
 	ProjectGUID="{03E8B925-90BF-4287-A5A6-3E1C811250ED}"
 	RootNamespace="Layout"
@@ -151,11 +151,23 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\edge_aux.h"
+			>
+		</File>
+		<File
+			RelativePath=".\graph_aux.h"
+			>
+		</File>
+		<File
 			RelativePath=".\layout_iface.h"
 			>
 		</File>
 		<File
-			RelativePath=".\predecls.h"
+			RelativePath=".\layout_predecls.h"
+			>
+		</File>
+		<File
+			RelativePath=".\node_aux.h"
 			>
 		</File>
 	</Files>

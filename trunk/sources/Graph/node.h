@@ -143,7 +143,7 @@ public:
     /**
      * get node's corresponding graph
      */
-    virtual inline Graph * getGraph() const
+    inline Graph * getGraph() const
     {
         return graph;
     }
