@@ -22,6 +22,7 @@ inline GraphAux * NodeAux::getGraph() const
 inline NodeAux::NodeAux( GraphAux *graph_p, int _id):
 	Node( static_cast<Graph *>( graph_p), _id)
 	{};
+
 inline EdgeAux::EdgeAux( GraphAux *graph_p, int _id, NodeAux* _pred, NodeAux* _succ):
 	Edge( static_cast< Graph*>( graph_p), _id,  static_cast< Node*>( _pred),  static_cast< Node*>( _succ))
 	{};
