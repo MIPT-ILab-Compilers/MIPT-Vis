@@ -9,6 +9,7 @@
 #include "../Graph/graph_iface.h"
 #include "../Utils/utils_iface.h"
 #include "../GUI/gui_iface.h"
+#include "../Layout/layout_iface.h"
 
 /**
  * Graph library unit testing
