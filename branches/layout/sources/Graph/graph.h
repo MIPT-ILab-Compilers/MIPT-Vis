@@ -97,6 +97,13 @@ protected:
     {
         return edge_next_id++;
     }
+        
+    /** Allocation of memory for Edge */
+    virtual Edge * createEdge( Node * pred, Node * succ);
+    
+    /** Allocation of memory for Node */
+    virtual Node * createNode();
+
 public:
     /** Constructor */
     Graph();
@@ -119,11 +126,6 @@ public:
 	void writeNodesByXMLWriter( xmlTextWriterPtr writer);
 	void writeEdgesByXMLWriter( xmlTextWriterPtr writer);
     
-    /** Allocation of memory for Edge */
-    void * createEdge( Node * pred, Node * succ);
-    /** Allocation of memory for Node */
-    void * createNode();
-
     /** Create new node in graph */
     Node * newNode();
 
@@ -187,15 +189,19 @@ public:
      *
      * Initialize iterator with first edge and return this edge
      */
-    inline Edge* firstEdge() 
+    virtual inline Edge* firstEdge() 
     {
         e_it = edges;
+		if ( e_it == NULL)
+		{
+		    return NULL;
+		}
         return e_it->data();
     }
     /**
      * Advance iterator to next edge and return this edge. If end reached return NULL
      */
-    inline Edge* nextEdge()
+    virtual inline Edge* nextEdge()
     {
         e_it = e_it->next();
         return (e_it != NULL)? e_it->data() : NULL;
@@ -212,15 +218,19 @@ public:
      *
      * Initialize iterator with first node and return this node
      */
-    inline Node* firstNode()
+    virtual inline Node* firstNode()
     {
         n_it = nodes;
+		if ( n_it == NULL)
+		{
+		    return NULL;
+		}
         return n_it->data();
     }
     /** 
      * Advance iterator to next node and return this node. If end reached return NULL
      */
-    inline Node* nextNode()
+    virtual inline Node* nextNode()
     {
         n_it = n_it->next();
         return ( n_it != NULL)? n_it->data() : NULL;
@@ -242,7 +252,11 @@ public:
     /**
      * Obtain list of nodes in depth-first search order
      */
-    NodeListItem* DFS( Numeration n); 
+    virtual NodeListItem* DFS( Numeration n); 
+	/**
+     * Obtain list of nodes in breadth-first search order
+     */
+    virtual NodeListItem* BFS( Numeration n);
 
     /**
      * Clear unused markers from marked objects

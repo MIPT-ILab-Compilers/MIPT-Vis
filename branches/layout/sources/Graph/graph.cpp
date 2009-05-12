@@ -4,6 +4,8 @@
  * Copyright (C) 2009  Boris Shurygin
  */
 #include "graph_impl.h"
+#include <deque>
+#include <stack>
 
 /**
  *  Initialize
@@ -31,16 +33,16 @@ Graph::Graph()
 /**
  * Allocation of memory for Edge
  */
-void *Graph::createEdge( Node *pred, Node *succ)
+Edge *Graph::createEdge( Node *pred, Node *succ)
 {
     return new Edge( this, incEdgeId(), pred, succ);
 }
 /**
  * Allocation of memory for Node
  */
-void *Graph::createNode()
+Node *Graph::createNode()
 {
-    return new Node( this, incNodeId());
+    return new Node( (Graph *)this, incNodeId());
 }
 
 /**
@@ -135,7 +137,102 @@ dfsVisitRec( Node* node,
     }
     return new_item;
 }
-           
+
+/**
+ * Implementation of depth-first search visit routine with using a stack
+ */
+static inline NodeListItem*
+dfsVisitStack( Node* node,
+             NodeListItem* item,
+             Marker m,
+             Numeration n,
+             GraphNum* number)
+{
+    /** Attach the element to the list with already visited elements*/
+    NodeListItem* new_item = new NodeListItem( item, LIST_DIR_RDEFAULT, node);
+    Edge *e;
+	stack<Node *> st;
+	st.push( node);
+	while ( st.empty())
+	{
+		/** Execute the node from a stack 
+         * If the top of stack isn't the node without predecessors,
+	     * then current node is the last successor of its predecessor
+	     */
+		node = st.top();
+		st.pop();
+        /** Mark node to prevent search from visiting it again */
+        node->mark( m);
+        node->setNumber( n, *number);
+        *number = (*number) + 1;
+
+        /** Visit Succs skipping already visited */
+        for ( e = node->firstSucc(); !node->endOfSuccs(); e = node->nextSucc())
+        {
+            Node* succ = e->succ();
+            if ( !succ->isMarked( m))
+            {
+                /** Writing Succs in a stack */
+				st.push( succ);
+                
+            }
+        }
+	}
+    return new_item;
+}
+
+/**
+ * Implementation of breadth-first search. Starts from node without predecessors.
+ * Fuction return last node without predessors
+ */
+NodeListItem* Graph::BFS( Numeration num)
+{
+	deque<Node*> q;    //queue with two ends
+    GraphNum number = 0;
+    NodeListItem *item = NULL;
+	Node *child;
+	Node *n;
+	Edge *e;
+	/** Create a marker to distinguish visited nodes from unvisited ones */
+    Marker m = newMarker();
+	
+	for (  n = firstNode(); !endOfNodes(); n = nextNode())
+    {
+        /** 
+         * If firstPred is Null, then the node n has no predecessors, =>
+         * we should start BFS from this node.
+         */
+
+    if( isNullP( n->firstPred()))
+        {
+            graphassert( !n->isMarked( m));
+			item = new NodeListItem( item, LIST_DIR_RDEFAULT, n);
+            /** 
+             * Start BFS from node n, using marker m and numeration num.
+             * item is a list that at the end will contain all nodes in BF order.
+             * number is the number of the last visited node.
+             */
+            q.push_back( n);
+	       while ( !q.empty())
+	       {
+			   n = q.front();
+			   q.pop_front();
+			   n->setNumber( num,number);
+		       number = ( number) + 1;
+		       n->mark( m);
+		       for ( e = n->firstSucc(); !n->endOfSuccs(); e = n->nextSucc())
+		       {
+			       child = e->succ();
+			       if ( !child->isMarked( m)) continue;
+			       q.push_back( child);
+			   }
+		   }
+		}
+	}      
+	freeMarker( m);
+	return item;
+}
+
 /**
  * Implementation of depth-first search. Starts from nodes without predecessors.
  */
@@ -166,7 +263,14 @@ NodeListItem* Graph::DFS( Numeration num)
              * item is a list that at the end will contain all nodes in DF order.
              * number is the number of the last visited node.
              */
-            item = dfsVisitRec( n, item, m, num, &number);
+            /** 
+             * Start DFS using a stack
+             */
+            item = dfsVisitStack( n, item, m, num, &number);
+            /** 
+             * Start DFS using recursion
+             */
+			// item = dfsVisitRec( n, item, m, num, &number);
         }
     }   
     /** 
@@ -227,45 +331,7 @@ Graph::readNodesFromXmlDoc( xmlNode * a_node)
 	}
 }
 
-/**
- *  Init edge points
- */
-static void
-readEdgePointsFromXMLDoc( Edge * edge, xmlNode * a_node)
-{
-	xmlNode * cur_node;
-    for (cur_node = a_node; cur_node; cur_node = cur_node->next)
-	{
-		if ( cur_node->type == XML_ELEMENT_NODE
-			 && xmlStrEqual( cur_node->name, xmlCharStrdup("point")))
-		{
-			xmlAttr * props;
-			int n = -1;
-			for( props = cur_node->properties; props; props = props->next)
-			{
-				if ( xmlStrEqual( props->name, xmlCharStrdup("n")))
-				{
-					n = strtoul( ( const char *)( props->children->content), NULL, 0);
-				}
-			}
 
-			if ( n == -1) continue;
-			edge->setPoint( new EdgePoint, n);
-
-			for( props = cur_node->properties; props; props = props->next)
-			{
-				if ( xmlStrEqual( props->name, xmlCharStrdup("x")))
-				{
-					edge->point( n)->x = strtoul( ( const char *)( props->children->content), NULL, 0);
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("y")))
-				{
-					edge->point( n)->y = strtoul( ( const char *)( props->children->content), NULL, 0);
-				}
-			}
-		}
-	}
-
-}
 
 /**
  *  Init graph edges
@@ -326,7 +392,7 @@ Graph::readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 					edge->setLabel( ( char *)( props->children->content));
 				}
 			}
-			readEdgePointsFromXMLDoc( edge, cur_node->children);
+			edge->readEdgePointsFromXMLDoc( cur_node->children);
 		}
 	}
 }

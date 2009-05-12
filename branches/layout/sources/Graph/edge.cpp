@@ -45,6 +45,47 @@ Edge::detachFromNode( GraphDir dir)
 }
 
 /**
+ *  Read edge points
+ */
+void
+Edge::readEdgePointsFromXMLDoc( xmlNode * a_node)
+{
+	xmlNode * cur_node;
+    for (cur_node = a_node; cur_node; cur_node = cur_node->next)
+	{
+		if ( cur_node->type == XML_ELEMENT_NODE
+			 && xmlStrEqual( cur_node->name, xmlCharStrdup("point")))
+		{
+			xmlAttr * props;
+			int n = -1;
+			for( props = cur_node->properties; props; props = props->next)
+			{
+				if ( xmlStrEqual( props->name, xmlCharStrdup("n")))
+				{
+					n = strtoul( ( const char *)( props->children->content), NULL, 0);
+				}
+			}
+
+			if ( n == -1) continue;
+
+			setPoint( new EdgePoint, n);
+
+			for( props = cur_node->properties; props; props = props->next)
+			{
+				if ( xmlStrEqual( props->name, xmlCharStrdup("x")))
+				{
+					point( n)->x = strtoul( ( const char *)( props->children->content), NULL, 0);
+				} else if ( xmlStrEqual( props->name, xmlCharStrdup("y")))
+				{
+					point( n)->y = strtoul( ( const char *)( props->children->content), NULL, 0);
+				}
+			}
+		}
+	}
+
+}
+
+/**
  * Write edge points by xml writer
  */
 void

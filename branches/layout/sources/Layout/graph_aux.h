@@ -18,9 +18,9 @@ public:
 	{};
 
 	/** Allocation of memory for Edge */
-    void * createEdge( NodeAux * pred, NodeAux * succ);
+    EdgeAux * createEdge( NodeAux * pred, NodeAux * succ);
 	/** Allocation of memory for Node */
-    void * createNode();
+    NodeAux * createNode();
 
 	/**
 	* Creation node in graph

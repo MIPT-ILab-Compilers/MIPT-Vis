@@ -4,31 +4,26 @@
  */
 #include "gui_impl.h"
 
-
-/**
- * Test function for Qt. It create a window with text "Qt works!"
- */
-bool showGraph( int argc, char * argv[], Graph * graph)
-{
-    QApplication app( argc, argv);
-    QLabel *label = new QLabel( "Qt works!");
-    label->show();
-    app.exec();
-    return true;
-}
-
 /** 
  * Test scene with rectangles and text
  */
-bool showScene( int argc, char * argv[], Graph * graph)
+bool showScene( int argc, char * argv[], GuiGraph * graph, QApplication * app)
 {
-    QApplication app2( argc, argv);
-    Scene * scene = new Scene();
-    scene->setSceneRect( QRectF( 0, 0, 1000, 1000));
-    QGraphicsView * view = new QGraphicsView( scene);
-    view->setWindowTitle
-        ( "Double click on a free space to create a node. And one click on a text of the node to edit it");
+    if(!graph || !app)
+        return false;
+    graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
+
+    QGraphicsView * view = new QGraphicsView( graph);
+    view->setCacheMode( QGraphicsView::CacheBackground );
+    view->setViewportUpdateMode( QGraphicsView::FullViewportUpdate);
+    view->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    view->setOptimizationFlags( QGraphicsView::DontSavePainterState | QGraphicsView::DontClipPainter);
+    if(graph->getNodeItem())
+        view->centerOn( graph->getNodeItem());
+    view->setWindowTitle( "test_graph2.xml");
     view->show();
-    app2.exec();
+
+    app->exec();
+
     return true;
 }
