@@ -30,7 +30,7 @@ GuiPoint::GuiPoint( GuiEdge * edge, QGraphicsItem * parent, QGraphicsScene * sce
         edge( edge),
         isFixed( false)
 {
-//    setFlag( QGraphicsItem::ItemStacksBehindParent);
+    setFlag( QGraphicsItem::ItemStacksBehindParent);
     setMyColor( Qt::red);
     setMyAdjust( 1);
     setZValue( 0);
