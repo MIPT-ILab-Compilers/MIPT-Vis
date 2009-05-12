@@ -13,6 +13,10 @@ int main(int argc, char **argv)
 	if ( !uTestforBFS())
 		return -1;
 
+	/** Test List */
+    if ( !uTestList())
+		return -1;
+
 	/** Test GUI */
     if ( !uTestGui( argc, argv))
 		return -1;

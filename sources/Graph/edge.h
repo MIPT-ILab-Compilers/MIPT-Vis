@@ -135,7 +135,7 @@ class Edge: public Marked, public Numbered, public EdgeProperties
     friend class Graph;
     friend class Node;
 protected:
-    /** Constructors are made private, only nodes and graph can create edges */
+    /** Constructors are made protected, only nodes and graph can create edges */
     Edge( Graph *graph_p, int _id, Node *_pred, Node* _succ):
         unique_id( _id), graph( graph_p), graph_it()
     {
@@ -195,7 +195,7 @@ public:
     }
 
     /**
-     * Detach edge from a node.
+     * detach edge from a node.
      * Made private as it is low-level routine needed for implementation of edge-node relationship
      */
     void detachFromNode( GraphDir dir);

@@ -149,7 +149,7 @@ public:
         {
             n_it = it->next();
         }
-        it->Detach();
+        it->detach();
     }
 
     /**
@@ -166,7 +166,7 @@ public:
         {
             e_it = it->next();
         }
-        it->Detach();
+        it->detach();
     }
 
     /**

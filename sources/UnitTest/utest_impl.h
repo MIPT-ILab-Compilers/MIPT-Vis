@@ -9,6 +9,7 @@
 #include "../Graph/graph_iface.h"
 #include "../Utils/utils_iface.h"
 #include "../GUI/gui_iface.h"
+#include "../Layout/layout_iface.h"
 
 /**
  * Graph library unit testing
@@ -16,4 +17,9 @@
 bool uTestGraph();
 bool uTestGui( int argc, char * argv[]);
 bool uTestforBFS();
+/**
+ * Utils library unit testing
+ */
+bool uTestList();
+
 #endif

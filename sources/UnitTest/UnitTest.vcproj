@@ -121,6 +121,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\libxml\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
@@ -187,7 +188,19 @@
 			>
 		</File>
 		<File
+			RelativePath=".\test_graph.xml"
+			>
+		</File>
+		<File
 			RelativePath=".\utest_impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\utest_impl.h"
+			>
+		</File>
+		<File
+			RelativePath=".\utils_utest.cpp"
 			>
 		</File>
 	</Files>
