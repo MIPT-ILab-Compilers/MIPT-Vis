@@ -9,6 +9,10 @@
  */
 bool showScene( int argc, char * argv[], GuiGraph * graph, QApplication * app)
 {
+    QApplication app2( argc, argv);
+//
+	QMainWindow mw;
+//
     if(!graph || !app)
         return false;
     graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
@@ -21,7 +25,20 @@ bool showScene( int argc, char * argv[], GuiGraph * graph, QApplication * app)
     if(graph->getNodeItem())
         view->centerOn( graph->getNodeItem());
     view->setWindowTitle( "test_graph2.xml");
-    view->show();
+ //   view->show();
+
+///
+	QHBoxLayout *layout = new QHBoxLayout;
+
+	layout->addWidget(view);
+
+    QWidget *widget = new QWidget;
+    widget->setLayout(layout);
+
+    mw.setCentralWidget(widget);
+
+    mw.show();
+///
 
     app->exec();
 
