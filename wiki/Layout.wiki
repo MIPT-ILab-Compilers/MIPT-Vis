@@ -13,18 +13,26 @@ Layout tries to achieve several goals:
 
 
 = Core algorithm =
-The implementation is based on the idea of laying directed acyclic graph. The placement of nodes employs the assumption that graph has general direction of edges. The nodes are vertically arranged according to their rank which is essentially some reflection of distance from entry node. This ensures that graph has general direction of edges from top to bottom ( goal 1). Every edge now has corresponding rank interval ( rank( succ) - rank( pred) ). Dummy nodes are inserted for edges with rank interval greater than 1.
+The implementation is based on the idea of laying directed acyclic graph. The placement of nodes employs the assumption that graph has general direction of edges. The nodes are vertically arranged into levels according to their rank which is essentially some reflection of distance from entry node. This ensures that graph has general direction of edges from top to bottom ( goal 1). Every edge now has corresponding rank interval ( rank( succ) - rank( pred) ). Dummy nodes are inserted for edges with rank interval greater than 1.
 To minimize edge crossings we try to minimize edge crossings between ranks. To do this we employ barycentric/median heuristic. As crossings number depends solely on relative positions of nodes in two adjacent ranks barycentric/median method arranges nodes according to _average = sum of preds positions / number of preds_ ( barycentric) or _median position among predecessors_ ( median heuristic). After relative positions are defined the absolute coordinates are calculated by series of passes up and down the ranks. The final step and an optional step is edge drawing.
 
 === Making Graph Acyclic ===
+    As the rest of the phases rely on that graph is acyclic and the input graph does not have to be acyclic we should somehow force graph to be so. The basic idea is to either remove or reverse some of graph's edges. As we try to draw most edges in one direction it is natural to try reversing/removing edges that contradict overall graph's direction. For example if we classify edges according to DFS starting from top ( or from nodes with no predecessors) we can reverse the backedges turning them into forward edges. However it is subject to discussion if the number of reversed edge should be minimized or how to draw loops. Example of different decisions can be found when a backedge source is a node with only one successor in this situation we could reverse not only backedge but we can reverse all edges till we encounter a node with multiple successors. This would result in drawing loop nodes in more compact way ( nodes on back path would be drawn near loop body in contrast with being drawn under the loop when only the backedge is reversed).
 
 === Ranking ===
+    Ranking tries to distribute nodes vertically so that every node is drawn on deeper levels ( lower) than its predecessors. One of simple ranking methods is assign rank according to the maximum length of path from top node ( or from pseudo top node if the graph doesn't have one) to bottom. A variation of this is using maximum length of path to bottom node.
+    More complicated algorithm should try to distribute nodes minimizing the width of each rank. This task is similar to scheduling a DAG to a multirocessor.
+    After ranking is done the auxiliary nodes are built on edges that connect nodes more than one level away. After this we obtain the auxiliary graph and subsequent phases use for the transformations.
 
 === Intra-rank ordering ===
+    The order of nodes ( from left to right) in two adjacent levels determines the ammount of crossings between the edges from upper level to the lower one. Thus number of crossings can be minimized by manipulating order of nodes in ranks. The ordering phase goes from top level to bottom and rearranges nodes inside each leve with respect to the positions of predecessors on previous level. The common arrangment methods are barycentric heuristic and median heuristic. The later seems to perform better as noted by variuos researchers.
+    Often a spannnig tree is build on a ranking step, and nodes in ranks are additionaly sorted to prevent crossing of tree edges.
 
 === Coordinates calculation ===
+    After ordering we obtain the relative coordinates of nodes in each rank. The final horizontal coordinate is assinged with the goal of total edge length minimization. This can be done by traversing levels up and down in iteration. When processing one level we can move a node horizontally to prevent their overlapping and trying to place node in median position or in position of barycenter, but this time the barycenter and median is selected with respect to traverse direction. We consider predecessors of a node on way down and its successors on the way up.
 
 === Edge routing ===
+    After we assined coordinates to nodes we use pseudo nodes on edges as the control points for edges. More robust edge routing is a post-processing step that tries to move control points of edges to make them more vertical, distribute edges on the plane, so that they would be more readable or simply shorten them. Some methods even reroute edges using pathfinding algorithms.
 
-
-*NOT FINISHED*
+=== Rendering ===
+    A graph with defined node coordinates and edge control points can be rendered. Of course the edges reversed in processed are drawn according to their original directions. Although placement is done already quality of the result is very much influenced by this step. For example drawing edges as splines, good choice of font/node size proportion, line width and using effects like anti-aliasing could significantly improve the picture.
