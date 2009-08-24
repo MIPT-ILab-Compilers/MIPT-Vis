@@ -1,0 +1,24 @@
+#summary Flags for getting IR in ICC and GCC are described here.
+
+= ICC =
+
+To dump IR in ICC use the following command line:
+{{{
+icc <your src-file> -mP2OPT_il0_print=<num>
+}}}
+where _num_ is a phase number.<br>
+*Stderr* is used as the output stream.<br>
+<br>
+If _num_ = -1 then the dump will be printed after each phase.<br>
+Phase numbering isn't successive, the numbers of phases seem to be chosen at random.<br>
+<br>
+Numbers of the most useful phases:
+  * 6    - after building CFG
+  * 2510 - after some optimizations.
+<br>
+= GCC =
+To dump IR in GCC use the following command line:
+{{{
+gcc <your src-file> -df
+}}}
+The output will be in src-file.cfg
