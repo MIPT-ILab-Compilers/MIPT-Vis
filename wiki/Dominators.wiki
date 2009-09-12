@@ -1,4 +1,5 @@
 #summary Some info about dominators, postdominators, dominance frontier (DF) and iterated DF
+#labels Featured
 =Dominators, postdominators, dominance frontier=
 
     1) A flowgraph _G = (V, A, r)_ is a directed graph with |_V_| = n vertices and |_A_| = m edges such that every vertex is reachable from a distinguished root vertex _r_ from _V_ .
