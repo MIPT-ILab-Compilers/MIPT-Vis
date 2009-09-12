@@ -1,5 +1,5 @@
 #summary Layout module overview.
-#labels Phase-Design
+#labels Phase-Design,Featured
 
 = Layout Project =
 
