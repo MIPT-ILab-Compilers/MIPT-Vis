@@ -1,4 +1,5 @@
 #summary Some information about graphs
+#labels Featured
 
 = Graphs =
 
