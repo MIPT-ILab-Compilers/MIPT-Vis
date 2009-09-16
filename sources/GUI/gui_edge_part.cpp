@@ -10,9 +10,7 @@
  */
 GuiEdgePart::GuiEdgePart( GuiEdge * e, GuiPoint * start, GuiPoint * end, QGraphicsScene * scene): 
     QGraphicsItem( NULL, scene),
-    edge( e),
-    startPoint( start),
-    endPoint( end)
+    edge( e)
 {
     assert( start != NULL);
     assert( end != NULL);
@@ -20,6 +18,8 @@ GuiEdgePart::GuiEdgePart( GuiEdge * e, GuiPoint * start, GuiPoint * end, QGraphi
     setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
     start->setEnd( this);
     end->setStart( this);
+	startPoint = start;
+	endPoint = end;
     update();
 }
 
@@ -154,6 +154,7 @@ GuiPoint * GuiEdgePart::addPoint( QPointF p)
 {
     GuiPoint * point = new GuiPoint( edge, scene());
     point->setPos( p);
+    point->setInit();
     GuiEdgePart* seg = new GuiEdgePart( edge, point, end(), scene()); 
     seg->updatePosition();
     setEnd( point);
@@ -167,7 +168,8 @@ GuiPoint * GuiEdgePart::addPoint( QPointF p)
         edge->setPoint( new EdgePoint(), n);
         edge->point( n)->x = p.x();
 		edge->point( n)->y = p.y();
+        updatePosition();
+        edge->updatePoints();
     }
-    updatePosition();
     return point;
 }

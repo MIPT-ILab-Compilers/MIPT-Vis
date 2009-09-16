@@ -92,6 +92,10 @@ QVariant GuiNode::itemChange( GraphicsItemChange change, const QVariant &value)
 {
     if( change == QGraphicsItem::ItemPositionChange)
     {
+        setX( QGraphicsItem::x());
+        setY( QGraphicsItem::y());
+        setWidth( boundingRect().width());
+        setHeight( boundingRect().height());
         foreach( GuiEdge * line, edges)
         {
             if( line != NULL)
