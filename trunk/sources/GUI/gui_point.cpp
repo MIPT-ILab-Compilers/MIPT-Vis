@@ -11,14 +11,15 @@ GuiPoint::GuiPoint( GuiEdge * edge, QGraphicsScene * scene):
         QObject(),
         QGraphicsItem( NULL, scene),
         edge( edge),
-        isFixed( false)
+        isFixed( false),
+        isInit( false)
 {
     setMyColor( Qt::red);
     setMyAdjust( 1);
     setZValue( 0);
     setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
-    setEnd( 0);
-    setStart( 0);
+    setEnd( NULL);
+    setStart( NULL);
 }
 
 /**
@@ -28,14 +29,15 @@ GuiPoint::GuiPoint( GuiEdge * edge, QGraphicsItem * parent, QGraphicsScene * sce
         QObject(),
         QGraphicsItem( parent, scene),
         edge( edge),
-        isFixed( false)
+        isFixed( false),
+        isInit( false)
 {
 //    setFlag( QGraphicsItem::ItemStacksBehindParent);
     setMyColor( Qt::red);
     setMyAdjust( 1);
     setZValue( 0);
-    setEnd( 0);
-    setStart( 0);
+    setEnd( NULL);
+    setStart( NULL);	
 }
 /**
  * 
@@ -87,9 +89,17 @@ QVariant GuiPoint::itemChange( GraphicsItemChange change, const QVariant &value)
 {
     if( change == QGraphicsItem::ItemPositionChange)
     {
-        if( edge != NULL)
+        if( end() != NULL)
         {
-            edge->updatePosition();
+            end()->updatePosition();
+        }
+        if( start() != NULL)
+        {
+            start()->updatePosition();
+        }
+        if( edge != NULL && init())
+        {
+            edge->updatePoints();
         }
     }
     return value;

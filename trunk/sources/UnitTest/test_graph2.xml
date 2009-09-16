@@ -1,31 +1,33 @@
 <?xml version="1.0"?>
 <graph>
-	<node id="0" x="40" y="36" width="106" height="28" label="n0" color="red" shape="ellipse"/>
-	<node id="1" x="170" y="53" width="106" height="28" label="n1" color="red" shape="rectangle"/>
-	<node id="2" x="302" y="29" width="106" height="28" label="n2" color="red" shape="rectangle"/>
-	<node id="3" x="650" y="53" width="106" height="28" label="n3" color="red" shape="rectangle"/>
-	<node id="4" x="432" y="129" width="106" height="28" label="n4" color="red" shape="rectangle"/>
-	<node id="5" x="379" y="286" width="106" height="28" label="n5" color="red" shape="rectangle"/>
-	<node id="6" x="168" y="273" width="106" height="28" label="n6" color="red" shape="rectangle"/>
-	<node id="7" x="213" y="402" width="106" height="28" label="n7" color="red" shape="ellipse"/>
-	<edge id="0" from="0" to="1" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
+	<node id="7" x="153" y="453" width="106" height="28" label="n7" color="red" shape="ellipse"/>
+	<node id="6" x="163" y="293" width="106" height="28" label="n6" color="red" shape="rectangle"/>
+	<node id="5" x="451" y="450" width="106" height="28" label="n5" color="red" shape="rectangle"/>
+	<node id="4" x="443" y="354" width="106" height="28" label="n4" color="red" shape="rectangle"/>
+	<node id="3" x="628" y="291" width="106" height="28" label="n3" color="red" shape="rectangle"/>
+	<node id="2" x="398" y="212" width="106" height="28" label="n2" color="red" shape="rectangle"/>
+	<node id="1" x="338" y="108" width="106" height="28" label="n1" color="red" shape="rectangle"/>
+	<node id="0" x="324" y="30" width="106" height="28" label="n0" color="red" shape="ellipse"/>
+	<edge id="8" from="5" to="2" points_num="1" label="back edge" prob="99" thickness="9" color="red" style="solid">
+		<point n="1" x="353" y="312"/>
 	</edge>
-	<edge id="1" from="1" to="2" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
-	</edge>
-	<edge id="2" from="2" to="3" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
-	</edge>
-	<edge id="3" from="3" to="4" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
-	</edge>
-	<edge id="4" from="3" to="5" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
-	</edge>
-	<edge id="5" from="2" to="6" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
+	<edge id="7" from="4" to="2" points_num="1" label="back edge" prob="99" thickness="9" color="red" style="solid">
+		<point n="1" x="462" y="287"/>
 	</edge>
 	<edge id="6" from="6" to="7" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
 	</edge>
-	<edge id="7" from="4" to="2" points_num="1" label="back edge" prob="99" thickness="9" color="red" style="solid">
-		<point n="1" x="200" y="100"/>
+	<edge id="5" from="2" to="6" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
 	</edge>
-	<edge id="8" from="5" to="2" points_num="1" label="back edge" prob="99" thickness="9" color="red" style="solid">
-		<point n="1" x="300" y="100"/>
+	<edge id="4" from="3" to="5" points_num="1" label="simple edge" prob="100" thickness="10" color="green" style="solid">
+		<point n="1" x="672" y="379"/>
+	</edge>
+	<edge id="3" from="3" to="4" points_num="1" label="simple edge" prob="100" thickness="10" color="green" style="solid">
+		<point n="1" x="605" y="334"/>
+	</edge>
+	<edge id="2" from="2" to="3" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
+	</edge>
+	<edge id="1" from="1" to="2" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
+	</edge>
+	<edge id="0" from="0" to="1" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
 	</edge>
 </graph>

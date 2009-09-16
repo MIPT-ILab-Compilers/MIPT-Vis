@@ -26,12 +26,17 @@ public:
     {
         startPoint = startItem;
     }
+    inline GuiEdgePart * getEdgePart()
+    {
+        return edgePart.last();
+    }
     void addPoint( GuiPoint * point);
     void addEdgePart( GuiEdgePart * part);
-    void initPoint( GuiNode * startItem, GuiNode * endItem);
+    void initNode( GuiNode * startItem, GuiNode * endItem);
     void showPoints();
     void hidePoints();
     void updatePosition();
+    void updatePoints();
 
 protected:
     void mousePressEvent( QGraphicsSceneMouseEvent * event);

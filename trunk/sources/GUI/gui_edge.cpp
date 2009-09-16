@@ -19,6 +19,30 @@ GuiEdge::GuiEdge(  GuiGraph * graph_p, int _id, GuiNode * startItem, GuiNode * e
     endPoint = 0;
     setFlag( QGraphicsItem::ItemIsSelectable, true);
 }
+
+/**
+ * Update position the points of the edge
+ */
+void GuiEdge::updatePoints()
+{
+    if( startPoint != NULL && startPoint->end() != NULL)
+    {
+        GuiPoint * next = this->startPoint->end()->end();
+        for( int i = 1; i <= this->pointsNum(); i++)
+        {
+            if( next != NULL)
+            {
+                this->point( i)->x = next->pos().x();
+                this->point( i)->y = next->pos().y();
+            }
+            if( next->end() != NULL)
+            {
+                next = next->end()->end();
+            }
+        }
+    }
+}
+
 /**
  * Update position the edge
  */
@@ -27,9 +51,9 @@ void GuiEdge::updatePosition()
     foreach( GuiPoint * point, points)
     {
         point->updatePosition();
-        if( point->end() !=NULL)
+        if( point->end() != NULL)
             point->end()->updatePosition();
-        if( point->start() !=NULL)    
+        if( point->start() != NULL)    
             point->start()->updatePosition();
     } 
     update();
@@ -44,14 +68,16 @@ void GuiEdge::addPoint( GuiPoint * point)
 }
 
 /**
- * 
+ * Init start and end points for the edge. Also init edgePart  between points
  */
-void GuiEdge::initPoint( GuiNode * startItem, GuiNode * endItem)
+void GuiEdge::initNode( GuiNode * startItem, GuiNode * endItem)
 {
     startPoint = new GuiPoint( this, startItem, scene());
     endPoint = new GuiPoint( this, endItem, scene());
-    startPoint->setPos( startItem->boundingRect().center());
-    endPoint->setPos( endItem->boundingRect().center());
+    startPoint->setPos( startItem->QGraphicsItem::pos());
+    startPoint->setInit();
+    endPoint->setPos( endItem->QGraphicsItem::pos());
+    endPoint->setInit();
     GuiEdgePart * ep = new GuiEdgePart( this, startPoint, endPoint, scene());
     edgePart << ep;
     startPoint->setEnd( ep);

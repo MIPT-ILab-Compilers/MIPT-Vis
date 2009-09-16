@@ -22,8 +22,12 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         GuiNode * node = ( GuiNode *)newNode();
         node->setPos( mouseEvent->scenePos());
         node->setColor( "green");
-        node->setLabel( "NODE");
+        node->setLabel( "Node" + number);
         node->setShape( "rectangle");
+        node->setX( node->QGraphicsItem::x());
+        node->setY( node->QGraphicsItem::y());
+        node->setWidth( node->boundingRect().width());
+        node->setHeight( node->boundingRect().height());
         QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
     }
     QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
@@ -53,10 +57,29 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
 	for ( node = ( GuiNode *)firstNode(); !endOfNodes(); node = ( GuiNode *)nextNode())
 	{
 		node->setPos( node->Node::x(), node->Node::y());
+        node->setX( node->QGraphicsItem::x());
+        node->setY( node->QGraphicsItem::y());
+        node->setMyAdjust( 3);
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); !endOfEdges(); edge = ( GuiEdge *) nextEdge())
 	{
-		edge->updatePosition();
+        if ( edge != NULL)
+        {
+            for( int i = 1; i <= edge->pointsNum(); i++)
+            {
+                GuiPoint * point = new GuiPoint( edge, this);
+                point->setPos( edge->point( i)->x, edge->point( i)->y);
+                point->setInit();
+                GuiEdgePart* seg = new GuiEdgePart( edge, point, edge->endItem(), this); 
+                seg->updatePosition();
+                edge->getEdgePart()->setEnd( point);
+                edge->getEdgePart()->setSelected( false);
+                edge->addPoint( point);
+                edge->addEdgePart( seg);
+                edge->showPoints();
+            }
+		    edge->updatePosition();
+        }
 	}
 
 }
@@ -137,7 +160,7 @@ GuiEdge * GuiGraph::createEdge( Node * pred, Node * succ)
 {
 	GuiEdge * e = new GuiEdge( this, incEdgeId(), ( GuiNode *)pred, ( GuiNode *)succ);
 	addItem( e);
-    e->initPoint( ( GuiNode *)pred, ( GuiNode *)succ);
+    e->initNode( ( GuiNode *)pred, ( GuiNode *)succ);
     e->initPoints( 1);
     e->setStyle( "Solid");
     ( ( GuiNode *)pred)->addEdge( e);

@@ -49,6 +49,15 @@ public:
     {
         return isFixed;
     }
+    inline void setInit( bool init = true)
+    {
+        isInit = init;
+    }
+
+    inline bool init()
+    {
+        return isInit;
+    }
     inline GuiEdgePart * end() const
     {
         return endPart;
@@ -90,5 +99,6 @@ private:
     GuiEdgePart * endPart;
     GuiEdgePart * startPart;
     bool isFixed;
+    bool isInit;
 };
 #endif
