@@ -2,7 +2,7 @@
 
 = Contact list =
 
-All contacts of team members are listed [http://spreadsheets.google.com/ccc?key=pDFNkCgIEPVqfezkLoL-8Xw&hl=ru here]
+All contacts of team members are listed [ here]
 There are:
  * Name, surname
  * E-mail(Gtalk account)
