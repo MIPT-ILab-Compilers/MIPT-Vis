@@ -3,13 +3,15 @@
  * Copyright (C) 2009  Lev Rumyantsev, Ivan Mashintsev
  */
 #include "gui_impl.h"
+#include "gui_mw.h"
 
 /** 
  * Test scene with rectangles and text
  */
 bool showScene( int argc, char * argv[], GuiGraph * graph, QApplication * app)
 {
-    QMainWindow mw;
+    //QMainWindow mw;
+	MainWindow mw;
 
     if(!graph || !app)
         return false;
