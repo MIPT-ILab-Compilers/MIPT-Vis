@@ -171,11 +171,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath=".\Functions.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Functions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Parameters.h"
 				>
 			</File>
 			<File
 				RelativePath=".\parser.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Parser_main.cpp"
 				>
 			</File>
 		</Filter>
