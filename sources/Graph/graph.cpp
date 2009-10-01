@@ -515,7 +515,7 @@ Graph::writeToXML( const char *filename)
 
 
     /* Create a new XmlWriter for uri, with no compression. */
-    writer = xmlNewTextWriterFilename( "filename.xml", 0);
+    writer = xmlNewTextWriterFilename( filename, 0);
     assert( writer != NULL);
     
     xmlTextWriterStartDocument( writer, NULL, NULL, NULL);
