@@ -6,10 +6,16 @@
 #define MAINWINDOW_H
 
 #include <QtGui/QMainWindow>
+#include "gui_impl.h"
 
 QT_BEGIN_NAMESPACE
 class QMenu;
 class QAction;
+class QGraphicsView;
+class QHBoxLayout;
+class QWidget;
+class QString;
+class GuiGraph;
 QT_END_NAMESPACE
 
 /**
@@ -33,6 +39,11 @@ private:
     QMenu *fileMenu;
     QAction *loadAct;
     QAction *saveAct;
+	QGraphicsView *view;
+	QHBoxLayout *layout;
+	QWidget *widget;
+	GuiGraph *graph;
+	QString fileName;
 };
 
 #endif
