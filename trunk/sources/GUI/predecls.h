@@ -10,6 +10,7 @@ class GuiGraph;
 class GuiNode;
 class GuiEdge;
 class GuiEdgePart;
+class MainWindow;
 
 #include <math.h>
 #include "direct.h"
