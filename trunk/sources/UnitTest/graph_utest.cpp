@@ -288,11 +288,10 @@ bool uTestGui( int argc, char * argv[])
     strcat_s( file, 1024, "/test_graph2.xml");
     
 	
-	//GuiGraph * graph = new GuiGraph( file);
-	GuiGraph * graph = new GuiGraph();
+    //GuiGraph * graph = new GuiGraph( file);
+    GuiGraph * graph = new GuiGraph();
     
-	if ( graph == NULL)
-		return false;
+    if ( graph == NULL) return false;
 
     graph->debugPrint();
 */
@@ -301,12 +300,12 @@ bool uTestGui( int argc, char * argv[])
 
     /** Test writing to xml */
 
-	/*
-	file = _getcwd( NULL, 1024);
+/*
+    file = _getcwd( NULL, 1024);
     strcat_s( file, 1024,"/test_out.xml");
     graph->writeToXML( file);
 
     delete graph;
-	*/
+*/
     return true;
 }

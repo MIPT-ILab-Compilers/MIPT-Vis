@@ -9,7 +9,7 @@
  */
 bool showScene( int argc, char * argv[], QApplication *app)
 {
-	MainWindow mw;
+    MainWindow mw;
     mw.show();
     app->exec();
     return true;
