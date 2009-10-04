@@ -13,10 +13,11 @@
 #include "gui_graph.h"
 #include "gui_edge_part.h"
 #include "gui_mw.h"
+#include "gui_view.h"
 
 
 bool showGraph( int argc, char * argv[], Graph * graph);
 
-bool showScene( int argc, char * argv[], /*GuiGraph * graph,*/ QApplication * app);
+bool showScene( int argc, char * argv[], QApplication * app);
 
 #endif

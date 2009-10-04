@@ -157,6 +157,10 @@
 				RelativePath=".\tmp\moc\moc_gui_point.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\tmp\moc\moc_gui_view.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Interface"
@@ -240,7 +244,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC gui_mw.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_mw.h -o tmp\moc\moc_gui_mw.cpp"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_mw.h -o tmp\moc\moc_gui_mw.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="gui_mw.h"
 						Outputs=" tmp\moc\moc_gui_mw.cpp"
 					/>
@@ -251,7 +255,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC gui_mw.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_mw.h -o tmp\moc\moc_gui_mw.cpp"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_mw.h -o tmp\moc\moc_gui_mw.cpp&#x0D;&#x0A;"
 					/>
 				</FileConfiguration>
 			</File>
@@ -312,6 +316,36 @@
 						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_point.h -o tmp\moc\moc_gui_point.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="gui_point.h"
 						Outputs="tmp\moc\moc_gui_point.cpp"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\gui_view.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\gui_view.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC gui_view.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_view.h -o tmp\moc\moc_gui_view.cpp"
+						AdditionalDependencies="gui_view.h"
+						Outputs=" tmp\moc\moc_gui_view.cpp"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="MOC gui_view.h"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_view.h -o tmp\moc\moc_gui_view.cpp"
+						AdditionalDependencies="gui_view.h"
+						Outputs=" tmp\moc\moc_gui_view.cpp"
 					/>
 				</FileConfiguration>
 			</File>

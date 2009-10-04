@@ -1,5 +1,5 @@
 /**
- * File: GUI/GuiMW.h - Implementational header for GuiGraph of GUI in MiptVis tool.
+ * File: GUI/GuiMW.h - Implementational header for MainWindow of GUI in MiptVis tool.
  * Copyright (C) 2009  MiptVis, Le Manh Ha
  */
 #ifndef MAINWINDOW_H
@@ -11,7 +11,7 @@
 QT_BEGIN_NAMESPACE
 class QMenu;
 class QAction;
-class QGraphicsView;
+class GuiView;
 class QHBoxLayout;
 class QWidget;
 class QString;
@@ -39,11 +39,11 @@ private:
     QMenu *fileMenu;
     QAction *loadAct;
     QAction *saveAct;
-	QGraphicsView *view;
-	QHBoxLayout *layout;
-	QWidget *widget;
-	GuiGraph *graph;
-	QString fileName;
+    GuiView *view;
+    QHBoxLayout *layout;
+    QWidget *widget;
+    GuiGraph *graph;
+    QString fileName;
 };
 
 #endif
