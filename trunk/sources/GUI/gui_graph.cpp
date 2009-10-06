@@ -54,14 +54,14 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
 
     readFromXML( filename);
 
-	for ( node = ( GuiNode *)firstNode(); !endOfNodes(); node = ( GuiNode *)nextNode())
+	for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
 		node->setPos( node->Node::x(), node->Node::y());
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
         node->setMyAdjust( 3);
 	}
-	for ( edge = ( GuiEdge *)firstEdge(); !endOfEdges(); edge = ( GuiEdge *) nextEdge())
+	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{
         if ( edge != NULL)
         {
@@ -188,7 +188,7 @@ GuiNode * GuiGraph::createNode()
 
 void GuiGraph::initPos()
 {
-    for( Node * nd = firstNode(); nd != NULL; nd = nextNode())
+    for( Node * nd = firstNode(); isNotNullP( nd); nd = nd->nextNode())
     {
         GuiNode * gn = ( GuiNode *)newNode();
         gn->setPos( (qreal)nd->x(), (qreal)nd->y());

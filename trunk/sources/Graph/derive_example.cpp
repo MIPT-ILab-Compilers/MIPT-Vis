@@ -31,14 +31,6 @@ public:
     {
         return static_cast< DNode *>( Graph::newNode());
     }*/
-    DNode * firstNode()
-    {
-        return static_cast< DNode *>( Graph::firstNode());
-    }
-    DNode * nextNode()
-    {
-        return static_cast< DNode *>( Graph::nextNode());
-    }
 };
 
 DNode::DNode( DGraph *graph, int _id):

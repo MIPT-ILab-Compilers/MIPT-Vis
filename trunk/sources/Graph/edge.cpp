@@ -12,7 +12,7 @@
 
 Edge::~Edge()
 {
-    graph->deleteEdge( &graph_it);
+    graph->detachEdge( this);
 }
 
 /**

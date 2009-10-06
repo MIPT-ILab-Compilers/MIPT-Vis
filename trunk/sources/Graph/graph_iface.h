@@ -7,9 +7,10 @@
 #define GRAPH_IFACE_H
 
 #include "predecls.h"
-#include "graph.h"
 #include "node.h"
 #include "edge.h"
+#include "graph.h"
+
 
 
 #endif
