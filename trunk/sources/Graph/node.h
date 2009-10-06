@@ -252,9 +252,24 @@ public:
     }
 
     /**
+	 * Return next node of a graph
+	 */
+	inline Node* nextNode()
+    {
+        return ( my_it.next() != NULL )? my_it.next()->data() : NULL;
+    }
+
+	/**
+	 * Return previous node of a graph
+	 */
+    inline Node* prevNode()
+    {
+        return ( my_it.prev() != NULL )? my_it.prev()->data() : NULL;
+    }
+
+	/**
      * Print node in DOT format to stdout
      */
     virtual void debugPrint();
-
 };
 #endif

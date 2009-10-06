@@ -94,12 +94,12 @@ Graph::debugPrint()
     Edge *e;
     out( "digraph{");
     /** Print nodes */
-    for (  n = firstNode(); !endOfNodes(); n = nextNode())
+    for (  n = firstNode(); isNotNullP( n); n = n->nextNode())
     {
         n->debugPrint();
     }
     /** Print edges */
-    for (  e = firstEdge(); !endOfEdges(); e = nextEdge())
+    for (  e = firstEdge(); isNotNullP( e); e = e->nextEdge())
     {
         e->debugPrint();
     }
@@ -543,15 +543,16 @@ Graph::clearNumerationsInObjects()
 {
     Node *n;
     Edge *e;
+
     /** Clean markers in nodes */
-    for (  n = firstNode(); !endOfNodes(); n = nextNode())
+    for (  n = firstNode(); isNotNullP( n); n = n->nextNode())
     {
         clearUnusedNumerations( static_cast<Numbered *>(n));
     }
     /** Clean markers in edges */
-    for (  e = firstEdge(); !endOfEdges(); e = nextEdge())
+    for (  e = firstEdge(); isNotNullP( e); e = e->nextEdge())
     {
-        clearUnusedNumerations( static_cast<Numbered *>(n));
+        clearUnusedNumerations( static_cast<Numbered *>(e));
     }
 }
 
@@ -563,15 +564,16 @@ Graph::clearMarkersInObjects()
 {
     Node *n;
     Edge *e;
+
     /** Clean markers in nodes */
-    for (  n = firstNode(); !endOfNodes(); n = nextNode())
+    for (  n = firstNode(); isNotNullP( n); n = n->nextNode())
     {
         clearUnusedMarkers( static_cast<Marked *>(n));
     }
     /** Clean markers in edges */
-    for (  e = firstEdge(); !endOfEdges(); e = nextEdge())
+    for (  e = firstEdge(); isNotNullP( e); e = e->nextEdge())
     {
-        clearUnusedMarkers( static_cast<Marked *>(n));
+        clearUnusedMarkers( static_cast<Marked *>(e));
     }
 }
 
