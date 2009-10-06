@@ -265,6 +265,36 @@ public:
     {
         return getNode( GRAPH_DIR_DOWN);
     }
+
+	/**
+     * Return next edge of the same node in given direction
+     */
+    inline Edge* nextEdge()
+    {
+        return ( graph_it.next() != NULL )? graph_it.next()->data() : NULL;
+    }
+
+    /**
+     * Return next edge of the same node in given direction
+     */
+    inline Edge* nextEdgeInDir( GraphDir dir)
+    {
+        GraphDir rdir = revDir( dir);
+        return ( n_it[ rdir].next() != NULL )? n_it[ rdir].next()->data() : NULL;
+    }
+    
+    /** 
+     * Next edge defaults
+     */
+    inline Edge* nextSucc()
+    {
+        return nextEdgeInDir( GRAPH_DIR_DOWN);
+    }
+    inline Edge* nextPred()
+    {
+        return nextEdgeInDir( GRAPH_DIR_UP);
+    }
+
     /**
      * Print edge in dot fomat to stdout
      */
