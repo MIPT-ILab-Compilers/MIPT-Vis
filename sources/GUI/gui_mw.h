@@ -31,14 +31,19 @@ public:
 private slots:
     void load();
     void save();
+    void help();
+    void about();
 
 private:
     void createMenus();
     void createActions();
 
     QMenu *fileMenu;
+    QMenu *helpMenu;
     QAction *loadAct;
     QAction *saveAct;
+    QAction *helpAct;
+    QAction *aboutAct;
     GuiView *view;
     QHBoxLayout *layout;
     QWidget *widget;

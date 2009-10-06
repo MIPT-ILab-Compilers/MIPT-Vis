@@ -37,7 +37,7 @@ MainWindow::MainWindow()
  */
 void MainWindow::load()
 {
-    fileName = QFileDialog::getOpenFileName(this);
+    fileName = QFileDialog::getOpenFileName(this, tr("Open File"),"",tr("XML (*.xml);;All files(*.*)")); 
     if (fileName.isEmpty()) return;
     QByteArray curFile = fileName.toAscii();
     char *file;
@@ -62,7 +62,7 @@ void MainWindow::load()
  */
 void MainWindow::save()
 {
-    fileName = QFileDialog::getSaveFileName(this);
+    fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("XML (*.xml);;All files(*.*)")); 
     if (fileName.isEmpty()) return;
     QByteArray curFile = fileName.toAscii();
     char *file;
@@ -75,7 +75,38 @@ void MainWindow::save()
 }
 
 /**
- * Creat actions of menu File
+ * Help
+ */
+void MainWindow::help()
+{
+    QMessageBox::about(this, tr("Mipt-Vis Help"),
+      tr("To open a file :  On the File menu, click Open\n\n"\
+         "To save the current file :  On the File menu, click Save\n\n"\
+         "To zoom in and out :  Use the mouse wheel"));
+}
+
+/**
+ * About
+ */
+void MainWindow::about()
+{
+    QMessageBox::about(this, tr("About Mipt-Vis"),
+      tr("  Mipt-Vis is a project that is developed in the Intel-MIPT "
+         "students laboratory by a group of students from "
+         "Moscow Institute of Physics and Technology( MIPT) "
+         "under Intel employees mentoring.\n\n  Mipt-vis is an "
+         "open source software product that helps you to "
+         "visualize and perform different analyses on "
+         "compiler-specific graphs. Also it is educational project "
+         "that gives its members more knowledge about compiler science "
+         "and work in team.\n\n  There are four components: "
+         "GUI( mentor Rumyantsev Lev), Graph placement( mentor Shurygin Boris), "
+         "Graph analyses( mentor Zolotukhin Michael) and Parser( mentor Sidorenko Ivan). \n\n"
+         "  At first IR from GCC and ICC will be supported."));
+}
+
+/**
+ * Creat actions
  */
 void MainWindow::createActions()
 {
@@ -86,14 +117,26 @@ void MainWindow::createActions()
     saveAct = new QAction(tr("&Save"), this);
     saveAct->setStatusTip(tr("Save..."));
     connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+
+    helpAct = new QAction(tr("Mipt-Vis &Help"), this);
+    helpAct->setStatusTip(tr("Help..."));
+    connect(helpAct, SIGNAL(triggered()), this, SLOT(help()));
+
+    aboutAct = new QAction(tr("&About Mipt-Vis"), this);
+    aboutAct->setStatusTip(tr("About..."));
+    connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 }
 
 /**
- * Creat menu File of MainWindow
+ * Creat menus
  */
 void MainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(loadAct);
     fileMenu->addAction(saveAct);
+
+    helpMenu = menuBar()->addMenu(tr("&Help"));
+    helpMenu->addAction(helpAct);
+    helpMenu->addAction(aboutAct);
 }
