@@ -16,11 +16,9 @@ void Graph::init()
     edge_next_id = 0;
     node_num = 0;
     edge_num = 0;
-	nodes = NULL;
-    edges = NULL;
-    n_it = NULL;
-    e_it = NULL;
-	xml_doc = NULL;
+	first_node = NULL;
+    first_edge = NULL;
+    xml_doc = NULL;
 }
 
 /**
@@ -54,11 +52,17 @@ Graph::newNode()
     /**
      * Check that we have available node id 
      */
-    graphassert( edge_next_id < GRAPH_MAX_NODE_NUM);
+    graphassert( node_next_id < GRAPH_MAX_NODE_NUM);
     Node *node_p = ( Node *) createNode();
     NodeListItem* it = node_p->getGraphIt();
-    it->attach( nodes);
-    nodes = it;
+	
+	/* Attach new node to the list */
+	if ( isNotNullP( first_node))
+	{
+		it->attach( first_node->getGraphIt());
+	}
+    
+	first_node = node_p;
     node_num++;
     return node_p;
 }
@@ -76,8 +80,12 @@ Graph::newEdge( Node * pred, Node * succ)
     graphassert( edge_next_id < GRAPH_MAX_NODE_NUM);
     Edge *edge_p = ( Edge *) createEdge( pred, succ);
     EdgeListItem* it = edge_p->getGraphIt();
-    it->attach( edges);
-    edges = it;
+	
+	if( isNotNullP( first_edge))
+	{
+		it->attach( first_edge->getGraphIt());
+	}
+    first_edge = edge_p;
     edge_num++;
     return edge_p;
 }
@@ -196,7 +204,7 @@ NodeListItem* Graph::BFS( Numeration num)
 	/** Create a marker to distinguish visited nodes from unvisited ones */
     Marker m = newMarker();
 	
-	for (  n = firstNode(); !endOfNodes(); n = nextNode())
+	for (  n = firstNode(); isNotNullP( n); n = n->nextNode())
     {
         /** 
          * If firstPred is Null, then the node n has no predecessors, =>
@@ -249,7 +257,7 @@ NodeListItem* Graph::DFS( Numeration num)
      * The other nodes are skipped here, but they will be visited in dfsVisitRec.
      * If the graph is connected, we'll call dfsVisitRec only once - for the start node.
      */
-    for (  n = firstNode(); !endOfNodes(); n = nextNode())
+    for (  n = firstNode(); isNotNullP( n); n = n->nextNode())
     {
         /** 
          * If firstPred is Null, then the node n has no predecessors, =>
@@ -428,7 +436,7 @@ Graph::readFromXMLDoc( xmlNode * a_node)
 
 			readNodesFromXmlDoc( cur_node->children);
 			nodes.insert(nodes.end(), ( max_node_id + 1), (Node *)NULL);
-			for ( node = firstNode(); !endOfNodes(); node = nextNode())
+			for ( node = firstNode(); isNotNullP( node); node = node->nextNode())
 				    nodes[ node->userId()] = node;
 
 			readEdgesFromXmlDoc( cur_node->children, nodes);
@@ -486,7 +494,7 @@ void
 Graph::writeNodesByXMLWriter( xmlTextWriterPtr writer)
 {
 	Node * node;
-	for ( node = firstNode(); !endOfNodes(); node = nextNode())
+	for ( node = firstNode(); isNotNullP( node); node = node->nextNode())
 	{
 		node->writeByXMLWriter( writer);
 	}
@@ -499,7 +507,7 @@ void
 Graph::writeEdgesByXMLWriter( xmlTextWriterPtr writer)
 {
 	Edge * edge;
-	for ( edge = firstEdge(); !endOfEdges(); edge = nextEdge())
+	for ( edge = firstEdge(); isNotNullP( edge); edge = edge->nextEdge())
 	{
 		edge->writeByXMLWriter( writer);
 	}

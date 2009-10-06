@@ -174,9 +174,11 @@ static bool uTestMarkers()
     graph.freeMarker( m);
     
     Node *n;
-    for (  n = graph.firstNode(); !graph.endOfNodes(); n = graph.nextNode())
+    for (  n = graph.firstNode(); isNotNullP( n); )
     {
-        delete n;
+		Node *next = n->nextNode();
+		delete n;
+		n = next;
     }
     return true;
 }

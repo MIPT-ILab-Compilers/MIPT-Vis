@@ -64,8 +64,7 @@ public:
 class Graph: public MarkerManager, public NumManager, public GraphProperties
 {
     /* List of nodes and its iterator */
-    NodeListItem* nodes;
-    NodeListItem* n_it;
+    Node* first_node;
     unsigned long int node_num;
     
     /** 
@@ -75,8 +74,7 @@ class Graph: public MarkerManager, public NumManager, public GraphProperties
     GraphNum node_next_id;
 
     /* List of edges and its iterator */
-    EdgeListItem* edges;
-    EdgeListItem* e_it;
+    Edge* first_edge;
     unsigned long int edge_num;
     
     /** Id of next edge. Incremented each time you create an edge,
@@ -138,35 +136,27 @@ public:
     /**
      * Remove node from node list of graph
      */
-    inline void deleteNode( NodeListItem* it)
+    inline void detachNode( Node* n)
     {
-        graphassert( isNotNullP( it));
-        if( nodes == it)
+        graphassert( isNotNullP( n));
+        if( first_node == n)
         {
-           nodes = it->next();
+           first_node = n->nextNode();
         }
-        if( n_it == it)
-        {
-            n_it = it->next();
-        }
-        it->detach();
+		n->detachFromGraph();
     }
 
     /**
      * Remove edge from edge list of graph
      */
-    inline void deleteEdge( EdgeListItem* it)
+    inline void detachEdge( Edge* e)
     {
-        graphassert( isNotNullP( it));
-        if( edges == it)
+        graphassert( isNotNullP( e));
+        if( first_edge == e)
         {
-            edges = it->next();
+            first_edge = e->nextEdge();
         }
-        if( e_it == it)
-        {
-            e_it = it->next();
-        }
-        it->detach();
+        e->detachFromGraph();
     }
 
     /**
@@ -189,59 +179,19 @@ public:
      *
      * Initialize iterator with first edge and return this edge
      */
-    virtual inline Edge* firstEdge() 
+    inline Edge* firstEdge() 
     {
-        e_it = edges;
-		if ( e_it == NULL)
-		{
-		    return NULL;
-		}
-        return e_it->data();
+        return first_edge;
     }
-    /**
-     * Advance iterator to next edge and return this edge. If end reached return NULL
-     */
-    virtual inline Edge* nextEdge()
-    {
-        e_it = e_it->next();
-        return (e_it != NULL)? e_it->data() : NULL;
-    }
-    /**
-     * return true if end of edge list is reached
-     */
-    inline bool endOfEdges()
-    {
-        return e_it == NULL;
-    }
+    
     /*** 
      * Iteration through nodes implementation
      *
      * Initialize iterator with first node and return this node
      */
-    virtual inline Node* firstNode()
+    inline Node* firstNode()
     {
-        n_it = nodes;
-		if ( n_it == NULL)
-		{
-		    return NULL;
-		}
-        return n_it->data();
-    }
-    /** 
-     * Advance iterator to next node and return this node. If end reached return NULL
-     */
-    virtual inline Node* nextNode()
-    {
-        n_it = n_it->next();
-        return ( n_it != NULL)? n_it->data() : NULL;
-    }
-    
-    /**
-     * return true if end of edge list is reached
-     */
-    inline bool endOfNodes()
-    {
-        return n_it == NULL;
+        return first_node;
     }
 
     /**

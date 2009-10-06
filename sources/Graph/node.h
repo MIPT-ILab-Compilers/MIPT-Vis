@@ -111,6 +111,10 @@ class Node: public Marked, public Numbered, public NodeProperties
     {
         return &my_it;
     }
+	inline void detachFromGraph()
+    {
+        my_it.detach();
+    }
 protected:
 
     /** We can't create nodes separately, do it through NewNode method of graph */

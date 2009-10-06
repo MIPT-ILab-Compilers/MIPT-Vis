@@ -13,22 +13,22 @@ Node::~Node()
     Edge *edge;
     
     /** delete incidient edges */
-    for ( edge = firstSucc(); !endOfSuccs();)
+    for ( edge = firstSucc(); isNotNullP( edge);)
     {
-        Edge* next = nextSucc();
+        Edge* next = edge->nextSucc();
         edge->detachFromNode( GRAPH_DIR_DOWN);// Edge is detached from succ node
         delete edge;
         edge = next;
     }
-    for ( edge = firstPred(); !endOfPreds();)
+    for ( edge = firstPred(); isNotNullP( edge);)
     {
-        Edge* next = nextPred();
+        Edge* next = edge->nextPred();
         edge->detachFromNode( GRAPH_DIR_UP);// Edge is detached from pred node
         delete edge;
         edge = next;
     }
     /** delete myself from graph */
-    graph->deleteNode( &my_it);
+    graph->detachNode( this);
 }
 
 /**
