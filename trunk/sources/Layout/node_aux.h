@@ -6,6 +6,7 @@
  */
 class NodePropertiesAux
 {
+protected:
     int rang_priv; // number of node's layer
     int pos_priv;  // absolute position in layer
 public:
@@ -113,6 +114,7 @@ public:
     {
         return nextEdgeInDir( GRAPH_DIR_UP);
     }
+    virtual void debugPrint();
 };
 
 #endif
