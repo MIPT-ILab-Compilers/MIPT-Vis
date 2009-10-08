@@ -150,6 +150,22 @@
 	<References>
 	</References>
 	<Files>
+		<Filter
+			Name="implementation"
+			>
+			<File
+				RelativePath=".\edge_aux.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\graph_aux.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\node_aux.cpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\edge_aux.h"
 			>

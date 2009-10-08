@@ -196,10 +196,6 @@
 			>
 		</File>
 		<File
-			RelativePath=".\utest_impl.h"
-			>
-		</File>
-		<File
 			RelativePath=".\utils_utest.cpp"
 			>
 		</File>

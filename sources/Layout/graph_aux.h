@@ -12,13 +12,21 @@
  */
 class GraphAux: public Graph
 {
+private:
+	NodeAux* getFirstNode();
+	NodeAux* makeAcyclic();//needs for Rank, changes types of edges
+	void makeAcyclicImp (NodeAux* from, Marker passed, Marker ret);
+	void rankImp (NodeAux* from, int cur_rank);
+public://!!! Only for tests, it must be closed
+	bool rank();
 public:
     /** Constructor */
     GraphAux(): Graph()
     {};
 
     /** Allocation of memory for Edge */
-    EdgeAux * createEdge( NodeAux * pred, NodeAux * succ);
+    EdgeAux * createEdge( Node * pred, Node * succ);
+				//???type NodeAux not lead to Node, and call "creatEdge (Node *, Node*)" not work
     /** Allocation of memory for Node */
     NodeAux * createNode();
 
@@ -40,4 +48,5 @@ public:
     };
     
 };
+
 #endif
