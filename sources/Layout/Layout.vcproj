@@ -186,6 +186,10 @@
 			RelativePath=".\node_aux.h"
 			>
 		</File>
+		<File
+			RelativePath=".\rank.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
