@@ -10,6 +10,7 @@
 #include "edge_aux.h"
 #include "node_aux.h"
 #include "graph_aux.h"
+#include "rank.h"
 
 const int Big_way_len_value = 10000000;
 
