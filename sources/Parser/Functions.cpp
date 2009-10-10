@@ -2,8 +2,13 @@
 #include "Parameters.h"
 
 
-void help (void){
-	cout << "Usage: \"parser.exe file_name.txt param1 param2(optional)\"" << endl;
+void help (bool imput_method){
+	if(imput_method == 0){
+		cout << "Usage: \"parser.exe file_name.txt param1 param2(optional)\"" << endl;
+	}
+	else{
+		cout << "Usage: \"file_name.txt param1 param2(optional)\"" << endl;
+	}
 	cout << "Param1: " << ICC_COMPILER << " or " << GCC_COMPILER << endl;
 	cout << "	" << ICC_COMPILER << " -Use ICC compiler" << endl;
 	cout << "	" << GCC_COMPILER << " -Use GCC compiler" << endl;
@@ -13,7 +18,7 @@ void help (void){
 }
 
 int check_len ( int len ){
-	if ( len < 3 || len > 4 ) return 0;										//Mistake - illegal number of parameters
+	if ( len < 2 || len > 3 ) return 0;										//Mistake - illegal number of parameters
 	else return 1;															
 }
 
@@ -43,7 +48,8 @@ bool if_this_is_txt_file ( string s )
 		s1.erase(s1.begin(), s1.end() - sizeof(".txt") + 1 );
 		if( !s1.compare(".txt") ) return true;								//this is txt file
 	}
-	else return false;														//this is not txt file
+	else;
+	return false;														//this is not txt file
 }
 
 bool if_xml_file_defined_before ( Parameters* p )
@@ -60,7 +66,8 @@ bool if_this_is_xml_file ( string s )
 		s1.erase(s1.begin(), s1.end() - sizeof(".xml") + 1 );
 		if( !s1.compare(".xml") ) return true;								//this is xml file
 	}
-	else return false;														//this is not xml file
+	else;
+	return false;														//this is not xml file
 }
 void make_xml_file_name_from_txt_file_name( Parameters* p )
 {
@@ -78,7 +85,7 @@ int arrange_parameters ( Parameters* param ){
 		return 0;
 	}
 	else{
-		while ( param->get_len() > 1 ){	
+		while ( param->get_len() > 0 ){	
 			l = (param ->get_next_param());
 			if ( if_compiler_defined_before ( param ) && if_this_is_compiler ( l ) ){
 				cerr << "Mistake - too many compilers. Please choose -icc or -gcc." << endl;
