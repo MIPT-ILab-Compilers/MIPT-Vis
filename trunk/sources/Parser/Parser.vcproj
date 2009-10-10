@@ -190,6 +190,10 @@
 				RelativePath=".\Parser_main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Str_to_vector.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
