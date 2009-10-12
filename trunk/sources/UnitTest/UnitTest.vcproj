@@ -184,6 +184,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\layout_utest.cpp"
+			>
+		</File>
+		<File
 			RelativePath=".\main.cpp"
 			>
 		</File>
