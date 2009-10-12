@@ -252,21 +252,21 @@ public:
     /**
      * get node in specified direction
      */
-    virtual inline Node *getNode( GraphDir dir) const 
+    virtual inline Node *getNode( GraphDir dir) const
     {
         return nodes[ dir];
     }
     /**
      * get predecessor of edge
      */
-    virtual inline Node *pred() const 
+    virtual inline Node *pred() const
     {
         return getNode( GRAPH_DIR_UP);
     }
     /**
      * get successor of edge
      */
-    virtual inline Node *succ() const 
+    virtual inline Node *succ() const
     {
         return getNode( GRAPH_DIR_DOWN);
     }

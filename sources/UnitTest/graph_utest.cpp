@@ -311,20 +311,3 @@ bool uTestGui( int argc, char * argv[])
 */
     return true;
 }
-
-bool uTestLayout()
-{
-	GraphAux ga;
-	
-    char * file = _getcwd( NULL, 1024);
-    strcat_s( file, 1024, "/test_graph2.xml");
-
-	ga.readFromXML (file);
-	out ("\n============= testing Layout =============\nbefore ranking:\n");
-	ga.debugPrint();
-	ga.rank();
-	out ("\nafter ranking:\n");
-	ga.debugPrint();
-	out ("\n=========== end of layout test ===========\n");
-	return true;
-}

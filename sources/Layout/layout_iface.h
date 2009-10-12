@@ -31,6 +31,29 @@ inline EdgeAux::EdgeAux( GraphAux *graph_p, int _id, NodeAux* _pred, NodeAux* _s
 	type (tree)
 {}
 
+	/**
+* get node in specified direction
+*/
+inline NodeAux* EdgeAux::getNode( GraphDir dir)
+{
+	return static_cast< NodeAux*> ( Edge::getNode( dir));
+}
+
+/**
+* get predecessor of edge
+*/
+inline NodeAux* EdgeAux::pred()
+{
+	return getNode( GRAPH_DIR_UP);
+}
+/**
+* get successor of edge
+*/
+inline NodeAux* EdgeAux::succ()
+{
+	return getNode( GRAPH_DIR_DOWN);
+}
+
 inline EdgeAux *GraphAux::createEdge( Node * pred, Node * succ)
 {
     return new EdgeAux( this, incEdgeId(), static_cast<NodeAux*> (pred), static_cast<NodeAux*> (succ));
@@ -40,6 +63,7 @@ inline NodeAux *GraphAux::createNode()
 {
     return new NodeAux( this, incNodeId());
 }
+
 
 #define CUT_AUX_DEFINITION(type)			\
 inline type* cutAux (type##Aux *what)		\

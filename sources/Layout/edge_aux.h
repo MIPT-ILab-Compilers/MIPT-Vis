@@ -20,8 +20,16 @@ class EdgeAux : public Edge
 
 protected:
     EdgeAux( GraphAux *graph_p, int _id, NodeAux* _pred, NodeAux* _succ);
-
-    virtual void debugPrint();
+	virtual void debugPrint();
+public:
+    inline EdgeAux* nextEdge()
+	{
+		return static_cast< EdgeAux*> ( Edge::nextEdge());
+	}
+	
+	inline NodeAux* getNode( GraphDir dir);
+	inline NodeAux* succ();
+	inline NodeAux* pred();
 };
 
 #endif
