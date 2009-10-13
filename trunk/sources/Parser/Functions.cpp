@@ -1,9 +1,10 @@
 #include "Parser.h"
 #include "Parameters.h"
+#include "Str_to_vector.h"
 
 
-void help (bool imput_method){
-	if(imput_method == 0){
+void help ( InputMethod imput_method){
+	if( imput_method == I_M_ARRAY){
 		cout << "Usage: \"parser.exe file_name.txt param1 param2(optional)\"" << endl;
 	}
 	else{

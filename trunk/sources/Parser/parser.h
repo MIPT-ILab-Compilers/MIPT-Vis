@@ -1,7 +1,6 @@
 #ifndef _PARSER_H
 #define _PARSER_H
 
-#include <fstream>
 #include <stdio.h>
 #include <tchar.h>
 #include <iostream>
@@ -22,10 +21,10 @@ using namespace std;
 class Parser
 {
 public:
-	virtual bool parseFile(string file_name_xml) =0;
+	virtual bool parseFile( string file_name_txt) = 0;
 	Parser(void){};
 public:
-	~Parser(void){};
+	virtual ~Parser(void){};
 };
 
 
@@ -33,11 +32,9 @@ public:
 class Parser_icc : public Parser
 {
 public:
-	bool parseFile(string file_name_xml)
+	bool parseFile( string file_name_txt)
 	{
-		ofstream outfile (file_name_xml.c_str());
-		outfile << "This will be Graph_icc" << endl;
-		cout << "icc parser" << endl;
+		cout << "icc parser is working..." << "input file: " << file_name_txt << endl;
 		return 0;
 	}
 	Parser_icc(void){};
@@ -50,11 +47,9 @@ public:
 class Parser_gcc : public Parser
 {
 public:
-	bool parseFile(string file_name_xml)
+	bool parseFile( string file_name_txt)
 	{
-		ofstream outfile (file_name_xml.c_str());
-		outfile << "This will be Graph_gcc" << endl;
-		cout << "gcc parser" << endl;
+		cout << "gcc parser is working..." << "input file: " << file_name_txt << endl;
 		return 0;
 	}
 	Parser_gcc(void){};
