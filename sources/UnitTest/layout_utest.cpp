@@ -16,9 +16,15 @@ bool uTestLayout()
 	ga.readFromXML (file);
 	out ("\n============= testing Layout =============\nbefore ranking:\n");
 	ga.debugPrint();
-	ga.rank();
-	out ("\nafter ranking:\n");
-	ga.debugPrint();
+	
+	if (ga.rank())
+	{
+		out ("\nafter ranking:\n");
+		ga.debugPrint();
+	}
+	else
+		out ("\n Error: Ranking filed");
+
 	out ("\n=========== end of layout test ===========\n");
 	return true;
 }
