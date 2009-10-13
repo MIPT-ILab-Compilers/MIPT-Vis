@@ -15,7 +15,7 @@ public:
     {    
         NodeProperties::NodeProperties();
         // Default position is first in first layer
-        rang_priv = 1;
+        rang_priv = 0;
         pos_priv = 1;
     }
     // Gets for auxiliary properties
