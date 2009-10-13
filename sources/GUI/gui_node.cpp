@@ -42,6 +42,9 @@ void GuiNode::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
  */
 void GuiNode::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
+    QString str = toPlainText();
+    emit isClicked(str);
+
     update();
     QGraphicsTextItem::mousePressEvent( mouseEvent);
 }

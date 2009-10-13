@@ -14,18 +14,21 @@ class GuiGraph:public QGraphicsScene, public Graph
 {
     Q_OBJECT
 public:
+	
     GuiGraph(QObject * parent=0);
     GuiGraph( char * filename, QObject * parent = 0);
     enum mode { insertLine, moveItem, insertRect};
     enum type { node, point, edge};
-    GuiNode * createNode();
+    
+    Node * createNode();
+    
     GuiEdge * createEdge( Node * pred, Node * succ);
     void initPos();
 
     inline QGraphicsItem * getNodeItem()
     {
-		GuiNode * gui_node_p = ( GuiNode *)firstNode();
-        return gui_node_p;       
+        GuiNode * gui_node_p = ( GuiNode *)firstNode();
+        return (QGraphicsItem *) gui_node_p;       
     }
 protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
@@ -37,5 +40,8 @@ private:
     mode myMode;
     QGraphicsLineItem * line;
     xmlDoc * xml_doc;
+
+signals:
+    void aNodeIsClicked(const QString &str);
 };
 #endif
