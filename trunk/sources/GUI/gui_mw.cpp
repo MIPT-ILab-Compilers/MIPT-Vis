@@ -18,13 +18,27 @@ MainWindow::MainWindow()
     graph = new GuiGraph();
     graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
 
-    view = new GuiView( graph);
+    view = new GuiView(graph);
+    view->setScene(graph);
+	
     if(graph->getNodeItem())
-        view->centerOn( graph->getNodeItem());
+      view->centerOn( graph->getNodeItem());
     view->setWindowTitle( fileName);
 
-    layout = new QHBoxLayout;
+    label = new QLabel;
+    label ->setText("");
+
+    connect(graph, SIGNAL(aNodeIsClicked(const QString &)), label, SLOT(setText(const QString &)));
+
+    textLayout = new QVBoxLayout;
+    textLayout->addWidget(label);
+
+    groupBox = new QGroupBox(tr("Content of clicked node"));
+    groupBox->setLayout(textLayout);
+
+    layout = new QVBoxLayout;
     layout->addWidget(view);
+    layout->addWidget(groupBox);
 
     widget = new QWidget;
     widget->setLayout(layout);
@@ -51,6 +65,7 @@ void MainWindow::load()
     delete graph;
     graph = new GuiGraph( file);
     view->setScene(graph);
+    connect(graph, SIGNAL(aNodeIsClicked(const QString &)), label, SLOT(setText(const QString &)));
 
     QApplication::restoreOverrideCursor();
 

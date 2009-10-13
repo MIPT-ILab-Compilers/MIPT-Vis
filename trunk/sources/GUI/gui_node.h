@@ -15,6 +15,8 @@ class GuiPoint;
  */
 class GuiNode:public QGraphicsTextItem, public Node
 {
+    Q_OBJECT
+
 private:
     QList<GuiEdge *> edges;
     QPolygonF myPolygon;
@@ -22,6 +24,7 @@ private:
     qreal myAdjust;
     friend class GuiGraph;
     friend class Graph;
+
 public:
     enum {Type = QGraphicsItem::UserType + 1};
     GuiNode(  QString * text, GuiGraph * graph_p, int _id, 
@@ -69,5 +72,7 @@ protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
+signals:
+    void isClicked(const QString & str);
 };
 #endif

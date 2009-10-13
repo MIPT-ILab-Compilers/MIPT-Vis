@@ -16,6 +16,8 @@ class QHBoxLayout;
 class QWidget;
 class QString;
 class GuiGraph;
+class QLabel;
+class QGroupBox;
 QT_END_NAMESPACE
 
 /**
@@ -45,10 +47,13 @@ private:
     QAction *helpAct;
     QAction *aboutAct;
     GuiView *view;
-    QHBoxLayout *layout;
+    QVBoxLayout *layout;
     QWidget *widget;
     GuiGraph *graph;
     QString fileName;
+    QLabel *label;
+    QGroupBox *groupBox;
+    QVBoxLayout *textLayout;
 };
 
 #endif
