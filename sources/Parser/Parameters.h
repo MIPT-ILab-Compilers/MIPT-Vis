@@ -60,6 +60,6 @@ public:
 		return (int) v.size();
 	}
 
-	Parameters(vector <string> v0): v(v0), txt_file(UNDEFINED), xml_file(UNDEFINED), compiler(UNDEFINED) {};//, size (v.size()){};
+	Parameters( vector <string> & v0): v(v0), txt_file(UNDEFINED), xml_file(UNDEFINED), compiler(UNDEFINED) {};//, size (v.size()){};
 	~Parameters(void){};
 };

@@ -8,20 +8,37 @@
 
 using namespace std;
 
+enum InputMethod { I_M_STRING, I_M_ARRAY};
+
 class Str_to_vector: public string, vector <string>
 {
 private:
 	vector<string> v;
+	InputMethod imput_method;
 
 public:
-	vector<string> getv(){return v;}
+	vector<string> & getv(){ return v;}
+
+	InputMethod getImputMethod() { return imput_method; }
 
 	//Optimising the string and creating vector 'v'
 	void parse(string& s)
 	{
+		imput_method = I_M_STRING;
 		//In order to delete separators from the imput string please uncommit the line that follows.
 	/*	optimize_string(s);*/
 		push_to_vector(s);
+	}
+
+	// Parse command line
+	void parse( int argc, char* argv[])
+	{
+		imput_method = I_M_ARRAY;
+	    for( int i = 1; i < argc; i++)
+		{
+			string s(argv[i]);
+			v.push_back(s);
+		}
 	}
 
 	//Transforming the string to more appropriate view in order to eliminate
