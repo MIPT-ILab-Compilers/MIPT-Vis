@@ -40,6 +40,9 @@ public:
     setFlag( QGraphicsItem::ItemIsMovable, true); // Set node can move
     setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
     setTextInteractionFlags( Qt::NoTextInteraction);
+    myPolygon << (boundingRect().bottomLeft()) << (boundingRect().bottomRight())
+                  << (boundingRect().topRight()) << (boundingRect().topLeft())
+                  << (boundingRect().bottomLeft());
 }
     inline QPolygonF polygon() const
     {
