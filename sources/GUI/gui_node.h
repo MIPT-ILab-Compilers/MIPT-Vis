@@ -33,6 +33,7 @@ public:
         QGraphicsTextItem( parent, scene),
         Node( ( Graph *) ( graph_p), _id)
 {
+    QGraphicsItem::setCursor(Qt::ArrowCursor);
     setPlainText( *text);
     setTextWidth ( 100); //Set width of node
     setMyAdjust( 3);
