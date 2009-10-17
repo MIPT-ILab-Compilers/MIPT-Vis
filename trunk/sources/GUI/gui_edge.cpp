@@ -15,6 +15,7 @@ GuiEdge::GuiEdge(  GuiGraph * graph_p, int _id, GuiNode * startItem, GuiNode * e
             :QGraphicsLineItem( parent, scene), Edge( ( Graph *)( graph_p), _id, 
             static_cast< Node *>( startItem), static_cast< Node *>( endItem))
 {
+    QGraphicsItem::setCursor(Qt::ArrowCursor);
     startPoint = 0;
     endPoint = 0;
     setFlag( QGraphicsItem::ItemIsSelectable, true);

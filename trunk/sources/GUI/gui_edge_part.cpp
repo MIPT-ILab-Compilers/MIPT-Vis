@@ -12,7 +12,8 @@ GuiEdgePart::GuiEdgePart( GuiEdge * e, GuiPoint * start, GuiPoint * end, QGraphi
     QGraphicsItem( NULL, scene),
     edge( e)
 {
-    assert( start != NULL);
+    QGraphicsItem::setCursor(Qt::ArrowCursor);
+	assert( start != NULL);
     assert( end != NULL);
     setZValue( -1000);
     setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select

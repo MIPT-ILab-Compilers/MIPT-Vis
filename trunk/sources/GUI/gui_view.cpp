@@ -13,11 +13,13 @@
  */
 GuiView::GuiView(GuiGraph *graph)
 {
+	setScene(graph);
     setCacheMode( QGraphicsView::CacheBackground );
     setViewportUpdateMode( QGraphicsView::FullViewportUpdate);
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     setOptimizationFlags( QGraphicsView::DontSavePainterState | QGraphicsView::DontClipPainter);
     setResizeAnchor( QGraphicsView::AnchorViewCenter);
+	setDragMode(QGraphicsView::ScrollHandDrag); 
     setMinimumSize(400, 400);
 }
 
