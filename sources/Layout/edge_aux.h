@@ -26,10 +26,31 @@ public:
 	{
 		return static_cast< EdgeAux*> ( Edge::nextEdge());
 	}
-	
+	inline EdgeAux* nextPred()
+	{
+		return static_cast< EdgeAux*> ( Edge::nextPred());
+	}
+	inline EdgeAux* nextSucc()
+	{
+		return static_cast< EdgeAux*> ( Edge::nextSucc());
+	}
 	inline NodeAux* getNode( GraphDir dir);
 	inline NodeAux* succ();
 	inline NodeAux* pred();
+
+	
+	/*
+	 * These functions are not take into a mesh edges
+	 */
+	inline bool ahead()
+	{
+		return type == EdgeAux::tree || type == EdgeAux::forward;
+	}
+	inline bool backward()
+	{
+		return type == EdgeAux::back;
+	}
+
 };
 
 #endif

@@ -65,31 +65,69 @@ bool GraphAux::rank()
 	NodeAux* root = makeAcyclic();
 	if (root == 0) return false;
 	
-	rankImp (root, 0);
+	Marker passed = newMarker();
+	rankImp (root, 0, passed);
+	freeMarker (passed);
 
 	addVirtualChains();
 
 	return true;
 }
 //-----------------------------------------------------------------------------
-//Internal implementation, ranks nodes by the longest path for it
-void GraphAux::rankImp (NodeAux* from, int cur_rank)
+/*
+ * Internal implementation, ranks nodes by the longest path for it
+ */
+void GraphAux::rankImp (NodeAux* from, int cur_rank, Marker passed)
 {
-	from->rang_priv = cur_rank;
-	for (EdgeAux* cur = from->firstSucc(); !from->endOfSuccs();//excess all tree edges
-		          cur = from->nextSucc())
+	if (from->rang_priv <= cur_rank)//Choose maximal lenght
+		from->rang_priv =  cur_rank;
+
+	if (passedAllPred (from, passed))
+		passAllSucc (from, cur_rank, passed);//Wait for pass all previous nodes
+}
+//-----------------------------------------------------------------------------
+/*
+ * Make ranking for all successors
+ */
+void GraphAux::passAllSucc (NodeAux* from, int cur_rank, Marker passed)
+{
+	EdgeAux* cur;
+
+	ForEdges(from, cur, Succ)
 	{
-		if (cur->type == EdgeAux::tree && cur->succ()->rang() <= cur_rank)
-			rankImp (addAux (cur->succ()), cur_rank + 1);//climb to a max-lenght path
-	}
-	
-	for (EdgeAux* cur = from->firstPred(); !from->endOfPreds();//excess all back edges
-		          cur = from->nextPred())
+		if (cur->ahead())
+		{
+			cur->mark (passed);
+			rankImp (addAux (cur->succ()), cur_rank + 1, passed);//climb to a max-lenght path
+		}
+	}	
+	ForEdges(from, cur, Pred)
 	{
-		if (cur->type == EdgeAux::back && cur->succ()->rang() <= cur_rank)
-			rankImp (addAux (cur->pred()), cur_rank + 1);//climb to a max-lenght path
+		if (cur->backward())
+		{
+			cur->mark (passed);
+			rankImp (addAux (cur->pred()), cur_rank + 1, passed);//climb to a max-lenght path
+		}
 	}
 }
+//-----------------------------------------------------------------------------
+/*
+ * returns true only when all "pred" edges of from are marked "passed"
+ */
+bool GraphAux::passedAllPred (NodeAux* from, Marker passed)
+{
+	EdgeAux* cur;
+
+	ForEdges(from, cur, Succ)
+		if (cur->backward() && !cur->isMarked (passed))
+			return false;
+
+	ForEdges(from, cur, Pred)
+		if (cur->ahead() && !cur->isMarked (passed))
+			return false;
+	return true;//all incoming edges are processed
+}
+#undef EXCESS
 //-----------------------------------------------------------------------------
 
 void GraphAux::addVirtualChains()
