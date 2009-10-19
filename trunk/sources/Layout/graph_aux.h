@@ -19,7 +19,9 @@ private:
 	NodeAux* makeAcyclic();//needs for Rank, changes types of edges
 	void makeAcyclicImp (NodeAux* from, Marker passed, Marker ret);
 
-	void rankImp (NodeAux* from, int cur_rank);
+	void rankImp (NodeAux* from, int cur_rank, Marker passed);
+	bool passedAllPred (NodeAux* what, Marker passed);
+	void   passAllSucc (NodeAux* from, int cur_rank, Marker passed);
 
 	void addVirtualChains();
 public://!!! Only for tests, it must be closed
