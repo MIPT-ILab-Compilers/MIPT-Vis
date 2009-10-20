@@ -10,7 +10,7 @@
 /**
  * Class GuiGraph
  */
-class GuiGraph:public QGraphicsScene, public Graph
+class GuiGraph:public QGraphicsScene, public GraphAux
 {
     Q_OBJECT
 public:
@@ -20,7 +20,7 @@ public:
     enum mode { insertLine, moveItem, insertRect};
     enum type { node, point, edge};
     
-    Node * createNode();
+    NodeAux * createNode();
     
     GuiEdge * createEdge( Node * pred, Node * succ);
     void initPos();

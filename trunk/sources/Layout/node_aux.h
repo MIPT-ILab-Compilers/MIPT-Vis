@@ -23,7 +23,7 @@ public:
     {
         return rang_priv;
     }
-    inline int pos() const
+    inline int posAux() const
     {
         return pos_priv;
     }
@@ -32,9 +32,9 @@ public:
     {
         rang_priv = rang;
     }
-    inline void setPos( int pos)
+    inline void setPosAux( int posAux)
     {
-        pos_priv = pos;
+        pos_priv = posAux;
     }
 };
 
