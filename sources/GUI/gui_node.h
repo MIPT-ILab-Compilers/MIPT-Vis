@@ -13,7 +13,7 @@ class GuiPoint;
 /**
  * Class GuiNode.
  */
-class GuiNode:public QGraphicsTextItem, public Node
+class GuiNode:public QGraphicsTextItem, public NodeAux
 {
     Q_OBJECT
 
@@ -23,7 +23,7 @@ private:
     QColor myColor;
     qreal myAdjust;
     friend class GuiGraph;
-    friend class Graph;
+    friend class GraphAux;
 
 public:
     enum {Type = QGraphicsItem::UserType + 1};
@@ -31,7 +31,7 @@ public:
         QGraphicsItem * parent = 0, QGraphicsScene * scene = 0):
         myAdjust(0),
         QGraphicsTextItem( parent, scene),
-        Node( ( Graph *) ( graph_p), _id)
+        NodeAux( ( GraphAux *) ( graph_p), _id)
 {
     QGraphicsItem::setCursor(Qt::ArrowCursor);
     setPlainText( *text);

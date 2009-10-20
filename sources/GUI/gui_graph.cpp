@@ -42,7 +42,7 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 /**
  * Constructor for class GuiGraph.
  */
-GuiGraph::GuiGraph( QObject * parent):myMode( insertRect), Graph(), QGraphicsScene( parent)
+GuiGraph::GuiGraph( QObject * parent):myMode( insertRect), GraphAux(), QGraphicsScene( parent)
 {
     number = 0;
 	line = NULL;
@@ -51,7 +51,7 @@ GuiGraph::GuiGraph( QObject * parent):myMode( insertRect), Graph(), QGraphicsSce
 /**
  * Constructor for class GuiGraph.
  */
-GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Graph(), QGraphicsScene( parent)
+GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), GraphAux(), QGraphicsScene( parent)
 {
 	GuiNode * node;
 	GuiEdge * edge;
@@ -191,7 +191,7 @@ GuiEdge * GuiGraph::createEdge( Node * pred, Node * succ)
 /**
  * Allocation memory for node
  */
-Node * GuiGraph::createNode()
+NodeAux * GuiGraph::createNode()
 {
     int num = incNodeId();
 	QString text =  QString( "Node %1").arg( num);

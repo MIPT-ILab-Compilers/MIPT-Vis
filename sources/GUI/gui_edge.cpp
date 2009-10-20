@@ -12,8 +12,8 @@ class GuiPoint;
  */
 GuiEdge::GuiEdge(  GuiGraph * graph_p, int _id, GuiNode * startItem, GuiNode * endItem, 
                  QGraphicsItem * parent, QGraphicsScene * scene)
-            :QGraphicsLineItem( parent, scene), Edge( ( Graph *)( graph_p), _id, 
-            static_cast< Node *>( startItem), static_cast< Node *>( endItem))
+            :QGraphicsLineItem( parent, scene), EdgeAux( ( GraphAux *)( graph_p), _id, 
+            static_cast< NodeAux *>( startItem), static_cast< NodeAux *>( endItem))
 {
     QGraphicsItem::setCursor(Qt::ArrowCursor);
     startPoint = 0;

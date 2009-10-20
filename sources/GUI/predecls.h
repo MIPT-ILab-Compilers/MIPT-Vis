@@ -20,5 +20,6 @@ class MainWindow;
 
 #include "../Utils/utils_iface.h"
 #include "../Graph/graph_iface.h"
+#include "../Layout/layout_iface.h"
 
 #endif 

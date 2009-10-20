@@ -16,7 +16,7 @@
 #include "gui_view.h"
 
 
-bool showGraph( int argc, char * argv[], Graph * graph);
+bool showGraph( int argc, char * argv[], GraphAux * graph);
 
 bool showScene( int argc, char * argv[], QApplication * app);
 

@@ -7,7 +7,7 @@
 /**
  * Class GuiEdge. GuiEdge is movable. Double click create new point on the GuiEdge
  */
-class GuiEdge:public QGraphicsLineItem, public Edge
+class GuiEdge:public QGraphicsLineItem, public EdgeAux
 {
 public:
     inline GuiPoint * startItem() const
@@ -51,7 +51,7 @@ private:
     QList< GuiEdgePart *> edgePart;
     friend class GuiGraph;
     friend class GuiNode;
-    friend class Graph;
-    friend class Node;
+    friend class GraphAux;
+    friend class NodeAux;
 };
 #endif
