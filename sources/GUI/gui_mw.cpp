@@ -12,6 +12,7 @@ MainWindow::MainWindow()
 {
     createActions();
     createMenus();
+    createStatusBar();
 
     fileName = "";
 
@@ -122,6 +123,14 @@ void MainWindow::about()
 }
 
 /**
+ * Do Layout
+ */
+void MainWindow::doLayoutSlot()
+{
+    graph->doLayout();
+}
+
+/**
  * Creat actions
  */
 void MainWindow::createActions()
@@ -141,6 +150,10 @@ void MainWindow::createActions()
     aboutAct = new QAction(tr("&About Mipt-Vis"), this);
     aboutAct->setStatusTip(tr("About..."));
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
+
+    doLayoutAct = new QAction(tr("Do &Layout"), this);
+    doLayoutAct->setStatusTip(tr("Do Layout..."));
+    connect(doLayoutAct, SIGNAL(triggered()), this, SLOT(doLayoutSlot()));
 }
 
 /**
@@ -152,7 +165,18 @@ void MainWindow::createMenus()
     fileMenu->addAction(loadAct);
     fileMenu->addAction(saveAct);
 
+    toolsMenu = menuBar()->addMenu(tr("&Tools"));
+    toolsMenu->addAction(doLayoutAct);
+
     helpMenu = menuBar()->addMenu(tr("&Help"));
     helpMenu->addAction(helpAct);
     helpMenu->addAction(aboutAct);
+}
+
+/**
+ * Creat status bar
+ */
+void MainWindow::createStatusBar()
+{
+    statusBar()->showMessage(tr("Ready"));
 }

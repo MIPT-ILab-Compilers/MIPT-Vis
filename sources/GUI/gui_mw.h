@@ -35,17 +35,21 @@ private slots:
     void save();
     void help();
     void about();
+    void doLayoutSlot();
 
 private:
     void createMenus();
     void createActions();
-
+    void createStatusBar();
+    
     QMenu *fileMenu;
     QMenu *helpMenu;
+    QMenu *toolsMenu;
     QAction *loadAct;
     QAction *saveAct;
     QAction *helpAct;
     QAction *aboutAct;
+    QAction *doLayoutAct;
     GuiView *view;
     QVBoxLayout *layout;
     QWidget *widget;
