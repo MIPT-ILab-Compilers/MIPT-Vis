@@ -59,15 +59,23 @@ public:
 		return static_cast < EdgeAux*> ( Graph::firstEdge());
     }
 
-	/**
+    /**
 	* Insert new node on edge in graph
 	*/
-	NodeAux * insertNodeOnEdge( EdgeAux* e)
-	{
-		NodeAux* n = static_cast< NodeAux*>( Graph::insertNodeOnEdge( static_cast< Edge*>( e)));
-		n->firstSucc()->type = n->firstPred()->type;
-		return n;
-	}
+    NodeAux * insertNodeOnEdge( EdgeAux* e)
+    {
+        NodeAux* n = static_cast< NodeAux*>( Graph::insertNodeOnEdge( static_cast< Edge*>( e)));
+        n->firstSucc()->type = n->firstPred()->type;
+        return n;
+    }
+
+    /**
+	* Do Layout
+	*/
+    void doLayout() 
+    { 
+    
+    }
 };
 
 #endif
