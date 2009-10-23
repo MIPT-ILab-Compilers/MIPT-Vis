@@ -1,65 +1,84 @@
+/** 
+* parameters.cpp 
+* Fields in 'Parameters' Class is used for convinient
+* sorting of imput parameters - compiler type and
+* file names. 
+* Parser component
+* Copyright 2009 MIPTVIS team 
+*/
+
+#ifndef _PARAMETERS_H
+#define _PARAMETERS_H
+
 using namespace std;
 
-class Parameters: public string, vector <string>
+class Parameters
 {
 private:
 	string txt_file;
 	string xml_file;
 	string compiler;
-	vector v;
+	vector <string> v;
 public:
 //	vector v;
-	void set_txt_file(string s)
+	void setTxtFile( string s)
 	{
 		txt_file = s;
 	}
 
-	void set_xml_file(string s)
+	void setXmlFile( string s)
 	{
 		xml_file = s;
 	}
 
-	void set_compiler( string s)
+	void setCompiler( string s)
 	{
 		compiler = s;
 	}
 
-	string get_txt_file(void)
+	string getTxtFile( void)
 	{
 		return txt_file;
 	}
 
-	string get_xml_file(void)
+	string getXmlFile( void)
 	{
 		return xml_file;
 	}
 
-	string get_compiler(void)
+	string getCompiler( void)
 	{
 		return compiler;
 	}
 
-	void print_cmd_line()//(vector<string> v)
+	void printCmdLine()
 	{
-		for(unsigned int i = 0 ; i < v.size(); i++){
-			string s = v[i];
+		for( unsigned int i = 0; i < v.size(); i++)
+		{
+			string s = v[ i];
 			cout << s << endl;
 		}
 		cout << endl;
 	}
 
-	string get_next_param()//(vector<string> v)
+	string getNextParam()
 	{
 			string s = v.back();
 			v.pop_back();
 			return s;
 	}
 
-	int get_len()
+	int getLen()
 	{
-		return (int) v.size();
+		return ( int) v.size();
 	}
 
-	Parameters( vector <string> & v0): v(v0), txt_file(UNDEFINED), xml_file(UNDEFINED), compiler(UNDEFINED) {};//, size (v.size()){};
-	~Parameters(void){};
+	Parameters( vector <string> v0): v( v0),
+									txt_file( UNDEFINED),
+									xml_file( UNDEFINED),
+									compiler( UNDEFINED) {};
+	~Parameters( void){};
 };
+
+
+#endif

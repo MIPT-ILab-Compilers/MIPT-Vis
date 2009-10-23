@@ -171,15 +171,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Functions.cpp"
+				RelativePath=".\functions.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Functions.h"
+				RelativePath=".\parser_main.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Interface"
+			>
+			<File
+				RelativePath=".\functions.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Parameters.h"
+				RelativePath=".\parameters.h"
 				>
 			</File>
 			<File
@@ -187,11 +195,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Parser_main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Str_to_vector.h"
+				RelativePath=".\str_to_vector.h"
 				>
 			</File>
 		</Filter>
