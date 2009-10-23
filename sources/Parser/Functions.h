@@ -1,9 +1,14 @@
-#ifndef FUNCTION_H
-#define FUNCTION_H
+/** 
+* functions.h - Prototypes of externally visible
+* functions in functions.cpp
+* Parser Component	
+* Copyright 2009 MIPTVIS team 
+*/
 
-#include "Str_to_vector.h"
+#ifndef _FUNCTIONS_H
+#define _FUNCTIONS_H
 
-void help ( InputMethod imput_method);
-int arrange_parameters (Parameters* param);
+void help( bool imput_method);
+int arrangeParameters( Parameters* param);
 
 #endif

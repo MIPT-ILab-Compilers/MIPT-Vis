@@ -1,42 +1,81 @@
-// Parser_cmd.cpp : Defines the entry point for the console application.
+/** 
+* parser_main.cpp - Entry point of Parser 
+* Parser component
+* Copyright 2009 MIPTVIS team 
+*/
 
-#include "Parser.h"
-#include "Parameters.h"
-#include "Functions.h"
-#include "Str_to_vector.h"
+#include "parser.h"
+#include "parameters.h"
+#include "functions.h"
+#include "str_to_vector.h"
 
+#define IMPUT_TYPE 1 // it could be 1 or 0
 
-
-int main(int argc, char* argv[])
+int main( int argc, char* argv[])
 {
 	Parser* P;
-	Str_to_vector v1;
+	vector<string> v;
+	StrToVector v1;
+	bool imput_method;
 
-// Adding parameters to vector 'v' from cmd_line or string
-	v1.parse( argc, argv);
+#if IMPUT_TYPE
+// Adding parameters to vector 'v' from cmd_line
+	imput_method = 0;
+	for ( int i = 0; i < argc; i++)
+	{
+		if ( i != 0)
+		{
+			string s( argv[i]);
+			v.push_back( s);
+		}
+		else
+			;
+	}
+#endif
 
-// Defining the object 'param' that could carry vector v, sorted parameters of cmd_line and specific functions
-	Parameters* param = new Parameters(v1.getv());
+#if !IMPUT_TYPE
+//Adding parameters to vector 'v' from the string
+	/*
+	* In order to use imput parameters of parser
+	* from the string but not from the command
+	* line please uncommit the text that follows.
+	*/
+	imput_method = 1;
+	string s = "1.txt 2.xml -gcc";
+	v1.parse( s);
+	cout << s << endl;
+	v = v1.getv();
+#endif
+
+/* 
+* Defining the object 'param' that could carry vector v, 
+* sorted parameters of cmd_line and specific functions
+*/
+	Parameters* param = new Parameters( v);
 
 // Sorting and checking parameters
-	if( !arrange_parameters(param) )
-		help( v1.getImputMethod());
-
-//Parsing
-	else if( !(param->get_compiler().compare(ICC_COMPILER)) ){	
-		P = new Parser_icc();
-		P->parseFile( param->get_txt_file());
-		cout << "output file:" << param->get_xml_file() << endl;
-	}
-	else if( !(param->get_compiler().compare(GCC_COMPILER)) ){
-		P = new Parser_gcc();
-		P->parseFile( param->get_txt_file());
-		cout << "output file:" << param->get_xml_file() << endl;
-	}
-	else{
-		cout << "Sorry, mistake has occured. Please try again." << endl;
-//		param ->print_cmd_line();
-		help( v1.getImputMethod());
+	if ( !arrangeParameters( param))
+	{
+		help( imput_method);
+	}else if ( !( param->getCompiler().compare( ICC_COMPILER)))
+	//Parsing by ICC parser
+	{	
+		P = new ParserIcc();
+		P->parseFile( param->getXmlFile());
+		cout << "Parsed file is saved as " 
+			 << param->getXmlFile() << endl;
+	}else if ( !( param->getCompiler().compare( GCC_COMPILER)) )
+	//Parsing by GCC parser
+	{
+		P = new ParserGcc();
+		P->parseFile( param->getXmlFile());
+		cout << "Parsed file is saved as " 
+			 << param->getXmlFile() << endl;
+	}else
+	{
+		cout << "Sorry, mistake has occured. Please try again." 
+			 << endl;
+		help( imput_method);
 	}
 	return 0;
 }
