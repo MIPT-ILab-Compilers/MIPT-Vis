@@ -162,14 +162,7 @@ public:
 	/**
 	* Insert new node on edge in graph
 	*/
-	Node * insertNodeOnEdge( Edge* e)
-	{
-		Node* n = this->newNode();
-		Node* succ = e->succ();
-		e->setSucc( n);
-		this->newEdge( n, succ);
-		return n;
-	}
+	Node * insertNodeOnEdge( Edge* e);
 
     /**
      * Return node quantity

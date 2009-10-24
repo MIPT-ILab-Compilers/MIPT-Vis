@@ -127,8 +127,8 @@ void MainWindow::about()
  */
 void MainWindow::doLayoutSlot()
 {
-    graph->doLayout();
-    update();
+    graph->doLayout();//!!! An error occurs when after layout, one calls load
+    update();//!!! When the edges' successors are changed, they continue point to old ones !!!
 }
 
 /**

@@ -7,17 +7,79 @@
 #include "layout_iface.h"
 
 
-NodeAux* GraphAux::getFirstNode()
+//-----------------------------------------------------------------------------
+/**
+* Ranking algorithm. Divide nodes to layers
+*/
+bool GraphAux::rank()
 {
-	return addAux (firstNode());
-}
+	NodeAux* root = makeAcyclic();
+	if (root == 0) return false;
+	
+	Marker passed = newMarker();
+	rankImp (root, 0, passed);
+	freeMarker (passed);
 
+	return true;
+}
+//-----------------------------------------------------------------------------
+/**
+* Here must be an implementation of ordering in layers
+*/
+bool GraphAux::ordering()
+{
+	addVirtualChains();
+	return true;
+}
+//-----------------------------------------------------------------------------
+/**
+* Simple position, only for test ranking
+*/
+bool GraphAux::position()
+{
+	arrangeVertical();
+	arrangeHorisontal();
+	applayPositions();
+	return true;
+}
+//-----------------------------------------------------------------------------
+/**
+* Here might be laying a edges.
+*/
+bool GraphAux::make_splines()
+{
+	return true;
+}
+//-----------------------------------------------------------------------------
+/**
+* The main function of our component
+*/
+bool GraphAux::doLayout()
+{
+	if (!rank())			return false;
+	if (!ordering())		return false;
+	if (!position())		return false;
+	if (!make_splines())	return false;
+	return true;
+}
+//-----------------------------------------------------------------------------
+/**
+* Finding a node like root//!!! if there are several roots, it returns the first one
+*/
+NodeAux* GraphAux::findRoot()
+{
+	for (Node* cur = firstNode(); cur != 0;cur = cur->nextNode())
+		if (cur->firstPred() == 0)
+			return addAux (cur);
+	return addAux (firstNode());//if there are not roots in graph, return any node
+}
+//-----------------------------------------------------------------------------
 /**
 * Make graph acyclic and set to all edges corresponding type
 */
 NodeAux* GraphAux::makeAcyclic()
 {
-	NodeAux* first = getFirstNode();
+	NodeAux* first = findRoot();
 	if (first == 0) return 0;
 	
 	Marker unidir = newMarker();
@@ -55,23 +117,6 @@ void GraphAux::makeAcyclicImp (NodeAux* from, Marker passed, Marker ret)
 		}
 
 	from->mark (ret);
-}
-//-----------------------------------------------------------------------------
-/**
-* Ranking algorithm. Divide nodes to layers
-*/
-bool GraphAux::rank()
-{
-	NodeAux* root = makeAcyclic();
-	if (root == 0) return false;
-	
-	Marker passed = newMarker();
-	rankImp (root, 0, passed);
-	freeMarker (passed);
-
-	addVirtualChains();
-
-	return true;
 }
 //-----------------------------------------------------------------------------
 /*
@@ -127,7 +172,6 @@ bool GraphAux::passedAllPred (NodeAux* from, Marker passed)
 			return false;
 	return true;//all incoming edges are processed
 }
-#undef EXCESS
 //-----------------------------------------------------------------------------
 
 void GraphAux::addVirtualChains()
@@ -138,6 +182,7 @@ void GraphAux::addVirtualChains()
 		if( abs(rang_pred - rang_succ) > 1)
 		{
 			NodeAux* n = insertNodeOnEdge( iter);
+			n->setReal (false);
 			if( rang_pred > rang_succ)
 				n->rang_priv = rang_pred - 1;
 			else
@@ -145,3 +190,60 @@ void GraphAux::addVirtualChains()
 		}
 	}
 }
+//-----------------------------------------------------------------------------
+/*
+ * Arrnages nodes' vertical positions by their ranks
+ */
+void GraphAux::arrangeVertical()
+{
+	int starty = 0;
+	int stepy = 70;
+
+	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
+	{
+		iter->setY (iter->rang()*stepy + starty);
+	}
+}
+//-----------------------------------------------------------------------------
+/*
+ * Arrnages nodes' vertical positions by their ranks
+ */
+void GraphAux::arrangeHorisontal()
+{
+	int startx = 0;
+	int stepx = 200;
+
+	int max_rank = 0;
+	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
+		max_rank = max(iter->rang(), max_rank);
+
+	max_rank++;
+
+	int *num_in_rank = new int[max_rank];
+	for (int i = 0; i < max_rank; ++i)
+		num_in_rank[i] = 0;
+
+	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
+	{
+		int pos = (num_in_rank[iter->rang()]++)*stepx + startx;
+		iter->setX (pos);
+	}
+
+	//delete []num_in_rank;//!!!Не удаляется почему-то, TODO
+}
+//-----------------------------------------------------------------------------
+void GraphAux::applayPositions()
+{
+	for (NodeAux* iter = addAux(firstNode()); iter != 0;
+		          iter = addAux(iter->nextNode()))
+	{
+		iter->commitPos (iter->x(), iter->y());
+		QString label;
+		label.sprintf ("r=%d,o=%d", iter->rang(), iter->posAux());
+		if (iter->real())
+			iter->superscribe (Qt::gray, label);
+		else
+			iter->superscribe (Qt::white, label);
+	}
+}
+//-----------------------------------------------------------------------------
