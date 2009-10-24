@@ -76,6 +76,8 @@ protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
+    void commitPos( int x,int y);
+    void superscribe (QColor color,QString text);
 signals:
     void isClicked(const QString & str);
 };

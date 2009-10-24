@@ -54,9 +54,9 @@ public:
         return static_cast< EdgeAux*>( Graph::newEdge( static_cast< Node*>( pred), static_cast< Node*>( succ)));
     };
 
-	inline EdgeAux* firstEdge() 
+    inline EdgeAux* firstEdge() 
     {
-		return static_cast < EdgeAux*> ( Graph::firstEdge());
+        return static_cast < EdgeAux*> ( Graph::firstEdge());
     }
 
     /**
@@ -74,7 +74,10 @@ public:
 	*/
     void doLayout() 
     { 
-    
+        NodeAux *node;
+        node = getFirstNode();
+        node->commitPos(300,300);
+        node->superscribe(Qt::red,"MIPT");
     }
 };
 

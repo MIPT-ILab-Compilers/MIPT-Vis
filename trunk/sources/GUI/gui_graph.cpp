@@ -27,7 +27,7 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         GuiNode * node = ( GuiNode *)newNode();
         node->setPos( mouseEvent->scenePos());
         node->setColor( "green");
-        node->setLabel( "Node" + number);
+		node->setLabel( "Node" + number);
         node->setShape( "rectangle");
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
@@ -45,7 +45,7 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 GuiGraph::GuiGraph( QObject * parent):myMode( insertRect), GraphAux(), QGraphicsScene( parent)
 {
     number = 0;
-	line = NULL;
+    line = NULL;
 }
 
 /**
@@ -53,16 +53,16 @@ GuiGraph::GuiGraph( QObject * parent):myMode( insertRect), GraphAux(), QGraphics
  */
 GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), GraphAux(), QGraphicsScene( parent)
 {
-	GuiNode * node;
-	GuiEdge * edge;
+    GuiNode * node;
+    GuiEdge * edge;
     number = 0;
-	line = NULL;
+    line = NULL;
 
     readFromXML( filename);
 
-	for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+    for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
-		node->setPos( node->Node::x(), node->Node::y());
+        node->setPos( node->Node::x(), node->Node::y());
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
         node->setMyAdjust( 3);
@@ -175,8 +175,8 @@ void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
  */
 GuiEdge * GuiGraph::createEdge( Node * pred, Node * succ)
 {
-	GuiEdge * e = new GuiEdge( this, incEdgeId(), ( GuiNode *)pred, ( GuiNode *)succ);
-	addItem( e);
+    GuiEdge * e = new GuiEdge( this, incEdgeId(), ( GuiNode *)pred, ( GuiNode *)succ);
+    addItem( e);
     e->initNode( ( GuiNode *)pred, ( GuiNode *)succ);
     e->initPoints( 1);
     e->setStyle( "Solid");
@@ -194,8 +194,8 @@ GuiEdge * GuiGraph::createEdge( Node * pred, Node * succ)
 NodeAux * GuiGraph::createNode()
 {
     int num = incNodeId();
-	QString text =  QString( "Node %1").arg( num);
-	GuiNode * node_p = new GuiNode( &text, this, num);
+    QString text =  QString( "Node %1").arg( num);
+    GuiNode * node_p = new GuiNode( &text, this, num);
 
     node_p->setZValue( 1);
     addItem( node_p);
