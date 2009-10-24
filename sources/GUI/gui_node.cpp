@@ -34,6 +34,13 @@ void GuiNode::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         if ( textInteractionFlags() == Qt::NoTextInteraction)
             setTextInteractionFlags( Qt::TextEditorInteraction);
     }
+	/*
+	else
+	{
+		commitPos(300,300);
+		superscribe(Qt::red,"abc");
+	}
+	*/
     QGraphicsTextItem::mouseDoubleClickEvent( mouseEvent);
 }
 
@@ -110,4 +117,37 @@ QVariant GuiNode::itemChange( GraphicsItemChange change, const QVariant &value)
         }
     }
     return value;
+}
+
+/**
+ *  commitPos
+ */
+void GuiNode::commitPos( int x,int y)
+{
+    setPos( x,y);
+    setX( x);
+    setY( y);
+    foreach( GuiEdge * line, edges)
+    {
+        if( line != NULL)
+        {
+            line->updatePosition();
+        }
+    }
+}
+
+/**
+ *  superscribe
+ */
+void GuiNode::superscribe (QColor color,QString text)
+{
+    setMyColor( color);
+    setPlainText( text);
+    foreach( GuiEdge * line, edges)
+    {
+        if( line != NULL)
+        {
+            line->startPoint->setMyColor(this->myColor);
+        }
+    }
 }

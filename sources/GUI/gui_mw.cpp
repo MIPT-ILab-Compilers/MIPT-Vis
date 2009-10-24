@@ -128,6 +128,7 @@ void MainWindow::about()
 void MainWindow::doLayoutSlot()
 {
     graph->doLayout();
+    update();
 }
 
 /**

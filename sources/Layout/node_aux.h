@@ -1,6 +1,9 @@
 #ifndef NODE_AUX_H
 #define NODE_AUX_H
 
+#include<QtGui/QColor>
+#include<QtCore/QString>
+
 /**
  * Representation of various auxiliary node attributes
  */
@@ -115,6 +118,12 @@ public:
         return nextEdgeInDir( GRAPH_DIR_UP);
     }
     virtual void debugPrint();
+    virtual void commitPos(int x,int y)
+    {
+    }
+    virtual void superscribe(QColor color, QString text)
+    {
+    }
 };
 
 #endif
