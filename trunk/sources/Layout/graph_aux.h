@@ -14,7 +14,7 @@ class GraphAux: public Graph
 {
 private:
 
-	NodeAux* getFirstNode();
+	NodeAux* findRoot();
 
 	NodeAux* makeAcyclic();//needs for Rank, changes types of edges
 	void makeAcyclicImp (NodeAux* from, Marker passed, Marker ret);
@@ -24,8 +24,19 @@ private:
 	void   passAllSucc (NodeAux* from, int cur_rank, Marker passed);
 
 	void addVirtualChains();
+
+	void arrangeVertical();
+	void arrangeHorisontal();
+	void applayPositions();
+
 public://!!! Only for tests, it must be closed
 	bool rank();
+	bool ordering();
+	bool position();
+	bool make_splines();
+
+public:
+    bool doLayout();
 public:
     /** Constructor */
     GraphAux(): Graph()
@@ -54,9 +65,9 @@ public:
         return static_cast< EdgeAux*>( Graph::newEdge( static_cast< Node*>( pred), static_cast< Node*>( succ)));
     };
 
-    inline EdgeAux* firstEdge() 
+	inline EdgeAux* firstEdge() 
     {
-        return static_cast < EdgeAux*> ( Graph::firstEdge());
+		return static_cast < EdgeAux*> ( Graph::firstEdge());
     }
 
     /**
@@ -69,16 +80,6 @@ public:
         return n;
     }
 
-    /**
-	* Do Layout
-	*/
-    void doLayout() 
-    { 
-        NodeAux *node;
-        node = getFirstNode();
-        node->commitPos(300,300);
-        node->superscribe(Qt::red,"MIPT");
-    }
 };
 
 #endif
