@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <graph>
+  <node id="9" x="13" y="100" width="106" height="28" label="n9" color="red" shape="ellipse"/>
+  <node id="10" x="73" y="50" width="106" height="28" label="n10" color="red" shape="rectangle"/>
 	<node id="7" x="153" y="453" width="106" height="28" label="n7" color="red" shape="ellipse"/>
 	<node id="6" x="163" y="293" width="106" height="28" label="n6" color="red" shape="rectangle"/>
 	<node id="5" x="451" y="450" width="106" height="28" label="n5" color="red" shape="rectangle"/>
@@ -26,4 +28,6 @@
 	</edge>
 	<edge id="0" from="0" to="1" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
 	</edge>
+  <edge id="9" from="10" to="9" points_num="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
+  </edge>
 </graph>

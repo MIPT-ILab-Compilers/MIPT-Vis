@@ -4,6 +4,7 @@
 * Copyright (C) 2009 MiptVis
 */
 
+#include <Qt/QQueue.h>
 #include "layout_iface.h"
 
 
@@ -60,6 +61,7 @@ bool GraphAux::doLayout()
 	if (!ordering())		return false;
 	if (!position())		return false;
 	if (!make_splines())	return false;
+	if (!applayLayout())	return false;
 	return true;
 }
 //-----------------------------------------------------------------------------
@@ -68,10 +70,67 @@ bool GraphAux::doLayout()
 */
 NodeAux* GraphAux::findRoot()
 {
+	QList <Node*> roots;
 	for (Node* cur = firstNode(); cur != 0;cur = cur->nextNode())
 		if (cur->firstPred() == 0)
-			return addAux (cur);
-	return addAux (firstNode());//if there are not roots in graph, return any node
+			roots.push_back (cur);
+
+	int num_reach = 0;
+	Marker reachable = newMarker();
+	foreach(Node* cur_root, roots)
+	{
+		num_reach += markReachable(cur_root, reachable);
+	}
+	while (num_reach != getNodeCount())//these roots are not grab all graph
+	{
+		for (Node* cur = firstNode(); cur != 0;cur = cur->nextNode())
+			if (!cur->isMarked(reachable))
+				roots.push_back (cur);
+		num_reach = markReachable (roots.last(), reachable);
+	}
+	freeMarker (reachable);
+
+	if (roots.size() >  1) return makeVirtualRoot (roots);
+	if (roots.size() == 1) return addAux (roots.back());
+						   return 0; //it's impossible
+}
+//-----------------------------------------------------------------------------
+/**
+* Marks all nodes, reachable from root by by_what, and returns theis number
+*/
+int GraphAux::markReachable (Node* root, Marker by_what)
+{
+	int number_marked = 0;
+	QQueue<Node*> to_process;
+	to_process.enqueue (root);
+
+	while (to_process.size() != 0)
+	{
+		++number_marked;
+		Node* cur = to_process.dequeue();
+		cur->mark (by_what);
+		for (Edge* csucc = cur->firstSucc(); csucc != 0; csucc = csucc->nextSucc())
+			if (!csucc->succ()->isMarked (by_what))
+				to_process.enqueue (csucc->succ());
+	}
+	return number_marked;
+}
+//-----------------------------------------------------------------------------
+/**
+* Adds virtual node - predesessor of all roots, 
+*/
+NodeAux* GraphAux::makeVirtualRoot (QList <Node*>& roots)
+{
+	if (roots.size() < 1) return 0;
+
+	NodeAux* root = newNode();
+	root->setReal (false);
+
+	foreach(Node* iter, roots)
+	{
+		newEdge (root, addAux(iter));
+	}
+	return root;
 }
 //-----------------------------------------------------------------------------
 /**
