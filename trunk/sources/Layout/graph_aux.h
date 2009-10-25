@@ -15,6 +15,8 @@ class GraphAux: public Graph
 private:
 
 	NodeAux* findRoot();
+	int markReachable (Node* root, Marker by_what);
+	NodeAux* makeVirtualRoot (QList <Node*>& roots);
 
 	NodeAux* makeAcyclic();//needs for Rank, changes types of edges
 	void makeAcyclicImp (NodeAux* from, Marker passed, Marker ret);
@@ -79,6 +81,11 @@ public:
         n->firstSucc()->type = n->firstPred()->type;
         return n;
     }
+
+	bool applayLayout()//implemented by graphic interface branch
+	{
+		return false;
+	}
 
 };
 
