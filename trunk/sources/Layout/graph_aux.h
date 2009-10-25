@@ -19,7 +19,6 @@ private:
 	NodeAux* makeVirtualRoot (QList <Node*>& roots);
 
 	NodeAux* makeAcyclic();//needs for Rank, changes types of edges
-	void makeAcyclicImp (NodeAux* from, Marker passed, Marker ret);
 
 	void rankImp (NodeAux* from, int cur_rank, Marker passed);
 	bool passedAllPred (NodeAux* what, Marker passed);

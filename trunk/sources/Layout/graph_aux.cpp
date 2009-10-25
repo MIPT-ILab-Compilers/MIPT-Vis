@@ -5,6 +5,7 @@
 */
 
 #include <Qt/QQueue.h>
+#include <Qt/QStack.h>
 #include "layout_iface.h"
 
 
@@ -85,8 +86,11 @@ NodeAux* GraphAux::findRoot()
 	{
 		for (Node* cur = firstNode(); cur != 0;cur = cur->nextNode())
 			if (!cur->isMarked(reachable))
+			{
 				roots.push_back (cur);
-		num_reach = markReachable (roots.last(), reachable);
+				break;
+			}
+		num_reach += markReachable (roots.last(), reachable);//!!!&&& do not forget to correct
 	}
 	freeMarker (reachable);
 
@@ -141,41 +145,49 @@ NodeAux* GraphAux::makeAcyclic()
 	NodeAux* first = findRoot();
 	if (first == 0) return 0;
 	
-	Marker unidir = newMarker();
+	Marker passed = newMarker();
 	Marker ret = newMarker();
 
-	makeAcyclicImp (first, unidir, ret);
+	QStack<NodeAux*> to_process;
+	to_process.push (first);
 
-	freeMarker (unidir);
+	while (to_process.size() > 0)
+	{
+		NodeAux* from = to_process.pop();
+		
+		if (from->isMarked (passed))//the second pass of node
+		{
+			from->mark (ret);
+			continue;
+		}
+		from->mark (passed);
+
+		to_process.push(from);//Need to pass this repeatedly, to mark as returned
+
+		for (EdgeAux* cur = from->firstSucc(); !from->endOfSuccs();
+			          cur = from->nextSucc())
+			if (cur->succ() == from) cur->type = EdgeAux::mesh; //mesh
+			else
+			{
+				if (cur->succ()->isMarked (passed))
+				{
+					if (cur->succ()->isMarked (ret))
+						 cur->type = EdgeAux::forward;			//forward
+					else cur->type = EdgeAux::back;				//back
+				}
+				else
+				{
+					cur->type = EdgeAux::tree;					//tree
+					to_process.push (cur->succ());//process childs
+				}
+			}
+	}
+
+
+	freeMarker (passed);
 	freeMarker (ret);
 
 	return first;
-}
-//-----------------------------------------------------------------------------
-//Internal implementation, one mustn't call from outside
-void GraphAux::makeAcyclicImp (NodeAux* from, Marker passed, Marker ret)
-{
-	from->mark (passed);
-
-	for (EdgeAux* cur = from->firstSucc(); !from->endOfSuccs();
-		          cur = from->nextSucc())
-		if (cur->succ() == from) cur->type = EdgeAux::mesh; //mesh
-		else
-		{
-			if (cur->succ()->isMarked (passed))
-			{
-				if (cur->succ()->isMarked (ret))
-					 cur->type = EdgeAux::forward;			//forward
-				else cur->type = EdgeAux::back;				//back
-			}
-			else
-			{
-				cur->type = EdgeAux::tree;					//tree
-				makeAcyclicImp (addAux (cur->succ()), passed, ret);
-			}
-		}
-
-	from->mark (ret);
 }
 //-----------------------------------------------------------------------------
 /*
