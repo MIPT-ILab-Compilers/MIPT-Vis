@@ -10,7 +10,7 @@
 
 
 /**
- * Represents properties of a graph
+ * Represents properties of a graph+
  */
 class GraphProperties
 {
