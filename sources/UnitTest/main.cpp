@@ -16,6 +16,9 @@ int main(int argc, char **argv)
 	/** Test List */
     if ( !uTestList())
 		return -1;
+	/** Test EGraph */
+    if ( !uTestEGraph())
+        return -1;
 	/* Test layout (imho idiotic comment)*/
 	if (!uTestLayout())
 		return -1;
@@ -23,6 +26,7 @@ int main(int argc, char **argv)
 	/** Test GUI */
     if ( !uTestGui( argc, argv))
 		return -1;
+
 
     return 0;	
 }
