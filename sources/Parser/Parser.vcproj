@@ -175,7 +175,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\parser_main.cpp"
+				RelativePath=".\main.cpp"
 				>
 			</File>
 		</Filter>

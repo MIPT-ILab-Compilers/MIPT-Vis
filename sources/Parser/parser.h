@@ -31,8 +31,7 @@ class Parser
 public:
 	virtual bool parseFile( string file_name_xml) = 0;
 	Parser( void){};
-public:
-	~Parser( void){};
+	virtual ~Parser( void){};
 };
 
 
@@ -40,11 +39,9 @@ public:
 class ParserIcc : public Parser
 {
 public:
-	bool parseFile( string file_name_xml)
+	bool parseFile( string file_name_txt)
 	{
-		ofstream outfile( file_name_xml.c_str());
-		outfile << "This will be Graph_icc" << endl;
-		cout << "icc parser" << endl;
+		std::cout << "icc parser is running..." << endl;
 		return 0;
 	}
 	ParserIcc( void){};
@@ -57,11 +54,9 @@ public:
 class ParserGcc : public Parser
 {
 public:
-	bool parseFile( string file_name_xml)
+	bool parseFile( string file_name_txt)
 	{
-		ofstream outfile( file_name_xml.c_str());
-		outfile << "This will be Graph_gcc" << endl;
-		cout << "gcc parser" << endl;
+		std::cout << "gcc parser is running..." << endl;
 		return 0;
 	}
 	ParserGcc( void){};
