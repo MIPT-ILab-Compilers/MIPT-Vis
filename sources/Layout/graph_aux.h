@@ -85,7 +85,9 @@ public:
 	{
 		return false;
 	}
-
+    virtual void commitLayout()
+	{
+	}
 };
 
 #endif

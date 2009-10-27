@@ -10,11 +10,6 @@
  */
 void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
-    if( selectedItems().isEmpty())
-	{
-        emit aNodeIsClicked("");
-    }
-	
     update();
     if( mouseEvent->button() != Qt::LeftButton)
     {
@@ -33,10 +28,11 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         node->setY( node->QGraphicsItem::y());
         node->setWidth( node->boundingRect().width());
         node->setHeight( node->boundingRect().height());
-        connect(node, SIGNAL(isClicked(const QString &)), this, SIGNAL(aNodeIsClicked(const QString &)));
         QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
     }
     QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
+    
+    emit isClicked();
 }
 
 /**
@@ -66,7 +62,6 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
         node->setMyAdjust( 3);
-        connect(node, SIGNAL(isClicked(const QString &)), this, SIGNAL(aNodeIsClicked(const QString &)));
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{
@@ -95,11 +90,6 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
  */
 void GuiGraph::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
-    if( selectedItems().isEmpty())
-    {
-        emit aNodeIsClicked("");
-    }
-	
     if( mouseEvent->button() & Qt::RightButton)
     {
         myMode = insertLine;
@@ -109,6 +99,8 @@ void GuiGraph::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
     }
     update();
     QGraphicsScene::mousePressEvent( mouseEvent);
+    
+    emit isClicked();
 }
 
 /**
@@ -133,11 +125,6 @@ void GuiGraph::mouseMoveEvent( QGraphicsSceneMouseEvent * mouseEvent)
  */
 void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
-    if( selectedItems().isEmpty())
-    {
-        emit aNodeIsClicked("");
-    }
-	
     update();
     if ( line != 0 && myMode == insertLine)
     {
@@ -167,6 +154,7 @@ void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
     line = NULL;
     myMode = moveItem;
     QGraphicsScene::mouseReleaseEvent( mouseEvent);
+    emit isClicked();
 }
 
 
@@ -203,6 +191,9 @@ NodeAux * GuiGraph::createNode()
     return node_p;
 }
 
+/**
+ * 
+ */
 void GuiGraph::initPos()
 {
     for( Node * nd = firstNode(); isNotNullP( nd); nd = nd->nextNode())
@@ -211,4 +202,40 @@ void GuiGraph::initPos()
         gn->setPos( (qreal)nd->x(), (qreal)nd->y());
         
     }
+}
+
+/**
+ * commitLayout
+ */
+void GuiGraph::commitLayout()
+{
+    GuiNode * node;
+    GuiEdge * edge;
+    for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+	{
+        node->setPos( node->Node::x(), node->Node::y());
+        node->setX( node->QGraphicsItem::x());
+        node->setY( node->QGraphicsItem::y());
+        node->setMyAdjust( 3);
+	}
+	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
+	{
+        if ( edge != NULL)
+        {
+            for( int i = 1; i <= edge->pointsNum(); i++)
+            {
+                GuiPoint * point = new GuiPoint( edge, this);
+                point->setPos( edge->point( i)->x, edge->point( i)->y);
+                point->setInit();
+                GuiEdgePart* seg = new GuiEdgePart( edge, point, edge->endItem(), this); 
+                seg->updatePosition();
+                edge->getEdgePart()->setEnd( point);
+                edge->getEdgePart()->setSelected( false);
+                edge->addPoint( point);
+                edge->addEdgePart( seg);
+                edge->showPoints();
+            }
+		    edge->updatePosition();
+        }
+	}
 }

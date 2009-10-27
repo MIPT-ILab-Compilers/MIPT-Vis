@@ -34,13 +34,6 @@ void GuiNode::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         if ( textInteractionFlags() == Qt::NoTextInteraction)
             setTextInteractionFlags( Qt::TextEditorInteraction);
     }
-	/*
-	else
-	{
-		commitPos(300,300);
-		superscribe(Qt::red,"abc");
-	}
-	*/
     QGraphicsTextItem::mouseDoubleClickEvent( mouseEvent);
 }
 
@@ -49,11 +42,6 @@ void GuiNode::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
  */
 void GuiNode::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
-    if ( mouseEvent->button() & Qt::LeftButton)
-    {
-        QString str = toPlainText();
-        emit isClicked(str);
-    }
     update();
     QGraphicsTextItem::mousePressEvent( mouseEvent);
 }
@@ -143,11 +131,11 @@ void GuiNode::superscribe (QColor color,QString text)
 {
     setMyColor( color);
     setPlainText( text);
-    foreach( GuiEdge * line, edges)
-    {
-        if( line != NULL)
-        {
-            line->startPoint->setMyColor(this->myColor);
-        }
-    }
+}
+/**
+ *  setMyText
+ */
+void GuiNode::setMyText(const QString & str)
+{
+    myText = str;
 }

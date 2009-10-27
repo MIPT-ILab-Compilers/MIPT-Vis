@@ -13,11 +13,13 @@ class QMenu;
 class QAction;
 class GuiView;
 class QHBoxLayout;
+class QVBoxLayout;
 class QWidget;
 class QString;
 class GuiGraph;
-class QLabel;
+class QPlainTextEdit;
 class QGroupBox;
+class QPushButton;
 QT_END_NAMESPACE
 
 /**
@@ -36,6 +38,7 @@ private slots:
     void help();
     void about();
     void doLayoutSlot();
+    void textHandle();
 
 private:
     void createMenus();
@@ -51,13 +54,17 @@ private:
     QAction *aboutAct;
     QAction *doLayoutAct;
     GuiView *view;
-    QVBoxLayout *layout;
+    QHBoxLayout *layout;
     QWidget *widget;
     GuiGraph *graph;
     QString fileName;
-    QLabel *label;
+    QPlainTextEdit *nodeTextEdit;
     QGroupBox *groupBox;
     QVBoxLayout *textLayout;
+    QVBoxLayout *rightLayout;
+    QPushButton *confirmButton;
+public slots:
+    void saveTextToNode();
 };
 
 #endif

@@ -33,7 +33,7 @@ GuiPoint::GuiPoint( GuiEdge * edge, QGraphicsItem * parent, QGraphicsScene * sce
         isFixed( false),
         isInit( false)
 {
-//    setFlag( QGraphicsItem::ItemStacksBehindParent);
+    setFlag( QGraphicsItem::ItemStacksBehindParent);
     QGraphicsItem::setCursor(Qt::ArrowCursor);
     setMyColor( Qt::red);
     setMyAdjust( 1);

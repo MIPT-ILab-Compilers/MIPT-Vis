@@ -18,6 +18,7 @@ MainWindow::MainWindow()
 
     graph = new GuiGraph();
     graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
+    connect(graph, SIGNAL(isClicked()), this, SLOT(textHandle()));
 
     view = new GuiView(graph);
     view->setScene(graph);
@@ -27,20 +28,27 @@ MainWindow::MainWindow()
     
     view->setWindowTitle( fileName);
 
-    label = new QLabel;
-    label ->setText("");
-
-    connect(graph, SIGNAL(aNodeIsClicked(const QString &)), label, SLOT(setText(const QString &)));
+    nodeTextEdit = new QPlainTextEdit;
+    nodeTextEdit->clear();
+    nodeTextEdit->setReadOnly(true);
+    
+    confirmButton = new QPushButton(tr("Save &Text"));
+    confirmButton->setEnabled(false);
+    QObject::connect(confirmButton,SIGNAL(clicked()),this,SLOT(saveTextToNode()));
 
     textLayout = new QVBoxLayout;
-    textLayout->addWidget(label);
+    textLayout->addWidget(nodeTextEdit);
+    textLayout->addWidget(confirmButton);
 
     groupBox = new QGroupBox(tr("Content of selected node"));
     groupBox->setLayout(textLayout);
 
-    layout = new QVBoxLayout;
+    rightLayout = new QVBoxLayout;
+    rightLayout->addWidget(groupBox);
+
+    layout = new QHBoxLayout;
     layout->addWidget(view);
-    layout->addWidget(groupBox);
+    layout->addLayout(rightLayout);
 
     widget = new QWidget;
     widget->setLayout(layout);
@@ -67,7 +75,11 @@ void MainWindow::load()
     if (graph!=NULL) delete graph;
 	graph = new GuiGraph( file);
     view->setScene(graph);
-    connect(graph, SIGNAL(aNodeIsClicked(const QString &)), label, SLOT(setText(const QString &)));
+    connect(graph, SIGNAL(isClicked()), this, SLOT(textHandle()));
+
+    nodeTextEdit->clear();
+    nodeTextEdit->setReadOnly(true);
+    confirmButton->setEnabled(false);
 
     QApplication::restoreOverrideCursor();
 
@@ -181,3 +193,47 @@ void MainWindow::createStatusBar()
 {
     statusBar()->showMessage(tr("Ready"));
 }
+
+/**
+ * Text Handle
+ */
+void MainWindow::textHandle()
+{
+	QList<QGraphicsItem*> list = graph->selectedItems();
+	if (list.size()==1)
+	{
+        GuiNode *node;
+        node = (GuiNode*) list[0];
+        QString str;
+        str = node->myText;
+        nodeTextEdit->setPlainText(str);
+        nodeTextEdit->setReadOnly(false);
+        confirmButton->setEnabled(true);
+	}
+	else
+	{
+        nodeTextEdit->clear();
+        nodeTextEdit->setReadOnly(true);
+        confirmButton->setEnabled(false);
+	}
+}
+
+/**
+ * saveTextToNode
+ */
+void MainWindow::saveTextToNode()
+{
+	QList<QGraphicsItem*> list = graph->selectedItems();
+	if (list.size()==1)
+	{
+        GuiNode *node;
+        node = (GuiNode*) list[0];
+        QString str;
+        str = nodeTextEdit->toPlainText();
+        node->setMyText(str);
+        nodeTextEdit->clear();
+        nodeTextEdit->setReadOnly(true);
+        confirmButton->setEnabled(false);
+	}
+}
+
