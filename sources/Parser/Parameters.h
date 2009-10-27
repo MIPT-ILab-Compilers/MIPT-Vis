@@ -10,6 +10,8 @@
 #ifndef _PARAMETERS_H
 #define _PARAMETERS_H
 
+#include <iostream>
+
 using namespace std;
 
 class Parameters

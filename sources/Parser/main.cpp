@@ -14,6 +14,7 @@
 int main( int argc, char* argv[])
 {
 	Parser* P;
+	Graph * gr;
 	vector<string> v;
 	StrToVector v1;
 	bool imput_method;
@@ -60,20 +61,43 @@ int main( int argc, char* argv[])
 	}else if ( !( param->getCompiler().compare( ICC_COMPILER)))
 	//Parsing by ICC parser
 	{	
-		P = new ParserIcc();
-		P->parseFile( param->getTxtFile());
+		P = new Icc_parser();
+
+		try
+		{
+			P->parseFile( param->getTxtFile());
+			gr = P->getGraph();
+		}
+		catch( exSomething & ex)
+		{
+			ex.wtf( std::cerr);
+			exit( 2);
+		}
+
+		gr->writeToXML( param->getXmlFile().c_str());
 	}else if ( !( param->getCompiler().compare( GCC_COMPILER)) )
 	//Parsing by GCC parser
 	{
-		P = new ParserGcc();
-		P->parseFile( param->getTxtFile());
+		P = new Gcc_parser();
+
+		try
+		{
+			P->parseFile( param->getTxtFile());
+			gr = P->getGraph();
+		}
+		catch( exSomething & ex)
+		{
+			ex.wtf( std::cerr);
+			exit( 2);
+		}
+
+		gr->writeToXML( param->getXmlFile().c_str());
+
 	}else
 	{
 		std::cout << "Sorry, mistake has occured. Please try again." 
 			<< std::endl;
 		help( imput_method);
 	}
-	int a;
-	std::cin >> a;
 	return 0;
 }
