@@ -35,6 +35,7 @@ protected:
     void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseMoveEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent);
+    void commitLayout();
 private:
     int number;
     mode myMode;
@@ -42,6 +43,6 @@ private:
     xmlDoc * xml_doc;
 
 signals:
-    void aNodeIsClicked(const QString &str);
+    void isClicked();
 };
 #endif

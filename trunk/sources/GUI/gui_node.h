@@ -26,6 +26,7 @@ private:
     friend class GraphAux;
 
 public:
+    QString myText;
     enum {Type = QGraphicsItem::UserType + 1};
     GuiNode(  QString * text, GuiGraph * graph_p, int _id, 
         QGraphicsItem * parent = 0, QGraphicsScene * scene = 0):
@@ -78,7 +79,8 @@ protected:
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
     void commitPos( int x,int y);
     void superscribe (QColor color,QString text);
-signals:
-    void isClicked(const QString & str);
+
+public slots:
+    void setMyText(const QString & str);
 };
 #endif
