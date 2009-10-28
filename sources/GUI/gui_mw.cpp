@@ -14,7 +14,7 @@ MainWindow::MainWindow()
     createMenus();
     createStatusBar();
 
-    fileName = "";
+    currentFile = "";
 
     graph = new GuiGraph();
     graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
@@ -26,7 +26,7 @@ MainWindow::MainWindow()
     if(graph->getNodeItem())
       view->centerOn( graph->getNodeItem());
     
-    view->setWindowTitle( fileName);
+    setCurrentFile(currentFile);
 
     nodeTextEdit = new QPlainTextEdit;
     nodeTextEdit->clear();
@@ -34,21 +34,24 @@ MainWindow::MainWindow()
     
     confirmButton = new QPushButton(tr("Save &Text"));
     confirmButton->setEnabled(false);
+    confirmButton->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
     QObject::connect(confirmButton,SIGNAL(clicked()),this,SLOT(saveTextToNode()));
 
     textLayout = new QVBoxLayout;
     textLayout->addWidget(nodeTextEdit);
     textLayout->addWidget(confirmButton);
 
-    groupBox = new QGroupBox(tr("Content of selected node"));
+    groupBox = new QGroupBox(tr("Text of selected node"));
     groupBox->setLayout(textLayout);
+    groupBox->setMinimumWidth(150);
+    groupBox->setSizePolicy(QSizePolicy::MinimumExpanding,QSizePolicy::Fixed);
 
-    rightLayout = new QVBoxLayout;
-    rightLayout->addWidget(groupBox);
-
+    splitter = new QSplitter;
+    splitter->addWidget(view);
+    splitter->addWidget(groupBox);
+ 
     layout = new QHBoxLayout;
-    layout->addWidget(view);
-    layout->addLayout(rightLayout);
+    layout->addWidget(splitter);
 
     widget = new QWidget;
     widget->setLayout(layout);
@@ -61,9 +64,9 @@ MainWindow::MainWindow()
  */
 void MainWindow::load()
 {
-    fileName = QFileDialog::getOpenFileName(this, tr("Open File"),"",tr("XML (*.xml);;All files(*.*)")); 
-    if (fileName.isEmpty()) return;
-    QByteArray curFile = fileName.toAscii();
+    currentFile = QFileDialog::getOpenFileName(this, tr("Open File"),"",tr("XML (*.xml);;All files(*.*)")); 
+    if (currentFile.isEmpty()) return;
+    QByteArray curFile = currentFile.toAscii();
     char *file;
     file = (char*) calloc(curFile.size(),sizeof(char));
     if (file==NULL) return;
@@ -83,7 +86,7 @@ void MainWindow::load()
 
     QApplication::restoreOverrideCursor();
 
-    view->setWindowTitle( fileName);
+    setCurrentFile(currentFile);
 }
 
 /**
@@ -91,16 +94,16 @@ void MainWindow::load()
  */
 void MainWindow::save()
 {
-    fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("XML (*.xml);;All files(*.*)")); 
-    if (fileName.isEmpty()) return;
-    QByteArray curFile = fileName.toAscii();
+    currentFile = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("XML (*.xml);;All files(*.*)")); 
+    if (currentFile.isEmpty()) return;
+    QByteArray curFile = currentFile.toAscii();
     char *file;
     file = (char*) calloc(curFile.size(),sizeof(char));
     if (file==NULL) return;
     int i;
     for (i=0;i<=curFile.size();++i) file[i]=curFile[i];
     graph->writeToXML( file);
-    view->setWindowTitle( fileName);
+    setCurrentFile(currentFile);
 }
 
 /**
@@ -237,3 +240,24 @@ void MainWindow::saveTextToNode()
 	}
 }
 
+/**
+ * setCurrentFile
+ */
+void MainWindow::setCurrentFile(const QString & fileName)
+{
+     QString shownName;
+     if (fileName.isEmpty())
+         shownName = "untitled.xml";
+     else
+         shownName = strippedName(fileName);
+
+     setWindowTitle(tr("%1[*] - %2").arg(shownName).arg(tr("MIPT-Vis")));
+}
+
+/**
+ * setCurrentFile
+ */
+QString MainWindow::strippedName(const QString &fullFileName)
+{
+    return QFileInfo(fullFileName).fileName();
+} 

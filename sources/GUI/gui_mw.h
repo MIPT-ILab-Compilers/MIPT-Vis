@@ -15,6 +15,7 @@ class GuiView;
 class QHBoxLayout;
 class QVBoxLayout;
 class QWidget;
+class QSplitter;
 class QString;
 class GuiGraph;
 class QPlainTextEdit;
@@ -44,6 +45,8 @@ private:
     void createMenus();
     void createActions();
     void createStatusBar();
+    void setCurrentFile(const QString & fileName);
+    QString strippedName(const QString &fullFileName);
     
     QMenu *fileMenu;
     QMenu *helpMenu;
@@ -56,8 +59,9 @@ private:
     GuiView *view;
     QHBoxLayout *layout;
     QWidget *widget;
+    QSplitter *splitter;
     GuiGraph *graph;
-    QString fileName;
+    QString currentFile;
     QPlainTextEdit *nodeTextEdit;
     QGroupBox *groupBox;
     QVBoxLayout *textLayout;
