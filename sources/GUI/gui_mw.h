@@ -40,6 +40,7 @@ private slots:
     void about();
     void doLayoutSlot();
     void textHandle();
+    void centreOnNode();
 
 private:
     void createMenus();
@@ -49,13 +50,17 @@ private:
     QString strippedName(const QString &fullFileName);
     
     QMenu *fileMenu;
-    QMenu *helpMenu;
+    QMenu *viewMenu;
     QMenu *toolsMenu;
+    QMenu *helpMenu;
+
     QAction *loadAct;
     QAction *saveAct;
     QAction *helpAct;
     QAction *aboutAct;
     QAction *doLayoutAct;
+    QAction *centreOnNodeAct;
+
     GuiView *view;
     QHBoxLayout *layout;
     QWidget *widget;

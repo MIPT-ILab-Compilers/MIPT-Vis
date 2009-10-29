@@ -76,7 +76,7 @@ void MainWindow::load()
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
     if (graph!=NULL) delete graph;
-	graph = new GuiGraph( file);
+    graph = new GuiGraph( file);
     view->setScene(graph);
     connect(graph, SIGNAL(isClicked()), this, SLOT(textHandle()));
 
@@ -147,6 +147,21 @@ void MainWindow::doLayoutSlot()
 }
 
 /**
+ * centreOnNode
+ */
+void MainWindow::centreOnNode()
+{
+    int nodeId = QInputDialog::getInt(this,"Center On Node","Enter Node Number",0,-1000,1000,1,0,0);
+    GuiNode * node;
+    for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		if (node->id() == nodeId)
+      {
+		  view->centerOn(node);
+          break;
+	  }
+} 
+
+/**
  * Creat actions
  */
 void MainWindow::createActions()
@@ -170,6 +185,10 @@ void MainWindow::createActions()
     doLayoutAct = new QAction(tr("Do &Layout"), this);
     doLayoutAct->setStatusTip(tr("Do Layout..."));
     connect(doLayoutAct, SIGNAL(triggered()), this, SLOT(doLayoutSlot()));
+
+    centreOnNodeAct = new QAction(tr("&Centre On Node"), this);
+    centreOnNodeAct->setStatusTip(tr("Centre On Node..."));
+    connect(centreOnNodeAct, SIGNAL(triggered()), this, SLOT(centreOnNode()));
 }
 
 /**
@@ -180,6 +199,9 @@ void MainWindow::createMenus()
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(loadAct);
     fileMenu->addAction(saveAct);
+
+    viewMenu = menuBar()->addMenu(tr("&View"));
+    viewMenu->addAction(centreOnNodeAct);
 
     toolsMenu = menuBar()->addMenu(tr("&Tools"));
     toolsMenu->addAction(doLayoutAct);
@@ -202,9 +224,9 @@ void MainWindow::createStatusBar()
  */
 void MainWindow::textHandle()
 {
-	QList<QGraphicsItem*> list = graph->selectedItems();
-	if (list.size()==1)
-	{
+    QList<QGraphicsItem*> list = graph->selectedItems();
+    if (list.size()==1)
+    {
         GuiNode *node;
         node = (GuiNode*) list[0];
         QString str;
@@ -212,13 +234,13 @@ void MainWindow::textHandle()
         nodeTextEdit->setPlainText(str);
         nodeTextEdit->setReadOnly(false);
         confirmButton->setEnabled(true);
-	}
-	else
-	{
+    }
+    else
+    {
         nodeTextEdit->clear();
         nodeTextEdit->setReadOnly(true);
         confirmButton->setEnabled(false);
-	}
+    }
 }
 
 /**
@@ -226,9 +248,9 @@ void MainWindow::textHandle()
  */
 void MainWindow::saveTextToNode()
 {
-	QList<QGraphicsItem*> list = graph->selectedItems();
-	if (list.size()==1)
-	{
+    QList<QGraphicsItem*> list = graph->selectedItems();
+    if (list.size()==1)
+    {
         GuiNode *node;
         node = (GuiNode*) list[0];
         QString str;
@@ -237,7 +259,7 @@ void MainWindow::saveTextToNode()
         nodeTextEdit->clear();
         nodeTextEdit->setReadOnly(true);
         confirmButton->setEnabled(false);
-	}
+    }
 }
 
 /**
@@ -245,13 +267,10 @@ void MainWindow::saveTextToNode()
  */
 void MainWindow::setCurrentFile(const QString & fileName)
 {
-     QString shownName;
-     if (fileName.isEmpty())
-         shownName = "untitled.xml";
-     else
-         shownName = strippedName(fileName);
-
-     setWindowTitle(tr("%1[*] - %2").arg(shownName).arg(tr("MIPT-Vis")));
+    QString shownName;
+    if (fileName.isEmpty()) shownName = "untitled.xml";
+    else shownName = strippedName(fileName);
+    setWindowTitle(tr("%1[*] - %2").arg(shownName).arg(tr("MIPT-Vis")));
 }
 
 /**
