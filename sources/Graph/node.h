@@ -19,7 +19,10 @@ class NodeProperties
 	int height_priv;
 	char * label_priv;
 	char * shape_priv;
+
+	bool is_real; //indicates that the node must be showed
 public:
+	NodeProperties();
     /** Data reading */
     inline int userId() const
     {
@@ -53,6 +56,10 @@ public:
     { 
         return shape_priv;
     }
+	inline bool real() const
+	{
+		return is_real;
+	}
     /** Data writing */ 
     inline void setUserId( int i)
     {
@@ -86,6 +93,10 @@ public:
     { 
         shape_priv = shape;
     }
+	inline void setReal (bool nreal)
+	{
+		is_real = nreal;
+	}
 };
 
 /**
@@ -121,6 +132,7 @@ protected:
     Node( Graph *graph_p, int _id):
          unique_id( _id), graph( graph_p), my_it()
     {
+		setReal (true);
         edges[ GRAPH_DIR_UP] = NULL;
         edges[ GRAPH_DIR_DOWN] = NULL;
         e_it[ GRAPH_DIR_UP] = NULL;
@@ -134,7 +146,7 @@ public:
     /**
      * Destructor
      */
-    ~Node();
+    virtual ~Node();
     
     /**
      * get node's unique ID

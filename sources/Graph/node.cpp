@@ -5,11 +5,26 @@
  */
 #include "graph_impl.h"
 
+NodeProperties::NodeProperties()
+{
+	user_id = 0;
+    color_priv = 0;
+	x_priv = 0;
+	y_priv = 0;
+	width_priv = 0;
+	height_priv = 0;
+	label_priv = 0;
+	shape_priv = 0;
+	is_real = true;
+}
 /** 
  * Destructor. Corrects list of nodes in corresponding graph and deletes adjacent edges
  */
 Node::~Node()
 {
+	out ("deleting node# "); debugPrint();
+	out ("\n\n\n");
+
     Edge *edge;
     
     /** delete incidient edges */
@@ -84,9 +99,10 @@ Node::writeByXMLWriter( xmlTextWriterPtr writer)
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "y", "%d", y());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "width", "%d", width());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "height", "%d", height());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST shape());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "real", "%d", (int)real());
+	if (label()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
+	if (color()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
+	if (shape()) xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST shape());
 	
 	xmlTextWriterEndElement( writer);
     xmlTextWriterWriteString( writer, BAD_CAST "\n");

@@ -31,6 +31,24 @@ bool GraphAux::rank()
 bool GraphAux::ordering()
 {
 	addVirtualChains();
+
+	int max_rank = 0;
+	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
+		max_rank = max(iter->rang(), max_rank);
+
+	max_rank++;
+
+	int *num_in_rank = new int[max_rank];
+	for (int i = 0; i < max_rank; ++i)
+		num_in_rank[i] = 0;
+
+	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
+	{
+		iter->setPosAux (num_in_rank[iter->rang()]++);
+	}
+
+	delete []num_in_rank;//!!!There was an error, but I'm not know what it was.
+
 	return true;
 }
 //-----------------------------------------------------------------------------
@@ -58,16 +76,69 @@ bool GraphAux::make_splines()
 */
 bool GraphAux::doLayout()
 {
+	delVirtualNodes();
 	if (!rank())			return false;
 	if (!ordering())		return false;
 	if (!position())		return false;
 	if (!make_splines())	return false;
 	if (!applayLayout())	return false;
+	
 	return true;
 }
 //-----------------------------------------------------------------------------
 /**
-* Finding a node like root//!!! if there are several roots, it returns the first one
+* Deletes virtual roots, translate nodes, returns false if there are any
+* virtuals state in graph
+*/
+bool GraphAux::delVirtualNodes()
+{
+	bool rez = true;
+	Node* to_detach = 0;
+	for (Node* cur = firstNode(); cur != 0; cur = cur->nextNode())
+	{
+		if (to_detach)
+		{
+			removeNode (to_detach);
+			//delete to_detach;
+			to_detach = 0;
+		}
+
+		if (!cur->real())
+		{
+			int num_preds = 0;
+			int num_succs = 0;
+			Edge* iter;
+			ForEdges(cur, iter, Succ) ++num_succs;
+			ForEdges(cur, iter, Pred) ++num_preds;
+
+			if (num_preds == 0 && num_succs == 0) to_detach = cur; //lonely node
+			else if (num_preds == 0)				//virtual root
+			{
+//				ForEdges(cur, iter, Succ) removeEdge (iter);
+				to_detach = cur;
+			}
+			else if (num_preds == 1 && num_succs == 1)//translation node(edge point)
+			{
+				Edge* one = cur->firstSucc();
+				Edge* two = cur->firstPred();
+				one->setPred (two->pred());
+//				removeEdge (two);
+				to_detach = cur;
+			}
+			else rez = false;//it node can't be deleted
+		}
+	}
+	if (to_detach)//for the last
+	{
+		removeNode (to_detach);
+//		delete to_detach;
+		to_detach = 0;
+	}
+	return rez;
+}
+//-----------------------------------------------------------------------------
+/**
+* Finding a node like root
 */
 NodeAux* GraphAux::findRoot()
 {
@@ -244,7 +315,6 @@ bool GraphAux::passedAllPred (NodeAux* from, Marker passed)
 	return true;//all incoming edges are processed
 }
 //-----------------------------------------------------------------------------
-
 void GraphAux::addVirtualChains()
 {
 	for(EdgeAux* iter = firstEdge(); iter != NULL; iter = iter->nextEdge())
@@ -277,30 +347,17 @@ void GraphAux::arrangeVertical()
 }
 //-----------------------------------------------------------------------------
 /*
- * Arrnages nodes' vertical positions by their ranks
+ * Arrnages nodes' horisontal positions by their poses
  */
 void GraphAux::arrangeHorisontal()
 {
 	int startx = 0;
-	int stepx = 200;
-
-	int max_rank = 0;
-	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
-		max_rank = max(iter->rang(), max_rank);
-
-	max_rank++;
-
-	int *num_in_rank = new int[max_rank];
-	for (int i = 0; i < max_rank; ++i)
-		num_in_rank[i] = 0;
+	int stepx = 120;
 
 	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
 	{
-		int pos = (num_in_rank[iter->rang()]++)*stepx + startx;
-		iter->setX (pos);
+		iter->setX (iter->posAux()*stepx + startx);
 	}
-
-	//delete []num_in_rank;//!!!Не удаляется почему-то, TODO
 }
 //-----------------------------------------------------------------------------
 void GraphAux::applayPositions()
@@ -312,9 +369,9 @@ void GraphAux::applayPositions()
 		QString label;
 		label.sprintf ("r=%d,o=%d", iter->rang(), iter->posAux());
 		if (iter->real())
-			iter->superscribe (Qt::gray, label);
+			iter->superscribe (Qt::green, label);
 		else
-			iter->superscribe (Qt::white, label);
+			iter->superscribe (Qt::gray, label);
 	}
 }
 //-----------------------------------------------------------------------------

@@ -5,7 +5,15 @@
 #ifndef GUI_NODE_H
 #define GUI_NODE_H
 #include <QtGui/QGraphicsTextItem>
-#include "gui_impl.h"
+#include <QtGui/QtGui>
+#include <QtGui/QApplication>
+#include <QtCore/QLineF>
+#include "../Layout/layout_iface.h"
+//#include "gui_impl.h"
+class GuiEdge;
+class GuiNode;
+class GuiGraph;
+
 
 class GuiEdge;
 class GuiPoint;
@@ -18,7 +26,6 @@ class GuiNode:public QGraphicsTextItem, public NodeAux
     Q_OBJECT
 
 private:
-    QList<GuiEdge *> edges;
     QPolygonF myPolygon;
     QColor myColor;
     qreal myAdjust;
@@ -29,23 +36,8 @@ public:
     QString myText;
     enum {Type = QGraphicsItem::UserType + 1};
     GuiNode(  QString * text, GuiGraph * graph_p, int _id, 
-        QGraphicsItem * parent = 0, QGraphicsScene * scene = 0):
-        myAdjust(0),
-        QGraphicsTextItem( parent, scene),
-        NodeAux( ( GraphAux *) ( graph_p), _id)
-{
-    QGraphicsItem::setCursor(Qt::ArrowCursor);
-    setPlainText( *text);
-    setTextWidth ( 100); //Set width of node
-    setMyAdjust( 3);
-    setMyColor( Qt::green);
-    setFlag( QGraphicsItem::ItemIsMovable, true); // Set node can move
-    setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
-    setTextInteractionFlags( Qt::NoTextInteraction);
-    myPolygon << (boundingRect().bottomLeft()) << (boundingRect().bottomRight())
-                  << (boundingRect().topRight()) << (boundingRect().topLeft())
-                  << (boundingRect().bottomLeft());
-}
+        QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+	virtual ~GuiNode();
     inline QPolygonF polygon() const
     {
         return myPolygon;
@@ -62,7 +54,6 @@ public:
     {
         myAdjust = adjust;
     };
-    void addEdge( GuiEdge * line);
     QRectF boundingRect() const;
 
     int type() const

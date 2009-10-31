@@ -61,25 +61,25 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
         node->setPos( node->Node::x(), node->Node::y());
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
-        node->setMyAdjust( 3);
+		node->setMyAdjust( node->real()? 3 : 1);
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{
         if ( edge != NULL)
         {
-            for( int i = 1; i <= edge->pointsNum(); i++)
-            {
-                GuiPoint * point = new GuiPoint( edge, this);
-                point->setPos( edge->point( i)->x, edge->point( i)->y);
-                point->setInit();
-                GuiEdgePart* seg = new GuiEdgePart( edge, point, edge->endItem(), this); 
-                seg->updatePosition();
-                edge->getEdgePart()->setEnd( point);
-                edge->getEdgePart()->setSelected( false);
-                edge->addPoint( point);
-                edge->addEdgePart( seg);
-                edge->showPoints();
-            }
+            //for( int i = 1; i <= edge->pointsNum(); i++)
+            //{
+            //    GuiPoint * point = new GuiPoint( edge, this);
+            //    point->setPos( edge->point( i)->x, edge->point( i)->y);
+            //    point->setInit();
+            //    GuiEdgePart* seg = new GuiEdgePart( edge, point, edge->endItem(), this); 
+            //    seg->updatePosition();
+            //    edge->getEdgePart()->setEnd( point);
+            //    edge->getEdgePart()->setSelected( false);
+            //    edge->addPoint( point);
+            //    edge->addEdgePart( seg);
+            //    edge->showPoints();
+            //}
 		    edge->updatePosition();
         }
 	}
@@ -161,19 +161,19 @@ void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
 /**
  * Allocation memory for edge
  */
-GuiEdge * GuiGraph::createEdge( Node * pred, Node * succ)
+EdgeAux * GuiGraph::createEdge( Node * pred, Node * succ)
 {
-    GuiEdge * e = new GuiEdge( this, incEdgeId(), ( GuiNode *)pred, ( GuiNode *)succ);
+    GuiEdge * e = new GuiEdge (this, incEdgeId(), ( GuiNode *)pred, ( GuiNode *)succ);
     addItem( e);
-    e->initNode( ( GuiNode *)pred, ( GuiNode *)succ);
-    e->initPoints( 1);
-    e->setStyle( "Solid");
+//    e->initNode( ( GuiNode *)pred, ( GuiNode *)succ);
+//    e->initPoints( 1);
+    e->setStyle( "Solid");/*
     ( ( GuiNode *)pred)->addEdge( e);
-    ( ( GuiNode *)succ)->addEdge( e);
+    ( ( GuiNode *)succ)->addEdge( e);*/
     e->setZValue( -1000.0);
     e->updatePosition();
 
-    return e;
+    return static_cast <EdgeAux*> (e);
 }
 
 /**
@@ -190,6 +190,18 @@ NodeAux * GuiGraph::createNode()
 
     return node_p;
 }
+//
+//void GuiGraph::removeNode (Node* what)
+//{
+//	removeItem (addGui(what));
+//	GraphAux::removeNode (what);
+//}
+//
+//void GuiGraph::removeEdge (Edge* what)//!!!Edge not deleted completely
+//{									  //Where must it be removed, to clear it from drawing???
+//	removeItem (addGui(what));
+//	GraphAux::removeEdge (what);
+//}
 
 /**
  * 
@@ -205,9 +217,26 @@ void GuiGraph::initPos()
 }
 
 /**
+ * adds remove item to graph::removeEdge
+ */
+void GuiGraph::removeEdge (Edge* e)
+{
+	removeItem (addGui (e));
+	Graph::removeEdge (e);
+}
+
+/**
+ * adds remove item to graph::removeNode
+ */
+void GuiGraph::removeNode (Node* n)
+{
+	removeItem (addGui (n));
+	Graph::removeNode (n);
+}
+/**
  * commitLayout
  */
-void GuiGraph::commitLayout()
+bool GuiGraph::applayLayout()
 {
     GuiNode * node;
     GuiEdge * edge;
@@ -216,26 +245,27 @@ void GuiGraph::commitLayout()
         node->setPos( node->Node::x(), node->Node::y());
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
-        node->setMyAdjust( 3);
+        node->setMyAdjust (node->real()? 3 : 1);
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{
         if ( edge != NULL)
         {
-            for( int i = 1; i <= edge->pointsNum(); i++)
-            {
-                GuiPoint * point = new GuiPoint( edge, this);
-                point->setPos( edge->point( i)->x, edge->point( i)->y);
-                point->setInit();
-                GuiEdgePart* seg = new GuiEdgePart( edge, point, edge->endItem(), this); 
-                seg->updatePosition();
-                edge->getEdgePart()->setEnd( point);
-                edge->getEdgePart()->setSelected( false);
-                edge->addPoint( point);
-                edge->addEdgePart( seg);
-                edge->showPoints();
-            }
+            //for( int i = 1; i <= edge->pointsNum(); i++)
+            //{
+            //    GuiPoint * point = new GuiPoint( edge, this);
+            //    point->setPos( edge->point( i)->x, edge->point( i)->y);
+            //    point->setInit();
+            //    GuiEdgePart* seg = new GuiEdgePart( edge, point, edge->endItem(), this); 
+            //    seg->updatePosition();
+            //    edge->getEdgePart()->setEnd( point);
+            //    edge->getEdgePart()->setSelected( false);
+            //    edge->addPoint( point);
+            //    edge->addEdgePart( seg);
+            //    edge->showPoints();
+            //}
 		    edge->updatePosition();
         }
 	}
+	return true;
 }

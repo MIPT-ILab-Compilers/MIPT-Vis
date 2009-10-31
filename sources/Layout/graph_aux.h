@@ -14,6 +14,8 @@ class GraphAux: public Graph
 {
 private:
 
+	bool delVirtualNodes();
+
 	NodeAux* findRoot();
 	int markReachable (Node* root, Marker by_what);
 	NodeAux* makeVirtualRoot (QList <Node*>& roots);
@@ -81,12 +83,9 @@ public:
         return n;
     }
 
-	bool applayLayout()//implemented by graphic interface branch
+	virtual bool applayLayout()//implemented by graphic interface branch
 	{
 		return false;
-	}
-    virtual void commitLayout()
-	{
 	}
 };
 
