@@ -18,33 +18,33 @@ class GuiEdgePart: public QGraphicsItem
     QPointF btmRight;
 public:
     enum { Type = QGraphicsItem::UserType + 2};
-    inline GuiPoint * start() const
-    {
-        return startPoint;
-    }
+    //inline GuiPoint * start() const
+    //{
+    //    return startPoint;
+    //}
 
-    inline GuiPoint * end() const
-    {
-        return endPoint;
-    }
+    //inline GuiPoint * end() const
+    //{
+    //    return endPoint;
+    //}
 
-    inline void setStart( GuiPoint * start)
-    {
-        startPoint = start;
-        if ( start != NULL)
-        {
-            start->setEnd( this);
-        }  
-    }
+    //inline void setStart( GuiPoint * start)
+    //{
+    //    startPoint = start;
+    //    if ( start != NULL)
+    //    {
+    //        start->setEnd( this);
+    //    }  
+    //}
 
-    inline void setEnd( GuiPoint * end)
-    {
-        endPoint = end;
-        if ( end != NULL)
-        {
-            end->setStart( this);
-        } 
-    }
+    //inline void setEnd( GuiPoint * end)
+    //{
+    //    endPoint = end;
+    //    if ( end != NULL)
+    //    {
+    //        end->setStart( this);
+    //    } 
+    //}
 
     void GuiEdgePart::updatePosition();
     GuiEdgePart( GuiEdge * e, GuiPoint * start, GuiPoint * end, QGraphicsScene * scene);

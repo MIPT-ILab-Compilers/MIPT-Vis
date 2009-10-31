@@ -67,9 +67,45 @@ Graph::newNode()
     return node_p;
 }
 
+
 /**
 * Insert new node on edge in graph
 */
+void Graph::removeEdge (Edge* e)
+{
+	e->detachFromNode (GRAPH_DIR_UP);
+	e->detachFromNode (GRAPH_DIR_DOWN);
+	detachEdge (e);
+}
+/**
+* Insert new node on edge in graph
+*/
+void Graph::removeNode (Node* n)
+{
+    Edge *edge;
+    
+    /** delete incidient edges */
+    for ( edge = n->firstSucc(); isNotNullP( edge);)
+    {
+        Edge* next = edge->nextSucc();
+        edge->detachFromNode( GRAPH_DIR_DOWN);// Edge is detached from succ node
+        removeEdge (edge);
+        edge = next;
+    }
+    for ( edge = n->firstPred(); isNotNullP( edge);)
+    {
+        Edge* next = edge->nextPred();
+        edge->detachFromNode( GRAPH_DIR_UP);// Edge is detached from pred node
+        removeEdge (edge);
+        edge = next;
+    }
+    /** delete myself from graph */
+    detachNode (n);
+}
+/**
+* Insert new node on edge in graph
+*/
+
 Node * Graph::insertNodeOnEdge( Edge* e)
 {
 	Node* n = this->newNode();
@@ -333,6 +369,9 @@ Graph::readNodesFromXmlDoc( xmlNode * a_node)
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("y")))
 				{
 					node->setY( strtoul( ( const char *)( props->children->content), NULL, 0));
+				} else if ( xmlStrEqual( props->name, xmlCharStrdup("real")))
+				{
+					node->setReal ((bool)strtoul( ( const char *)( props->children->content), NULL, 0));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("width")))
 				{
 					node->setWidth( strtoul( ( const char *)( props->children->content), NULL, 0));
@@ -397,11 +436,11 @@ Graph::readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 				{
 					edge->setThickness(
                         strtoul( ( const char *)( props->children->content), NULL, 0) );
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("points_num")))
+				} /*else if ( xmlStrEqual( props->name, xmlCharStrdup("points_num")))
 				{
                     edge->initPoints( 
                         strtoul( ( const char *)( props->children->content), NULL, 0) + 1);
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
+				} */else if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
 				{
 					edge->setColor( ( char *)( props->children->content));
 				} else if ( xmlStrEqual( props->name, xmlCharStrdup("style")))

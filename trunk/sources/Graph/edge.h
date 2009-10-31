@@ -9,15 +9,6 @@
 #include <vector>
 
 /**
- * Representation of a point on 2d surface.
- */
-typedef struct
-{
-	int x;
-    int y;
-} EdgePoint;
-
-/**
  * Implements collection of edge properties and provides accessors for them
  */
 class EdgeProperties
@@ -28,7 +19,6 @@ class EdgeProperties
 	char * color_priv;
 	char * style_priv;
 	char * label_priv;
-	vector<EdgePoint *> points;
 public:
     EdgeProperties()
     {
@@ -63,14 +53,6 @@ public:
     {
         return label_priv;
     }
-    inline EdgePoint * point( int n) const
-    {
-        return points[ n];
-    }
-    inline int pointsNum() const
-    {
-		return ((int)points.size() - 1);
-    }
     /** Data writing routines */
     inline void setUserId( int i)
     {
@@ -96,18 +78,6 @@ public:
     {
         label_priv = label;
     }
-    inline void setPoint( EdgePoint *p, int n)
-    {
-        points[ n] = p;
-    }
-    inline void addPoint( EdgePoint *p)
-    {
-        points.push_back( p);
-    }
-    inline void initPoints( int n)
-    {
-        points.resize( n, NULL);
-    }
 };
 /**
  *  Edge class implements basic concept of graph edge.
@@ -120,7 +90,8 @@ class Edge: public Marked, public Numbered, public EdgeProperties
     /** Graph part */
     int unique_id; //Unique ID
 
-    Graph * graph; //Graph
+protected:    Graph * graph; //Graph
+private:
     EdgeListItem graph_it; //Position in Graph's list of edges
 
 	virtual void readEdgePointsFromXMLDoc( xmlNode * a_node);
@@ -142,8 +113,10 @@ class Edge: public Marked, public Numbered, public EdgeProperties
 protected:
     /** Constructors are made protected, only nodes and graph can create edges */
     Edge( Graph *graph_p, int _id, Node *_pred, Node* _succ):
-        unique_id( _id), graph( graph_p), graph_it()
+		 unique_id( _id), graph( graph_p), graph_it()
     {
+		nodes[GRAPH_DIR_DOWN] = 0;
+		nodes[GRAPH_DIR_UP] = 0;
         graph_it.setData( (Edge*) this);
         n_it[ GRAPH_DIR_UP] = EdgeListItem();
         n_it[ GRAPH_DIR_DOWN] = EdgeListItem();
@@ -226,6 +199,7 @@ public:
     virtual void setNode( Node *n, GraphDir dir)
     {
         graphassert( isNotNullP( n));
+		if (nodes[ dir]) detachFromNode (dir);
         nodes[ dir] = n;
         if ( n != NULL)
         {

@@ -12,16 +12,14 @@ class NodePropertiesAux
 protected:
     int rang_priv; // number of node's layer
     int pos_priv;  // absolute position in layer
-	bool is_real; //indicates that the node must be showed
 public:
     // Default constructor
     NodePropertiesAux()
-    {    
+    {
         NodeProperties::NodeProperties();
         // Default position is first in first layer
         rang_priv = 0;
         pos_priv = 1;
-		is_real = true;
     }
     // Gets for auxiliary properties
     inline int rang() const
@@ -32,10 +30,6 @@ public:
     {
         return pos_priv;
     }
-	inline bool real() const
-	{
-		return is_real;
-	}
     // Sets for auxiliary properties
     inline void setRang( int rang)
     {
@@ -45,10 +39,6 @@ public:
     {
         pos_priv = posAux;
     }
-	inline void setReal (int nreal)
-	{
-		is_real = nreal;
-	}
 };
 
 /**

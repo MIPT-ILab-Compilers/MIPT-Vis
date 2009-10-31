@@ -5,7 +5,10 @@
 #ifndef GUI_GRAPH_H
 #define GUI_GRAPH_H
 #include <QtGui/QGraphicsScene>
-#include "gui_impl.h"
+#include "../Layout/layout_iface.h"
+//#include "gui_impl.h"
+class GuiEdge;
+class GuiNode;
 
 /**
  * Class GuiGraph
@@ -22,7 +25,7 @@ public:
     
     NodeAux * createNode();
     
-    GuiEdge * createEdge( Node * pred, Node * succ);
+    EdgeAux * createEdge( Node * pred, Node * succ);//!!! may be need another return type
     void initPos();
 
     inline QGraphicsItem * getNodeItem()
@@ -30,12 +33,16 @@ public:
         GuiNode * gui_node_p = ( GuiNode *)firstNode();
         return (QGraphicsItem *) gui_node_p;       
     }
+
+	virtual void removeEdge (Edge* e);
+	virtual void removeNode (Node* n);
+
 protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseMoveEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent);
-    void commitLayout();
+    bool applayLayout();
 private:
     int number;
     mode myMode;

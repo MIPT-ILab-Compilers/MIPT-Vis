@@ -127,7 +127,7 @@ void GuiEdgePart::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event)
          && event->button() & Qt::LeftButton)
     { 
         addPoint( event->pos());
-        edge->showPoints();
+//        edge->showPoints();
     }
     setSelected( false);
     update();
@@ -156,21 +156,21 @@ GuiPoint * GuiEdgePart::addPoint( QPointF p)
     GuiPoint * point = new GuiPoint( edge, scene());
     point->setPos( p);
     point->setInit();
-    GuiEdgePart* seg = new GuiEdgePart( edge, point, end(), scene()); 
-    seg->updatePosition();
-    setEnd( point);
+//    GuiEdgePart* seg = new GuiEdgePart( edge, point, end(), scene()); 
+//    seg->updatePosition();
+//    setEnd( point);
     setSelected( false);
     if ( edge != NULL)
     {
-        int n = edge->pointsNum() + 1;
-        edge->addPoint( point);
-        edge->addEdgePart( seg);
-        edge->initPoints( n + 1);
-        edge->setPoint( new EdgePoint(), n);
-        edge->point( n)->x = p.x();
-		edge->point( n)->y = p.y();
+//        int n = edge->pointsNum() + 1;
+  //      edge->addPoint( point);
+  //      edge->addEdgePart( seg);
+  //      edge->initPoints( n + 1);
+  //      edge->setPoint( new EdgePoint(), n);
+  //      edge->point( n)->x = p.x();
+		//edge->point( n)->y = p.y();
         updatePosition();
-        edge->updatePoints();
+//        edge->updatePoints();
     }
     return point;
 }

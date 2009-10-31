@@ -144,6 +144,7 @@ public:
            first_node = n->nextNode();
         }
 		n->detachFromGraph();
+		--node_num;
     }
 
     /**
@@ -157,7 +158,11 @@ public:
             first_edge = e->nextEdge();
         }
         e->detachFromGraph();
+		--edge_num;
     }
+
+	virtual void removeEdge (Edge* e);
+	virtual void removeNode (Node* n);
 
 	/**
 	* Insert new node on edge in graph

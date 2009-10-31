@@ -33,7 +33,7 @@ GuiPoint::GuiPoint( GuiEdge * edge, QGraphicsItem * parent, QGraphicsScene * sce
         isFixed( false),
         isInit( false)
 {
-    setFlag( QGraphicsItem::ItemStacksBehindParent);
+//!!! unknown identifier    setFlag( QGraphicsItem::ItemStacksBehindParent);
     QGraphicsItem::setCursor(Qt::ArrowCursor);
     setMyColor( Qt::red);
     setMyAdjust( 1);
@@ -101,7 +101,7 @@ QVariant GuiPoint::itemChange( GraphicsItemChange change, const QVariant &value)
         }
         if( edge != NULL && init())
         {
-            edge->updatePoints();
+//            edge->updatePoints();
         }
     }
     return value;
