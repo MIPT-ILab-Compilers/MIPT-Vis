@@ -183,10 +183,12 @@ int GraphAux::markReachable (Node* root, Marker by_what)
 	{
 		++number_marked;
 		Node* cur = to_process.dequeue();
-		cur->mark (by_what);
 		for (Edge* csucc = cur->firstSucc(); csucc != 0; csucc = csucc->nextSucc())
 			if (!csucc->succ()->isMarked (by_what))
+			{
+				csucc->succ()->mark (by_what);
 				to_process.enqueue (csucc->succ());
+			}
 	}
 	return number_marked;
 }
