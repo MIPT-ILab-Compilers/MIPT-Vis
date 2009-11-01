@@ -33,10 +33,13 @@ The long description is highly recommended to be added in comments after these. 
 *Example:*
 {{{
 /**
- * graph.cpp - Implementation of graph
+ * @graph.cpp 
+ * Implementation of graph
  * Core component of Graph representation
- * Copyright 2009 MIPTVIS team
  */
+ /*
+  * Copyright 2009 MIPTVIS team
+  */
 }}}
 
 === Multiple inclusion protection ===
