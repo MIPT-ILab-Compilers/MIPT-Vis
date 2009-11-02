@@ -22,6 +22,7 @@ private:
 
 	NodeAux* makeAcyclic();//needs for Rank, changes types of edges
 
+	void clearRanks();
 	void rankImp (NodeAux* from, int cur_rank, Marker passed);
 	bool passedAllPred (NodeAux* what, Marker passed);
 	void   passAllSucc (NodeAux* from, int cur_rank, Marker passed);
