@@ -59,7 +59,7 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
 
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
-        node->setPos( node->Node::x(), node->Node::y());
+        node->setPos( node->NodeAux::x(), node->NodeAux::y());
 		node->setMyText(QString(node->textPriv()));
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
@@ -213,7 +213,7 @@ void GuiGraph::initPos()
     for( Node * nd = firstNode(); isNotNullP( nd); nd = nd->nextNode())
     {
         GuiNode * gn = ( GuiNode *)newNode();
-        gn->setPos( (qreal)nd->x(), (qreal)nd->y());
+        gn->setPos( (qreal)addAux(nd)->x(), (qreal)addAux(nd)->y());
         
     }
 }
@@ -244,7 +244,7 @@ bool GuiGraph::applayLayout()
     GuiEdge * edge;
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
-        node->setPos( node->Node::x(), node->Node::y());
+        node->setPos( node->NodeAux::x(), node->NodeAux::y());
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
         node->setMyAdjust (node->real()? 3 : 1);

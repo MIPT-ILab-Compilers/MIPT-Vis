@@ -7,111 +7,11 @@
 #define NODE_H
 
 /**
- * Representation of various node attributes
- */
-class NodeProperties
-{
-	int user_id;
-    char * color_priv;
-	int x_priv;
-	int y_priv;
-	int width_priv;
-	int height_priv;
-	char * label_priv;
-	char * shape_priv;
-	char * text_priv;
-	bool is_real; //indicates that the node must be showed
-public:
-	NodeProperties();
-    /** Data reading */
-    inline int userId() const
-    {
-        return user_id;
-    }
-    inline char * color() const 
-    {
-        return color_priv;
-    }
-	inline int x() const
-    {
-        return x_priv;
-    }
-	inline int y() const
-    { 
-        return y_priv;
-    }
-	inline int width() const 
-    {
-        return width_priv;
-    }
-	inline int height() const 
-    { 
-        return height_priv;
-    }
-	inline char * label() const
-    { 
-        return label_priv;
-    }
-	inline char * shape() const
-    { 
-        return shape_priv;
-    }
-	inline char * textPriv() const
-    { 
-        return text_priv;
-    }
-	inline bool real() const
-	{
-		return is_real;
-	}
-    /** Data writing */ 
-    inline void setUserId( int i)
-    {
-        user_id = i;
-    }
-    inline void setColor( char * color)
-    {
-        color_priv = color;
-    }
-	inline void setX( int x) 
-    {
-        x_priv = x;
-    }
-	inline void setY( int y)
-    { 
-        y_priv = y;
-    }
-	inline void setWidth( int width)
-    { 
-        width_priv = width;
-    }
-	inline void setHeight( int height)
-    {
-        height_priv = height;
-    }
-	inline void setLabel( char * label) 
-    {
-        label_priv = label;
-    }
-	inline void setShape( char * shape) 
-    { 
-        shape_priv = shape;
-    }
-	inline void setTextPriv( char * textPriv) 
-    { 
-        text_priv = textPriv;
-    }
-	inline void setReal (bool nreal)
-	{
-		is_real = nreal;
-	}
-};
-
-/**
  * Node representation class. 
  */
-class Node: public Marked, public Numbered, public NodeProperties
+class Node: public Marked, public Numbered
 {
+	int user_id;
     /** Graph is closely connected class by implementation */
     friend class Graph;
     
@@ -119,8 +19,6 @@ class Node: public Marked, public Numbered, public NodeProperties
     int unique_id; // Unique id is given by graph and cannot be modified
     Graph * graph;// Pointer to graph
     NodeListItem my_it;//Item of graph's list
-
-	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
     
     //Lists of edges and iterators for them
     EdgeListItem *edges[ GRAPH_DIRS_NUM];
@@ -135,12 +33,14 @@ class Node: public Marked, public Numbered, public NodeProperties
         my_it.detach();
     }
 protected:
+	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
+	virtual void readByXML (xmlNode * cur_node);
+protected:
 
     /** We can't create nodes separately, do it through NewNode method of graph */
     Node( Graph *graph_p, int _id):
          unique_id( _id), graph( graph_p), my_it()
     {
-		setReal (true);
         edges[ GRAPH_DIR_UP] = NULL;
         edges[ GRAPH_DIR_DOWN] = NULL;
         e_it[ GRAPH_DIR_UP] = NULL;
@@ -162,6 +62,15 @@ public:
     inline int id() const
     {
         return unique_id;
+    }
+
+    inline int userId() const
+    {
+        return user_id;
+    }
+    inline void setUserId( int i)
+    {
+        user_id = i;
     }
 
     /**

@@ -56,78 +56,23 @@ Edge::detachFromNode( GraphDir dir)
 }
 
 /**
- *  Read edge points
- */
-void
-Edge::readEdgePointsFromXMLDoc( xmlNode * a_node)
-{
-	xmlNode * cur_node;
-    for (cur_node = a_node; cur_node; cur_node = cur_node->next)
-	{
-		if ( cur_node->type == XML_ELEMENT_NODE
-			 && xmlStrEqual( cur_node->name, xmlCharStrdup("point")))
-		{
-			xmlAttr * props;
-			int n = -1;
-			for( props = cur_node->properties; props; props = props->next)
-			{
-				if ( xmlStrEqual( props->name, xmlCharStrdup("n")))
-				{
-					n = strtoul( ( const char *)( props->children->content), NULL, 0);
-				}
-			}
-
-			if ( n == -1) continue;
-
-			Node* my_point = graph->insertNodeOnEdge (this);
-			my_point->setReal (false);
-
-			for( props = cur_node->properties; props; props = props->next)
-			{
-				if ( xmlStrEqual( props->name, xmlCharStrdup("x")))
-				{
-					my_point->setX (strtoul( ( const char *)( props->children->content), NULL, 0));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("y")))
-				{
-					my_point->setY (strtoul( ( const char *)( props->children->content), NULL, 0));
-				}
-			}
-			
-		}
-	}
-
-}
-
-/**
- * Write edge points by xml writer
- */
-void
-Edge::writePointsByXMLWriter( xmlTextWriterPtr writer)
-{
-}
-
-/**
  * Write edge by xml writer
  */
-void
-Edge::writeByXMLWriter( xmlTextWriterPtr writer)
+void Edge::writeByXMLWriter( xmlTextWriterPtr writer)
 {
-	xmlTextWriterWriteString( writer, BAD_CAST "\t");
-	xmlTextWriterStartElement( writer, BAD_CAST "edge");
-
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "id", "%d", id());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "from", "%d", pred()->id());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "to", "%d", succ()->id());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "prob", "%d", prob());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "thickness", "%d", thickness());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST style());
 
-    xmlTextWriterWriteString( writer, BAD_CAST "\n");
-	writePointsByXMLWriter( writer);
-
-	xmlTextWriterWriteString( writer, BAD_CAST "\t");
-	xmlTextWriterEndElement( writer);
-    xmlTextWriterWriteString( writer, BAD_CAST "\n");
+}
+/**
+ *  Read from xml
+ */
+void Edge::readByXML (xmlNode * cur_node)
+{
+	for(xmlAttr * props = cur_node->properties; props; props = props->next)
+	{
+		if ( xmlStrEqual( props->name, xmlCharStrdup("id")))
+		{
+			setUserId( strtoul( ( const char *)( props->children->content), NULL, 0) );
+		}
+	}
 }

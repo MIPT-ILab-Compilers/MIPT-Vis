@@ -19,9 +19,56 @@ class GuiEdge;
 class GuiPoint;
 
 /**
+ * Representation of various node attributes
+ */
+class NodeProperties
+{
+    char * color_priv;
+	char * label_priv;
+	char * shape_priv;
+	char * text_priv;
+public:
+	NodeProperties();
+    /** Data reading */
+    inline char * color() const 
+    {
+        return color_priv;
+    }
+	inline char * label() const
+    { 
+        return label_priv;
+    }
+	inline char * shape() const
+    { 
+        return shape_priv;
+    }
+	inline char * textPriv() const
+    { 
+        return text_priv;
+    }
+    /** Data writing */ 
+    inline void setColor( char * color)
+    {
+        color_priv = color;
+    }
+	inline void setLabel( char * label) 
+    {
+        label_priv = label;
+    }
+	inline void setShape( char * shape) 
+    { 
+        shape_priv = shape;
+    }
+	inline void setTextPriv( char * textPriv) 
+    { 
+        text_priv = textPriv;
+    }
+};
+
+/**
  * Class GuiNode.
  */
-class GuiNode:public QGraphicsTextItem, public NodeAux
+class GuiNode:public QGraphicsTextItem, public NodeAux, public NodeProperties
 {
     Q_OBJECT
 
@@ -31,6 +78,10 @@ private:
     qreal myAdjust;
     friend class GuiGraph;
     friend class GraphAux;
+
+protected:
+	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
+	virtual void readByXML (xmlNode * cur_node);
 
 public:
     QString myText;

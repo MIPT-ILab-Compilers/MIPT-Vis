@@ -103,7 +103,7 @@ bool GraphAux::delVirtualNodes()
 			to_detach = 0;
 		}
 
-		if (!cur->real())
+		if (!addAux(cur)->real())
 		{
 			int num_preds = 0;
 			int num_succs = 0;
@@ -175,6 +175,7 @@ NodeAux* GraphAux::findRoot()
 */
 int GraphAux::markReachable (Node* root, Marker by_what)
 {
+	root->mark (by_what);
 	int number_marked = 0;
 	QQueue<Node*> to_process;
 	to_process.enqueue (root);

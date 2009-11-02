@@ -22,15 +22,6 @@ inline GraphAux * NodeAux::getGraph() const
     return static_cast< GraphAux *>( Node::getGraph());
 }
 
-inline NodeAux::NodeAux( GraphAux *graph_p, int _id):
-    Node( static_cast<Graph *>( graph_p), _id)
-{}
-
-inline EdgeAux::EdgeAux( GraphAux *graph_p, int _id, NodeAux* _pred, NodeAux* _succ):
-    Edge( static_cast< Graph*>( graph_p), _id,  static_cast< Node*>( _pred),  static_cast< Node*>( _succ)),
-	type (tree)
-{}
-
 	/**
 * get node in specified direction
 */

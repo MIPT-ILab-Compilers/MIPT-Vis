@@ -12,15 +12,15 @@ class NodePropertiesAux
 protected:
     int rang_priv; // number of node's layer
     int pos_priv;  // absolute position in layer
+
+	int x_priv;
+	int y_priv;
+	int width_priv;
+	int height_priv;
+	bool is_real; //indicates that the node must be showed
 public:
     // Default constructor
-    NodePropertiesAux()
-    {
-        NodeProperties::NodeProperties();
-        // Default position is first in first layer
-        rang_priv = 0;
-        pos_priv = 1;
-    }
+    NodePropertiesAux();
     // Gets for auxiliary properties
     inline int rang() const
     {
@@ -30,6 +30,26 @@ public:
     {
         return pos_priv;
     }
+	inline int x() const
+    {
+        return x_priv;
+    }
+	inline int y() const
+    { 
+        return y_priv;
+    }
+	inline int width() const 
+    {
+        return width_priv;
+    }
+	inline int height() const 
+    { 
+        return height_priv;
+    }
+	inline bool real() const
+	{
+		return is_real;
+	}
     // Sets for auxiliary properties
     inline void setRang( int rang)
     {
@@ -39,6 +59,26 @@ public:
     {
         pos_priv = posAux;
     }
+	inline void setX( int x) 
+    {
+        x_priv = x;
+    }
+	inline void setY( int y)
+    { 
+        y_priv = y;
+    }
+	inline void setWidth( int width)
+    { 
+        width_priv = width;
+    }
+	inline void setHeight( int height)
+    {
+        height_priv = height;
+    }
+	inline void setReal (bool nreal)
+	{
+		is_real = nreal;
+	}
 };
 
 /**
@@ -49,6 +89,10 @@ class NodeAux: public Node, public NodePropertiesAux
 protected:
     NodeAux( GraphAux *graph_p, int _id);
     friend class GraphAux;
+
+	
+	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
+	virtual void readByXML (xmlNode * cur_node);
 public:
      /**
      * Get node's corresponding auxiliary graph
