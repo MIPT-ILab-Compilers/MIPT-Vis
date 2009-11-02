@@ -20,6 +20,7 @@ GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id,
 	setTextWidth ( 100); //Set width of node
 	setMyAdjust (real()? 3 : 1);
 	setMyColor( Qt::green);
+	setMyText("");
 	setFlag( QGraphicsItem::ItemIsMovable, true); // Set node can move
 	setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
 	setTextInteractionFlags( Qt::NoTextInteraction);
@@ -170,6 +171,7 @@ void GuiNode::superscribe (QColor color, QString text)
     setMyColor( color);
     setPlainText( text);
 }
+
 /**
  *  setMyText
  */
@@ -177,3 +179,19 @@ void GuiNode::setMyText(const QString & str)
 {
     myText = str;
 }
+
+/**
+ *  textChange
+ */
+/**/
+void GuiNode::textChange()
+{
+    QByteArray strByteArray = getMyText().toAscii();
+    char *strChar;
+    strChar = (char*) calloc(strByteArray.size(),sizeof(char));
+    if (strChar==NULL) return;
+    int i;
+    for (i=0;i<=strByteArray.size();++i) strChar[i]=strByteArray[i];
+    setTextPriv(strChar);
+}
+/**/

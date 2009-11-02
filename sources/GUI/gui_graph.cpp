@@ -24,7 +24,8 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         node->setColor( "green");
 		node->setLabel( "Node" + number);
         node->setShape( "rectangle");
-        node->setX( node->QGraphicsItem::x());
+		node->setTextPriv("");        
+		node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
         node->setWidth( node->boundingRect().width());
         node->setHeight( node->boundingRect().height());
@@ -59,6 +60,7 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
         node->setPos( node->Node::x(), node->Node::y());
+		node->setMyText(QString(node->textPriv()));
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
 		node->setMyAdjust( node->real()? 3 : 1);

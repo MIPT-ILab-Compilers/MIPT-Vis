@@ -54,6 +54,10 @@ public:
     {
         myAdjust = adjust;
     };
+	inline QString getMyText()
+    {
+        return myText;
+    };
     QRectF boundingRect() const;
 
     int type() const
@@ -73,5 +77,6 @@ protected:
 
 public slots:
     void setMyText(const QString & str);
+	void textChange();
 };
 #endif
