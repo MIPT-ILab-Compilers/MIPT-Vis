@@ -11,7 +11,7 @@ bool uTestLayout()
 	GraphAux ga;
 	
     char * file = _getcwd( NULL, 1024);
-    strcat_s( file, 1024, "/test_graph.xml");
+    strcat_s( file, 1024, "/test_layout_graph.xml");
 
 	ga.readFromXML (file);
 	out ("\n============= testing Layout =============\nbefore ranking:\n");
@@ -24,6 +24,15 @@ bool uTestLayout()
 	}
 	else
 		out ("\n Error: Ranking filed");
+	
+	if (ga.ordering())
+	{
+		out ("\nafter Ordering:\n");
+		ga.debugPrint();
+	}
+	else
+		out ("\n Error: Ranking filed");
+	
 
 	out ("\n=========== end of layout test ===========\n");
 	return true;

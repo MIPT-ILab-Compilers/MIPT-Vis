@@ -200,6 +200,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\test_layout_graph.xml"
+			>
+		</File>
+		<File
 			RelativePath=".\utest_impl.h"
 			>
 		</File>

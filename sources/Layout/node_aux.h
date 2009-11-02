@@ -50,6 +50,12 @@ protected:
     NodeAux( GraphAux *graph_p, int _id);
     friend class GraphAux;
 public:
+
+	inline NodeAux* nextNode()
+	{
+		return static_cast< NodeAux*> ( Node::nextNode());
+	}
+
      /**
      * Get node's corresponding auxiliary graph
      */
