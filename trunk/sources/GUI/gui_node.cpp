@@ -5,6 +5,13 @@
 
 #include "gui_impl.h"
 
+NodeProperties::NodeProperties()
+{
+    color_priv = 0;
+	label_priv = 0;
+	shape_priv = 0;
+	text_priv = 0;
+}
 /**
  * Constructor of GuiNode class
  */
@@ -195,3 +202,46 @@ void GuiNode::textChange()
     setTextPriv(strChar);
 }
 /**/
+//-----------------------------------------------------------------------------
+
+/**
+ *  Write to xml
+ */
+void GuiNode::writeByXMLWriter( xmlTextWriterPtr writer)
+{
+	NodeAux::writeByXMLWriter (writer);
+	if (label()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
+	if (color()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
+	if (NodeProperties::shape())
+		xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST NodeProperties::shape());
+	if (textPriv()) xmlTextWriterWriteAttribute( writer, BAD_CAST "textPriv", BAD_CAST textPriv());
+}
+//-----------------------------------------------------------------------------
+/**
+ *  Read from xml
+ */
+void GuiNode::readByXML (xmlNode * cur_node)
+{
+	NodeAux::readByXML (cur_node);
+
+	setTextPriv("");
+
+	for (xmlAttr* props = cur_node->properties; props; props = props->next)
+	{
+		if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
+		{
+			setColor( ( char *)( props->children->content));
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup("label")))
+		{
+			setLabel( ( char *)( props->children->content));
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup("shape")))
+		{
+			setShape( ( char *)( props->children->content));
+		}
+		else if ( xmlStrEqual( props->name, xmlCharStrdup("textPriv")))
+		{
+			setTextPriv( ( char *)( props->children->content));
+		}
+	}
+}
+//-----------------------------------------------------------------------------

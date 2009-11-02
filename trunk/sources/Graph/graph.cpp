@@ -351,47 +351,7 @@ Graph::readNodesFromXmlDoc( xmlNode * a_node)
 			 && xmlStrEqual( cur_node->name, xmlCharStrdup("node")))
 		{
 			Node *node = newNode();
-			xmlAttr * props;
-
-			node->setTextPriv("");
-
-			for( props = cur_node->properties; props; props = props->next)
-			{
-				if ( xmlStrEqual( props->name, xmlCharStrdup("id")))
-				{
-					node->setUserId( strtoul( ( const char *)( props->children->content), NULL, 0));
-					if (  node->userId() > maxNodeId())
-						setMaxNodeId( node->userId());
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
-				{
-					node->setColor( ( char *)( props->children->content));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("x")))
-				{
-					node->setX( strtoul( ( const char *)( props->children->content), NULL, 0));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("y")))
-				{
-					node->setY( strtoul( ( const char *)( props->children->content), NULL, 0));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("real")))
-				{
-					node->setReal ((bool)strtoul( ( const char *)( props->children->content), NULL, 0));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("width")))
-				{
-					node->setWidth( strtoul( ( const char *)( props->children->content), NULL, 0));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("height")))
-				{
-					node->setHeight( strtoul( ( const char *)( props->children->content), NULL, 0));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("label")))
-				{
-					node->setLabel( ( char *)( props->children->content));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("shape")))
-				{
-					node->setShape( ( char *)( props->children->content));
-				}
-				else if ( xmlStrEqual( props->name, xmlCharStrdup("textPriv")))
-				{
-					node->setTextPriv( ( char *)( props->children->content));
- 				}
-			}
+			node->readByXML (cur_node);
 		}
 	}
 }
@@ -428,36 +388,7 @@ Graph::readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 			if ( from == -1 || to == -1) continue;
 			edge = newEdge( nodes[from], nodes[to]);
 			/** Parse other properties */
-			for( props = cur_node->properties; props; props = props->next)
-			{
-				if ( xmlStrEqual( props->name, xmlCharStrdup("id")))
-				{
-					edge->setUserId( 
-                        strtoul( ( const char *)( props->children->content), NULL, 0) );
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("prob")))
-				{
-					edge->setProb( 
-                        strtoul( ( const char *)( props->children->content), NULL, 0) );
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("thickness")))
-				{
-					edge->setThickness(
-                        strtoul( ( const char *)( props->children->content), NULL, 0) );
-				} /*else if ( xmlStrEqual( props->name, xmlCharStrdup("points_num")))
-				{
-                    edge->initPoints( 
-                        strtoul( ( const char *)( props->children->content), NULL, 0) + 1);
-				} */else if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
-				{
-					edge->setColor( ( char *)( props->children->content));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("style")))
-				{
-					edge->setStyle( ( char *)( props->children->content));
-				} else if ( xmlStrEqual( props->name, xmlCharStrdup("label")))
-				{
-					edge->setLabel( ( char *)( props->children->content));
-				}
-			}
-			edge->readEdgePointsFromXMLDoc( cur_node->children);
+			edge->readByXML (cur_node);
 		}
 	}
 }
@@ -553,7 +484,13 @@ Graph::writeNodesByXMLWriter( xmlTextWriterPtr writer)
 	Node * node;
 	for ( node = firstNode(); isNotNullP( node); node = node->nextNode())
 	{
+		xmlTextWriterWriteString( writer, BAD_CAST "\t");
+		xmlTextWriterStartElement( writer, BAD_CAST "node");
+
 		node->writeByXMLWriter( writer);
+
+		xmlTextWriterEndElement( writer);
+	    xmlTextWriterWriteString( writer, BAD_CAST "\n");
 	}
 }
 
@@ -566,7 +503,15 @@ Graph::writeEdgesByXMLWriter( xmlTextWriterPtr writer)
 	Edge * edge;
 	for ( edge = firstEdge(); isNotNullP( edge); edge = edge->nextEdge())
 	{
+		xmlTextWriterWriteString( writer, BAD_CAST "\t");
+		xmlTextWriterStartElement( writer, BAD_CAST "edge");
+
 		edge->writeByXMLWriter( writer);
+
+	    xmlTextWriterWriteString( writer, BAD_CAST "\n");
+		xmlTextWriterWriteString( writer, BAD_CAST "\t");
+		xmlTextWriterEndElement( writer);
+		xmlTextWriterWriteString( writer, BAD_CAST "\n");
 	}
 }
 

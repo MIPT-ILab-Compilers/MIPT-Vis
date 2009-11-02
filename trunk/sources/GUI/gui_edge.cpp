@@ -121,6 +121,7 @@ void GuiEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mousePressEvent( event);
+	getGraph()->removeEdge (this);
 }
 
 /**
@@ -150,4 +151,47 @@ GuiNode* GuiEdge::insertNode (QPointF p)
 	node->update();
 	node->setPos (p.x(), p.y());
 	return node;
+}
+//-------------------------------------------------------------------------------------
+/**
+ * Write edge by xml writer
+ */
+void GuiEdge::writeByXMLWriter( xmlTextWriterPtr writer)
+{
+	EdgeAux::writeByXMLWriter (writer);
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "from", "%d", pred()->id());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "to", "%d", succ()->id());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "prob", "%d", prob());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "thickness", "%d", thickness());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST style());
+}
+//-------------------------------------------------------------------------------------
+/**
+ *  Read from xml
+ */
+void GuiEdge::readByXML (xmlNode * cur_node)
+{
+	EdgeAux::readByXML (cur_node);
+	for(xmlAttr * props = cur_node->properties; props; props = props->next)
+	{
+		if ( xmlStrEqual( props->name, xmlCharStrdup("prob")))
+		{
+			setProb( strtoul( ( const char *)( props->children->content), NULL, 0) );
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup("thickness")))
+		{
+			setThickness(
+                strtoul( ( const char *)( props->children->content), NULL, 0) );
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
+		{
+			setColor( ( char *)( props->children->content));
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup("style")))
+		{
+			setStyle( ( char *)( props->children->content));
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup("label")))
+		{
+			setLabel( ( char *)( props->children->content));
+		}
+	}
 }

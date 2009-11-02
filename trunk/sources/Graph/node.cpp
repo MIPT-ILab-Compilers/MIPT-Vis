@@ -5,19 +5,6 @@
  */
 #include "graph_impl.h"
 
-NodeProperties::NodeProperties()
-{
-	user_id = 0;
-    color_priv = 0;
-	x_priv = 0;
-	y_priv = 0;
-	width_priv = 0;
-	height_priv = 0;
-	label_priv = 0;
-	shape_priv = 0;
-	text_priv = 0;
-	is_real = true;
-}
 /** 
  * Destructor. Corrects list of nodes in corresponding graph and deletes adjacent edges
  */
@@ -92,20 +79,20 @@ Node::debugPrint()
 void
 Node::writeByXMLWriter( xmlTextWriterPtr writer)
 {
-	xmlTextWriterWriteString( writer, BAD_CAST "\t");
-	xmlTextWriterStartElement( writer, BAD_CAST "node");
-
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "id", "%d", id());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "x", "%d", x());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "y", "%d", y());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "width", "%d", width());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "height", "%d", height());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "real", "%d", (int)real());
-	if (label()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
-	if (color()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
-	if (shape()) xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST shape());
-	if (textPriv()) xmlTextWriterWriteAttribute( writer, BAD_CAST "textPriv", BAD_CAST textPriv());
-	
-	xmlTextWriterEndElement( writer);
-    xmlTextWriterWriteString( writer, BAD_CAST "\n");
+}
+
+/**
+ *  Read from xml
+ */
+void Node::readByXML (xmlNode * cur_node)
+{
+	for (xmlAttr * props = cur_node->properties; props; props = props->next)
+	{
+		if ( xmlStrEqual( props->name, xmlCharStrdup("id")))
+		{
+			setUserId( strtoul( ( const char *)( props->children->content), NULL, 0));
+			if (userId() > graph->maxNodeId())	graph->setMaxNodeId( userId());
+		}
+	}
 }

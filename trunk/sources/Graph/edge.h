@@ -9,94 +9,23 @@
 #include <vector>
 
 /**
- * Implements collection of edge properties and provides accessors for them
- */
-class EdgeProperties
-{
-    int user_id;
-    int prob_priv;
-	int thickness_priv;
-	char * color_priv;
-	char * style_priv;
-	char * label_priv;
-public:
-    EdgeProperties()
-    {
-        /** Default values */
-        prob_priv = 1;
-	    thickness_priv = 1;
-	    color_priv = NULL;
-	    style_priv = NULL;
-	    label_priv = NULL;
-    }
-    inline int userId() const
-    {
-        return user_id;
-    }
-    inline int prob() const
-    {
-        return prob_priv;
-    }
-    inline int thickness() const
-    {
-        return thickness_priv;
-    }
-	inline char * color() const
-    {
-        return color_priv;
-    }
-	inline char * style() const
-	{
-        return style_priv;
-    }
-    inline char * label() const
-    {
-        return label_priv;
-    }
-    /** Data writing routines */
-    inline void setUserId( int i)
-    {
-        user_id = i;
-    }
-    inline void setProb (int prob)
-    {
-        prob_priv = prob;
-    }
-	inline void setThickness( int thickness)
-    {
-        thickness_priv = thickness;
-    }
-	inline void setColor( char * color)
-    {
-        color_priv = color;
-    }
-	inline void setStyle( char * style)
-    {
-        style_priv = style;
-    }
-	inline void setLabel( char * label)
-    {
-        label_priv = label;
-    }
-};
-/**
  *  Edge class implements basic concept of graph edge.
  *  It has two Nodes as its end points. As edge is member of 3 lists it
  *  has 3 corresponding list items pointing to it in these lists
  */
-class Edge: public Marked, public Numbered, public EdgeProperties
+class Edge: public Marked, public Numbered
 {
+    int user_id;
 
     /** Graph part */
     int unique_id; //Unique ID
 
 protected:    Graph * graph; //Graph
+	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
+	virtual void readByXML (xmlNode * cur_node);
 private:
     EdgeListItem graph_it; //Position in Graph's list of edges
 
-	virtual void readEdgePointsFromXMLDoc( xmlNode * a_node);
-	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
-	virtual void writePointsByXMLWriter( xmlTextWriterPtr writer);
 	
     /** Nodes */
     Node *nodes[ GRAPH_DIRS_NUM]; //Adjacent nodes
@@ -134,6 +63,14 @@ public:
         return unique_id;
     }
 
+    inline int userId() const
+    {
+        return user_id;
+    }
+    inline void setUserId( int i)
+    {
+        user_id = i;
+    }
     /**
      * get edge's corresponding graph
      */

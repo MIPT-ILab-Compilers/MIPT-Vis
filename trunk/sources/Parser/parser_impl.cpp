@@ -73,13 +73,13 @@ Graph * Function::getGraph()
 	for ( i = getFirstBBlock(); i != getEndBBlock(); i++)
 	{
 		node_list[ i->first] = graph->newNode();
-		node_list[ i->first]->setLabel( "node");
-		node_list[ i->first]->setHeight( 10);
-		node_list[ i->first]->setWidth( 20);
-		node_list[ i->first]->setX( 0);
-		node_list[ i->first]->setY( 0);
-		node_list[ i->first]->setColor( "red");
-		node_list[ i->first]->setShape( "bar");
+//		node_list[ i->first]->setLabel( "node");
+//		node_list[ i->first]->setHeight( 10);
+//		node_list[ i->first]->setWidth( 20);
+//		node_list[ i->first]->setX( 0);//Here I'm not know: what do you mean?
+//		node_list[ i->first]->setY( 0);
+//		node_list[ i->first]->setColor( "red");
+//		node_list[ i->first]->setShape( "bar");
 	}
 
 	map< int, Node *>::const_iterator node_index;
