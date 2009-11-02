@@ -17,7 +17,8 @@ bool GraphAux::rank()
 {
 	NodeAux* root = makeAcyclic();
 	if (root == 0) return false;
-	
+
+	clearRanks();
 	Marker passed = newMarker();
 	rankImp (root, 0, passed);
 	freeMarker (passed);
@@ -267,6 +268,15 @@ NodeAux* GraphAux::makeAcyclic()
 /*
  * Internal implementation, ranks nodes by the longest path for it
  */
+void GraphAux::clearRanks()
+{
+	for (Node* iter = firstNode(); iter != 0; iter = iter->nextNode())
+		addAux(iter)->setRang (0);
+}
+//-----------------------------------------------------------------------------
+/*
+ * Internal implementation, ranks nodes by the longest path for it
+ */
 void GraphAux::rankImp (NodeAux* from, int cur_rank, Marker passed)
 {
 	if (from->rang_priv <= cur_rank)//Choose maximal lenght
@@ -320,17 +330,23 @@ bool GraphAux::passedAllPred (NodeAux* from, Marker passed)
 //-----------------------------------------------------------------------------
 void GraphAux::addVirtualChains()
 {
-	for(EdgeAux* iter = firstEdge(); iter != NULL; iter = iter->nextEdge())
+	bool added = true;
+	while (added)// number of edges increases
 	{
-		int rang_pred = iter->pred()->rang_priv, rang_succ = iter->succ()->rang_priv;
-		if( abs(rang_pred - rang_succ) > 1)
+		added = false;
+		for (EdgeAux* iter = firstEdge(); iter != NULL; iter = iter->nextEdge())
 		{
-			NodeAux* n = insertNodeOnEdge( iter);
-			n->setReal (false);
-			if( rang_pred > rang_succ)
-				n->rang_priv = rang_pred - 1;
-			else
-				n->rang_priv = rang_pred + 1;
+			int rang_pred = iter->pred()->rang_priv, rang_succ = iter->succ()->rang_priv;
+			if( abs(rang_pred - rang_succ) > 1)
+			{
+				added = true;
+				NodeAux* n = insertNodeOnEdge( iter);
+				n->setReal (false);
+				if( rang_pred > rang_succ)
+					n->rang_priv = rang_pred - 1;
+				else
+					n->rang_priv = rang_pred + 1;
+			}
 		}
 	}
 }
@@ -369,12 +385,8 @@ void GraphAux::applayPositions()
 		          iter = addAux(iter->nextNode()))
 	{
 		iter->commitPos (iter->x(), iter->y());
-		QString label;
-		label.sprintf ("r=%d,o=%d", iter->rang(), iter->posAux());
-		if (iter->real())
-			iter->superscribe (Qt::green, label);
-		else
-			iter->superscribe (Qt::gray, label);
+		if (!iter->real())
+			iter->superscribe (Qt::gray, "unreal");
 	}
 }
 //-----------------------------------------------------------------------------
