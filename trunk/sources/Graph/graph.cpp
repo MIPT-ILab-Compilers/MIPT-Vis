@@ -110,7 +110,6 @@ Node * Graph::insertNodeOnEdge( Edge* e)
 {
 	Node* n = this->newNode();
 	Node* succ = e->succ();
-	e->detachFromNode( GRAPH_DIR_DOWN);
 	e->setSucc( n);
 	this->newEdge( n, succ);
 	return n;
@@ -210,7 +209,7 @@ dfsVisitStack( Node* node,
     Edge *e;
 	stack<Node *> st;
 	st.push( node);
-	while ( !st.empty())
+	while ( st.empty())
 	{
 		/** Execute the node from a stack 
          * If the top of stack isn't the node without predecessors,
@@ -221,7 +220,6 @@ dfsVisitStack( Node* node,
         /** Mark node to prevent search from visiting it again */
         node->mark( m);
         node->setNumber( n, *number);
-
         *number = (*number) + 1;
 
         /** Visit Succs skipping already visited */

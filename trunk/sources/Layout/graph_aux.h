@@ -14,9 +14,6 @@ class GraphAux: public Graph
 {
 private:
 
-	int max_rank;
-	Numeration dfs_numeration;
-
 	bool delVirtualNodes();
 
 	NodeAux* findRoot();
@@ -76,12 +73,6 @@ public:
 		return static_cast < EdgeAux*> ( Graph::firstEdge());
     }
 
-	inline NodeAux* firstNode() 
-    {
-		return static_cast < NodeAux*> ( Graph::firstNode());
-    }
-
-
     /**
 	* Insert new node on edge in graph
 	*/
@@ -96,27 +87,6 @@ public:
 	{
 		return false;
 	}
-	/** Return maximum rank of Graph */
-	int maxRank()
-	{
-		return max_rank;
-	}
-
-	/**
-	* Set & get for ordering DFS numeration
-	* Needed for non-method function posCmp
-	*/
-
-	void setDfsNumeration( Numeration num)
-	{
-		dfs_numeration = num;
-	}
-
-	Numeration getDfsNumeration()
-	{
-		return dfs_numeration;
-	}
-
 };
 
 #endif
