@@ -19,7 +19,7 @@ class NodeProperties
 	int height_priv;
 	char * label_priv;
 	char * shape_priv;
-
+	char * text_priv;
 	bool is_real; //indicates that the node must be showed
 public:
 	NodeProperties();
@@ -55,6 +55,10 @@ public:
 	inline char * shape() const
     { 
         return shape_priv;
+    }
+	inline char * textPriv() const
+    { 
+        return text_priv;
     }
 	inline bool real() const
 	{
@@ -92,6 +96,10 @@ public:
 	inline void setShape( char * shape) 
     { 
         shape_priv = shape;
+    }
+	inline void setTextPriv( char * textPriv) 
+    { 
+        text_priv = textPriv;
     }
 	inline void setReal (bool nreal)
 	{

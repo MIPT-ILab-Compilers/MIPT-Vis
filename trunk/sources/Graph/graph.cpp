@@ -353,6 +353,8 @@ Graph::readNodesFromXmlDoc( xmlNode * a_node)
 			Node *node = newNode();
 			xmlAttr * props;
 
+			node->setTextPriv("");
+
 			for( props = cur_node->properties; props; props = props->next)
 			{
 				if ( xmlStrEqual( props->name, xmlCharStrdup("id")))
@@ -385,6 +387,10 @@ Graph::readNodesFromXmlDoc( xmlNode * a_node)
 				{
 					node->setShape( ( char *)( props->children->content));
 				}
+				else if ( xmlStrEqual( props->name, xmlCharStrdup("textPriv")))
+				{
+					node->setTextPriv( ( char *)( props->children->content));
+ 				}
 			}
 		}
 	}

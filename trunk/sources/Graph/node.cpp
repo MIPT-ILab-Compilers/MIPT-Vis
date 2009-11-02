@@ -15,6 +15,7 @@ NodeProperties::NodeProperties()
 	height_priv = 0;
 	label_priv = 0;
 	shape_priv = 0;
+	text_priv = 0;
 	is_real = true;
 }
 /** 
@@ -103,6 +104,7 @@ Node::writeByXMLWriter( xmlTextWriterPtr writer)
 	if (label()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
 	if (color()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
 	if (shape()) xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST shape());
+	if (textPriv()) xmlTextWriterWriteAttribute( writer, BAD_CAST "textPriv", BAD_CAST textPriv());
 	
 	xmlTextWriterEndElement( writer);
     xmlTextWriterWriteString( writer, BAD_CAST "\n");

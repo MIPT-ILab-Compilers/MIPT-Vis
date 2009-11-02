@@ -254,11 +254,10 @@ void MainWindow::saveTextToNode()
     QList<QGraphicsItem*> list = graph->selectedItems();
     if (list.size()==1)
     {
-        GuiNode *node;
-        node = (GuiNode*) list[0];//!!!Here probably nessary qgraphicsitem_cast too
-        QString str;
-        str = nodeTextEdit->toPlainText();
-        node->setMyText(str);
+        //!!!Here probably nessary qgraphicsitem_cast too
+		GuiNode *node = qgraphicsitem_cast< GuiNode*>( list[ 0]);
+        node->setMyText(nodeTextEdit->toPlainText());
+		node->textChange();
         nodeTextEdit->clear();
         nodeTextEdit->setReadOnly(true);
         confirmButton->setEnabled(false);
