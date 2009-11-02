@@ -18,8 +18,6 @@ bool GraphAux::rank()
 	NodeAux* root = makeAcyclic();
 	if (root == 0) return false;
 	
-	max_rank = 0;
-
 	Marker passed = newMarker();
 	rankImp (root, 0, passed);
 	freeMarker (passed);
@@ -33,8 +31,24 @@ bool GraphAux::rank()
 bool GraphAux::ordering()
 {
 	addVirtualChains();
-	Rank rank( static_cast< GraphAux*>( this));
-	rank.doOrderAll();
+
+	int max_rank = 0;
+	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
+		max_rank = max(iter->rang(), max_rank);
+
+	max_rank++;
+
+	int *num_in_rank = new int[max_rank];
+	for (int i = 0; i < max_rank; ++i)
+		num_in_rank[i] = 0;
+
+	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
+	{
+		iter->setPosAux (num_in_rank[iter->rang()]++);
+	}
+
+	delete []num_in_rank;//!!!There was an error, but I'm not know what it was.
+
 	return true;
 }
 //-----------------------------------------------------------------------------
@@ -256,8 +270,6 @@ void GraphAux::rankImp (NodeAux* from, int cur_rank, Marker passed)
 {
 	if (from->rang_priv <= cur_rank)//Choose maximal lenght
 		from->rang_priv =  cur_rank;
-
-	if (cur_rank > max_rank) max_rank = cur_rank;
 
 	if (passedAllPred (from, passed))
 		passAllSucc (from, cur_rank, passed);//Wait for pass all previous nodes

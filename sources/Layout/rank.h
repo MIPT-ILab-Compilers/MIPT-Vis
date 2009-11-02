@@ -6,7 +6,7 @@
 #ifndef RANK_H
 #define RANK_H
 
-#include <QtCore/QVector.h>
+#include <QtCore/QLinkedList.h>
 #include "layout_iface.h"
 
 /**
@@ -14,15 +14,23 @@
 * and ordering methods on it
 */
 
-int posCmp( const void*, const void*);
-
 class AdjRank
 {
 private:
 
 	/** List of nodes within one layer */
-	List<NodeAux> adj_rank;
+	QLinkedList<NodeAux*> adjRank;
 
+	/** Maximum iterations in ordering algorithm */
+	static const int maxIter = 24;
+
+	/**
+	* Initial ordering of adjacent nodes
+	* Sorting nodes depends on some numeration
+	*/
+	void initOrder()
+	{};
+	
 	/** Median value for node v from connected nodes in rank r */
 	int medianValue( NodeAux* v, AdjRank* r)
 	{};
@@ -35,29 +43,18 @@ private:
 	void transpose()
 	{};
 public:
-
-	void debugPrint();
-
 	/** Ordering nodes
 	* Uses median and transpose methods maxIter times
 	*/
 	void doOrder()
 	{
-		medianOrder();
-		transpose();
+		initOrder();
+		for( int i = 0; i < maxIter; i++)
+		{
+			medianOrder();
+			transpose();
+		}
 	};
-
-	/** Add node to layer */
-	void addNode( NodeAux* node)
-	{
-		adj_rank.addItem( node);
-	}
-
-	/** Sorting nodes depends on ordering DFS numeration */
-	void sortByNum()
-	{
-		adj_rank.sort( &posCmp);
-	}
 };
 
 /**
@@ -67,29 +64,13 @@ public:
 class Rank
 {
 private:
-	/** Corresponding graph */
-	GraphAux* graph;
-
 	/** List of rank layers */
-	QVector<AdjRank>* rank;
-
-	/** Maximum iterations in ordering algorithm */
-	static const int maxIter = 24;
-
-	/** Deliver node's ranking from corresponding numeration in auxiliary graph */
-	void deliverRank();
-
-	/**
-	* Initial ordering of adjacent nodes
-	*/
-	void initOrder();
-
+	QLinkedList <AdjRank> rank;
 public:
-
-	void debugPrint();
-
-	/** Do ordering for graph */
-	void doOrderAll();
+	/** Deliver node's ranking from corresponding numeration in auxiliary graph */
+	void deliverRank( GraphAux* graph)
+	{
+	};
 
 	/** Default constructor */
 	Rank()
@@ -97,16 +78,9 @@ public:
 	};
 
 	/** Constructor with ranking delivering */
-	Rank( GraphAux* ga)
+	Rank( GraphAux* graph)
 	{
-		graph = ga;
-		rank = new QVector<AdjRank>( graph->maxRank() + 1);
-		deliverRank();
+		deliverRank( graph);
 	};
-
-	~Rank()
-	{
-		delete rank;
-	}
 };
 #endif
