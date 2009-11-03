@@ -15,6 +15,7 @@
 */
 
 int posCmp( const void*, const void*);
+int valCmp( const void*, const void*);
 
 class AdjRank
 {
@@ -24,17 +25,16 @@ private:
 	List<NodeAux> adj_rank;
 
 	/** Median value for node v from connected nodes in rank r */
-	int medianValue( NodeAux* v, AdjRank* r)
-	{};
+	int medianValue( NodeAux* v);
 
-	/** Median ordering algorithm */
-	void medianOrder()
-	{};
+	/** Barycenter function for node v from connected nodes in rank r */
+	int baryValue( NodeAux* v);
 
 	/** Transpose ordering algorithm */
-	void transpose()
-	{};
+	void transpose();
 public:
+
+	inline int rang();
 
 	void debugPrint();
 
@@ -42,13 +42,9 @@ public:
 	void setInitX();
 
 	/** Ordering nodes
-	* Uses median and transpose methods maxIter times
+	* Uses median/barycenter and transpose methods maxIter times
 	*/
-	void doOrder()
-	{
-		medianOrder();
-		transpose();
-	};
+	void doOrder( AdjRank* comp_rank);
 
 	/** Add node to layer */
 	void addNode( NodeAux* node)
@@ -60,6 +56,12 @@ public:
 	void sortByNum()
 	{
 		adj_rank.sort( &posCmp);
+	}
+
+	/** Sorting nodes depends on median/barycenter value */
+	void sortByVal()
+	{
+		adj_rank.sort( &valCmp);
 	}
 };
 
