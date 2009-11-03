@@ -33,22 +33,13 @@ bool GraphAux::ordering()
 {
 	addVirtualChains();
 
-	int max_rank = 0;
+	max_rank = 0;
 	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
 		max_rank = max(iter->rang(), max_rank);
 
-	max_rank++;
+	Rank rank( this);
 
-	int *num_in_rank = new int[max_rank];
-	for (int i = 0; i < max_rank; ++i)
-		num_in_rank[i] = 0;
-
-	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
-	{
-		iter->setPosAux (num_in_rank[iter->rang()]++);
-	}
-
-	delete []num_in_rank;//!!!There was an error, but I'm not know what it was.
+	rank.doOrderAll();
 
 	return true;
 }
@@ -59,7 +50,6 @@ bool GraphAux::ordering()
 bool GraphAux::position()
 {
 	arrangeVertical();
-	arrangeHorisontal();
 	applayPositions();
 	return true;
 }
@@ -342,6 +332,7 @@ void GraphAux::addVirtualChains()
 				added = true;
 				NodeAux* n = insertNodeOnEdge( iter);
 				n->setReal (false);
+				n->setWidth(20);
 				if( rang_pred > rang_succ)
 					n->rang_priv = rang_pred - 1;
 				else

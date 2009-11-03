@@ -94,6 +94,11 @@ protected:
 	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
 	virtual void readByXML (xmlNode * cur_node);
 public:
+
+	inline NodeAux * nextNode()
+	{
+		return static_cast< NodeAux*> ( Node::nextNode());
+	}
      /**
      * Get node's corresponding auxiliary graph
      */

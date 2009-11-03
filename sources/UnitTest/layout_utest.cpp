@@ -25,6 +25,14 @@ bool uTestLayout()
 	else
 		out ("\n Error: Ranking filed");
 
+	if ( ga.ordering())
+	{
+		out ( "\nafter ordering:\n");
+		ga.debugPrint();
+	}
+	else
+		out ( "\nError while ordering");
+
 	out ("\n=========== end of layout test ===========\n");
 	return true;
 }
