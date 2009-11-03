@@ -22,7 +22,7 @@ NodePropertiesAux::NodePropertiesAux()
 void NodeAux::debugPrint()
 {
 	Node::debugPrint();
-	out (" rang: %i; pos: %i; real:%i", rang_priv, pos_priv, (int)real());
+	out (" rang: %i; pos: %i; real:%i; x:%d", rang_priv, pos_priv, (int)real(), x_priv);
 }
 //-----------------------------------------------------------------------------
 
