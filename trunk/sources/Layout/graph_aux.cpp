@@ -74,6 +74,8 @@ bool GraphAux::doLayout()
 	if (!make_splines())	return false;
 	if (!applayLayout())	return false;
 	
+	debugPrint();
+
 	return true;
 }
 //-----------------------------------------------------------------------------
@@ -148,10 +150,11 @@ NodeAux* GraphAux::findRoot()
 	{
 		for (Node* cur = firstNode(); cur != 0;cur = cur->nextNode())
 			if (!cur->isMarked(reachable))
-			{
-				roots.push_back (cur);
-				break;
-			}
+				if (cur->firstSucc() != 0 || cur->firstPred() == 0)//needs advanced improvement
+				{
+					roots.push_back (cur);
+					break;
+				}
 		num_reach += markReachable (roots.last(), reachable);//!!!&&& do not forget to correct
 	}
 	freeMarker (reachable);
@@ -166,6 +169,7 @@ NodeAux* GraphAux::findRoot()
 */
 int GraphAux::markReachable (Node* root, Marker by_what)
 {
+	if (root->isMarked (by_what)) return 0;
 	root->mark (by_what);
 	int number_marked = 0;
 	QQueue<Node*> to_process;
@@ -273,7 +277,7 @@ void GraphAux::rankImp (NodeAux* from, int cur_rank, Marker passed)
 		from->rang_priv =  cur_rank;
 
 	if (passedAllPred (from, passed))
-		passAllSucc (from, cur_rank, passed);//Wait for pass all previous nodes
+		passAllSucc (from, from->rang_priv, passed);//Wait for pass all previous nodes
 }
 //-----------------------------------------------------------------------------
 /*

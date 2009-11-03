@@ -73,7 +73,7 @@ void GuiEdge::paint( QPainter * painter,
 {
 	if (succ() == 0 || pred() == 0)//!!! What is the ugliness!
 	{
-		out ("ERROR: the deleted edge is tryed to paint!");
+		out ("ERROR: the deleted edge is tried to paint!");
 		return;
 	}
     qreal arrowSize = 10;
