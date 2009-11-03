@@ -209,7 +209,7 @@ dfsVisitStack( Node* node,
     Edge *e;
 	stack<Node *> st;
 	st.push( node);
-	while ( st.empty())
+	while ( !st.empty())
 	{
 		/** Execute the node from a stack 
          * If the top of stack isn't the node without predecessors,

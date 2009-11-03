@@ -14,6 +14,9 @@ class GraphAux: public Graph
 {
 private:
 
+	int max_rank;
+	Numeration dfs_num;
+
 	bool delVirtualNodes();
 
 	NodeAux* findRoot();
@@ -46,6 +49,23 @@ public:
     GraphAux(): Graph()
     {};
 
+	/**Maximum rank */
+	int maxRank()
+	{
+		return max_rank;
+	}
+
+	/** DFS num for ordering */
+	Numeration dfsNum()
+	{
+		return dfs_num;
+	}
+
+	void setDfsNum( Numeration num)
+	{
+		dfs_num = num;
+	}
+
     /** Allocation of memory for Edge */
     EdgeAux * createEdge( Node * pred, Node * succ);
 				//???type NodeAux not lead to Node, and call "creatEdge (Node *, Node*)" not work
@@ -60,6 +80,10 @@ public:
         return static_cast< NodeAux*>( Graph::newNode());
     }
 
+	NodeAux * firstNode()
+	{
+		return static_cast< NodeAux*>( Graph::firstNode());
+	}
     /**
      * Create edge between two nodes.
      * We do not support creation of edge with undefined endpoints
