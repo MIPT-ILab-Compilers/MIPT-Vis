@@ -61,11 +61,19 @@ bool EGraph::isGraphConnected()
 /**
  * Supportive subprograms
  */
+
+/**
+ * Function to find the node, which we can call entry for the subgraph.
+ */
 ENode* underGraphEntry( ENode* node, Marker mrk)
 {
 	node->mark( mrk);
 	EEdge* e = ( EEdge*)node->firstPred();
 	ENode* pred = ( ENode*)e->pred();
+	/**
+     * as far as we know 1 node from subgraph, use backstepping to find the head cycle,
+	 * which we can replace with a node, which dominates the others in subgraph.
+     */
 	while ( !pred->isMarked( mrk))
 	{
 		node = pred;
@@ -75,12 +83,18 @@ ENode* underGraphEntry( ENode* node, Marker mrk)
 	}
     return pred;
 }
-
+/**
+ * Function to find the node, which we can call exit for the subgraph.
+ */
 ENode* underGraphExit( ENode* node, Marker mrk)
 {
 	node->mark( mrk);
 	EEdge* e = ( EEdge*)node->firstSucc();
 	ENode* succ = ( ENode*)e->succ();
+	/**
+     * as far as we know 1 node from subgraph, find the ending cycle,
+	 * which we can replace with a node, which postdominates the others in subgraph.
+     */
 	while ( !succ->isMarked( mrk))
 	{
 		node = succ;
@@ -91,6 +105,9 @@ ENode* underGraphExit( ENode* node, Marker mrk)
     return succ;
 }
 
+/**
+ * Simple dfs, move down by successors, using recursion. Mark each visited node.
+ */
 void visitAllSuccs( ENode *node, Marker m)
 {
 	EEdge *e;
@@ -105,6 +122,9 @@ void visitAllSuccs( ENode *node, Marker m)
     }
 }
 
+/**
+ * Simple dfs, move up by predecessors, using recursion. Mark each visited node.
+ */
 void visitAllPreds( ENode *node, Marker m)
 {
 	EEdge *e;
@@ -140,13 +160,25 @@ void EGraph::makeGraphSingleEntry()
             newEdge( entrynode, n);
         }
     }   
+    /**
+	 * To find exceptions in graph, which need some other entry, do a DFS, using visitAllSuccs,
+	 * then make new entry for that piece of graph.
+	 * Do it until there isn't any nodes which cant be dominated by entry
+	 */
 	currententry = entrynode;
 	isallmarked = false;
     firstUnmrkdNode = firstNode();
 	while ( isallmarked != true)
     {
+		/**
+		 * Start dfs from some node "currententry" - founded early entry for last subgraph, use marker m
+		 */
         visitAllSuccs( currententry, m);
 		isallmarked = true;
+		/**
+		 * Search through the list of nodes for unmarked ones. Since we get first of them 
+		 * (it is not important which one), define it as a part of some unmarked subgraph.
+		 */
         for (  n = firstUnmrkdNode; isNotNullP( n); n = (ENode* )n->nextNode())
 		{
 			if ( n->isMarked( m) != true) 
@@ -156,10 +188,18 @@ void EGraph::makeGraphSingleEntry()
 				break;
 			}
 		}
+	    /**
+	     * All unmarker nodes have no predcessors, so they are in cycles
+	     * Lets determine the entry of each unmarked subgraph, use marker "mrk" to determine cycles
+	     */
 		Marker mrk = newMarker();
 		if ( currententry->isMarked( m) != true)
 		{
 		    currententry = underGraphEntry( firstUnmrkdNode, mrk);
+		    /**
+		     * Connect the subgraph's 'entry' with the main entry
+		     */
+			newEdge( entrynode, currententry);
 		}
 		freeMarker( mrk);
     }
@@ -185,13 +225,25 @@ void EGraph::makeGraphSingleExit()
             newEdge( n, exitnode);
         }
     } 
+    /**
+	 * To find exceptions in graph, which need some other exit, do a DFS, using visitAllPreds,
+	 * then make new exit for that piece of graph.
+	 * Do it until there isn't any nodes which cant be postdominated by exit
+	 */
 	currentexit = exitnode;
 	isallmarked = false;
     firstUnmrkdNode = firstNode();
 	while ( isallmarked != true)
     {
+		/**
+		 * Start dfs from some node "currentexit" - founded early exit for last subgraph, use marker m
+		 */
         visitAllPreds( currentexit, m);
 		isallmarked = true;
+		/**
+		 * Search through the list of nodes for unmarked ones. Since we get first of them 
+		 * (it is not important which one), define it as a part of some unmarked subgraph.
+		 */
         for (  n = firstUnmrkdNode; isNotNullP( n); n = (ENode* )n->nextNode())
 		{
 			if ( n->isMarked( m) != true) 
@@ -201,10 +253,18 @@ void EGraph::makeGraphSingleExit()
 				break;
 			}
 		}
+	    /**
+	     * All unmarker nodes have no successors, so they are in cycles
+	     * Lets determine the exit of each unmarked subgraph, use marker "mrk" to determine cycles
+	     */
 		Marker mrk = newMarker();
 		if ( currentexit->isMarked( m) != true)
 		{
 		    currentexit = underGraphExit( firstUnmrkdNode, mrk);
+		    /**
+		     * Connect the subgraph's 'exit' with the main exit
+		     */
+			newEdge( exitnode, currentexit);
 		}
 		freeMarker( mrk);
     }

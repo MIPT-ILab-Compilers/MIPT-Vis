@@ -13,7 +13,10 @@ class ENode: public Node
     ENode* pdom;
 public:
     ENode( EGraph *graph, int _id);
-
+    
+	/**
+	 * Gives the value of immediate dominator and postdominator of current node.
+	 */
 	void setidom( ENode* idm, ENode* node)
     {
          node->idom = idm;
@@ -31,6 +34,9 @@ public:
     {
          return pdom;
     }
+	/**
+	 * Casts to bring functions of class to the functions of advanced class
+	 */
     ENode* nextNode()
     {
         return static_cast< ENode *>( Node::nextNode());
