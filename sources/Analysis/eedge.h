@@ -30,7 +30,9 @@ public:
      * returns true if the edge is critical and false if it's not.
      */
     bool isEdgeCritical();
-
+	/**
+	 * Casts to bring functions of class to the functions of advanced class
+	 */
     EEdge* nextEdge()
     {
         return static_cast< EEdge *>( Edge::nextEdge());

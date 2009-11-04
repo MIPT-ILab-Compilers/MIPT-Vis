@@ -26,23 +26,29 @@ public:
     {
         return entrynode;
     }
-
-    void makeGraphSingleEntry();
-    
-    void makeGraphSingleExit();
-
     ENode* getExit()
     {
         return exitnode;
     }
-
+    /**
+     * makeGraphSingleEntry/Exit - includes supportive additional nodes to the graph
+     * to make the entry - a node, from which you can come at any node going through the whole graph,
+     * or an exit - a node, at which you can come from any node going through the whole graph.
+     */
+    void makeGraphSingleEntry();
+    
+    void makeGraphSingleExit();
+    
     bool isGraphConnected();
     
+    /**
+     * Casts to bring functions of class to the functions of advanced class
+     */
     ENode* createNode()
     {
         return new ENode( this, incNodeId());
     }
-
+    
     EEdge* newEdge( ENode * pred, ENode * succ)
     {
         return static_cast< EEdge *>( Graph::newEdge( ( Node*) pred, ( Node*) succ));
