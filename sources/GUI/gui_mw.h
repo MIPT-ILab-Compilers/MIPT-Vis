@@ -18,7 +18,7 @@ class QWidget;
 class QSplitter;
 class QString;
 class GuiGraph;
-class QPlainTextEdit;
+class GuiTextEdit;
 class QGroupBox;
 class QPushButton;
 QT_END_NAMESPACE
@@ -41,6 +41,8 @@ private slots:
     void doLayoutSlot();
     void textHandle();
     void centreOnNode();
+    void doCentreOnNode(int nodeNumber);
+    void saveTextToNode();
 
 private:
     void createMenus();
@@ -67,13 +69,11 @@ private:
     QSplitter *splitter;
     GuiGraph *graph;
     QString currentFile;
-    QPlainTextEdit *nodeTextEdit;
+    GuiTextEdit *nodeTextEdit;
     QGroupBox *groupBox;
     QVBoxLayout *textLayout;
     QVBoxLayout *rightLayout;
     QPushButton *confirmButton;
-public slots:
-    void saveTextToNode();
 };
 
 #endif

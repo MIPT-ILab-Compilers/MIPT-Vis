@@ -28,9 +28,10 @@ MainWindow::MainWindow()
     
     setCurrentFile(currentFile);
 
-    nodeTextEdit = new QPlainTextEdit;
+    nodeTextEdit = new GuiTextEdit;
     nodeTextEdit->clear();
     nodeTextEdit->setReadOnly(true);
+	connect(nodeTextEdit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT(doCentreOnNode( int)));
     
     confirmButton = new QPushButton(tr("Save &Text"));
     confirmButton->setEnabled(false);
@@ -152,9 +153,17 @@ void MainWindow::doLayoutSlot()
 void MainWindow::centreOnNode()
 {
     int nodeId = QInputDialog::getInteger(this,"Center On Node","Enter Node Number",0,-1000,1000,1,0,0);
+    doCentreOnNode(nodeId);
+} 
+
+/**
+ * doCentreOnNode
+ */
+void MainWindow::doCentreOnNode(int nodeNumber)
+{
     GuiNode * node;
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
-		if (node->id() == nodeId)
+		if (node->id() == nodeNumber)
       {
 		  view->centerOn(node);
           break;
@@ -230,6 +239,7 @@ void MainWindow::textHandle()
         /** Boris: This is error, type cast without checking. This pointer can point to GuiEdge as well */
 		//node = (GuiNode*) list[0]; // Next line fails if list[0] actually points to edge item		
 		/** Instead let's use qgraphicsitem_cast */
+		// lemh329 : Thanks, Bor
 		if ( qgraphicsitem_cast< GuiNode*>( list[ 0]))
 		{
 			GuiNode *node = qgraphicsitem_cast< GuiNode*>( list[ 0]);

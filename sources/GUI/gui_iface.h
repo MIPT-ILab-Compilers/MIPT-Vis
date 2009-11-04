@@ -12,6 +12,7 @@
 #include "gui_graph.h"
 #include "gui_mw.h"
 #include "gui_view.h"
+#include "gui_textedit.h"
 
 
 bool showGraph( int argc, char * argv[], GraphAux * graph);
