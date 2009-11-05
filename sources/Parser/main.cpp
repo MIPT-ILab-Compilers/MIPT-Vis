@@ -64,5 +64,8 @@ int main( int argc, char* argv[])
 			<< std::endl;
 		param->help();
 	}
+    delete P;
+    delete param;
+	delete gr;
 	return 0;
 }
