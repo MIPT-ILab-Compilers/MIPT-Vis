@@ -13,12 +13,6 @@
 
 #include "../Graph/graph_iface.h"
 
-
-#define ICC_COMPILER "-icc"
-#define GCC_COMPILER "-gcc"
-#define UNDEFINED "\n"
-
-
 /**
  * Implementation of Basic Block
  */

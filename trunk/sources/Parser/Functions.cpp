@@ -18,24 +18,6 @@
 #include "parser.h"
 #include "parameters.h"
 
-
-void help( bool imput_method)
-{
-	if ( imput_method == 0)
-	{
-		cout << "Usage: \"parser.exe file_name.txt param1 param2(optional)\"" << endl;
-	}else
-	{
-		cout << "Usage: \"file_name.txt param1 param2(optional)\"" << endl;
-	}
-	cout << "Param1: " << ICC_COMPILER << " or " << GCC_COMPILER << endl;
-	cout << "	" << ICC_COMPILER << " -Use ICC compiler" << endl;
-	cout << "	" << GCC_COMPILER << " -Use GCC compiler" << endl;
-	cout << "Param2(Optional): parsed_file_name.xml" << endl;
-	cout << "	Parsed file will be saved as 'parsed_file_name.xml'" << endl;
-	cout << "	On default 'file_name.xml' will be created." << endl;
-}
-
 int checkLen( int len)
 {
 	if ( len < 2 || len > 3) 

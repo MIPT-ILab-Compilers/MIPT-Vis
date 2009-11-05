@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\parameters.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\parser_impl.cpp"
 				>
 			</File>
@@ -205,10 +209,6 @@
 			</File>
 			<File
 				RelativePath=".\parser.h"
-				>
-			</File>
-			<File
-				RelativePath=".\str_to_vector.h"
 				>
 			</File>
 		</Filter>
