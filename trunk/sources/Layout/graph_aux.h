@@ -44,6 +44,8 @@ public://!!! Only for tests, it must be closed
 
 public:
     bool doLayout();
+
+	void iterateGravity();
 public:
     /** Constructor */
     GraphAux(): Graph()

@@ -3,11 +3,71 @@
 
 #include<QtGui/QColor>
 #include<QtCore/QString>
+#include <QtCore/QPoint>
+#include <QtCore/QPointF>
+
+class Mat_obj
+{
+	QPointF v;
+	QPointF a;
+	QPoint  r;
+public:
+	Mat_obj()
+	{
+	}
+	inline void setX( int x) 
+    {
+        r.setX (x);
+    }
+	inline void setY( int y)
+    { 
+        r.setY (y);
+    }
+	inline void setCoor (QPoint npos)
+	{
+		r = npos;
+	}
+
+	inline int x() const
+    {
+        return r.x();
+    }
+	inline int y() const
+    { 
+        return r.y();
+    }
+	inline QPoint coor() const
+	{
+		return r;
+	}
+
+	void addA (QPointF aa)
+	{
+		a += aa;
+	}
+	void shedA()
+	{
+		a = QPointF();
+	}
+	void applA (qreal t, qreal k)
+	{
+		v += a*t;
+		v *= k;
+	}
+	void applV (qreal t)
+	{
+		r += (v*t).toPoint();
+	}
+	QPoint dist (QPoint& target)
+	{
+		return r - target;
+	}
+};
 
 /**
  * Representation of various auxiliary node attributes
  */
-class NodePropertiesAux
+class NodePropertiesAux :public Mat_obj
 {
 protected:
     int rang_priv; // number of node's layer
@@ -30,14 +90,6 @@ public:
     {
         return pos_priv;
     }
-	inline int x() const
-    {
-        return x_priv;
-    }
-	inline int y() const
-    { 
-        return y_priv;
-    }
 	inline int width() const 
     {
         return width_priv;
@@ -58,14 +110,6 @@ public:
     inline void setPosAux( int posAux)
     {
         pos_priv = posAux;
-    }
-	inline void setX( int x) 
-    {
-        x_priv = x;
-    }
-	inline void setY( int y)
-    { 
-        y_priv = y;
     }
 	inline void setWidth( int width)
     { 

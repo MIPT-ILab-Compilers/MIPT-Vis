@@ -44,6 +44,10 @@ private slots:
     void doCentreOnNode(int nodeNumber);
     void saveTextToNode();
 
+	void enableGravity();
+	void disableGravity();
+	void makeGravity();
+
 private:
     void createMenus();
     void createActions();
@@ -62,6 +66,10 @@ private:
     QAction *aboutAct;
     QAction *doLayoutAct;
     QAction *centreOnNodeAct;
+    QAction *enGravityAct;
+    QAction *disGravityAct;
+
+	QTimer *gravity_timer;
 
     GuiView *view;
     QHBoxLayout *layout;
