@@ -57,6 +57,10 @@ MainWindow::MainWindow()
     widget = new QWidget;
     widget->setLayout(layout);
 
+	gravity_timer = new QTimer (this);
+	connect(gravity_timer, SIGNAL(timeout()), this, SLOT(makeGravity()));
+	gravity_timer->setInterval (100);
+
     setCentralWidget(widget);
 }
 
@@ -148,6 +152,30 @@ void MainWindow::doLayoutSlot()
 }
 
 /**
+ * enableGravity
+ */
+void MainWindow::enableGravity()
+{
+	gravity_timer->start();
+}
+
+/**
+ * disableGravity
+ */
+void MainWindow::disableGravity()
+{
+	gravity_timer->stop();
+}
+
+/**
+ * enableGravity
+ */
+void MainWindow::makeGravity()
+{
+	graph->iterateGravity();
+}
+
+/**
  * centreOnNode
  */
 void MainWindow::centreOnNode()
@@ -198,6 +226,13 @@ void MainWindow::createActions()
     centreOnNodeAct = new QAction(tr("&Centre On Node"), this);
     centreOnNodeAct->setStatusTip(tr("Centre On Node..."));
     connect(centreOnNodeAct, SIGNAL(triggered()), this, SLOT(centreOnNode()));
+	
+	enGravityAct = new QAction (tr("&Enable Gravity Correction"), this);
+    enGravityAct->setStatusTip (tr("&Enable Gravity Correction"));
+	disGravityAct = new QAction (tr("&Disable Gravity Correction"), this);
+    disGravityAct->setStatusTip (tr("&Disable Gravity Correction"));
+    connect(enGravityAct, SIGNAL(triggered()), this, SLOT(enableGravity()));
+	connect(disGravityAct, SIGNAL(triggered()), this, SLOT(disableGravity()));
 }
 
 /**
@@ -214,6 +249,8 @@ void MainWindow::createMenus()
 
     toolsMenu = menuBar()->addMenu(tr("&Tools"));
     toolsMenu->addAction(doLayoutAct);
+    toolsMenu->addAction(enGravityAct);
+    toolsMenu->addAction(disGravityAct);
 
     helpMenu = menuBar()->addMenu(tr("&Help"));
     helpMenu->addAction(helpAct);

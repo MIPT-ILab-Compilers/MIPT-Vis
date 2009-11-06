@@ -6,6 +6,7 @@
 
 #include <Qt/QQueue.h>
 #include <Qt/QStack.h>
+#include <math.h>
 #include "layout_iface.h"
 
 
@@ -77,6 +78,88 @@ bool GraphAux::doLayout()
 	debugPrint();
 
 	return true;
+}
+//-----------------------------------------------------------------------------
+qreal Lenght (QPoint& what)
+{
+	return sqrt(qreal (what.x()*what.x() + what.y()*what.y()));
+}
+qreal lenSq (QPoint& what)
+{
+	return (what.x()*what.x() + what.y()*what.y());
+}
+qreal lenSq (QPointF& what)
+{
+	return (what.x()*what.x() + what.y()*what.y());
+}
+/**
+* The main function of our component
+*/
+void AttractForce (NodeAux* from, int frmass, NodeAux* to);
+void RepulseForce (NodeAux* from, int frmass, NodeAux* to);
+const qreal attrK = 1400;
+const qreal repuK = 400000000000;
+const qreal minDist = 50.;
+const qreal timestep = 2;
+const qreal resistance = 0.7;
+const qreal max_force = 1;
+void GraphAux::iterateGravity()
+{
+	int m = 0;
+//	for (NodeAux* iter = firstNode(); iter; iter = iter->nextNode())
+//		iter->shedA();
+
+	for (NodeAux* iter = firstNode(); iter; iter = iter->nextNode())
+	{
+		m = 2500;//iter->width()*iter->height();
+
+		Edge* e;
+		ForEdges(iter, e, Succ)
+		{
+			AttractForce (iter, m, addAux(e->succ()));
+		}
+		ForEdges(iter, e, Pred)
+		{
+			AttractForce (iter, m, addAux(e->pred()));
+		}
+		for (NodeAux* cur = firstNode(); cur; cur = cur->nextNode())
+			if (iter != cur)
+				RepulseForce (iter, m, cur);
+	}
+
+
+	for (NodeAux* iter = firstNode(); iter; iter = iter->nextNode())
+	{
+		iter->applA (timestep, resistance);
+		iter->applV (timestep);
+		iter->shedA();
+	}
+	applayPositions();
+}
+void AttractForce (NodeAux* from, int frmass, NodeAux* to)
+{
+	QPoint dsti = from->dist (to->coor());
+	QPointF dst(dsti.x(), dsti.y());
+	qreal lensq = lenSq (dsti);
+	if (lensq < minDist*minDist) lensq = minDist*minDist;
+
+	QPointF f = frmass*attrK*dst/lensq/lensq;
+
+	if (lenSq (f) > max_force) f *= max_force/sqrt (lenSq (f));
+
+	to->addA (f);
+}
+void RepulseForce (NodeAux* from, int frmass, NodeAux* to)
+{
+	QPoint dsti = from->dist (to->coor());
+	QPointF dst(dsti.x(), dsti.y());
+	qreal lensq = lenSq (dsti);
+	if (lensq < minDist*minDist) lensq = minDist*minDist;
+
+	QPointF f = -frmass*repuK*dst/lensq/lensq/lensq/lensq;
+	if (lenSq (f) > max_force) f *= max_force/sqrt (lenSq (f));
+
+	to->addA (f);
 }
 //-----------------------------------------------------------------------------
 /**
