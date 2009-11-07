@@ -159,8 +159,6 @@ GuiNode* GuiEdge::insertNode (QPointF p)
 void GuiEdge::writeByXMLWriter( xmlTextWriterPtr writer)
 {
 	EdgeAux::writeByXMLWriter (writer);
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "from", "%d", pred()->id());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "to", "%d", succ()->id());
 	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "prob", "%d", prob());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "thickness", "%d", thickness());

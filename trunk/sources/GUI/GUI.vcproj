@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="GUI"
 	ProjectGUID="{759BD0F4-2B39-4F27-91E0-8C988CC89734}"
 	RootNamespace="GUI"
@@ -154,10 +154,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\tmp\moc\moc_gui_point.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\tmp\moc\moc_gui_textedit.cpp"
 				>
 			</File>
@@ -300,7 +296,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC gui_textedit.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_textedit.h -o tmp\moc\moc_gui_textedit.cpp"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_textedit.h -o tmp\moc\moc_gui_textedit.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="gui_textedit.h"
 						Outputs=" tmp\moc\moc_gui_textedit.cpp"
 					/>
@@ -311,7 +307,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="MOC gui_textedit.h"
-						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_textedit.h -o tmp\moc\moc_gui_textedit.cpp"
+						CommandLine="moc.exe -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_EDITION=QT_EDITION_DESKTOP -DQT_DLL -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -D_MSC_VER=1500 gui_textedit.h -o tmp\moc\moc_gui_textedit.cpp&#x0D;&#x0A;"
 						AdditionalDependencies="gui_textedit.h"
 						Outputs=" tmp\moc\moc_gui_textedit.cpp"
 					/>
