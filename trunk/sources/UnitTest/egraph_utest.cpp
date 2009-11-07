@@ -6,11 +6,84 @@
  */
 #include "utest_impl.h"
 
-static bool uTestMakeEntryExit( EGraph *egraph)
+static bool uTestMakeEntryExit(void)
 {
-    egraph->makeGraphSingleExit();
+	bool utest_passed = true;
+    EGraph *egraph = new EGraph;
+	vector<ENode *> enodes;
+	printf("\n  Creating graph 1:\n");
+	for ( int i =0; i<6; i++)
+    {
+        enodes.push_back( egraph->newNode());
+	}
+    egraph->newEdge( enodes[ 0], enodes[ 1]);
+    egraph->newEdge( enodes[ 2], enodes[ 3]);
+    egraph->newEdge( enodes[ 2], enodes[ 4]);
+    egraph->newEdge( enodes[ 3], enodes[ 5]);
+    egraph->newEdge( enodes[ 4], enodes[ 5]);
+
+    egraph->debugPrint();
+
+	printf("  Creating single-entry and single-exit\n");
+	egraph->makeGraphSingleExit();
     egraph->makeGraphSingleEntry();
-    return true;
+
+	printf("    Entry:\n");
+	egraph->getEntry()->debugPrint();
+	printf("    Exit:\n");
+	egraph->getExit()->debugPrint();
+
+	printf("  Final Graph:\n");
+    egraph->debugPrint();
+
+	/* The following code checks correctness only of makeGraphSingleEntry.
+	 * TODO: It's needed to check if makeGraphSingleExit also works fine.
+	 */
+	if(!egraph->isGraphConnected()) 
+		utest_passed = false;
+
+	printf("  Deleting graph1...\n");
+	delete egraph;
+	enodes.clear();
+
+/* Uncomment the following code when the bug 
+ * in makeGraphSingleExit,makeGraphSingleEntry is fixed 
+ */
+#if 0
+	printf("\n  Creating graph 2:\n");
+	egraph = new EGraph;
+	for ( int i =0; i<4; i++)
+    {
+        enodes.push_back( egraph->newNode());
+	}
+    egraph->newEdge( enodes[ 0], enodes[ 1]);
+    egraph->newEdge( enodes[ 1], enodes[ 0]);
+    egraph->newEdge( enodes[ 2], enodes[ 3]);
+    egraph->newEdge( enodes[ 3], enodes[ 2]);
+
+    egraph->debugPrint();
+
+	printf("  Creating single-entry and single-exit\n");
+	egraph->makeGraphSingleExit();
+    egraph->makeGraphSingleEntry();
+
+	printf("    Entry:\n");
+	egraph->getEntry()->debugPrint();
+	printf("    Exit:\n");
+	egraph->getExit()->debugPrint();
+
+	printf("  Final Graph:\n");
+    egraph->debugPrint();
+
+	/* The following code checks correctness only of makeGraphSingleEntry.
+	 * TODO: It's needed to check if makeGraphSingleExit also works fine.
+	 */
+	if(!egraph->isGraphConnected()) 
+		utest_passed = false;
+#endif
+	printf("\nSingle-entry, single-exit unit test %s\n", 
+		   utest_passed ? "successfully passed" : "failed");
+    return utest_passed;
 }
 
 /**
@@ -18,31 +91,10 @@ static bool uTestMakeEntryExit( EGraph *egraph)
  */
 bool uTestEGraph()
 {
-    EGraph egraph;
-	vector<ENode *> enodes;
-	/**
-	 *Create nodes and edges
-	 */
 	printf("\nBegin EGraph Test\n");
-	for ( int i =0; i<20; i++)
-    {
-        enodes.push_back( egraph.newNode());
-        if ( i > 0)
-        {
-            egraph.newEdge( enodes[ i - 1], enodes[ i]);
-        }
-        if ( i > 1 && i % 2 == 0)
-        {
-            egraph.newEdge( enodes[ i - 2], enodes[ i]);
-        }
-    }
-
-    if ( !uTestMakeEntryExit( &egraph))
+    if ( !uTestMakeEntryExit())
         return false;
     
-    egraph.newEdge( enodes[ 8], enodes[ 4]);
-    delete enodes[ 8];
-    egraph.debugPrint();
 	printf("\nEnd Of EGraph Test\n");
 	
 	return true;
