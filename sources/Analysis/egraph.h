@@ -15,6 +15,12 @@ class EGraph: public Graph
 	bool is_cycle_tree_computed;
 	bool is_graph_connected;
 
+	ENode* findSubgraphEntry(ENode* node, Marker mrk);
+	ENode* findSubgraphExit( ENode* node, Marker mrk);
+	void visitAllSuccs( ENode *node, Marker m);
+	void visitAllPreds( ENode *node, Marker m);
+
+
 public:
 	EGraph();
 

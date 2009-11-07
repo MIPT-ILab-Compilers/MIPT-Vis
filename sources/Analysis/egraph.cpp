@@ -30,7 +30,7 @@ EGraph::~EGraph()
 
 
 /**
- *  Shows if graph is connected
+ *  Check if graph is connected
  */
 bool EGraph::isGraphConnected()
 {
@@ -64,8 +64,9 @@ bool EGraph::isGraphConnected()
 
 /**
  * Function to find the node, which we can call entry for the subgraph.
+ * Argument Enode *node is a pointer to node from the given subgraph.
  */
-ENode* underGraphEntry( ENode* node, Marker mrk)
+ENode* EGraph::findSubgraphEntry(ENode* node, Marker mrk)
 {
 	node->mark( mrk);
 	EEdge* e = ( EEdge*)node->firstPred();
@@ -85,8 +86,10 @@ ENode* underGraphEntry( ENode* node, Marker mrk)
 }
 /**
  * Function to find the node, which we can call exit for the subgraph.
+ * This function is very similar to findSubgraphEntry.
+ * Argument Enode *node is a pointer to node from the given subgraph.
  */
-ENode* underGraphExit( ENode* node, Marker mrk)
+ENode* EGraph::findSubgraphExit( ENode* node, Marker mrk)
 {
 	node->mark( mrk);
 	EEdge* e = ( EEdge*)node->firstSucc();
@@ -108,7 +111,7 @@ ENode* underGraphExit( ENode* node, Marker mrk)
 /**
  * Simple dfs, move down by successors, using recursion. Mark each visited node.
  */
-void visitAllSuccs( ENode *node, Marker m)
+void EGraph::visitAllSuccs( ENode *node, Marker m)
 {
 	EEdge *e;
 	node->mark( m);
@@ -125,7 +128,7 @@ void visitAllSuccs( ENode *node, Marker m)
 /**
  * Simple dfs, move up by predecessors, using recursion. Mark each visited node.
  */
-void visitAllPreds( ENode *node, Marker m)
+void EGraph::visitAllPreds( ENode *node, Marker m)
 {
 	EEdge *e;
 	node->mark( m);
@@ -139,7 +142,9 @@ void visitAllPreds( ENode *node, Marker m)
     }
 }
 /**
- *  Create fake nodes entry and exit.
+ *  Create an entry for the graph.
+ *  If the graph was disconnected, it becomes connected, and
+ *  all nodes can be reached from the created entry.
  */
 void EGraph::makeGraphSingleEntry()
 {
@@ -171,7 +176,7 @@ void EGraph::makeGraphSingleEntry()
 	while ( isallmarked != true)
     {
 		/**
-		 * Start dfs from some node "currententry" - founded early entry for last subgraph, use marker m
+		 * Start dfs from some node "currententry" - the entry for previous subgraph, use marker m
 		 */
         visitAllSuccs( currententry, m);
 		isallmarked = true;
@@ -195,7 +200,7 @@ void EGraph::makeGraphSingleEntry()
 		Marker mrk = newMarker();
 		if ( currententry->isMarked( m) != true)
 		{
-		    currententry = underGraphEntry( firstUnmrkdNode, mrk);
+		    currententry = findSubgraphEntry( firstUnmrkdNode, mrk);
 		    /**
 		     * Connect the subgraph's 'entry' with the main entry
 		     */
@@ -206,6 +211,11 @@ void EGraph::makeGraphSingleEntry()
 	freeMarker( m);
 }
 
+/**
+ *  Create an exit for the graph.
+ *  If the graph was disconnected, it becomes connected, and
+ *  the exit can be reached from any node of the graph.
+ */
 void EGraph::makeGraphSingleExit()
 {
     ENode *n;   
@@ -260,7 +270,7 @@ void EGraph::makeGraphSingleExit()
 		Marker mrk = newMarker();
 		if ( currentexit->isMarked( m) != true)
 		{
-		    currentexit = underGraphExit( firstUnmrkdNode, mrk);
+		    currentexit = findSubgraphExit( firstUnmrkdNode, mrk);
 		    /**
 		     * Connect the subgraph's 'exit' with the main exit
 		     */
@@ -270,3 +280,6 @@ void EGraph::makeGraphSingleExit()
     }
 	freeMarker( m);
 }
+
+
+
