@@ -188,10 +188,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\parameters.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\parser_impl.cpp"
 				>
 			</File>
