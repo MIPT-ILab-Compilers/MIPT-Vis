@@ -37,7 +37,7 @@ private:
 	void pushToVector( string );
     void optimizeString( string& );
 public:
-	void help(){};
+	void help();
 
 	void setTxtFile( string s)
 	{
