@@ -46,16 +46,13 @@ static bool uTestMakeEntryExit(void)
 	delete egraph;
 	enodes.clear();
 
-/* Uncomment the following code when the bug 
- * in makeGraphSingleExit,makeGraphSingleEntry is fixed 
- */
-#if 0
 	printf("\n  Creating graph 2:\n");
 	egraph = new EGraph;
 	for ( int i =0; i<4; i++)
     {
         enodes.push_back( egraph->newNode());
 	}
+
     egraph->newEdge( enodes[ 0], enodes[ 1]);
     egraph->newEdge( enodes[ 1], enodes[ 0]);
     egraph->newEdge( enodes[ 2], enodes[ 3]);
@@ -80,7 +77,7 @@ static bool uTestMakeEntryExit(void)
 	 */
 	if(!egraph->isGraphConnected()) 
 		utest_passed = false;
-#endif
+
 	printf("\nSingle-entry, single-exit unit test %s\n", 
 		   utest_passed ? "successfully passed" : "failed");
     return utest_passed;
