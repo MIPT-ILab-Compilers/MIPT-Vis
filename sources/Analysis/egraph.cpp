@@ -160,7 +160,7 @@ void EGraph::makeGraphSingleEntry()
      */
     for (  n = firstNode(); isNotNullP( n); n = (ENode* )n->nextNode())
     {
-        if ( isNullP( n->firstPred()) && ( n != entrynode)) 
+        if ( isNullP( n->firstPred()) && ( n != entrynode) && ( n != exitnode)) 
         {
             newEdge( entrynode, n);
         }
@@ -198,13 +198,16 @@ void EGraph::makeGraphSingleEntry()
 	     * Lets determine the entry of each unmarked subgraph, use marker "mrk" to determine cycles
 	     */
 		Marker mrk = newMarker();
-		if ( currententry->isMarked( m) != true)
+		if ( firstUnmrkdNode->isMarked( m) != true)
 		{
 		    currententry = findSubgraphEntry( firstUnmrkdNode, mrk);
 		    /**
 		     * Connect the subgraph's 'entry' with the main entry
 		     */
-			newEdge( entrynode, currententry);
+			if ( currententry != exitnode)
+			{
+			    newEdge( entrynode, currententry);
+			}
 		}
 		freeMarker( mrk);
     }
@@ -230,7 +233,7 @@ void EGraph::makeGraphSingleExit()
      */
     for (  n = firstNode(); isNotNullP( n); n = (ENode* )n->nextNode())
     {
-        if ( isNullP( n->firstSucc()) && ( n != exitnode))
+        if ( isNullP( n->firstSucc()) && ( n != exitnode) && ( n != entrynode))
         {
             newEdge( n, exitnode);
         }
@@ -268,13 +271,16 @@ void EGraph::makeGraphSingleExit()
 	     * Lets determine the exit of each unmarked subgraph, use marker "mrk" to determine cycles
 	     */
 		Marker mrk = newMarker();
-		if ( currentexit->isMarked( m) != true)
+		if ( firstUnmrkdNode->isMarked( m) != true)
 		{
 		    currentexit = findSubgraphExit( firstUnmrkdNode, mrk);
 		    /**
 		     * Connect the subgraph's 'exit' with the main exit
 		     */
-			newEdge( exitnode, currentexit);
+			if ( n != entrynode)
+			{
+			    newEdge( currentexit, exitnode);
+			}
 		}
 		freeMarker( mrk);
     }
