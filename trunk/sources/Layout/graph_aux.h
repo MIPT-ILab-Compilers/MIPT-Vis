@@ -4,6 +4,8 @@
  * Copyright (C) 2009  MIPTVIS
  */
 
+#include <QTCore/QVector.h>
+
 #ifndef GRAPH_AUX_H
 #define GRAPH_AUX_H
 
@@ -16,6 +18,9 @@ private:
 
 	int max_rank;
 	Numeration dfs_num;
+
+	/* Rank structure for nodes ordering */
+	QVector<AdjRank> rank;
 
 	bool delVirtualNodes();
 
@@ -33,11 +38,18 @@ private:
 	void addVirtualChains();
 
 	void arrangeVertical();
-	void arrangeHorisontal();
+
+	/* Horizontal arrangement */
+	void arrangeHorizontal();
+	void forceDirectedPosition();
+	void resultantForce( int rank_num);
+	void saveMinDist( int rank_num);
+	void decompact( int rank_num, int dir);
+
 	void applayPositions();
 
 public://!!! Only for tests, it must be closed
-	bool rank();
+	bool ranking();
 	bool ordering();
 	bool position();
 	bool make_splines();

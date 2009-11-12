@@ -7,7 +7,6 @@
 #define RANK_H
 
 #include <QtCore/QVector.h>
-#include "layout_iface.h"
 
 /**
 * Implementation of layer with nodes of the same rank
@@ -36,6 +35,8 @@ public:
 
 	inline int rang();
 
+	/** Get first element of the layer */
+
 	void debugPrint();
 
 	/** Set initial X coordinates */
@@ -50,6 +51,19 @@ public:
 	void addNode( NodeAux* node)
 	{
 		adj_rank.addItem( node);
+		node->setLayerIter( adj_rank.tail());
+	}
+
+	/** Get first node of the layer */
+	NodeAux* first()
+	{
+		return adj_rank.head()->data();
+	}
+
+	/** Get first node of the layer */
+	NodeAux* last()
+	{
+		return adj_rank.tail()->data();
 	}
 
 	/** Sorting nodes depends on ordering DFS numeration */
@@ -62,56 +76,6 @@ public:
 	void sortByVal()
 	{
 		adj_rank.sort( &valCmp);
-	}
-};
-
-/**
-* Implementation of multiple layers in graph ranking.
-*/
-
-class Rank
-{
-private:
-	/** Corresponding graph */
-	GraphAux* graph;
-
-	/** List of rank layers */
-	QVector<AdjRank>* rank;
-
-	/** Maximum iterations in ordering algorithm */
-	static const int maxIter = 24;
-
-	/** Deliver node's ranking from corresponding numeration in auxiliary graph */
-	void deliverRank();
-
-	/**
-	* Initial ordering of adjacent nodes
-	*/
-	void initOrder();
-
-public:
-
-	void debugPrint();
-
-	/** Do ordering for graph */
-	void doOrderAll();
-
-	/** Default constructor */
-	Rank()
-	{
-	};
-
-	/** Constructor with ranking delivering */
-	Rank( GraphAux* ga)
-	{
-		graph = ga;
-		rank = new QVector<AdjRank>( graph->maxRank() + 1);
-		deliverRank();
-	};
-
-	~Rank()
-	{
-		delete rank;
 	}
 };
 #endif
