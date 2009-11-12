@@ -24,6 +24,12 @@ static bool uTestMakeEntryExit(void)
 
     egraph->debugPrint();
 
+	if(!egraph->isGraphConnected())
+	{  printf("Graph is NOT connected\n");
+	} else
+	{	printf("Graph IS connected\n");
+	}
+
 	printf("  Creating single-entry and single-exit\n");
 	egraph->makeGraphSingleExit();
     egraph->makeGraphSingleEntry();
@@ -35,12 +41,19 @@ static bool uTestMakeEntryExit(void)
 
 	printf("  Final Graph:\n");
     egraph->debugPrint();
-
+    
 	/* The following code checks correctness only of makeGraphSingleEntry.
 	 * TODO: It's needed to check if makeGraphSingleExit also works fine.
 	 */
-	if(!egraph->isGraphConnected()) 
+	if(!egraph->isGraphConnected())
+	{ 
 		utest_passed = false;
+	    printf("Graph is NOT connected\n");
+	}
+	else
+	{	
+		printf("Graph IS connected\n");
+	}
 
 	printf("  Deleting graph1...\n");
 	delete egraph;
@@ -60,6 +73,12 @@ static bool uTestMakeEntryExit(void)
 
     egraph->debugPrint();
 
+	if(!egraph->isGraphConnected())
+	{  printf("Graph is NOT connected\n");
+	} else
+	{	printf("Graph IS connected\n");
+	}
+
 	printf("  Creating single-entry and single-exit\n");
 	egraph->makeGraphSingleExit();
     egraph->makeGraphSingleEntry();
@@ -75,8 +94,15 @@ static bool uTestMakeEntryExit(void)
 	/* The following code checks correctness only of makeGraphSingleEntry.
 	 * TODO: It's needed to check if makeGraphSingleExit also works fine.
 	 */
-	if(!egraph->isGraphConnected()) 
+	if(!egraph->isGraphConnected())
+	{ 
 		utest_passed = false;
+	    printf("Graph is NOT connected\n");
+	}
+	else
+	{	
+		printf("Graph IS connected\n");
+	}
 
 	printf("\nSingle-entry, single-exit unit test %s\n", 
 		   utest_passed ? "successfully passed" : "failed");
