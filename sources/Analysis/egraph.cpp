@@ -28,32 +28,58 @@ EGraph::~EGraph()
 
 }
 
+/**
+ * Function to send a "wave" in graph from some node using some marked. All connected nodes will be marked.
+ *
+ * markSubgFromNode use dfs by recursion, ones started from one node, function marks that node starts 
+ * recursivly from each successor or predecessor node has until there are no unmarked succs/preds for each node
+ */
+void EGraph::markSubgFromNode( ENode* node, Marker m)
+{
+
+    EEdge *e;
+    node->mark( m);
+    for ( e = ( EEdge*)node->firstSucc(); !node->endOfSuccs(); e = ( EEdge*)node->nextSucc())
+    {
+        ENode* succ = ( ENode*)e->succ();
+        if ( !succ->isMarked( m))
+        {
+            markSubgFromNode( succ, m);
+        }
+    }
+	for ( e = ( EEdge*)node->firstPred(); !node->endOfPreds(); e = ( EEdge*)node->nextPred())
+    {
+        ENode* pred = ( ENode*)e->pred();
+        if ( !pred->isMarked( m))
+        {
+            markSubgFromNode( pred, m);
+        }
+    }
+}
+
 
 /**
  *  Check if graph is connected
  */
 bool EGraph::isGraphConnected()
 {
-    ENode *n;
-	is_graph_connected = false;
-	int i = 0;
+    ENode *n = firstNode();
+	is_graph_connected = true;
     /** Create a marker to distinguish visited nodes from unvisited ones */
     Marker m = newMarker();
+    /** Take the node, which must be in graph. Then mark all nodes connected with this one
+	 * through the way of successors or predecessors. Use markSubgFromNode
+	 */
+    markSubgFromNode( n, m);
 
-    /** 
-     * Visit all nodes that doesn't have predecessors.
-     * If the graph is connected, i must equals 1.
-     */
 	for (  n = firstNode(); isNotNullP( n); n = (ENode* )n->nextNode())
     {
-        if( isNullP( n->firstPred()))
+        if ( n->isMarked( m) != true)
         {
-            graphassert( !n->isMarked( m));
-			i++;        
+		    is_graph_connected = false;
+			break;      
         }
     }   
-	if ( i == 1) { is_graph_connected = true;}
-
     freeMarker( m);
 
 	return is_graph_connected;

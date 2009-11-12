@@ -19,6 +19,7 @@ class EGraph: public Graph
 	ENode* findSubgraphExit( ENode* node, Marker mrk);
 	void visitAllSuccs( ENode *node, Marker m);
 	void visitAllPreds( ENode *node, Marker m);
+    void markSubgFromNode( ENode* node, Marker m);
 
 
 public:
