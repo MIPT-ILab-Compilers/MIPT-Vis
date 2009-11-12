@@ -9,6 +9,8 @@
 class GraphAux;
 class NodeAux;
 class EdgeAux;
+class Rank;
+class AdjRank;
 
 #include "../Utils/utils_iface.h"
 #include "../Graph/graph_iface.h"

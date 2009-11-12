@@ -108,89 +108,11 @@ void AdjRank::setInitX()
 {
 	int cur = 0;
 	int i = 0;
-	const int offset = 20;
+	const int offset = 50;
 	for( ListItem< NodeAux>* iter=adj_rank.head(); iter!=NULL; iter = iter->next())
 	{
 		iter->data()->setPosAux( i++);
 		iter->data()->setX(cur);
 		cur+= iter->data()->width() + offset; // iter->data()->width() + offset;
-	}
-}
-
-
-/** Deliver node's ranking from corresponding numeration in auxiliary graph */
-void Rank::deliverRank()
-{
-	for( NodeAux* iter = graph->firstNode(); iter != NULL; iter = iter->nextNode())
-	{
-		(*rank)[ iter->rang()].addNode( iter);
-	}
-};
-
-/**
-* Initial ordering of adjacent nodes
-*/
-void Rank::initOrder()
-{
-	Numeration dfs_num = graph->newNum();
-	graph->DFS( dfs_num);
-	graph->setDfsNum( dfs_num);
-	for( QVector< AdjRank>::iterator iter = rank->begin(); iter != rank->end(); iter++)
-	{
-		iter->sortByNum();
-		iter->setInitX();
-	}
-	graph->freeNum( dfs_num);
-}
-
-/** Do ordering for graph */
-void Rank::doOrderAll()
-{
-	initOrder();
-	QVector< AdjRank>::iterator iter, iter1;
-	for( int i = 0; i < maxIter; i++)
-	{
-		/** There are some mysterious operations with iterators to avoid segfault */
-		if ( i % 2 == 1) // down direction
-		{
-			iter = rank->begin(); 
-			iter++;
-			for(; iter != rank->end(); iter++)
-			{
-				iter1 = iter;
-				iter1--;
-				iter->doOrder(iter1);
-			}
-		}
-		else // up direction
-		{
-			iter = rank->end(); 
-			iter--;
-			iter--;
-			iter1 = iter;
-			iter1++;
-			for(; iter1 != rank->begin();)
-			{
-				iter1 = iter;
-				iter1++;
-				iter->doOrder(iter1);
-				iter--;
-				iter1 = iter;
-				iter1++;
-			}
-		}
-	}	
-}
-
-
-/** Print all layers in rank */
-void Rank::debugPrint()
-{
-	int i = 0;
-	for( QVector<AdjRank>::iterator iter = rank->begin(); iter != rank->end(); iter++)
-	{
-		out( "Layer %d", i);
-		iter->debugPrint();
-		i++;
 	}
 }

@@ -40,7 +40,14 @@ public:
 	{
 		return r;
 	}
-
+	inline QPointF getA() const
+	{
+		return a;
+	}
+	void setA( QPointF aa)
+	{
+		a = aa;
+	}
 	void addA (QPointF aa)
 	{
 		a += aa;
@@ -130,14 +137,33 @@ public:
  */
 class NodeAux: public Node, public NodePropertiesAux
 {
+private:
+	ListItem<NodeAux>* layer_it; //Position in layer's list of nodes
 protected:
     NodeAux( GraphAux *graph_p, int _id);
     friend class GraphAux;
 
-	
 	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
 	virtual void readByXML (xmlNode * cur_node);
 public:
+
+	/** Set corresponding item in layer's list */
+	void setLayerIter( ListItem<NodeAux>* iter)
+	{
+		layer_it = iter;
+	}
+
+	/** Get next element in layer */
+	NodeAux* nextInLayer()
+	{
+		return ( layer_it->next() != NULL )? layer_it->next()->data() : NULL;
+	}
+
+	/** Get previous element in layer */
+	NodeAux* prevInLayer()
+	{
+		return ( layer_it->prev() != NULL )? layer_it->prev()->data() : NULL;
+	}
 
 	inline NodeAux * nextNode()
 	{

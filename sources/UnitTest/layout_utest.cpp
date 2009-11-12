@@ -17,7 +17,7 @@ bool uTestLayout()
 	out ("\n============= testing Layout =============\nbefore ranking:\n");
 	ga.debugPrint();
 	
-	if (ga.rank())
+	if (ga.ranking())
 	{
 		out ("\nafter ranking:\n");
 		ga.debugPrint();
