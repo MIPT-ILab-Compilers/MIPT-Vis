@@ -507,6 +507,7 @@ void GraphAux::saveMinDist( int rank_num)
 	NodeAux* iter = rank[rank_num].first();
 	int dir = 1;
 	int min_dist;
+	int offset = 50;
 	do
 	{
 	/** In general we treat nodes closer than min_dist and balance forces exerted on them*/
@@ -517,7 +518,7 @@ void GraphAux::saveMinDist( int rank_num)
 			/* Change direction only if there are unbalanced forces to the left */
 			if( iter->prevInLayer() != NULL)
 			{
-				min_dist = iter->prevInLayer()->width() + 50;
+				min_dist = iter->prevInLayer()->width() / 2 + offset + iter->width() / 2;
 				if(((iter->x() - iter->prevInLayer()->x()) < min_dist)&&
 					(iter->getA().x() < iter->prevInLayer()->getA().x()))
 						dir = 0;
@@ -530,7 +531,7 @@ void GraphAux::saveMinDist( int rank_num)
 		{
 			if( iter->nextInLayer() != NULL)
 			{
-				min_dist = iter->width() + 50;
+				min_dist = iter->width() / 2 + offset + iter->nextInLayer()->width() / 2;
 				if( (iter->nextInLayer()->x() - iter->x()) < min_dist)
 					if( iter->getA().x() > iter->nextInLayer()->getA().x())
 					{
@@ -548,7 +549,7 @@ void GraphAux::saveMinDist( int rank_num)
 		{
 			if( iter->prevInLayer() != NULL)
 			{
-				min_dist = iter->prevInLayer()->width() + 50;
+				min_dist = iter->prevInLayer()->width() / 2 + offset + iter->width() / 2;
 				if( (iter->x() - iter->prevInLayer()->x()) < min_dist)
 				{
 					if( iter->getA().x() < iter->prevInLayer()->getA().x())
@@ -571,11 +572,12 @@ void GraphAux::saveMinDist( int rank_num)
 */
 void GraphAux::decompact( int rank_num, int dir)
 {
+	int offset = 49;
 	if( dir == 1)
 	{
 		for( NodeAux* iter = rank[rank_num].first()->nextInLayer(); iter!=NULL; iter = iter->nextInLayer())
 		{
-			int min_dist = iter->prevInLayer()->width() + 49;
+			int min_dist = iter->prevInLayer()->width() / 2 + offset + iter->width() / 2;
 			int dist = iter->x() -  iter->prevInLayer()->x();
 			if( dist < min_dist)
 			{
@@ -587,7 +589,7 @@ void GraphAux::decompact( int rank_num, int dir)
 	{
 		for( NodeAux* iter = rank[rank_num].last()->prevInLayer(); iter!=NULL; iter = iter->prevInLayer())
 		{
-			int min_dist = iter->width() + 49;
+			int min_dist = iter->width() / 2 + offset + iter->nextInLayer()->width() / 2;
 			int dist = - iter->x() + iter->nextInLayer()->x();
 			if( dist < min_dist)
 			{
