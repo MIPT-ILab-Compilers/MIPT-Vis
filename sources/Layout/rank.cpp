@@ -112,7 +112,7 @@ void AdjRank::setInitX()
 	for( ListItem< NodeAux>* iter=adj_rank.head(); iter!=NULL; iter = iter->next())
 	{
 		iter->data()->setPosAux( i++);
-		iter->data()->setX(cur);
+		iter->data()->setX(cur + iter->data()->width() / 2);
 		cur+= iter->data()->width() + offset; // iter->data()->width() + offset;
 	}
 }
