@@ -121,7 +121,7 @@ void GuiEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mousePressEvent( event);
-	getGraph()->removeEdge (this);
+//	getGraph()->removeEdge (this);//imho it was quite useful
 }
 
 /**
