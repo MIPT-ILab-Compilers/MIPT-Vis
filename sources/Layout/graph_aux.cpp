@@ -123,7 +123,7 @@ QPointF attractForce (NodeAux* from, int frmass, NodeAux* to);
 QPointF repulseForce (NodeAux* from, int frmass, NodeAux* to);
 const qreal attrK = 1400;
 const qreal repuK = 400000000000;
-const qreal minDist = 150;
+const qreal minDist = 50;
 const qreal timestep = 2;
 const qreal resistance = 0.7;
 const qreal max_force = 1;
