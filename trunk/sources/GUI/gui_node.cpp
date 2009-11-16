@@ -139,8 +139,8 @@ QVariant GuiNode::itemChange( GraphicsItemChange change, const QVariant &value)
     if( change == QGraphicsItem::ItemPositionChange 
 		|| change == QGraphicsItem::ItemPositionHasChanged)
     {
-        setX( QGraphicsItem::x());
-        setY( QGraphicsItem::y());
+        setX( QGraphicsItem::x() + width()/2);
+        setY( QGraphicsItem::y() + height()/2);
         setWidth( boundingRect().width());
         setHeight( boundingRect().height());
         

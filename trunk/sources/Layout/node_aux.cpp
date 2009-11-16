@@ -12,8 +12,6 @@ NodePropertiesAux::NodePropertiesAux()
     rang_priv = 0;
     pos_priv = 1;
 
-	x_priv = 0;
-	y_priv = 0;
 	width_priv = 0;
 	height_priv = 0;
 	is_real = true;
