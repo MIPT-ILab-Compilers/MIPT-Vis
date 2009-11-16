@@ -1,6 +1,6 @@
 #summary Default Sidebar
 
- * About
+ * [About About]
  * [Graphs Graphs]
    * [Edges Edge types]
    * [Dominators Dominators]
