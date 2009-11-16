@@ -80,8 +80,6 @@ protected:
     int rang_priv; // number of node's layer
     int pos_priv;  // absolute position in layer
 
-	int x_priv;
-	int y_priv;
 	int width_priv;
 	int height_priv;
 	bool is_real; //indicates that the node must be showed

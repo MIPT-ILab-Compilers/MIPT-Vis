@@ -208,15 +208,15 @@ NodeAux * GuiGraph::createNode()
 /**
  * 
  */
-void GuiGraph::initPos()
-{
-    for( Node * nd = firstNode(); isNotNullP( nd); nd = nd->nextNode())
-    {
-        GuiNode * gn = ( GuiNode *)newNode();
-        gn->setPos( (qreal)addAux(nd)->x(), (qreal)addAux(nd)->y());
-        
-    }
-}
+//void GuiGraph::initPos()
+//{
+//    for( Node * nd = firstNode(); isNotNullP( nd); nd = nd->nextNode())
+//    {
+//        GuiNode * gn = ( GuiNode *)newNode();
+//        gn->setPos( (qreal)addAux(nd)->x(), (qreal)addAux(nd)->y());
+//        
+//    }
+//}
 
 /**
  * adds remove item to graph::removeEdge
@@ -242,32 +242,23 @@ bool GuiGraph::applayLayout()
 {
     GuiNode * node;
     GuiEdge * edge;
+
+	for (NodeAux* iter = addAux(firstNode()); iter != 0;
+		          iter = addAux(iter->nextNode()))
+	{
+		iter->commitPos (iter->x(), iter->y());
+		if (!iter->real())
+			iter->superscribe (Qt::gray, "unreal");
+	}
+
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
-        node->setPos( node->NodeAux::x(), node->NodeAux::y());
-        node->setX( node->QGraphicsItem::x());
-        node->setY( node->QGraphicsItem::y());
         node->setMyAdjust (node->real()? 3 : 1);
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{
         if ( edge != NULL)
-        {
-            //for( int i = 1; i <= edge->pointsNum(); i++)
-            //{
-            //    GuiPoint * point = new GuiPoint( edge, this);
-            //    point->setPos( edge->point( i)->x, edge->point( i)->y);
-            //    point->setInit();
-            //    GuiEdgePart* seg = new GuiEdgePart( edge, point, edge->endItem(), this); 
-            //    seg->updatePosition();
-            //    edge->getEdgePart()->setEnd( point);
-            //    edge->getEdgePart()->setSelected( false);
-            //    edge->addPoint( point);
-            //    edge->addEdgePart( seg);
-            //    edge->showPoints();
-            //}
 		    edge->updatePosition();
-        }
 	}
 	return true;
 }

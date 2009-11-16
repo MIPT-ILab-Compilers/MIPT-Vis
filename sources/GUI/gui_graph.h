@@ -26,7 +26,7 @@ public:
     NodeAux * createNode();
     
     EdgeAux * createEdge( Node * pred, Node * succ);//!!! may be need another return type
-    void initPos();
+//    void initPos();
 
     inline QGraphicsItem * getNodeItem()
     {
