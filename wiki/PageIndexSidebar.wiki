@@ -1,12 +1,12 @@
 #summary Default Sidebar
 
- *About
+ * About
  * [Graphs Graphs]
    * [Edges Edge types]
    * [Dominators Dominators]
    * [Layout Layout method]
    * [GraphXML Graph-description files]
- *Project Guidelines
+ * Project Guidelines
    * [TestingProcess 	Testing process]
    * [UnitTest Unit tests]
    * [Review Review Process]
@@ -16,7 +16,7 @@
    * [Statements Formatting statements]
    * [Naming 	Naming Suggestions]
    * [Comments Commenting code]
- *HowTo
+ * HowTo
    * [QtInstall Install Qt]
    * [UsingSVN  Use SVN]
    * [GettingDumps Get ICC/GCC dumps]
