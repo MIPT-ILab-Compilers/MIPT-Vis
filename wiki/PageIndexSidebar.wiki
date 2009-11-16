@@ -1,0 +1,24 @@
+#summary Default Sidebar
+
+ * About
+ * [Graphs Graphs]
+   * [ Edges Edge types]
+   * [ Dominators Dominators]
+   * [ Layout Layout method]
+   * [ GraphXML Graph-description files]
+ * Project Guidelines
+   * [ TestingProcess 	Testing process]
+   * [ UnitTest Unit tests]
+   * [ Review Review Process]
+ * [ CodingStyle Coding conventions for C/C++]
+   * [ SourceFiles Source files]
+   * [ Syntax Using C++ syntax]
+   * [ Statements Formatting statements]
+   * [ Naming 	Naming Suggestions]
+   * [ Comments Commenting code]
+ * HowTo
+   * [ QtInstall Install Qt]
+   * [ UsingSVN  Use SVN]
+   * [ GettingDumps Get ICC/GCC dumps]
+   * [ SvnPatch Create svn patches]
+ * [ Contacts 	Team contacts]
