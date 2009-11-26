@@ -9,7 +9,6 @@
 #include <QtGui/QApplication>
 #include <QtCore/QLineF>
 #include "../Layout/layout_iface.h"
-//#include "gui_impl.h"
 class GuiEdge;
 class GuiNode;
 class GuiGraph;
@@ -81,12 +80,12 @@ private:
 
 protected:
 	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
-	virtual void readByXML (xmlNode * cur_node);
+	virtual void readByXML ( xmlNode * cur_node);
 
 public:
     QString myText;
-    enum {Type = QGraphicsItem::UserType + 1};
-    GuiNode(  QString * text, GuiGraph * graph_p, int _id, 
+    enum { Type = QGraphicsItem::UserType + 1};
+    GuiNode( QString * text, GuiGraph * graph_p, int _id, 
         QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
 	virtual ~GuiNode();
     inline QPolygonF polygon() const
@@ -123,8 +122,8 @@ protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
-    void commitPos( int x,int y);
-    void superscribe (QColor color,QString text);
+    void commitPos( int x, int y);
+    void superscribe ( QColor color, QString text);
 
 public slots:
     void setMyText(const QString & str);

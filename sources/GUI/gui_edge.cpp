@@ -5,7 +5,6 @@
 
 #include "gui_impl.h"
 #include <QtGui/QGraphicsLineItem>
-//class GuiPoint;
 
 /**
  * Constructor of GuiEdge class
@@ -15,7 +14,7 @@ GuiEdge::GuiEdge(  GuiGraph * graph_p, int _id, GuiNode * startItem, GuiNode * e
             :QGraphicsItem( parent, scene), EdgeAux( ( GraphAux *)( graph_p), _id, 
             static_cast< NodeAux *>( startItem), static_cast< NodeAux *>( endItem))
 {
-    QGraphicsItem::setCursor(Qt::ArrowCursor);
+    QGraphicsItem::setCursor( Qt::ArrowCursor);
     setFlag( QGraphicsItem::ItemIsSelectable, true);
 }
 /**
@@ -23,10 +22,10 @@ GuiEdge::GuiEdge(  GuiGraph * graph_p, int _id, GuiNode * startItem, GuiNode * e
  */
 GuiEdge::~GuiEdge()
 {
-	out ("last nitems:%d, deletenig: ", addGui (getGraph())->items().count());
+	out( "last nitems:%d, deletenig: ", addGui ( getGraph())->items().count());
 	debugPrint();
-	addGui (getGraph())->removeItem (addGui (this));
-	out ("current nitems%d", addGui (getGraph())->items().count());
+	addGui( getGraph())->removeItem( addGui( this));
+	out( "current nitems%d", addGui( getGraph())->items().count());
 }
 
 /**
@@ -43,6 +42,9 @@ void GuiEdge::updatePosition()
     update();
 }
 
+/**
+ * Return bounding rectangle
+ */
 QRectF GuiEdge::boundingRect() const
 {
     qreal adjust = 2;
@@ -54,7 +56,7 @@ QRectF GuiEdge::boundingRect() const
 }
 
 /**
- * 
+ * Shape
  */
 QPainterPath GuiEdge::shape() const
 {
@@ -62,7 +64,7 @@ QPainterPath GuiEdge::shape() const
     QPainterPathStroker stroker;
     path.lineTo( endP.x(), endP.y());
     stroker.setWidth( 10);
-     return stroker.createStroke( path);
+    return stroker.createStroke( path);
 }
 
 /**
@@ -71,7 +73,7 @@ QPainterPath GuiEdge::shape() const
 void GuiEdge::paint( QPainter * painter,
                          const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-	if (succ() == 0 || pred() == 0)//!!! What is the ugliness!
+	if ( succ() == 0 || pred() == 0)//!!! What is the ugliness!
 	{
 		out ("ERROR: the deleted edge is tried to paint!");
 		return;
@@ -80,7 +82,7 @@ void GuiEdge::paint( QPainter * painter,
     painter->setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
     painter->setBrush( Qt::black);
     painter->drawLine( startP, endP);
-	GuiNode* suc = addGui (succ());
+	GuiNode* suc = addGui ( succ());
 	if( suc->real())
     {
         QLineF centerLine( startP, endP);
@@ -117,77 +119,80 @@ void GuiEdge::paint( QPainter * painter,
     update();
 }
 
-void GuiEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
+/**
+ * Handle mouse press event
+ */
+void GuiEdge::mousePressEvent( QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mousePressEvent( event);
-//	getGraph()->removeEdge (this);//imho it was quite useful
 }
 
 /**
- * 
+ * Handle mouse release event
  */
-void GuiEdge::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void GuiEdge::mouseReleaseEvent( QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mouseReleaseEvent( event);
 }
 
 /**
- * 
+ * Handle mouse double click event
  */
-void GuiEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void GuiEdge::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mouseDoubleClickEvent( event);
-	insertNode (event->pos());
+	insertNode( event->pos());
 }
 
-GuiNode* GuiEdge::insertNode (QPointF p)
+/**
+ * Insert node
+ */
+GuiNode* GuiEdge::insertNode ( QPointF p)
 {
-	GuiNode* node = addGui (graph->insertNodeOnEdge (this));
+	GuiNode* node = addGui ( graph->insertNodeOnEdge( this));
 	
 	node->setReal( false);
 	node->update();
-	node->setPos (p.x(), p.y());
+	node->setPos( p.x(), p.y());
 	return node;
 }
-//-------------------------------------------------------------------------------------
 /**
  * Write edge by xml writer
  */
 void GuiEdge::writeByXMLWriter( xmlTextWriterPtr writer)
 {
-	EdgeAux::writeByXMLWriter (writer);
+	EdgeAux::writeByXMLWriter( writer);
 	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "prob", "%d", prob());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "thickness", "%d", thickness());
 	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
 	xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST style());
 }
-//-------------------------------------------------------------------------------------
+
 /**
  *  Read from xml
  */
-void GuiEdge::readByXML (xmlNode * cur_node)
+void GuiEdge::readByXML( xmlNode * cur_node)
 {
-	EdgeAux::readByXML (cur_node);
-	for(xmlAttr * props = cur_node->properties; props; props = props->next)
+	EdgeAux::readByXML( cur_node);
+	for ( xmlAttr * props = cur_node->properties; props; props = props->next)
 	{
-		if ( xmlStrEqual( props->name, xmlCharStrdup("prob")))
+		if ( xmlStrEqual( props->name, xmlCharStrdup( "prob")))
 		{
 			setProb( strtoul( ( const char *)( props->children->content), NULL, 0) );
-		} else if ( xmlStrEqual( props->name, xmlCharStrdup("thickness")))
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "thickness")))
 		{
-			setThickness(
-                strtoul( ( const char *)( props->children->content), NULL, 0) );
-		} else if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
+			setThickness( strtoul( ( const char *)( props->children->content), NULL, 0) );
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "color")))
 		{
 			setColor( ( char *)( props->children->content));
-		} else if ( xmlStrEqual( props->name, xmlCharStrdup("style")))
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "style")))
 		{
 			setStyle( ( char *)( props->children->content));
-		} else if ( xmlStrEqual( props->name, xmlCharStrdup("label")))
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "label")))
 		{
 			setLabel( ( char *)( props->children->content));
 		}

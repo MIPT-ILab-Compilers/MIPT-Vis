@@ -19,9 +19,9 @@ class GuiView : public QGraphicsView
 {
     Q_OBJECT
  public:
-    GuiView(GuiGraph *graph);
-    void wheelEvent(QWheelEvent *event);
-    void scaleView(qreal scaleFactor);
+    GuiView( GuiGraph *graph);
+    void wheelEvent( QWheelEvent *event);
+    void scaleView( qreal scaleFactor);
 };
 
 #endif 

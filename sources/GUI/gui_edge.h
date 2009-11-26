@@ -46,7 +46,7 @@ public:
         return label_priv;
     }
     /** Data writing routines */
-    inline void setProb (int prob)
+    inline void setProb( int prob)
     {
         prob_priv = prob;
     }
@@ -84,7 +84,7 @@ public:
     void updatePosition();
     QRectF boundingRect() const;
     QPainterPath shape() const;
-	GuiNode* insertNode (QPointF p);
+	GuiNode* insertNode ( QPointF p);
     int type() const
     {
         return Type;
@@ -97,7 +97,7 @@ protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event);
 	
 	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
-	virtual void readByXML (xmlNode * cur_node);
+	virtual void readByXML ( xmlNode * cur_node);
 private:
     GuiEdge( GuiGraph * graph_p, int _id, GuiNode * startItem, GuiNode * endItem, 
                  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);

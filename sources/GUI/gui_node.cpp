@@ -5,6 +5,9 @@
 
 #include "gui_impl.h"
 
+/**
+ * Init NodeProperties
+ */
 NodeProperties::NodeProperties()
 {
     color_priv = 0;
@@ -22,12 +25,12 @@ GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id,
         QGraphicsTextItem( parent, scene),
         NodeAux( static_cast<GraphAux *> ( graph_p), _id)
 {
-	QGraphicsItem::setCursor(Qt::ArrowCursor);
+	QGraphicsItem::setCursor( Qt::ArrowCursor);
 	setPlainText( *text);
 	setTextWidth ( 100); //Set width of node
-	setMyAdjust (real()? 3 : 1);
+	setMyAdjust( real()? 3 : 1);
 	setMyColor( Qt::green);
-	setMyText("");
+	setMyText( "");
 	setFlag( QGraphicsItem::ItemIsMovable, true); // Set node can move
 	setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
 	setTextInteractionFlags( Qt::NoTextInteraction);
@@ -40,10 +43,10 @@ GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id,
  */
 GuiNode::~GuiNode()
 {
-	out ("last nitems:%d, deletenig: ", addGui (getGraph())->items().count());
+	out( "last nitems:%d, deletenig: ", addGui( getGraph())->items().count());
 	debugPrint();
-	addGui(getGraph())->removeItem (addGui(this));
-	out ("current nitems%d", addGui (getGraph())->items().count());
+	addGui( getGraph())->removeItem( addGui(this));
+	out( "current nitems%d", addGui( getGraph())->items().count());
 }
 
 /**
@@ -79,7 +82,7 @@ void GuiNode::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 }
 
 /**
- * 
+ * Actions for mouse press event
  */
 void GuiNode::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
@@ -88,9 +91,9 @@ void GuiNode::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 }
 
 /**
- * 
+ * Actions for mouse release event
  */
-void GuiNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void GuiNode::mouseReleaseEvent( QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsTextItem::mouseReleaseEvent( event);
@@ -106,17 +109,17 @@ void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option
 	    painter->setPen( QPen(Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 		painter->fillRect( boundingRect(), QBrush( myColor));
 		QGraphicsTextItem::paint( painter, option, widget);
-		myPolygon << (boundingRect().bottomLeft()) << (boundingRect().bottomRight())
-		                  << (boundingRect().topRight()) << (boundingRect().topLeft())
-		                  << (boundingRect().bottomLeft());
+		myPolygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
+		                  << ( boundingRect().topRight()) << ( boundingRect().topLeft())
+		                  << ( boundingRect().bottomLeft());
 	}
 	else
 	{
 		painter->setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 		painter->fillRect( boundingRect(), QBrush( myColor));
-		myPolygon << (boundingRect().bottomLeft()) << (boundingRect().bottomRight())
-		                  << (boundingRect().topRight()) << (boundingRect().topLeft())
-		                  << (boundingRect().bottomLeft());
+		myPolygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
+		                  << ( boundingRect().topRight()) << ( boundingRect().topLeft())
+		                  << ( boundingRect().bottomLeft());
 	}
 }
 
@@ -145,10 +148,10 @@ QVariant GuiNode::itemChange( GraphicsItemChange change, const QVariant &value)
         setHeight( boundingRect().height());
         
 		EdgeAux* iter;
-		ForEdges(this, iter, Succ)
+		ForEdges( this, iter, Succ)
 			addGui(iter)->updatePosition();
-		ForEdges(this, iter, Pred)
-			addGui(iter)->updatePosition();
+		ForEdges( this, iter, Pred)
+			addGui( iter)->updatePosition();
 
     }
     return value;
@@ -157,23 +160,23 @@ QVariant GuiNode::itemChange( GraphicsItemChange change, const QVariant &value)
 /**
  *  commitPos
  */
-void GuiNode::commitPos( int x,int y)
+void GuiNode::commitPos( int x, int y)
 {
     setPos( x - width() / 2, y - height() / 2);
     setX( x);
     setY( y);
 
 	EdgeAux* iter;
-	ForEdges(this, iter, Succ)
-		addGui(iter)->updatePosition();
-	ForEdges(this, iter, Pred)
-		addGui(iter)->updatePosition();
+	ForEdges( this, iter, Succ)
+		addGui( iter)->updatePosition();
+	ForEdges( this, iter, Pred)
+		addGui( iter)->updatePosition();
 }
 
 /**
  *  superscribe
  */
-void GuiNode::superscribe (QColor color, QString text)
+void GuiNode::superscribe ( QColor color, QString text)
 {
     setMyColor( color);
     setPlainText( text);
@@ -182,7 +185,7 @@ void GuiNode::superscribe (QColor color, QString text)
 /**
  *  setMyText
  */
-void GuiNode::setMyText(const QString & str)
+void GuiNode::setMyText( const QString & str)
 {
     myText = str;
 }
@@ -190,58 +193,52 @@ void GuiNode::setMyText(const QString & str)
 /**
  *  textChange
  */
-/**/
 void GuiNode::textChange()
 {
     QByteArray strByteArray = getMyText().toAscii();
     char *strChar;
-    strChar = (char*) calloc(strByteArray.size(),sizeof(char));
-    if (strChar==NULL) return;
+    strChar = ( char*) calloc( strByteArray.size(),sizeof( char));
+    if ( strChar==NULL) return;
     int i;
-    for (i=0;i<=strByteArray.size();++i) strChar[i]=strByteArray[i];
-    setTextPriv(strChar);
+    for ( i=0; i<=strByteArray.size(); ++i) strChar[i] = strByteArray[i];
+    setTextPriv( strChar);
 }
-/**/
-//-----------------------------------------------------------------------------
 
 /**
  *  Write to xml
  */
 void GuiNode::writeByXMLWriter( xmlTextWriterPtr writer)
 {
-	NodeAux::writeByXMLWriter (writer);
-	if (label()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
-	if (color()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
-	if (NodeProperties::shape())
+	NodeAux::writeByXMLWriter ( writer);
+	if ( label()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
+	if ( color()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
+	if ( NodeProperties::shape())
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST NodeProperties::shape());
-	if (textPriv()) xmlTextWriterWriteAttribute( writer, BAD_CAST "textPriv", BAD_CAST textPriv());
+	if ( textPriv()) xmlTextWriterWriteAttribute( writer, BAD_CAST "textPriv", BAD_CAST textPriv());
 }
-//-----------------------------------------------------------------------------
+
 /**
  *  Read from xml
  */
 void GuiNode::readByXML (xmlNode * cur_node)
 {
-	NodeAux::readByXML (cur_node);
-
-	setTextPriv("");
-
-	for (xmlAttr* props = cur_node->properties; props; props = props->next)
+	NodeAux::readByXML ( cur_node);
+	setTextPriv( "");
+	for ( xmlAttr* props = cur_node->properties; props; props = props->next)
 	{
-		if ( xmlStrEqual( props->name, xmlCharStrdup("color")))
+		if ( xmlStrEqual( props->name, xmlCharStrdup( "color")))
 		{
 			setColor( ( char *)( props->children->content));
-		} else if ( xmlStrEqual( props->name, xmlCharStrdup("label")))
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "label")))
 		{
 			setLabel( ( char *)( props->children->content));
-		} else if ( xmlStrEqual( props->name, xmlCharStrdup("shape")))
+		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "shape")))
 		{
 			setShape( ( char *)( props->children->content));
 		}
-		else if ( xmlStrEqual( props->name, xmlCharStrdup("textPriv")))
+		else if ( xmlStrEqual( props->name, xmlCharStrdup( "textPriv")))
 		{
 			setTextPriv( ( char *)( props->children->content));
 		}
 	}
 }
-//-----------------------------------------------------------------------------
