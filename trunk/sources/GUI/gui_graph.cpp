@@ -24,7 +24,7 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         node->setColor( "green");
 		node->setLabel( "Node" + number);
         node->setShape( "rectangle");
-		node->setTextPriv("");        
+		node->setTextPriv( "");        
 		node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
         node->setWidth( node->boundingRect().width());
@@ -60,7 +60,7 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
         node->setPos( node->NodeAux::x(), node->NodeAux::y());
-		node->setMyText(QString(node->textPriv()));
+		node->setMyText(QString( node->textPriv()));
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
 		node->setMyAdjust( node->real()? 3 : 1);
@@ -69,19 +69,6 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
 	{
         if ( edge != NULL)
         {
-            //for( int i = 1; i <= edge->pointsNum(); i++)
-            //{
-            //    GuiPoint * point = new GuiPoint( edge, this);
-            //    point->setPos( edge->point( i)->x, edge->point( i)->y);
-            //    point->setInit();
-            //    GuiEdgePart* seg = new GuiEdgePart( edge, point, edge->endItem(), this); 
-            //    seg->updatePosition();
-            //    edge->getEdgePart()->setEnd( point);
-            //    edge->getEdgePart()->setSelected( false);
-            //    edge->addPoint( point);
-            //    edge->addEdgePart( seg);
-            //    edge->showPoints();
-            //}
 		    edge->updatePosition();
         }
 	}
@@ -165,13 +152,9 @@ void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
  */
 EdgeAux * GuiGraph::createEdge( Node * pred, Node * succ)
 {
-    GuiEdge * e = new GuiEdge (this, incEdgeId(), ( GuiNode *)pred, ( GuiNode *)succ);
+    GuiEdge * e = new GuiEdge ( this, incEdgeId(), ( GuiNode *)pred, ( GuiNode *)succ);
     addItem( e);
-//    e->initNode( ( GuiNode *)pred, ( GuiNode *)succ);
-//    e->initPoints( 1);
-    e->setStyle( "Solid");/*
-    ( ( GuiNode *)pred)->addEdge( e);
-    ( ( GuiNode *)succ)->addEdge( e);*/
+    e->setStyle( "Solid");
     e->setZValue( -1000.0);
     e->updatePosition();
 
@@ -192,31 +175,6 @@ NodeAux * GuiGraph::createNode()
 
     return node_p;
 }
-//
-//void GuiGraph::removeNode (Node* what)
-//{
-//	removeItem (addGui(what));
-//	GraphAux::removeNode (what);
-//}
-//
-//void GuiGraph::removeEdge (Edge* what)//!!!Edge not deleted completely
-//{									  //Where must it be removed, to clear it from drawing???
-//	removeItem (addGui(what));
-//	GraphAux::removeEdge (what);
-//}
-
-/**
- * 
- */
-//void GuiGraph::initPos()
-//{
-//    for( Node * nd = firstNode(); isNotNullP( nd); nd = nd->nextNode())
-//    {
-//        GuiNode * gn = ( GuiNode *)newNode();
-//        gn->setPos( (qreal)addAux(nd)->x(), (qreal)addAux(nd)->y());
-//        
-//    }
-//}
 
 /**
  * adds remove item to graph::removeEdge
@@ -232,28 +190,28 @@ void GuiGraph::removeEdge (Edge* e)
  */
 void GuiGraph::removeNode (Node* n)
 {
-	removeItem (addGui (n));
+	removeItem( addGui (n));
 	Graph::removeNode (n);
 }
 /**
- * commitLayout
+ * commit layout
  */
 bool GuiGraph::applayLayout()
 {
     GuiNode * node;
     GuiEdge * edge;
 
-	for (NodeAux* iter = addAux(firstNode()); iter != 0;
-		          iter = addAux(iter->nextNode()))
+	for (NodeAux* iter = addAux( firstNode()); iter != 0;
+		          iter = addAux( iter->nextNode()))
 	{
 		iter->commitPos (iter->x(), iter->y());
 		if (!iter->real())
-			iter->superscribe (Qt::gray, "unreal");
+			iter->superscribe ( Qt::gray, "unreal");
 	}
 
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
-        node->setMyAdjust (node->real()? 3 : 1);
+        node->setMyAdjust ( node->real()? 3 : 1);
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{

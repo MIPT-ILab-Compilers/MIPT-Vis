@@ -41,7 +41,7 @@ private slots:
     void doLayoutSlot();
     void textHandle();
     void centreOnNode();
-    void doCentreOnNode(int nodeNumber);
+    void doCentreOnNode( int nodeNumber);
     void saveTextToNode();
 
 	void enableGravity();
@@ -52,8 +52,8 @@ private:
     void createMenus();
     void createActions();
     void createStatusBar();
-    void setCurrentFile(const QString & fileName);
-    QString strippedName(const QString &fullFileName);
+    void setCurrentFile( const QString & fileName);
+    QString strippedName( const QString &fullFileName);
     
     QMenu *fileMenu;
     QMenu *viewMenu;

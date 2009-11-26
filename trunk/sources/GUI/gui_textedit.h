@@ -23,7 +23,7 @@ public:
 protected:
 	void mousePressEvent( QMouseEvent * mouseEvent);
 signals:
-	void nodeToBeCentreOn(int nodeNumber);
+	void nodeToBeCentreOn( int nodeNumber);
 };
 
 #endif

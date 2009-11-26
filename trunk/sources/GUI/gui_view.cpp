@@ -11,35 +11,34 @@
 /**
  * Constructor of GuiView class
  */
-GuiView::GuiView(GuiGraph *graph)
+GuiView::GuiView( GuiGraph *graph)
 {
-    setScene(graph);
+    setScene( graph);
     setCacheMode( QGraphicsView::CacheBackground );
     setViewportUpdateMode( QGraphicsView::FullViewportUpdate);
-    setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    setRenderHints( QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     setOptimizationFlags( QGraphicsView::DontSavePainterState | QGraphicsView::DontClipPainter);
     setResizeAnchor( QGraphicsView::AnchorViewCenter);
-    setDragMode(QGraphicsView::ScrollHandDrag); 
-    setMinimumSize(400, 400);
-    setSceneRect(-400,-400,1400,1400);
+    setDragMode( QGraphicsView::ScrollHandDrag); 
+    setMinimumSize( 400, 400);
+    setSceneRect( -400, -400, 1400, 1400);
 }
 
 
 /**
  * Actions for wheel event
  */
-void GuiView::wheelEvent(QWheelEvent *event)
+void GuiView::wheelEvent( QWheelEvent *event)
 {
-    scaleView(pow((double)2, event->delta() / 240.0));
+    scaleView( pow((double)2, event->delta() / 240.0));
 }
 
 /**
  * Scales the current view transformation
  */
-void GuiView::scaleView(qreal scaleFactor)
+void GuiView::scaleView( qreal scaleFactor)
 {
-    qreal factor = matrix().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.07 || factor > 100) return;
-
-    scale(scaleFactor, scaleFactor);
+    qreal factor = matrix().scale( scaleFactor, scaleFactor).mapRect( QRectF( 0, 0, 1, 1)).width();
+    if ( factor < 0.07 || factor > 100) return;
+    scale( scaleFactor, scaleFactor);
 } 

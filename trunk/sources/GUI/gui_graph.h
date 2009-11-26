@@ -6,7 +6,6 @@
 #define GUI_GRAPH_H
 #include <QtGui/QGraphicsScene>
 #include "../Layout/layout_iface.h"
-//#include "gui_impl.h"
 class GuiEdge;
 class GuiNode;
 
@@ -18,15 +17,14 @@ class GuiGraph:public QGraphicsScene, public GraphAux
     Q_OBJECT
 public:
 	
-    GuiGraph(QObject * parent=0);
+    GuiGraph( QObject * parent=0);
     GuiGraph( char * filename, QObject * parent = 0);
     enum mode { insertLine, moveItem, insertRect};
     enum type { node, point, edge};
     
     NodeAux * createNode();
     
-    EdgeAux * createEdge( Node * pred, Node * succ);//!!! may be need another return type
-//    void initPos();
+    EdgeAux * createEdge( Node * pred, Node * succ); //!!! may be need another return type
 
     inline QGraphicsItem * getNodeItem()
     {
