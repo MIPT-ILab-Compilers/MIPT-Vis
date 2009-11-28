@@ -4,7 +4,7 @@
  */
 #include <QtGui/QtGui>
 #include "gui_mw.h"
-
+#include "../Parser/functions.h"
 /**
  * Constructor of MainWindow class
  */
@@ -176,6 +176,24 @@ void MainWindow::makeGravity()
 }
 
 /**
+ * convertDumpToXML
+ */
+void MainWindow::convertDumpToXMLSlot()
+{
+    currentFile = QFileDialog::getOpenFileName( this, tr( "Select file to convert"), "", tr( "All files(*.*)")); 
+    if ( currentFile.isEmpty()) return;
+    QByteArray curFile = currentFile.toAscii();
+    char *file;
+    file = (char*) calloc( curFile.size(), sizeof(char));
+    if (file==NULL) return;
+    int i;
+    for (i=0;i<=curFile.size();i++) file[i]=curFile[i];
+
+	convertDumpToXML( file);
+} 
+
+
+/**
  * centreOnNode
  */
 void MainWindow::centreOnNode()
@@ -227,6 +245,10 @@ void MainWindow::createActions()
     centreOnNodeAct->setStatusTip( tr( "Centre On Node..."));
     connect( centreOnNodeAct, SIGNAL( triggered()), this, SLOT( centreOnNode()));
 	
+    convertDumpToXMLAct = new QAction( tr( "&Convert dump to XML..."), this);
+    convertDumpToXMLAct->setStatusTip( tr( "Convert dump to XML..."));
+    connect( convertDumpToXMLAct, SIGNAL( triggered()), this, SLOT( convertDumpToXMLSlot()));
+	
 	enGravityAct = new QAction ( tr( "&Enable Gravity Correction"), this);
     enGravityAct->setStatusTip ( tr( "&Enable Gravity Correction"));
 	disGravityAct = new QAction ( tr( "&Disable Gravity Correction"), this);
@@ -251,6 +273,7 @@ void MainWindow::createMenus()
     toolsMenu->addAction( doLayoutAct);
     toolsMenu->addAction( enGravityAct);
     toolsMenu->addAction( disGravityAct);
+    toolsMenu->addAction( convertDumpToXMLAct);
 
     helpMenu = menuBar()->addMenu( tr( "&Help"));
     helpMenu->addAction( helpAct);

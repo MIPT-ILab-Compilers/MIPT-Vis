@@ -189,3 +189,13 @@ int arrangeParameters( Parameters* param)
 		return 1;
 	}
 }
+
+/**
+ * convertDumpToXML
+ */
+/*
+bool convertDumpToXML( QString file)
+{
+	return true;
+}
+*/
