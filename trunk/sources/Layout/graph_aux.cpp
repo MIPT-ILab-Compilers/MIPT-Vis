@@ -498,71 +498,31 @@ QPointF springForce( NodeAux* from, NodeAux* to, int k, int k1, int min_dist)
 }
 /**
 * Save minimal distance between nodes by balancing forces.
-* Actually not ideal implementation.
 */
 void GraphAux::saveMinDist( int rank_num)
 {
-	QPointF cur_force(0,0);
-	bool balanced = false;
+	bool balanced = true;
 	NodeAux* iter = rank[rank_num].first();
 	int dir = 1;
 	int min_dist;
 	int offset = 50;
+	float eps = 10; // Minimal difference between forces to avoid infinite balancing.
 	do
 	{
-	/** In general we treat nodes closer than min_dist and balance forces exerted on them*/
-	if( dir == 1)
-	{
-		if( iter->getA().x() < 0)
+		balanced = true;
+		for(iter = rank[rank_num].first();  iter->nextInLayer() != NULL; iter = iter->nextInLayer())
 		{
-			/* Change direction only if there are unbalanced forces to the left */
-			if( iter->prevInLayer() != NULL)
+			min_dist = iter->width() / 2 + offset + iter->nextInLayer()->width() / 2;
+			if ((iter->nextInLayer()->x() - iter->x()) < min_dist) // Treat nodes only closer than min_dist
 			{
-				min_dist = iter->prevInLayer()->width() / 2 + offset + iter->width() / 2;
-				if(((iter->x() - iter->prevInLayer()->x()) < min_dist)&&
-					(iter->getA().x() < iter->prevInLayer()->getA().x()))
-						dir = 0;
-				else iter = iter->nextInLayer();
-			}
-			else iter = iter->nextInLayer();
-			if( iter == NULL) balanced = true; //Avoid segfault
-		}
-		else
-		{
-			if( iter->nextInLayer() != NULL)
-			{
-				min_dist = iter->width() / 2 + offset + iter->nextInLayer()->width() / 2;
-				if( (iter->nextInLayer()->x() - iter->x()) < min_dist)
-					if( iter->getA().x() > iter->nextInLayer()->getA().x())
-					{
-						iter->nextInLayer()->addA( iter->getA());
-					}
-			}
-			else balanced = true; //If we reach the end, all forces are balanced
-			iter = iter->nextInLayer();
-		}
-	}
-	if( dir == 0)
-	{
-		if( iter->getA().x() >= 0) dir = 1;
-		else
-		{
-			if( iter->prevInLayer() != NULL)
-			{
-				min_dist = iter->prevInLayer()->width() / 2 + offset + iter->width() / 2;
-				if( (iter->x() - iter->prevInLayer()->x()) < min_dist)
+				if ((iter->nextInLayer()->getA().x() - iter->getA().x()) < - eps) // Compare forces exerted on nodes
 				{
-					if( iter->getA().x() < iter->prevInLayer()->getA().x())
-					{
-						iter->prevInLayer()->addA( iter->getA());
-					}
-					iter = iter->prevInLayer();
+					iter->setA((iter->getA() + iter->nextInLayer()->getA()) / 2); // Balance them
+					iter->nextInLayer()->setA(iter->getA());
+					balanced = false;
 				}
-				else dir = 1;
 			}
-			else dir = 1;
 		}
-	}
 	}
 	while(!balanced);
 }
@@ -634,9 +594,7 @@ void GraphAux::resultantForce( int rank_num)
 }
 /**
 * Force directed horizontal positioning algorithm. 
-* Known bugs:
-*	The whole graph tends to move right( need to check saveMinDist method)
-* Also this algorithm does not attempt to place edges vertically (at least not yet).
+* This algorithm does not attempt to place edges vertically (at least not yet).
 */
 void GraphAux::forceDirectedPosition()
 {
