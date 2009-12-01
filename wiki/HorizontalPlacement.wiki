@@ -1,0 +1,73 @@
+#summary Description of force-directed horizontal placement algorithm
+#labels Featured,Phase-Design
+
+= Overview =
+
+Force-directed algorithm is based on simple physical model. We treat nodes as _material points_ and edges as _springs_ attached to them. If two nodes are too close we consider that there is solid beam between them or consider that there is a compressed spring between them which gives additional repulsive force. 
+
+
+= Algorithm =
+
+==Main algorithm==
+A pseudo-code is given below.
+
+{{{
+ 0 procedure forceDirectedPosition
+ 1   for i = 0 to max_iter
+ 2     for j = 0 to max_rank
+ 3       resultantForce(i);
+ 4       saveMinDist(i);
+ 5     end
+ 6     for node in graph
+ 7       normalize(node);
+ 8       applyForce(node);
+ 9     end
+10     for j = 0 to max_rank
+11      decompact(j);
+12   end
+13 end
+}}}
+
+Remarks on code:
+
+*3:* Compute resultant force for each node in rank _i_. Uses Hooke's law to calculate both attractive force of edges and repulsive force between adjacent nodes. In our realization repulsive force is not used, saveMinDist is used instead.
+
+*4:* Call saveMinDist for each layer after force calculating.
+
+*7:* Normalize force. Set maximum force equal to max_force to avoid too big displacement of nodes.
+
+*8:* Apply forces on nodes. Force causes acceleration and acceleration causes displacement.
+
+*11:* Decompact nodes in each layer. If two nodes are closer than some minimal value it shifts it in both directions(left and right to achieve symmetry).
+
+==saveMinDist algorithm==
+Pseudo-code for saveMinDist algorithm:
+
+{{{
+ 1 procedure saveMinDist
+ 2   balanced = true;
+ 3   do
+ 4     for node in rank
+ 5       min_dist = node.width + node.next.width + offset;
+ 6       if node.next.x - node.x < min_dist
+ 7         if node.force - node.next.force < eps
+ 8           node.force = node.next.force = (node.force + node.next.force) / 2;
+ 9           balanced = false;
+10         end
+11     end
+12   while(!balanced)
+13 end
+}}}
+
+Remarks on code:
+
+*5:* Calculate minimal distance between nodes as sum of their widths and some offset specified in graph properties.
+
+*6-7:* We treat nodes if they are closer than min_dist and forces exerted on them are not balanced. We assume that if projection of right node force on horizontal axis is lesser than projection of left node force they acts on each other through solid beam.
+
+*8:* In this case resultant balanced forces are calculated as arithmetic average.
+
+*9,12:* Continue algorithm until all forces are not balanced.
+
+==Comments==
+Because each layer is treated separately coordinate for node may seam optimal for algorithm in current static view, but for the whole graph it is not so. This leads to the fact that the edges can be placed not vertically or the components of the graph are not placed symmetrically. Also this algorithm is a kind of dynamic and final result is very dependent on parameters of applyForce method.
