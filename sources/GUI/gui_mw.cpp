@@ -4,7 +4,7 @@
  */
 #include <QtGui/QtGui>
 #include "gui_mw.h"
-#include "../Parser/functions.h"
+#include "../Parser/parser_iface.h"
 /**
  * Constructor of MainWindow class
  */

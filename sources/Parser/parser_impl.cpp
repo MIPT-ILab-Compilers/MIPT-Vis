@@ -38,7 +38,7 @@ void BBlock::addText( string & txt, int line)
  * Function class methods
  */
 
-BBlock * Function::addBBlock( int number, int line)
+BBlock * Function::addBBlock( int number, int line, BBlock * bb)
 {
 	if ( lastAdded != -1 && ! getBBlock( lastAdded)->isFinished())
 		throw exIncorrectSequence(lastAdded, number);
@@ -48,7 +48,13 @@ BBlock * Function::addBBlock( int number, int line)
 	it = blocks.find( number);
 	if ( it != blocks.end())
 		throw exAlreadyExists( line);
-	BBlock * tmp = new BBlock( line);
+
+	BBlock * tmp;
+	if ( bb)
+		tmp = bb;
+	else
+		tmp = new BBlock( line);
+
 	blocks.insert( pair< int, BBlock> ( number, *tmp));
 	lastAdded = number;
 	return &blocks[ number];
@@ -71,16 +77,8 @@ Graph * Function::getGraph()
 	BBlocks::const_iterator i;
 
 	for ( i = getFirstBBlock(); i != getEndBBlock(); i++)
-	{
 		node_list[ i->first] = graph->newNode();
-//		node_list[ i->first]->setLabel( "node");
-//		node_list[ i->first]->setHeight( 10);
-//		node_list[ i->first]->setWidth( 20);
-//		node_list[ i->first]->setX( 0);//Here I'm not know: what do you mean?
-//		node_list[ i->first]->setY( 0);
-//		node_list[ i->first]->setColor( "red");
-//		node_list[ i->first]->setShape( "bar");
-	}
+
 
 	map< int, Node *>::const_iterator node_index;
 	for ( node_index = node_list.begin();
@@ -128,15 +126,26 @@ BBlock * DumpInfo::getBBlock( int num, string &name)
 	return getFunction( name)->getBBlock( num);
 }
 
-BBlock * DumpInfo::addBBlock( int number, int line, string &name)
+BBlock * DumpInfo::addBBlock( int number, int line, string &name, BBlock * bb)
 {
-	return getFunction( name)->addBBlock( number, line);
+	return getFunction( name)->addBBlock( number, line, bb);
 }
 
 Graph * DumpInfo::getGraph( const char *fname)
 {
 	string tmp = ( fname)? string( fname) : "main";
 	return getFunction( tmp)->getGraph();
+}
+
+list < string> & DumpInfo::getFunctionList()
+{
+	Functions::const_iterator it;
+	list < string> * ls = new list < string>;
+
+	for( it = funcs.begin(); it != funcs.end(); it++)
+		ls->push_back( it->first);
+
+	return *ls;
 }
 
 /**
@@ -149,5 +158,58 @@ bool Parser::parseFile( string filename)
 	if ( is.is_open())
 		return parseFromStream( is);
 	else
-		return NULL;
+		return false;
+}
+
+CompilerType Parser::getCompilerType( const char * file)
+{
+	string current;
+
+	ifstream is( file, ios::in);
+	if ( !is.is_open())
+		return unknown;
+
+	getline( is, current);
+	if ( current.find( "After Building the Control Flow:") == 0)
+		return ICC;
+
+	getline( is, current);
+	if ( current.find( ";; Function") == 0)
+		return GCC;
+
+	return unknown;
+}
+
+bool convertDumpToXML( const char * file)
+{
+	Parser* P;
+	Graph * gr;
+	CompilerType ct;
+	string fname( file);
+
+	ct = Parser::getCompilerType( file);
+	if ( ct == GCC)
+		P = new Gcc_parser();
+	else if ( ct == ICC)
+		P = new Icc_parser();
+	else
+		return false;
+
+	try
+	{
+		P->parseFile( fname);
+		gr = P->getGraph();
+	}
+	catch( exSomething & ex)
+	{
+		ex.print_error( std::cerr);
+		return false;
+	}
+	
+	fname += ".xml";
+	gr->writeToXML( fname.c_str());
+    delete P;
+    delete gr;
+
+	return true;
 }

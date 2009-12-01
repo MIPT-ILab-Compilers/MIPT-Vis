@@ -10,6 +10,8 @@
 #include <string>
 #include <list>
 #include <algorithm>
+#include <iostream>
+#include "QtCore/QString"
 
 #include "../Graph/graph_iface.h"
 
@@ -55,7 +57,7 @@ class Function
 
 public:
 	Function() { lastAdded = -1; }
-	BBlock * addBBlock( int number, int line);
+	BBlock * addBBlock( int number, int line, BBlock * bb = 0);
 	BBlock * getBBlock( int number);
 	Graph * getGraph();
 };
@@ -72,9 +74,10 @@ class DumpInfo
 public:
 	Function * addFunction( string & name = string("main"));
 	Function * getFunction( string & name = string("main"));
-	BBlock * addBBlock( int number, int line, string & name = string("main"));
+	BBlock * addBBlock( int number, int line, string & name = string("main"), BBlock * bb = 0);
 	BBlock * getBBlock( int num, string & name = string("main"));
 	Graph * getGraph( const char *fname = NULL);
+	list < string> & getFunctionList();
 };
 
 
@@ -84,7 +87,7 @@ public:
 class exSomething
 {
 public:
-	virtual void wtf( ostream &os)
+	virtual void print_error( ostream &os)
 	{
 		os << "General error!" << endl;
 	}
@@ -99,7 +102,7 @@ public:
 	exNotFound( int num) { number = num; }
 	exNotFound( string & name) { fnName = name; number = -1; }
 
-	void wtf( ostream &os)
+	void print_error( ostream &os)
 	{
 		if ( number == -1)
 			os << "Function " << fnName;
@@ -120,7 +123,7 @@ public:
 	exAlreadyExists( int num) { number = num; }
 	exAlreadyExists( string & name) { fnName = name; number = -1; }
 
-	void wtf( ostream &os)
+	void print_error( ostream &os)
 	{
 		if ( number == -1)
 			os << "Function " << fnName;
@@ -143,11 +146,43 @@ public:
 		next = added;
 	}
 
-	void wtf( ostream &os)
+	void print_error( ostream &os)
 	{
 		os << "Basic block " << current << " not finished, but basic block "\
 			<< next << " opened!" << endl;
 	}
+};
+
+
+/**
+ * RegExp patterns for GCC
+ */
+
+const QString gcc_patt_fn = "^(;;\\sFunction\\s)(.+) .*";
+const QString gcc_patt_defbb = "^(Basic\\sblock\\s)(\\d+).*";
+const QString gcc_patt_implbb = "^(;;\\sStart\\sof\\sbasic\\sblock\\s)(\\d+).*";
+const QString gcc_patt_implbbend = "^(;;\\sEnd\\sof\\sbasic\\sblock\\s)(\\d+).*";
+const QString gcc_patt_predstart = "^Predecessors:\\s+((ENTRY.*)|$)";
+const QString gcc_patt_succend = "^Successors:\\s+((EXIT.*)|$)";
+const QString gcc_patt_edges = "(\\d+)(\\D*)(?=\\d|$)"; //"^(\\d+)(\\[.+\\])?([^\\d]*)";
+
+/**
+ * RegExp patterns for ICC
+ */
+
+const QString icc_patt_bb = "^(BBLOCK\\s)(\\d+).*";
+const QString icc_patt_predstart = "^preds:.*";
+const QString icc_patt_succend = "^succs:.*";
+const QString icc_patt_edges = "(\\d+)([^\\d]*)";
+const QString icc_patt_context = "^context:.*";
+const QString icc_patt_fnname = "^\\s*\\d+\\s+\\d+.*\\sentry.*\\s([a-zA-Z_][a-zA-Z0-9_]*)((\\(.*\\);)|$)";
+
+
+enum CompilerType  
+{
+	unknown,
+	GCC,
+	ICC
 };
 
 /**
@@ -159,18 +194,18 @@ public:
 	Parser(){}
 	virtual ~Parser(){}
     bool parseFile( string filename);
-	virtual Graph * getGraph( const char *fname = NULL)=0;
+	static CompilerType getCompilerType( const char * file);
+	Graph * getGraph( const char *fname = NULL) { return dump_info.getGraph( fname); }
 
 protected:
     virtual bool parseFromStream( istream & is) = 0;
+	DumpInfo dump_info;
 };
 
 
 class Gcc_parser: public Parser
 {
 private:
-	DumpInfo dump_info;
-
 	string fnName( string &in);
 	int defbbNum( string &in);
 	int implbbNum( string &in);
@@ -179,9 +214,8 @@ private:
 	void getSucc( string &in, BBlock &bb);
 	
 public:
-	Graph * getGraph( const char *fname = NULL) { return dump_info.getGraph( fname); }
 	bool parseFromStream( istream & is);
-	list < string> & getFunctionList();
+	list < string> & getFunctionList() { return dump_info.getFunctionList(); }
 	Gcc_parser() { }
 	~Gcc_parser() {	}
 };
@@ -190,15 +224,13 @@ public:
 class Icc_parser: public Parser
 {
 private:
-	DumpInfo dump_info;
-
 	int bbNum( string &in);
 	bool getPred( string &in, BBlock &bb);
 	bool getSucc( string &in, BBlock &bb);
 	bool isContext( string &in);
+	string isFnName( string &in);
 	
 public:
-	Graph * getGraph( const char *fname = NULL) { return dump_info.getGraph( fname); }
 	bool parseFromStream( istream & is);
 	Icc_parser() { }
 	~Icc_parser() {	}

@@ -7,23 +7,28 @@
 #include "QtCore/QString"
 #include "QtCore/QRegExp"
 
-const QString patt_bb = "^(BBLOCK\\s)(\\d+).*";
-const QString patt_predstart = "^preds:.*";
-const QString patt_succend = "^succs:.*";
-const QString patt_edges = "(\\d+)([^\\d]*)";
-const QString patt_context = "^context:.*";
-
-
 int  Icc_parser::bbNum(std::string &in)
 {
 	QRegExp regexp;
 	QString str(in.c_str());
 
-	regexp.setPattern( patt_bb);
+	regexp.setPattern( icc_patt_bb);
 	if ( regexp.indexIn( str) != -1)
 		return regexp.cap( 2).toInt();
 	else
 		return -1;
+}
+
+string  Icc_parser::isFnName(std::string &in)
+{
+	QRegExp regexp;
+	QString str(in.c_str());
+
+	regexp.setPattern( icc_patt_fnname);
+	if ( regexp.indexIn( str, 0) != -1)
+		return regexp.cap( 1).toAscii().constData();
+	else
+		return "";
 }
 
 bool Icc_parser::getPred( string &in, BBlock &bb)
@@ -32,16 +37,16 @@ bool Icc_parser::getPred( string &in, BBlock &bb)
 	QString str( in.c_str());
 	int pos;
 	
-	regex.setPattern( patt_predstart);
+	regex.setPattern( icc_patt_predstart);
 	pos = regex.indexIn( str);
 	if( pos == -1)
 		return false;
 
-	size_t cnt = strlen( "preds: ");
-	regex.setPattern( patt_edges);
+	int cnt = ( int)strlen( "preds: ");
+	regex.setPattern( icc_patt_edges);
 	while ( 1 )
 	{
-		pos = regex.indexIn( str.mid( (int)cnt));
+		pos = regex.indexIn( str, cnt);
 		if ( pos == -1)
 		{
 			bb.setPredsInstd();
@@ -60,16 +65,16 @@ bool Icc_parser::getSucc( string &in, BBlock &bb)
 	QString str( in.c_str());
 	int pos;
 	
-	regex.setPattern( patt_succend);
+	regex.setPattern( icc_patt_succend);
 	pos = regex.indexIn( str);
 	if( pos == -1)
 		return false;
 
-	size_t cnt = strlen( "succs: ");
-	regex.setPattern( patt_edges);
+	int cnt = ( int)strlen( "succs: ");
+	regex.setPattern( icc_patt_edges);
 	while ( 1 )
 	{
-		pos = regex.indexIn( str.mid( (int)cnt));
+		pos = regex.indexIn( str, cnt);
 		if ( pos == -1)
 		{
 			bb.setSuccsInstd();
@@ -86,7 +91,7 @@ bool Icc_parser::isContext(std::string &in)
 	QRegExp regexp;
 	QString str(in.c_str());
 
-	regexp.setPattern( patt_context);
+	regexp.setPattern( icc_patt_context);
 	return regexp.indexIn( str) != -1;
 }
 
@@ -94,9 +99,13 @@ bool Icc_parser::parseFromStream(std::istream &is)
 {
 	int strnum = 0;
 	bool isContextFound = false;
-	BBlock * tbb;
+	BBlock * tbb = 0;
+	string fnname;
 
-	dump_info.addFunction();
+	BBlock * zeroBlock = 0;
+	int zeroBlockStr;
+
+	//dump_info.addFunction();
 
 	while ( !is.eof())
 	{
@@ -108,9 +117,17 @@ bool Icc_parser::parseFromStream(std::istream &is)
 
 		if ( ( tmp = bbNum( current)) != -1)
 		{
-			isContextFound = false;
-			tbb = dump_info.addBBlock( tmp, strnum);
+			if ( tmp == 0) //Handling zero blocks for detecting function names
+			{
+				zeroBlock = new BBlock( strnum);
+				zeroBlockStr = strnum;
+				tbb = zeroBlock;
+			}
+			else
+				tbb = dump_info.addBBlock( tmp, strnum, fnname);
 
+			isContextFound = false;
+			
 			while ( !getPred( current, *tbb))
 			{
 				getline( is, current);
@@ -127,7 +144,20 @@ bool Icc_parser::parseFromStream(std::istream &is)
 		}
 		
 		if ( isContextFound)
+		{
+            if ( !tbb)
+                throw exNotFound( -1);
+
+			string t;
+			if ( ( t = isFnName(current))!= "" && zeroBlock)
+			{
+				fnname = t;
+				dump_info.addFunction( fnname);
+				dump_info.addBBlock( 0, zeroBlockStr, fnname, tbb);
+				zeroBlock = 0;
+			}
 			tbb->addText( current, strnum);
+		}
 
 		isContextFound |= isContext( current);
 	}
