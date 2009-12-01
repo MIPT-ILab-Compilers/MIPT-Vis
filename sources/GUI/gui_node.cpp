@@ -28,6 +28,7 @@ GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id,
 	QGraphicsItem::setCursor( Qt::ArrowCursor);
 	setPlainText( *text);
 	setTextWidth ( 100); //Set width of node
+	NodeAux::setWidth( 100);
 	setMyAdjust( real()? 3 : 1);
 	setMyColor( Qt::green);
 	setMyText( "");
