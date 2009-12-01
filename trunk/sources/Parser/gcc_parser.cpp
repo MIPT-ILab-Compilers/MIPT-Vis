@@ -4,34 +4,14 @@
  */
 
 #include "parser.h"
-#include "QtCore/QString"
 #include "QtCore/QRegExp"
-
-const QString patt_fn = "^(;;\\sFunction\\s)(.+) .*";
-const QString patt_defbb = "^(Basic\\sblock\\s)(\\d+).*";
-const QString patt_implbb = "^(;;\\sStart\\sof\\sbasic\\sblock\\s)(\\d+).*";
-const QString patt_implbbend = "^(;;\\sEnd\\sof\\sbasic\\sblock\\s)(\\d+).*";
-const QString patt_predstart = "^(Predecessors:\\s*)ENTRY.*";
-const QString patt_succend = "^Successors:\\s*EXIT.*";
-const QString patt_edges = "(\\d+)([^\\d]*)";
-
-
-/** Current status of parser */
-struct Status
-{
-	string in_function;
-	int in_bblock_def;
-	int in_bblock_impl;
-};
-
-
 
 string Gcc_parser::fnName(string &in)
 {
 	QRegExp regexp;
 	QString str( in.c_str());
 
-	regexp.setPattern( patt_fn);
+	regexp.setPattern( gcc_patt_fn);
 	if ( regexp.indexIn( str) != -1)
 	{
 		return regexp.cap( 2).toAscii().constData();
@@ -46,7 +26,7 @@ int Gcc_parser::defbbNum(string &in)
 	QRegExp regexp;
 	QString str( in.c_str());
 
-	regexp.setPattern( patt_defbb);
+	regexp.setPattern( gcc_patt_defbb);
 	if ( regexp.indexIn( str) != -1)
 		return regexp.cap( 2).toInt();
 	else
@@ -58,7 +38,7 @@ int Gcc_parser::implbbNum(string &in)
 	QRegExp regexp;
 	QString str( in.c_str());
 
-	regexp.setPattern( patt_implbb);
+	regexp.setPattern( gcc_patt_implbb);
 	if ( regexp.indexIn( str) != -1)
 		return regexp.cap( 2).toInt();
 	else
@@ -70,7 +50,7 @@ int Gcc_parser::implbbEnd(string &in)
 	QRegExp regexp;
 	QString str( in.c_str());
 
-	regexp.setPattern( patt_implbbend);
+	regexp.setPattern( gcc_patt_implbbend);
 	if ( regexp.indexIn( str) != -1)
 		return regexp.cap( 2).toInt();
 	else
@@ -83,17 +63,17 @@ void Gcc_parser::getPred(string &in, BBlock &bb)
 	QString str( in.c_str());
 	int pos;
 
-	regex.setPattern( patt_predstart);
+	regex.setPattern( gcc_patt_predstart);
 	pos = regex.indexIn( str);
 	if( pos != -1)
 		bb.setPredsInstd();
 	else
 	{	
-		size_t cnt = strlen( "Predecessors:  ");
-		regex.setPattern( patt_edges);
+		int cnt = ( int) strlen( "Predecessors:  ");
+		regex.setPattern( gcc_patt_edges);
 		while ( 1 )
 		{
-			pos = regex.indexIn( str.mid( (int)cnt));
+			pos = regex.indexIn( str, cnt);
 			if ( pos == -1)
 				break;
 			bb.addPred( regex.cap( 1).toInt());
@@ -108,17 +88,17 @@ void Gcc_parser::getSucc(string &in, BBlock &bb)
 	QString str( in.c_str());
 	int pos;
 
-	regex.setPattern( patt_succend);
+	regex.setPattern( gcc_patt_succend);
 	pos = regex.indexIn( str);
 	if( pos != -1)
 		bb.setSuccsInstd();
 	else
 	{	
-		size_t cnt = strlen( "Successors:  ");
-		regex.setPattern( patt_edges);
+		int cnt = ( int)strlen( "Successors:  ");
+		regex.setPattern( gcc_patt_edges);
 		while ( 1 )
 		{
-			pos = regex.indexIn( str.mid( (int)cnt));
+			pos = regex.indexIn( str, cnt);
 			if ( pos == -1)
 				break;
 			bb.addSucc( regex.cap( 1).toInt());
@@ -133,7 +113,6 @@ void Gcc_parser::getSucc(string &in, BBlock &bb)
 bool Gcc_parser::parseFromStream( istream & is)
 {
 	int strnum = 0;
-	Status status={ "", -1, -1};
 	string lastFn;
 
 	while(!is.eof())

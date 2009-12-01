@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="Parser"
 	ProjectGUID="{14836C45-4B17-4783-BF4F-DCD557C099A9}"
 	>
@@ -17,7 +17,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)bin"
 			IntermediateDirectory="$(SolutionDir)objects\$(ProjectName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -56,19 +56,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;QtCore4.lib&quot; &quot;QtGui4.lib&quot; &quot;$(SolutionDir)libxml\lib\libxml2.lib&quot;"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-				EmbedManifest="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -78,12 +69,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -172,10 +157,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\functions.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\gcc_parser.cpp"
 				>
 			</File>
@@ -184,15 +165,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\parameters.cpp"
+				RelativePath=".\parser.h"
 				>
 			</File>
 			<File
 				RelativePath=".\parser_impl.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\readme.txt"
 				>
 			</File>
 		</Filter>
@@ -200,37 +181,7 @@
 			Name="Interface"
 			>
 			<File
-				RelativePath=".\functions.h"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-						AdditionalDependencies=""
-						Outputs=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description=""
-						CommandLine=""
-						AdditionalDependencies=""
-						Outputs=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\parameters.h"
-				>
-			</File>
-			<File
-				RelativePath=".\parser.h"
+				RelativePath=".\parser_iface.h"
 				>
 			</File>
 		</Filter>
