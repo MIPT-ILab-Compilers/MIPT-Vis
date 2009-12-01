@@ -5,6 +5,7 @@
    * [Edges Edge types]
    * [Dominators Dominators]
    * [Layout Layout method]
+     * [HorizontalPlacement Horizontal placement algorithm]
    * [GraphXML Graph-description files]
  * Project Guidelines
    * [TestingProcess 	Testing process]
