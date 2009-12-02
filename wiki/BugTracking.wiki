@@ -1,0 +1,45 @@
+#summary Describes how 'Issues' should be used in the project for bug-tracking.
+
+==What is 'Issues' and bug-tracking at all?==
+'Issues' is a tool for distribution tasks between project members and tracking status of these tasks. 
+
+There is a list of trackers (tracker is a record in issues-database) - every project member can view it, submit new tracker, comment existing ones etc.
+
+A record in 'Issues' should be created, when a new bug is discovered.
+It'll ensure that the bug will be fixed in time and will not be forgotten.
+
+==Creating a new tracker==
+To create a new record, you should fill the next fields:
+ * *Status.* In this step it should be 'New' (default value).
+
+ * *Owner.* Owner is a person, responsible for fixing the bug or the task implementation. You should choose a components which is the most relevant for the current task/bug - the corresponding mentor should be chosen as the owner. If you can't determine, which component is responsible for the bug, you may assign the issue to your mentor (assign an issue to a person = make this person an owner of the issue). Then the mentor transfers the tracker to one of his students or fixes it himself.
+
+ * *CC*. It is a mailing-list. It should include all project members whose work might be affected by this issue.
+
+ * *Labels*. Labels are used for classification of trackers. Four labels should be filled: _type_ of the bug, its _priority_, affected _configs_ and related _component_.
+  * _Type_ should be one of the following:
+    # _Defect_ - for reporting of a software defect
+    # _Enhancement_ - for feature requests
+    # _Task_ - for work items that don't change the code or docs
+    # _Other_ - for other kinds of issue
+  * _Priority_ should be one of the following:
+    # _Critical_ and _High_ - for issues which some project members are waiting to be fixed to continue their work. Such issues need immediate resolution.
+    # _Medium_ - for usual issues that don't block work of other components/project members.
+    # _Low_ - for issues that might be considered later.
+  * _Configurations_ - specify configurations related to the issue.
+  * _Component_ - specify a component responsible for the issue.
+
+ * *Description*. It should contain info about a way to reproduce the problem or specification of a needed feature. Any additional info is also placed here.
+
+==Work with trackers==
+At the beginning, any tracker is 'New'.
+The owner of the tracker investigates the issue and changes its status to:
+  * _Invalid_ - if this was not a valid issue report
+  * _Duplicate_ - if this report duplicates an existing issue
+  * _Accepted_ - when the report is valid.
+The owner also may reassign the tracker to another developer, but this should be well-reasoned. 
+
+When tracker becomes 'Accepted', work on fix for the bug or implementation of the feature begins. When this process is finished, the tracker should become one of the following:
+  * _Fixed_ - if the developer made source code changes
+  * _WontFix_ - if it was decided to not take action on this issue
+  * _Done_ - if the requested non-coding task was completed
