@@ -4,6 +4,7 @@
 	Version="8,00"
 	Name="Parser"
 	ProjectGUID="{14836C45-4B17-4783-BF4F-DCD557C099A9}"
+	RootNamespace="Parser"
 	>
 	<Platforms>
 		<Platform
@@ -78,7 +79,8 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)\$(ConfigurationName)\bin"
 			IntermediateDirectory="$(SolutionDir)\objects\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -113,20 +115,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;QtCore4.lib&quot; &quot;QtGui4.lib&quot; &quot;$(SolutionDir)libxml\lib\libxml2.lib&quot;"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -136,12 +128,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
