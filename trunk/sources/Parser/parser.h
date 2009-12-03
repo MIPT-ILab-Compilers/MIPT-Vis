@@ -160,11 +160,11 @@ public:
 
 const QString gcc_patt_fn = "^(;;\\sFunction\\s)(.+) .*";
 const QString gcc_patt_defbb = "^(Basic\\sblock\\s)(\\d+).*";
-const QString gcc_patt_implbb = "^(;;\\sStart\\sof\\sbasic\\sblock\\s)(\\d+).*";
+const QString gcc_patt_implbb = "^(;;\\sStart\\sof\\sbasic\\sblock\\s)(?:\\(.+\\)\\s->\\s)?(\\d+).*";
 const QString gcc_patt_implbbend = "^(;;\\sEnd\\sof\\sbasic\\sblock\\s)(\\d+).*";
 const QString gcc_patt_predstart = "^Predecessors:\\s+((ENTRY.*)|$)";
 const QString gcc_patt_succend = "^Successors:\\s+((EXIT.*)|$)";
-const QString gcc_patt_edges = "(\\d+)(\\D*)(?=\\d|$)"; //"^(\\d+)(\\[.+\\])?([^\\d]*)";
+const QString gcc_patt_edges = "(\\d+)(?:\\s+\\[\\S+\\])?(?:\\s+\\(\\S+\\))?"; //"^(\\d+)(\\[.+\\])?([^\\d]*)";
 
 /**
  * RegExp patterns for ICC

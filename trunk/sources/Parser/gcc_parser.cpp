@@ -14,6 +14,12 @@ string Gcc_parser::fnName(string &in)
 	regexp.setPattern( gcc_patt_fn);
 	if ( regexp.indexIn( str) != -1)
 	{
+		/* Handling GCC4 *.r138.jump files */
+		QRegExp g4;
+		g4.setPattern( QString( "\\smain(.*)"));
+		if ( g4.indexIn( regexp.cap( 2)) != -1)
+			return "main";
+
 		return regexp.cap( 2).toAscii().constData();
 		/* QString::toStdString() method crashes on my computer */
 	}
@@ -102,7 +108,7 @@ void Gcc_parser::getSucc(string &in, BBlock &bb)
 			if ( pos == -1)
 				break;
 			bb.addSucc( regex.cap( 1).toInt());
-			cnt += regex.matchedLength();
+			cnt = pos + regex.matchedLength();
 		}
 	}
 }
@@ -148,7 +154,15 @@ bool Gcc_parser::parseFromStream( istream & is)
 		/* gBBlock implementatin found */
 		if ( (tmp = implbbNum( current)) != -1)
 		{
-			cbb = dump_info.getBBlock( tmp, lastFn);
+			try
+			{
+				cbb = dump_info.getBBlock( tmp, lastFn);
+			}
+			catch ( exNotFound)
+			{
+				/* Definition of this BB was removed on optimization */
+				continue;
+			}
 			getline( is, current);
 			strnum++;
 			do 
