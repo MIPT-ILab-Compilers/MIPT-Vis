@@ -10,4 +10,7 @@ ENode::ENode( EGraph *graph, int _id):
 {
     idom = NULL;
     pdom = NULL;
+	parent = NULL;
+	ancestor = NULL;
+	semi = -1;
 }

@@ -16,11 +16,17 @@ void EGraph::init()
     is_pdom_tree_computed = false;
     is_cycle_tree_computed = false;   
 	is_graph_connected = false;
+	domCount = 0;
 }
 
 EGraph::EGraph()
 {
     init();
+}
+
+EGraph::EGraph( char* file) : Graph( file)
+{
+	init();
 }
 
 EGraph::~EGraph()
@@ -312,6 +318,97 @@ void EGraph::makeGraphSingleExit()
     }
 	freeMarker( m);
 }
+/** 
+ * The following functions are required by the dominators search algorithm.
+ * Link(v,w) builds a forest adding the edge (v,w)
+ * Eval(v) returns v if it's root of the tree, and performs path compression and returns label(v)
+ * otherwise.
+ * DomDFS is a depth-first search.
+ * Compress is a path compression in a tree built by Link instructions.
+ * DomSearch searches for dominators
+ */
+void EGraph::domDFS( ENode *v)
+{
+	ENode* w;
+	v->setSemi( EGraph::domCount++);
+	vertex.push_back( v);
+	v->label = v;
+	for( EEdge* edge = (EEdge*)v->firstSucc(); !v->endOfSuccs(); edge = (EEdge*)v->nextSucc())
+	{
+		w = (ENode*)edge->succ();
+		if(w->semi == -1)
+		{
+			w->parent = v;
+			EGraph::domDFS(w);
+		}
+	}
+	return;
+}
 
+void EGraph::compress(ENode *v)
+{
+	if( v->ancestor->ancestor != NULL)
+	{
+		compress( v->ancestor);
+		if( v->ancestor->label->semi < v->label->semi)
+		{
+			v->label = v->ancestor->label;
+		}
+		v->ancestor = v->ancestor->ancestor;
+	}
+}
 
+ENode* EGraph::eval(ENode *v)
+{
+	if( v->ancestor == NULL)
+		return v;
+	else{
+		compress( v);
+		return v->label;
+	}
+}
 
+void EGraph::link(ENode *v, ENode *w)
+{
+	w->ancestor = v;
+}
+
+void EGraph::domSearch()
+{
+	if( entrynode == NULL)
+		EGraph::makeGraphSingleEntry();
+	ENode* u;
+	ENode* v;
+	ENode* w;
+	EEdge* edge;
+	int i;
+	domDFS( entrynode);
+	int n = domCount - 1;
+	for( i = n; i > 0; i--)
+	{
+		w = vertex[i];
+		for( edge = ( EEdge*)w->firstPred(); !w->endOfPreds(); edge = ( EEdge*)w->nextPred())
+		{
+			v = ( ENode*)edge->pred();
+			u = eval(v);
+			if( u->semi < w->semi)
+				w->semi = u->semi;
+		}
+		vertex[w->semi]->bucket.push_back( w);
+		link( w->parent, w);
+		vector< ENode*>::iterator iter;
+		for( iter = w->parent->bucket.begin(); iter != w->parent->bucket.end();)
+		{
+			v = *iter;
+			iter = w->parent->bucket.erase(iter);
+			u = eval( v);
+			v->idom = ( u->semi < v->semi) ? u : w->parent;
+		}
+	}
+	for( int i = 1; i<n+1; i++)
+	{
+		w = vertex[i];
+		if( w->idom != vertex[w->semi])
+			w->idom = w->idom->idom;
+	}
+}
