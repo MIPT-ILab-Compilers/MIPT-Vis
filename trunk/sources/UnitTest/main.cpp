@@ -19,14 +19,14 @@ int main(int argc, char **argv)
 	/** Test EGraph */
     if ( !uTestEGraph())
         return -1;
+	/** Test searching dominators */
+	if( !uTestDomSearch())
+		return -1;	
 	/* Test layout (imho idiotic comment)*/
 	if (!uTestLayout())
 		return -1;
-
 	/** Test GUI */
     if ( !uTestGui( argc, argv))
 		return -1;
-
-
     return 0;	
 }

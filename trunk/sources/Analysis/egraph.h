@@ -14,6 +14,9 @@ class EGraph: public Graph
 	bool is_pdom_tree_computed;
 	bool is_cycle_tree_computed;
 	bool is_graph_connected;
+	
+	vector< ENode*> vertex;
+	int domCount;
 
 	ENode* findSubgraphEntry(ENode* node, Marker mrk);
 	ENode* findSubgraphExit( ENode* node, Marker mrk);
@@ -22,8 +25,15 @@ class EGraph: public Graph
     void markSubgFromNode( ENode* node, Marker m);
 
 
+	void link( ENode* v, ENode* w);	
+	ENode* eval( ENode* v);
+	void domDFS(ENode* v);
+	void compress(ENode* v);
+
 public:
 	EGraph();
+
+	EGraph(char * file);
 
     ~EGraph();
 
@@ -47,7 +57,11 @@ public:
     void makeGraphSingleExit();
     
     bool isGraphConnected();
-    
+
+	/** Function searching dominators according to Lengauer - Tarjan algorithm */
+	void domSearch();
+
+
     /**
      * Casts to bring functions of class to the functions of advanced class
      */

@@ -19,6 +19,7 @@ bool uTestGraph();
 bool uTestGui( int argc, char * argv[]);
 bool uTestforBFS();
 bool uTestEGraph();
+bool uTestDomSearch();
 /**
 * Layout library unit testing
 */

@@ -122,3 +122,106 @@ bool uTestEGraph()
 	
 	return true;
 }
+
+bool uTestDomSearch()
+{
+	printf("Testing dominators search\n");
+	/* Graph with one branching */
+	EGraph* graph = new EGraph;
+	vector< ENode*> nodes;
+	for( int i = 0; i < 7; i++)
+	{
+		nodes.push_back( graph->newNode());
+	}
+	graph->newEdge( nodes[0], nodes[1]);
+	graph->newEdge( nodes[1], nodes[2]);
+	graph->newEdge( nodes[1], nodes[3]);
+	graph->newEdge( nodes[2], nodes[4]);
+	graph->newEdge( nodes[3], nodes[5]);
+	graph->newEdge( nodes[4], nodes[6]);
+	graph->newEdge( nodes[5], nodes[6]);
+
+	graph->domSearch();
+	if( nodes[1]->getidom() != nodes[0])
+		return false;
+	if( nodes[2]->getidom() != nodes[1])
+		return false;
+	if( nodes[3]->getidom() != nodes[1])
+		return false;
+	if( nodes[4]->getidom() != nodes[2])
+		return false;
+	if( nodes[5]->getidom() != nodes[3])
+		return false;
+	if( nodes[6]->getidom() != nodes[1])
+		return false;
+	/* Empty graph */
+	EGraph* graph2 = new EGraph;
+	graph2->domSearch();
+	for( ENode* v = graph2->firstNode(); v != NULL; v = v->nextNode())
+	{
+		if( v->getidom() != NULL)
+			return false;
+	}
+	/* Graph with 2 branches and one cycle */
+	EGraph* graph3 = new EGraph;
+	vector< ENode*> nodes3;
+	for( i = 0; i < 9; i++)
+	{
+		nodes3.push_back( graph3->newNode());
+	}
+	graph3->newEdge(nodes3[0], nodes3[1]);
+	graph3->newEdge(nodes3[1], nodes3[2]);
+	graph3->newEdge(nodes3[1], nodes3[3]);
+	graph3->newEdge(nodes3[2], nodes3[4]);
+	graph3->newEdge(nodes3[3], nodes3[5]);
+	graph3->newEdge(nodes3[3], nodes3[7]);
+	graph3->newEdge(nodes3[4], nodes3[6]);
+	graph3->newEdge(nodes3[5], nodes3[6]);
+	graph3->newEdge(nodes3[6], nodes3[8]);
+	graph3->newEdge(nodes3[7], nodes3[8]);
+	graph3->newEdge(nodes3[8], nodes3[1]);
+	
+	graph3->domSearch();
+	if( nodes3[1]->getidom() != nodes3[0])
+	{
+		out( "Node 1 - FAIL");
+		return false;
+	}
+	if( nodes3[2]->getidom() != nodes3[1])
+	{
+		out( "Node 2 - FAIL");
+		return false;
+	}
+	if( nodes3[3]->getidom() != nodes3[1])
+	{
+		out( "Node 3 - FAIL");
+		return false;
+	}
+	if( nodes3[4]->getidom() != nodes3[2])
+	{
+		out( "Node 4 - FAIL");
+		return false;
+	}
+	if( nodes3[5]->getidom() != nodes3[3])
+	{
+		out( "Node 5 - FAIL");
+		return false;
+	}
+	if( nodes3[6]->getidom() != nodes3[1])
+	{
+		out( "Node 6 - FAIL");
+		return false;
+	}
+	if( nodes3[7]->getidom() != nodes3[3])
+	{
+		out( "Node 7 - FAIL");
+		return false;
+	}
+	if( nodes3[8]->getidom() != nodes3[1])
+	{
+		out( "Node 8 - FAIL");
+		return false;
+	}
+	out( "\nSearching dominators succeded\n");
+	return true;
+}
