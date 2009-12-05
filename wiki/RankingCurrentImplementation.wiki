@@ -1,0 +1,80 @@
+==Ordering algorithm==
+
+{{{
+{
+1  node* root = find root
+2  Make acyclic (root)
+3  iterate (root);
+}
+
+iterate (node* cur, int full_path_len)
+{
+4  cur->rank = max (cur->rank, full_path_len);
+
+5  if all previous passed
+   {
+6     iterate for all successors width full_path_len = cur->rank + 1;
+7     cur->mark (passed);
+   }
+
+}
+}}}
+
+Given directed graph previously makes acyclic at line *2*, but it procedure requires a root of three, founded, or created at line *1*. Now there are all conditions for distribution ranks to all nodes, with begining from found root (line *3*).
+
+To rank current vertex, I compare all paths in this acyclic graph, and chose the longest (lenght of path is the number of nodes on it). It automatically happen, at line *4*, when all predcessors passed(it checks at *5*-th line). *6* At this time I can rank a childs of recently ranked node by the allready known longest path. *7* And finally I mark the node as passed, for checks by childs.
+
+==Making acyclic==
+In this procedure all edges divides to several types: three, back, mesh and forward. It gain in depth-first search, by temporary marked nodes as passed, and returned. Passsed nodes are nodes, on which algo was only one time, returned are the nodes, throught which algo allready has gone, and returned. Subsequently I will walk only through tree and forward edges, and conversely through back, so there are no circles arising by such behaviour.
+{{{
+Make acyclic (node * root)
+{
+1  Stack to_process;
+2  to_process.push (root);
+
+3  while (to_process is not empty)
+   {
+4    Node* from = to_process.pop();
+ 		
+5    if (from->isPassed)//the second pass of node
+     {
+6       from->mark (returning);
+     }
+     else
+     {
+7      from->mark (passed);
+
+8      to_process.push(from);
+
+9      for each successive edges (Edge* cur)
+       {
+10        if (cur->succ() == from) cur->type = mesh;
+          else
+	  {
+11	    if (cur->succ()->is passed)
+	    {
+12	      if (cur->succ()->isReturned)
+13              cur->type = forward;
+14	      else cur->type = back;
+	    }
+	    else
+	    {
+15	      cur->type = tree;
+16	      to_process.push (cur->succ());
+	    }
+	  }
+       }//end of for
+     }//end of else
+   }//end of while
+}
+}}}
+
+*1*:create stack for depth-first search<br>
+*2*:start from kindly found root<br>
+*3*:When all nodes are proceeded stop<br>
+*4*:Get current candidate<br>
+*5-6*:If I allready been here hence I returns from branch<br>
+else<br>
+*7-8*: It is a first time visit, so mark as passed, and not returned, therefore I need make one more visit<br>
+*9*:process successors<br>
+*11-16*:distribute types for edges<br>
