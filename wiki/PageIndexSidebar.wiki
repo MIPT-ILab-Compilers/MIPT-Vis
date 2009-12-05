@@ -6,6 +6,7 @@
    * [Dominators Dominators]
    * [Layout Layout method]
      * [HorizontalPlacement Horizontal placement algorithm]
+     * [RankingCurrentImplementation Ranking as it is]
    * [GraphXML Graph-description files]
  * Project Guidelines
    * [TestingProcess 	Testing process]
