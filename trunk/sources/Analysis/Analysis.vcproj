@@ -15,8 +15,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)\objects\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)\objects\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)\objects\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)\objects\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			>
 			<Tool

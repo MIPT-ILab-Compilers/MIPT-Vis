@@ -16,8 +16,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)bin"
-			IntermediateDirectory="$(SolutionDir)objects\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)\objects\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)\objects\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			>
 			<Tool
@@ -78,7 +78,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)\$(ConfigurationName)\bin"
+			OutputDirectory="$(SolutionDir)\objects\$(ProjectName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)\objects\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="4"
 			WholeProgramOptimization="1"
