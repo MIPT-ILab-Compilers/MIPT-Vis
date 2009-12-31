@@ -9,9 +9,8 @@ This method is a continuous repeat simple amending iterations. On each step ther
 2    for each node
      {
 3        for each associate node
-         {
 4            other->addA (attractForce (current, mass, other));
-         }
+
 5        for all nodes
 6            other->addA (repulseForce (current, mass, other));
      }
