@@ -1,0 +1,66 @@
+= Force directed position algo =
+This method is a continuous repeat simple amending iterations. On each step there is a force, acting on each vertex calculates. Algorithm advance all nodes, but current, and if there is an edge, it sets attract force for theese two nodes, and for all it sets repulse force, like an electrostatic interaction between nuclei. Look at this implementation, and read the comments below:
+
+{{{
+ mass = any standart mass;
+ iterateGravity()
+ {
+1    mass = any standart mass;
+2    for each node
+     {
+3        for each associate node
+         {
+4            other->addA (attractForce (current, mass, other));
+         }
+5        for all nodes
+6            other->addA (repulseForce (current, mass, other));
+     }
+
+7    for all nodes
+     {
+8        current_node->applayAcceleration (timestep, resistance);
+9        current_node->applayVelocity (timestep);
+10       current_node->shedAcceleration();
+     }
+ }
+}}}
+Lines:<br>
+*1* Sets mass, it's indifferent, which mass has a vertex, unless *mass* != 0.<br>
+*2* Circle to list all nodes as being current.<br>
+*3*,*4* Attract all attached nodes <br>
+*5*,*6* repulse all bodies.<br>
+*7*-*10* Move nodes, and prepare to next iteration.<br>
+This function calls about 10 times per second.
+== Forces calculus implementation ==
+{{{
+ Vector attractForce (Node* from, int frmass, Node* to)
+ {
+1    Vector displacement = from->displ (to->coor());
+2    len = lenght (displacement);
+3    if (len < minDist) lensq = minDist;
+
+4    Vector force = frmass * attrK * displacement/(len^4);
+
+5    return force;
+ }
+ Vector repulseForce (Node* from, int frmass, Node* to)
+ {
+     Vector displacement = from->displ (to->coor());
+     len = lenght (displacement);
+     if (len < minDist) lensq = minDist;
+
+6    Vector force = - frmass * attrK * displacement/(len^8);
+
+     return force;
+ }
+}}}
+
+Lines:<br>
+*1* Calculate the vector of displacement from *from* node to *to* node,<br>
+*2* and a distance between them.<br>
+*3* Constrain a *len* to beeng longer then *minDist*. I need it to prevent a huge forces, which inversely depends on the *len*.<br>
+*4* And finally calculate force by a law, like the Newton's gravitational.(therefore this method calls "gravity based"),<br>
+*5* and return it.<br>
+*6* Repulce force calculation differs from attractive only by a minus, and a power of distance. Difference in power is needed to create potential wells in a "gravitational field", and the system reaches equilibrium.
+
+This is all, this simple code has a fine effect.
