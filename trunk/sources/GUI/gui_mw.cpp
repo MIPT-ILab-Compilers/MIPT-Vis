@@ -255,6 +255,9 @@ void MainWindow::createActions()
     disGravityAct->setStatusTip ( tr( "&Disable Gravity Correction"));
     connect( enGravityAct, SIGNAL( triggered()), this, SLOT( enableGravity()));
 	connect( disGravityAct, SIGNAL( triggered()), this, SLOT( disableGravity()));
+
+	//delete_act = new QAction( tr( "&Delete"), this);
+	//connect( delete_act, SIGNAL( triggered()), this, SLOT( deleteSlot()));
 }
 
 /**

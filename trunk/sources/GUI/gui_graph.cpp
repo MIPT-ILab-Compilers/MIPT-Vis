@@ -29,6 +29,7 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         node->setY( node->QGraphicsItem::y());
         node->setWidth( node->boundingRect().width());
         node->setHeight( node->boundingRect().height());
+		QObject::connect(node, SIGNAL( deleteMe( int)), this, SLOT( deleteNode( int)));
         QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
     }
     QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
@@ -64,6 +65,7 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
 		node->setMyAdjust( node->real()? 3 : 1);
+		QObject::connect(node, SIGNAL( deleteMe( int)), this, SLOT( deleteNode( int)));
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{
@@ -72,7 +74,6 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
 		    edge->updatePosition();
         }
 	}
-
 }
 /**
  * Create line after right button clicked
@@ -193,6 +194,7 @@ void GuiGraph::removeNode (Node* n)
 	removeItem( addGui (n));
 	Graph::removeNode (n);
 }
+
 /**
  * commit layout
  */
@@ -219,4 +221,18 @@ bool GuiGraph::applayLayout()
 		    edge->updatePosition();
 	}
 	return true;
+}
+
+/**
+ * delete node
+ */
+void GuiGraph::deleteNode( int number)
+{
+	GuiNode *node;
+	for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		if ( node->id() == number)
+		{
+			removeNode(node);
+			break;
+		}
 }

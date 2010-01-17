@@ -41,6 +41,7 @@ protected:
     void mouseMoveEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent);
     bool applayLayout();
+
 private:
     int number;
     mode myMode;
@@ -49,5 +50,8 @@ private:
 
 signals:
     void isClicked();
+
+public slots:
+	void deleteNode( int number);
 };
 #endif
