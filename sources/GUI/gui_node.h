@@ -12,8 +12,6 @@
 class GuiEdge;
 class GuiNode;
 class GuiGraph;
-
-
 class GuiEdge;
 class GuiPoint;
 
@@ -81,6 +79,7 @@ private:
 protected:
 	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
 	virtual void readByXML ( xmlNode * cur_node);
+	virtual void contextMenuEvent( QGraphicsSceneContextMenuEvent *event);
 
 public:
     QString myText;
@@ -126,7 +125,11 @@ protected:
     void superscribe ( QColor color, QString text);
 
 public slots:
-    void setMyText(const QString & str);
+    void setMyText( const QString & str);
 	void textChange();
+	void emitDelete();
+
+signals:
+	void deleteMe( int number);
 };
 #endif

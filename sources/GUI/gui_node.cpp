@@ -4,6 +4,8 @@
  */
 
 #include "gui_impl.h"
+#include<QtGui/QAction>
+#include<QtGui/QMenu>
 
 /**
  * Init NodeProperties
@@ -221,7 +223,7 @@ void GuiNode::writeByXMLWriter( xmlTextWriterPtr writer)
 /**
  *  Read from xml
  */
-void GuiNode::readByXML (xmlNode * cur_node)
+void GuiNode::readByXML( xmlNode * cur_node)
 {
 	NodeAux::readByXML ( cur_node);
 	setTextPriv( "");
@@ -242,4 +244,23 @@ void GuiNode::readByXML (xmlNode * cur_node)
 			setTextPriv( ( char *)( props->children->content));
 		}
 	}
+}
+
+/**
+ *  contextMenuEvent
+ */
+void GuiNode::contextMenuEvent( QGraphicsSceneContextMenuEvent *event)
+{
+	QMenu menu;
+    QAction *deleteAct = menu.addAction( "Delete");
+	connect( deleteAct, SIGNAL( triggered()), this, SLOT( emitDelete()));
+	menu.exec( event->screenPos());
+}
+
+/**
+ *  emit delete
+ */
+void GuiNode::emitDelete()
+{
+	emit deleteMe( this->id());
 }
