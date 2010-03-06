@@ -262,5 +262,5 @@ void GuiNode::contextMenuEvent( QGraphicsSceneContextMenuEvent *event)
  */
 void GuiNode::emitDelete()
 {
-	emit deleteMe( this->id());
+	emit deleteMe( this->userId());
 }

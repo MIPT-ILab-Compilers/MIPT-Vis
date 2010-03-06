@@ -209,7 +209,7 @@ void MainWindow::doCentreOnNode( int nodeNumber)
 {
     GuiNode * node;
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
-		if ( node->id() == nodeNumber)
+		if ( node->userId() == nodeNumber)
       {
 		  view->centerOn( node);
           break;

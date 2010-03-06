@@ -23,12 +23,16 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         node->setPos( mouseEvent->scenePos());
         node->setColor( "green");
 		node->setLabel( "Node" + number);
-        node->setShape( "rectangle");
+		node->setShape( "rectangle");
 		node->setTextPriv( "");        
 		node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
         node->setWidth( node->boundingRect().width());
         node->setHeight( node->boundingRect().height());
+
+		QString text =  QString( "Node %1").arg( node->userId());
+		node->setPlainText(text);
+
 		QObject::connect(node, SIGNAL( deleteMe( int)), this, SLOT( deleteNode( int)));
         QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
     }
@@ -65,6 +69,10 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
 		node->setMyAdjust( node->real()? 3 : 1);
+
+		QString text =  QString( "Node %1").arg( node->userId());
+		node->setPlainText(text);
+
 		QObject::connect(node, SIGNAL( deleteMe( int)), this, SLOT( deleteNode( int)));
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
@@ -168,7 +176,8 @@ EdgeAux * GuiGraph::createEdge( Node * pred, Node * succ)
 NodeAux * GuiGraph::createNode()
 {
     int num = incNodeId();
-    QString text =  QString( "Node %1").arg( num);
+    
+	QString text =  QString( "Node %1").arg( num);//!!!!!!! here !!!!!!!
     GuiNode * node_p = new GuiNode( &text, this, num);
 
     node_p->setZValue( 1);
@@ -230,7 +239,7 @@ void GuiGraph::deleteNode( int number)
 {
 	GuiNode *node;
 	for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
-		if ( node->id() == number)
+		if ( node->userId() == number)
 		{
 			removeNode(node);
 			break;

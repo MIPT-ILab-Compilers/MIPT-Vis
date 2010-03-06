@@ -61,8 +61,8 @@ Edge::detachFromNode( GraphDir dir)
 void Edge::writeByXMLWriter( xmlTextWriterPtr writer)
 {
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "id", "%d", id());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "from", "%d", pred()->id());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "to", "%d", succ()->id());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "from", "%d", pred()->userId());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "to", "%d", succ()->userId());
 
 }
 /**

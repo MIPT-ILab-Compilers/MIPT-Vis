@@ -79,7 +79,7 @@ Node::debugPrint()
 void
 Node::writeByXMLWriter( xmlTextWriterPtr writer)
 {
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "id", "%d", id());
+	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "id", "%d", userId());
 }
 
 /**

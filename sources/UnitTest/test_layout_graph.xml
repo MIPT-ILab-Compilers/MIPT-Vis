@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <graph>
-	<node id="10" x="13" y="200" width="106" height="28" real="1" label="n9" color="red" shape="ellipse" textPriv="FROM:&#10;N1&#10;TO:&#10;N2"/>
-	<node id="9" x="13" y="100" width="106" height="28" real="1" label="n9" color="red" shape="ellipse" textPriv="FROM:&#10;N2&#10;TO:&#10;N0"/>
-	<node id="8" x="73" y="50" width="106" height="28" real="1" label="n10" color="red" shape="rectangle" textPriv="FROM:&#10;N0&#10;TO:&#10;N1"/>
-	<node id="7" x="153" y="453" width="106" height="28" real="1" label="n7" color="red" shape="ellipse" textPriv="FROM:&#10;N4&#10;TO:&#10;"/>
-	<node id="6" x="163" y="293" width="106" height="28" real="1" label="n6" color="red" shape="rectangle" textPriv="FROM:&#10;N8&#10;TO:&#10;N3"/>
-	<node id="5" x="451" y="450" width="106" height="28" real="1" label="n5" color="red" shape="rectangle" textPriv="FROM:&#10;N7&#10;TO:&#10;"/>
-	<node id="4" x="425" y="340" width="106" height="28" real="1" label="n4" color="red" shape="rectangle" textPriv="FROM:&#10;N7&#10;TO:&#10;N8"/>
-	<node id="3" x="628" y="291" width="106" height="28" real="1" label="n3" color="red" shape="rectangle" textPriv="FROM:&#10;N8&#10;TO:&#10;N5, N6"/>
-	<node id="2" x="398" y="212" width="106" height="28" real="1" label="n2" color="red" shape="rectangle" textPriv="FROM:&#10;N9, N6&#10;TO:&#10;N4, N7"/>
-	<node id="1" x="338" y="108" width="106" height="28" real="1" label="n1" color="red" shape="rectangle" textPriv="FROM:&#10;N10&#10;TO:&#10;N8"/>
-	<node id="0" x="324" y="30" width="106" height="28" real="1" label="n0" color="red" shape="ellipse" textPriv="FROM:&#10;&#10;TO:&#10;N9"/>
+	<node id="10" x="13" y="200" width="106" height="28" real="1" label="n9" color="red" shape="ellipse" textPriv="FROM:&#10;N9&#10;TO:&#10;N8"/>
+	<node id="9" x="13" y="100" width="106" height="28" real="1" label="n9" color="red" shape="ellipse" textPriv="FROM:&#10;N8&#10;TO:&#10;N10"/>
+	<node id="8" x="73" y="50" width="106" height="28" real="1" label="n10" color="red" shape="rectangle" textPriv="FROM:&#10;N10&#10;TO:&#10;N9"/>
+	<node id="7" x="153" y="453" width="106" height="28" real="1" label="n7" color="red" shape="ellipse" textPriv="FROM:&#10;N6&#10;TO:&#10;"/>
+	<node id="6" x="163" y="293" width="106" height="28" real="1" label="n6" color="red" shape="rectangle" textPriv="FROM:&#10;N2&#10;TO:&#10;N7"/>
+	<node id="5" x="451" y="450" width="106" height="28" real="1" label="n5" color="red" shape="rectangle" textPriv="FROM:&#10;N3&#10;TO:&#10;"/>
+	<node id="4" x="425" y="340" width="106" height="28" real="1" label="n4" color="red" shape="rectangle" textPriv="FROM:&#10;N3&#10;TO:&#10;N2"/>
+	<node id="3" x="628" y="291" width="106" height="28" real="1" label="n3" color="red" shape="rectangle" textPriv="FROM:&#10;N2&#10;TO:&#10;N5, N4"/>
+	<node id="2" x="398" y="212" width="106" height="28" real="1" label="n2" color="red" shape="rectangle" textPriv="FROM:&#10;N1, N4&#10;TO:&#10;N6, N3"/>
+	<node id="1" x="338" y="108" width="106" height="28" real="1" label="n1" color="red" shape="rectangle" textPriv="FROM:&#10;N0&#10;TO:&#10;N2"/>
+	<node id="0" x="324" y="30" width="106" height="28" real="1" label="n0" color="red" shape="ellipse" textPriv="FROM:&#10;&#10;TO:&#10;N1"/>
 	<edge id="10" from="4" to="2" label="back edge" prob="99" thickness="9" color="red" style="solid">
 	</edge>
 	<edge id="9" from="6" to="7" label="simple edge" prob="100" thickness="10" color="green" style="solid">
