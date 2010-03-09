@@ -29,4 +29,4 @@ We are asking you to be kind to share the installation with your teammates if th
 
   # Directory with Qt bins (C:\Qt\4.5.0\bin) must be already in 'path' environment variable. ( To check this type 'path' in cmd.exe)
   # Open mipt-vis project in Visual Studio, then go to *Tools->Options->Projects and Solutions->VC++ Directories*. Choose 'include files' from 'Show directories for' list. Add "c:\Qt\4.5.0\include" to the list below. Then set "c:\Qt\4.5.0\lib" for 'library files' by the same way.
-  # Build and run the solution. If all is ok, you will see the window with 'Qt work!' label.
+  # Build and run the solution. If all is ok, you will see mipt-vis main window.
