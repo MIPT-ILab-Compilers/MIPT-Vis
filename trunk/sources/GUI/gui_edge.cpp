@@ -116,6 +116,24 @@ void GuiEdge::paint( QPainter * painter,
         painter->drawLine( line);
         painter->drawPolygon( lineHead);
     }
+	//QPointF centre = (startP + endP)/2;
+	//
+	//QPointF beg (startP.x(), startP.y());
+	//QPointF left (centre.x() - 20, centre.y());
+	//QPointF right(centre.x() + 20, centre.y());
+	//QPointF finish (endP.x(), endP.y());
+
+ //   painter->setPen( QPen( Qt::red, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
+	//painter->drawPoint (left);
+	//painter->drawPoint (right);
+
+	//QPainterPath path;
+	//path.moveTo (beg);
+	//path.cubicTo (left, right, finish);
+
+	//painter->drawPath(path);//!!! It is a very damp code, i write it to get understand curves
+
+
     update();
 }
 

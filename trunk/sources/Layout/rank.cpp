@@ -87,7 +87,7 @@ void AdjRank::doOrder( AdjRank* comp_rank)
 {
 	for( ListItem< NodeAux>* iter = adj_rank.head(); iter != NULL; iter = iter->next())
 	{
-		iter->data()->setX( comp_rank->baryValue( iter->data()));
+		iter->data()->setX( comp_rank->baryValue( iter->data())/* + iter->data()->width() / 2*/);
 	}
 	sortByVal();
 	setInitX();
@@ -112,7 +112,7 @@ void AdjRank::setInitX()
 	for( ListItem< NodeAux>* iter=adj_rank.head(); iter!=NULL; iter = iter->next())
 	{
 		iter->data()->setPosAux( i++);
-		iter->data()->setX(cur + iter->data()->width() / 2);
+		iter->data()->setX(cur/* + iter->data()->width() / 2*/);
 		cur+= iter->data()->width() + offset; // iter->data()->width() + offset;
 	}
 }
