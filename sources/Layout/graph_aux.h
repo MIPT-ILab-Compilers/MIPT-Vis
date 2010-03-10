@@ -37,6 +37,8 @@ private:
 
 	void addVirtualChains();
 
+	void computeLayerHeights (int heights[]);
+	void computeLayerYs (int ys[]);
 	void arrangeVertical();
 
 	/* Horizontal arrangement */
@@ -46,7 +48,6 @@ private:
 	void saveMinDist( int rank_num);
 	void decompact( int rank_num, int dir);
 
-	void applayPositions();
 
 public://!!! Only for tests, it must be closed
 	bool ranking();

@@ -52,7 +52,7 @@ bool GraphAux::ordering()
 		iter->setInitX();
 	}
 	freeNum( dfs_num);
-	/** Ordering */
+
 	const int max_iter = 24;
 	for( int i = 0; i < max_iter; i++)
 	{
@@ -75,7 +75,6 @@ bool GraphAux::position()
 {
 	arrangeHorizontal();
 	arrangeVertical();
-	applayPositions();
 	return true;
 }
 //-----------------------------------------------------------------------------
@@ -158,7 +157,7 @@ void GraphAux::iterateGravity()
 		iter->applV (timestep);
 		iter->shedA();
 	}
-	applayPositions();
+	applayLayout();
 }
 QPointF attractForce (NodeAux* from, int frmass, NodeAux* to)
 {
@@ -456,17 +455,50 @@ void GraphAux::addVirtualChains()
 }
 //-----------------------------------------------------------------------------
 /*
- * Arrnages nodes' vertical positions by their ranks
+ * Calculates maximum heights of rank layers
+ */
+void GraphAux::computeLayerHeights (int heights[])
+{
+//	assert(sizeof (heights)/sizeof(int) == max_rank + 1);
+	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
+	{
+		if (heights[iter->rang()] < iter->height()) heights[iter->rang()] = iter->height();
+	}
+}
+//-----------------------------------------------------------------------------
+/*
+ * Calculates y coordinates of centeral rank lines of the layers
+ */
+void GraphAux::computeLayerYs (int ys[])
+{
+	const int offset = 20;
+//	assert(sizeof (ys)/sizeof(int) == max_rank + 1);
+
+	int *heights = new int[max_rank + 1];
+	computeLayerHeights (heights);
+
+	ys[0] = heights[0]/2;
+	for (int rank = 1; rank <= max_rank; ++rank)
+	{
+		ys[rank] = ys[rank - 1] + heights[rank - 1]/2 + offset + heights[rank]/2;
+	}
+
+	delete [] heights;
+}
+//-----------------------------------------------------------------------------
+/*
+ * Arranges nodes' vertical positions by their ranks
  */
 void GraphAux::arrangeVertical()
 {
-	int starty = 0;
-	int stepy = 80;
+	int *ys = new int [max_rank + 1];
+	computeLayerYs (ys);
 
 	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
 	{
-		iter->setY (iter->rang()*stepy + starty);
+		iter->setY (ys[iter->rang()]);
 	}
+	delete [] ys;
 }
 //-----------------------------------------------------------------------------
 /**
@@ -532,7 +564,7 @@ void GraphAux::saveMinDist( int rank_num)
 */
 void GraphAux::decompact( int rank_num, int dir)
 {
-	int offset = 49;
+	int offset = 30;
 	if( dir == 1)
 	{
 		for( NodeAux* iter = rank[rank_num].first()->nextInLayer(); iter!=NULL; iter = iter->nextInLayer())
@@ -631,17 +663,6 @@ void GraphAux::forceDirectedPosition()
 		{
 			decompact( j, i % 2);
 		}
-	}
-}
-//-----------------------------------------------------------------------------
-void GraphAux::applayPositions()
-{
-	for (NodeAux* iter = addAux(firstNode()); iter != 0;
-		          iter = addAux(iter->nextNode()))
-	{
-		iter->commitPos (iter->x(), iter->y());
-		if (!iter->real())
-			iter->superscribe (Qt::gray, "unreal");
 	}
 }
 //-----------------------------------------------------------------------------

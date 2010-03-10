@@ -25,10 +25,10 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 		node->setLabel( "Node" + number);
 		node->setShape( "rectangle");
 		node->setTextPriv( "");        
-		node->setX( node->QGraphicsItem::x());
-        node->setY( node->QGraphicsItem::y());
         node->setWidth( node->boundingRect().width());
         node->setHeight( node->boundingRect().height());
+		node->setX( node->QGraphicsItem::x() + node->width()/2);
+		node->setY( node->QGraphicsItem::y() + node->height()/2);
 
 		QString text =  QString( "Node %1").arg( node->userId());
 		node->setPlainText(text);
