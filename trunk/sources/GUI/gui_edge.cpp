@@ -83,13 +83,13 @@ void GuiEdge::updatePosition()
 	}
 	else
 	{
-
+		valid = true;
+		
 		QPolygonF headPolygon = suc->polygon();
 		headPolygon.translate (suc->pos());
 		QPolygonF tailPolygon = pre->polygon();
 		tailPolygon.translate (pre->pos());
 
-		valid = true;
 
 		if (suc->real())
 			valid = valid && getIntersection (QLineF (startP, endP), headPolygon, &endP) == QLineF::BoundedIntersection;
@@ -178,11 +178,14 @@ void GuiEdge::paint( QPainter * painter,
 		return;
 	}
 	if (!valid) return;
+	
 
     qreal arrowSize = 10;
     painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 	GuiNode* suc = addGui ( succ());
 	GuiNode* pre = addGui ( pred());
+	
+	if (!pre->real() && pre->firstPred() == 0 && !VirtualNodesDrawing) return;
 	if( suc->real())
     {
 		QPointF dir = (7*endDir + startP)/8 - endP;//!!! Mnemonic rule, it must be changed
