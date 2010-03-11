@@ -48,6 +48,7 @@ private slots:
 	void enableGravity();
 	void disableGravity();
 	void makeGravity();
+	void switchVnodesShow();
 
 private:
     void createMenus();

@@ -7,6 +7,9 @@
 #include<QtGui/QAction>
 #include<QtGui/QMenu>
 
+
+bool VirtualNodesDrawing = false;
+
 /**
  * Init NodeProperties
  */
@@ -118,7 +121,7 @@ void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option
 	}
 	else
 	{
-		return;//do not draw virtual nodes
+		if (!VirtualNodesDrawing) return;//do not draw virtual nodes
 		painter->setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 		painter->fillRect( boundingRect(), QBrush( myColor));
 		myPolygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())

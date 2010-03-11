@@ -15,6 +15,8 @@ class GuiGraph;
 class GuiEdge;
 class GuiPoint;
 
+extern bool VirtualNodesDrawing;
+
 /**
  * Representation of various node attributes
  */

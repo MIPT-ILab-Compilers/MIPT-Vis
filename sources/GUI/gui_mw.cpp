@@ -175,6 +175,11 @@ void MainWindow::makeGravity()
 	graph->iterateGravity();
 }
 
+void MainWindow::switchVnodesShow()
+{
+	VirtualNodesDrawing = !VirtualNodesDrawing;
+}
+
 /**
  * convertDumpToXML
  */
@@ -255,6 +260,11 @@ void MainWindow::createActions()
     disGravityAct->setStatusTip ( tr( "&Disable Gravity Correction"));
     connect( enGravityAct, SIGNAL( triggered()), this, SLOT( enableGravity()));
 	connect( disGravityAct, SIGNAL( triggered()), this, SLOT( disableGravity()));
+
+	
+    convertDumpToXMLAct = new QAction( tr( "&Show virtual nodes"), this);
+    convertDumpToXMLAct->setStatusTip( tr( "Show virtual nodes"));
+    connect( convertDumpToXMLAct, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
 
 	//delete_act = new QAction( tr( "&Delete"), this);
 	//connect( delete_act, SIGNAL( triggered()), this, SLOT( deleteSlot()));
