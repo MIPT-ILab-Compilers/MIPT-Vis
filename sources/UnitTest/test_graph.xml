@@ -38,4 +38,6 @@
 	</edge>
 	<edge id="0" from="2" to="8" label="back edge" prob="99" thickness="9" color="red" style="solid">
 	</edge>
+  <edge id="0" from="2" to="2" label="back edge" prob="99" thickness="9" color="red" style="solid">
+  </edge>
 </graph>
