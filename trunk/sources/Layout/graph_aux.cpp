@@ -304,6 +304,8 @@ NodeAux* GraphAux::makeVirtualRoot (QList <Node*>& roots)
 
 	NodeAux* root = newNode();
 	root->setReal (false);
+	root->setHeight (20);
+	root->setWidth (20);
 
 	foreach(Node* iter, roots)
 	{
@@ -445,6 +447,7 @@ void GraphAux::addVirtualChains()
 				NodeAux* n = insertNodeOnEdge( iter);
 				n->setReal (false);
 				n->setWidth(20);
+				n->setHeight(0);
 				if( rang_pred > rang_succ)
 					n->rang_priv = rang_pred - 1;
 				else
@@ -471,7 +474,7 @@ void GraphAux::computeLayerHeights (int heights[])
  */
 void GraphAux::computeLayerYs (int ys[])
 {
-	const int offset = 20;
+	const int offset = 70;
 //	assert(sizeof (ys)/sizeof(int) == max_rank + 1);
 
 	int *heights = new int[max_rank + 1];

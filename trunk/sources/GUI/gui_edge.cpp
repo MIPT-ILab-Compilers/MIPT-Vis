@@ -28,13 +28,51 @@ GuiEdge::~GuiEdge()
 	out( "current nitems%d", addGui( getGraph())->items().count());
 }
 
+
+QLineF::IntersectType getIntersection (const QLineF& l, const QPolygonF& p, QPointF* intersectPoint)
+{
+    QPointF p1 = p.first();
+    QPointF p2;
+    QLineF polyLine;
+    for ( int i = 1; i < p.count(); ++i)
+    {
+        p2 = p.at(i);
+        polyLine = QLineF( p1, p2);
+        QLineF::IntersectType intersectType = polyLine.intersect( l, intersectPoint);
+        if ( intersectType == QLineF::BoundedIntersection)
+        {
+            return QLineF::BoundedIntersection;
+        }
+        p1 = p2;
+    }
+	return QLineF::NoIntersection;
+}
+
 /**
  * Update position the edge
  */
 void GuiEdge::updatePosition()
 {
-	startP = mapFromItem( addGui (pred()), pred()->width()/2, pred()->height()/2);
-    endP = mapFromItem( addGui (succ()), succ()->width()/2, succ()->height()/2);//!!!rarely it not work
+	GuiNode* pre = addGui (pred());
+	GuiNode* suc = addGui (succ());
+
+	startP = mapFromItem( pre, pre->width()/2, pre->height()/2);
+    endP = mapFromItem( suc, suc->width()/2, suc->height()/2);//!!!rarely it not work
+
+	QPolygonF headPolygon = suc->polygon();
+	headPolygon.translate (suc->pos());
+	QPolygonF tailPolygon = pre->polygon();
+	tailPolygon.translate (pre->pos());
+
+	getIntersection (QLineF (startP, endP), headPolygon, &endP);
+	getIntersection (QLineF (startP, endP), tailPolygon, &startP);
+
+	QPointF delta = startP - endP;
+	delta.setX(0);
+
+	startDir = startP - delta/2;
+	endDir = endP + delta/2;
+
     topLeft.setX( min< qreal>( startP.x(), endP.x()));
     topLeft.setY( min< qreal>( startP.y(), endP.y()));
     btmRight.setX( max< qreal>( startP.x(), endP.x()));
@@ -67,6 +105,18 @@ QPainterPath GuiEdge::shape() const
     return stroker.createStroke( path);
 }
 
+void drawLineHead (QPainter * painter, QPointF end, double angle, double size)
+{
+    QPointF lineP1 = end + QPointF( sin( angle + Pi / 3) * size, cos( angle + Pi / 3) * size);
+    QPointF lineP2 = end + QPointF( sin( angle + Pi - Pi / 3) * size, cos( angle + Pi - Pi / 3) * size);
+
+    QPolygonF lineHead;
+    lineHead.clear();
+    lineHead << end << lineP1 << lineP2;
+	
+    painter->drawPolygon (lineHead);
+}
+
 /**
  * Paint arrow
  */
@@ -79,59 +129,27 @@ void GuiEdge::paint( QPainter * painter,
 		return;
 	}
     qreal arrowSize = 10;
-    painter->setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-    painter->setBrush( Qt::black);
-    painter->drawLine( startP, endP);
+    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
+//    painter->drawLine( startP, endP);
 	GuiNode* suc = addGui ( succ());
 	if( suc->real())
     {
-        QLineF centerLine( startP, endP);
-        QPolygonF endPolygon = suc->polygon();
-        QPolygonF lineHead;
-        QPointF p1 = endPolygon.first() + suc->pos();
-        QPointF p2;
-        QPointF intersectPoint;
-        QLineF polyLine;
-        for ( int i = 1; i < endPolygon.count(); ++i)
-        {
-            p2 = endPolygon.at(i) + suc->pos();
-            polyLine = QLineF( p1, p2);
-            QLineF::IntersectType intersectType = polyLine.intersect( centerLine, &intersectPoint);
-            if ( intersectType == QLineF::BoundedIntersection)
-            {
-                break;
-            }
-            p1 = p2;
-        }
-        QLineF line( intersectPoint, startP);
-        double angle = ::acos( line.dx() / line.length());
-        if ( line.dy() >= 0)
-        {
-            angle = ( Pi * 2) - angle;
-        }
-        QPointF lineP1 = line.p1() + QPointF( sin( angle + Pi / 3) * arrowSize, cos( angle + Pi / 3) * arrowSize);
-        QPointF lineP2 = line.p1() + QPointF( sin( angle + Pi - Pi / 3) * arrowSize, cos( angle + Pi - Pi / 3) * arrowSize);
-        lineHead.clear();
-        lineHead << line.p1() << lineP1 << lineP2;
-        painter->drawLine( line);
-        painter->drawPolygon( lineHead);
+		QPointF dir = (7*endDir + startP)/8 - endP;//!!! Mnemonic rule, it must be changed
+		
+		painter->setBrush( Qt::darkRed);
+		drawLineHead (painter, endP, -atan2 (dir.y(), dir.x()), 10);
+
+		painter->setBrush( Qt::transparent);//!!! change it to black, and you will see, what heppend. I can't explain this
     }
-	//QPointF centre = (startP + endP)/2;
-	//
-	//QPointF beg (startP.x(), startP.y());
-	//QPointF left (centre.x() - 20, centre.y());
-	//QPointF right(centre.x() + 20, centre.y());
-	//QPointF finish (endP.x(), endP.y());
+    painter->setPen( QPen( Qt::red, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
+	painter->drawPoint (startDir);
+	painter->drawPoint (endDir);
 
- //   painter->setPen( QPen( Qt::red, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-	//painter->drawPoint (left);
-	//painter->drawPoint (right);
+	QPainterPath path;
+	path.moveTo (startP);
+	path.cubicTo (startDir, endDir, endP);
 
-	//QPainterPath path;
-	//path.moveTo (beg);
-	//path.cubicTo (left, right, finish);
-
-	//painter->drawPath(path);//!!! It is a very damp code, i write it to get understand curves
+	painter->drawPath(path);//!!! It is a very damp code, i write it to get understand curves
 
 
     update();

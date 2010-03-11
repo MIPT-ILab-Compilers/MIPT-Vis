@@ -74,7 +74,9 @@ public:
 class GuiEdge:public QGraphicsItem, public EdgeAux, public EdgeProperties
 {
     QPointF startP;
+	QPointF startDir;
     QPointF endP;
+	QPointF endDir;
     QPointF topLeft;
     QPointF btmRight;
 
