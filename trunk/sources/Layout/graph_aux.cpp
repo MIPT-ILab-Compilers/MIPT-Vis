@@ -16,10 +16,9 @@
 */
 bool GraphAux::ranking()
 {
+	max_rank = 0;
 	NodeAux* root = makeAcyclic();
 	if (root == 0) return false;
-
-	max_rank = 0;
 
 	clearRanks();
 	Marker passed = newMarker();
@@ -34,6 +33,7 @@ bool GraphAux::ranking()
 */
 bool GraphAux::ordering()
 {
+	if (max_rank == 0) return false;
 	/** Add virtuals and initialize rank structure */
 	addVirtualChains();
 	rank.clear();

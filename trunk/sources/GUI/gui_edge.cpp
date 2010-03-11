@@ -59,19 +59,54 @@ void GuiEdge::updatePosition()
 	startP = mapFromItem( pre, pre->width()/2, pre->height()/2);
     endP = mapFromItem( suc, suc->width()/2, suc->height()/2);//!!!rarely it not work
 
-	QPolygonF headPolygon = suc->polygon();
-	headPolygon.translate (suc->pos());
-	QPolygonF tailPolygon = pre->polygon();
-	tailPolygon.translate (pre->pos());
+	if (pre == suc)//mesh edge
+	{
+		QPointF heigh (0, 2*pre->height());
 
-	getIntersection (QLineF (startP, endP), headPolygon, &endP);
-	getIntersection (QLineF (startP, endP), tailPolygon, &startP);
+		QPointF middle (pre->pos().x() - 10, pre->pos().y() + pre->height()/2);
+		QPointF middleDirUp = middle + heigh;
+		QPointF middleDirDown = middle - heigh;
 
-	QPointF delta = startP - endP;
-	delta.setX(0);
+		startDir = startP + heigh;
+		endDir = endP - heigh;
 
-	startDir = startP - delta/2;
-	endDir = endP + delta/2;
+		QPolygonF polygon = suc->polygon();
+		polygon.translate (suc->pos());
+		getIntersection (QLineF (startP, startDir), polygon, &startP);
+		getIntersection (QLineF (endP, endDir), polygon, &endP);
+
+		QPainterPath path;
+		path.moveTo (startP);
+		path.cubicTo (startDir, middleDirUp, middle);
+		path.cubicTo (middleDirDown, endDir, endP);
+		curve = path;
+	}
+	else
+	{
+
+		QPolygonF headPolygon = suc->polygon();
+		headPolygon.translate (suc->pos());
+		QPolygonF tailPolygon = pre->polygon();
+		tailPolygon.translate (pre->pos());
+
+		valid = true;
+
+		if (suc->real())
+			valid = valid && getIntersection (QLineF (startP, endP), headPolygon, &endP) == QLineF::BoundedIntersection;
+		if (pre->real()) 
+			valid = valid && getIntersection (QLineF (startP, endP), tailPolygon, &startP) == QLineF::BoundedIntersection;
+
+		QPointF delta = startP - endP;
+		delta.setX(0);
+
+		startDir = startP - delta/2;
+		endDir = endP + delta/2;
+
+		QPainterPath path;
+		path.moveTo (startP);
+		path.cubicTo (startDir, endDir, endP);
+		if (valid) curve = path;
+	}
 
     topLeft.setX( min< qreal>( startP.x(), endP.x()));
     topLeft.setY( min< qreal>( startP.y(), endP.y()));
@@ -98,23 +133,37 @@ QRectF GuiEdge::boundingRect() const
  */
 QPainterPath GuiEdge::shape() const
 {
-    QPainterPath path( startP);
+//    QPainterPath path( startP);
     QPainterPathStroker stroker;
-    path.lineTo( endP.x(), endP.y());
+//    path.lineTo( endP.x(), endP.y());
     stroker.setWidth( 10);
-    return stroker.createStroke( path);
+    return stroker.createStroke( curve);
 }
 
-void drawLineHead (QPainter * painter, QPointF end, double angle, double size)
+void drawLineHead (QPainter * painter, QPointF end, double angle, double size, bool figure)
 {
     QPointF lineP1 = end + QPointF( sin( angle + Pi / 3) * size, cos( angle + Pi / 3) * size);
     QPointF lineP2 = end + QPointF( sin( angle + Pi - Pi / 3) * size, cos( angle + Pi - Pi / 3) * size);
+	QPointF centre = (lineP1 + lineP2 + end)/3;
 
-    QPolygonF lineHead;
-    lineHead.clear();
-    lineHead << end << lineP1 << lineP2;
+	if (figure)
+	{
+		QPainterPath arrow;
+		arrow.moveTo (end);
+		arrow.quadTo (centre, lineP1);
+		arrow.lineTo (lineP2);
+		arrow.quadTo (centre, end);
+
+		painter->drawPath (arrow);
+	}
+	else
+	{
+		QPolygonF lineHead;
+		lineHead.clear();
+		lineHead << end << lineP1 << lineP2;
 	
-    painter->drawPolygon (lineHead);
+		painter->drawPolygon (lineHead);
+	}
 }
 
 /**
@@ -128,28 +177,26 @@ void GuiEdge::paint( QPainter * painter,
 		out ("ERROR: the deleted edge is tried to paint!");
 		return;
 	}
+	if (!valid) return;
+
     qreal arrowSize = 10;
     painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-//    painter->drawLine( startP, endP);
 	GuiNode* suc = addGui ( succ());
+	GuiNode* pre = addGui ( pred());
 	if( suc->real())
     {
 		QPointF dir = (7*endDir + startP)/8 - endP;//!!! Mnemonic rule, it must be changed
 		
 		painter->setBrush( Qt::darkRed);
-		drawLineHead (painter, endP, -atan2 (dir.y(), dir.x()), 10);
+		drawLineHead (painter, endP, -atan2 (dir.y(), dir.x()), 10, false);
 
 		painter->setBrush( Qt::transparent);//!!! change it to black, and you will see, what heppend. I can't explain this
     }
-    painter->setPen( QPen( Qt::red, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
+    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 	painter->drawPoint (startDir);
 	painter->drawPoint (endDir);
 
-	QPainterPath path;
-	path.moveTo (startP);
-	path.cubicTo (startDir, endDir, endP);
-
-	painter->drawPath(path);//!!! It is a very damp code, i write it to get understand curves
+	painter->drawPath (curve);//!!! It is a very damp code, i write it to get understand curves
 
 
     update();

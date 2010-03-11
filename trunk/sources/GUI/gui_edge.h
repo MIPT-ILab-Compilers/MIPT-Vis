@@ -77,6 +77,10 @@ class GuiEdge:public QGraphicsItem, public EdgeAux, public EdgeProperties
 	QPointF startDir;
     QPointF endP;
 	QPointF endDir;
+
+	QPainterPath curve;
+	bool valid;
+
     QPointF topLeft;
     QPointF btmRight;
 
