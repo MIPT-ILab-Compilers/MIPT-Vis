@@ -118,6 +118,7 @@ void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option
 	}
 	else
 	{
+		setTextWidth (20);//deprecated
 		painter->setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 		painter->fillRect( boundingRect(), QBrush( myColor));
 		myPolygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
