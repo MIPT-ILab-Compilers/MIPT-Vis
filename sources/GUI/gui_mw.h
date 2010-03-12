@@ -55,6 +55,8 @@ private:
     void createActions();
     void createStatusBar();
     void setCurrentFile( const QString & fileName);
+	void createDockWindows();
+
     QString strippedName( const QString &fullFileName);
     
     QMenu *fileMenu;
@@ -67,7 +69,6 @@ private:
     QAction *helpAct;
     QAction *aboutAct;
     QAction *doLayoutAct;
-    QAction *centreOnNodeAct;
     QAction *convertDumpToXMLAct;
     QAction *enGravityAct;
     QAction *disGravityAct;
@@ -77,14 +78,19 @@ private:
     GuiView *view;
     QHBoxLayout *layout;
     QWidget *widget;
+    QWidget *widget1;
+    QWidget *widget2;
     QSplitter *splitter;
     GuiGraph *graph;
     QString currentFile;
     GuiTextEdit *nodeTextEdit;
     QGroupBox *groupBox;
     QVBoxLayout *textLayout;
-    QVBoxLayout *rightLayout;
-    QPushButton *confirmButton;
+    QVBoxLayout *centreOnNodeLayout;
+    QPushButton *saveTextButton;
+    QPushButton *centreOnNodeButton;
+	QSpinBox *spinBox;
+
 };
 
 #endif
