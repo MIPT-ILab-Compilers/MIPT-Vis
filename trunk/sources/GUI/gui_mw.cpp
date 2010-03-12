@@ -10,10 +10,6 @@
  */
 MainWindow::MainWindow()
 {
-    createActions();
-    createMenus();
-    createStatusBar();
-
     currentFile = "";
 
     graph = new GuiGraph();
@@ -22,46 +18,28 @@ MainWindow::MainWindow()
 
     view = new GuiView(graph);
     view->setScene(graph);
+	//setCentralWidget( view);
     
     if( graph->getNodeItem())
       view->centerOn( graph->getNodeItem());
     
     setCurrentFile( currentFile);
 
-    nodeTextEdit = new GuiTextEdit;
-    nodeTextEdit->clear();
-    nodeTextEdit->setReadOnly( true);
-	connect(nodeTextEdit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT(doCentreOnNode( int)));
-    
-    confirmButton = new QPushButton( tr( "Save &Text"));
-    confirmButton->setEnabled( false);
-    confirmButton->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect( confirmButton, SIGNAL( clicked()), this, SLOT( saveTextToNode()));
-
-    textLayout = new QVBoxLayout;
-    textLayout->addWidget( nodeTextEdit);
-    textLayout->addWidget( confirmButton);
-
-    groupBox = new QGroupBox( tr( "Text of selected node"));
-    groupBox->setLayout( textLayout);
-    groupBox->setMinimumWidth( 150);
-    groupBox->setSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-
-    splitter = new QSplitter;
-    splitter->addWidget( view);
-    splitter->addWidget( groupBox);
- 
     layout = new QHBoxLayout;
-    layout->addWidget( splitter);
+    layout->addWidget( view);
 
     widget = new QWidget;
     widget->setLayout(layout);
+	setCentralWidget( widget);
+
+    createActions();
+    createMenus();
+    createStatusBar();
+	createDockWindows();
 
 	gravity_timer = new QTimer ( this);
 	connect( gravity_timer, SIGNAL( timeout()), this, SLOT(makeGravity()));
 	gravity_timer->setInterval ( 100);
-
-    setCentralWidget( widget);
 }
 
 /**
@@ -87,7 +65,7 @@ void MainWindow::load()
 
     nodeTextEdit->clear();
     nodeTextEdit->setReadOnly( true);
-    confirmButton->setEnabled( false);
+    saveTextButton->setEnabled( false);
 
     QApplication::restoreOverrideCursor();
 
@@ -203,7 +181,8 @@ void MainWindow::convertDumpToXMLSlot()
  */
 void MainWindow::centreOnNode()
 {
-    int nodeId = QInputDialog::getInteger( this, "Center On Node", "Enter Node Number", 0, -1000, 1000, 1, 0, 0);
+    //int nodeId = QInputDialog::getInteger( this, "Center On Node", "Enter Node Number", 0, -1000, 1000, 1, 0, 0);
+	int nodeId = spinBox->value();
     doCentreOnNode( nodeId);
 } 
 
@@ -220,6 +199,60 @@ void MainWindow::doCentreOnNode( int nodeNumber)
           break;
 	  }
 } 
+
+/**
+ * createDockWindows
+ */
+void MainWindow::createDockWindows()
+{
+	/* Dock 1*/
+    QDockWidget *dock = new QDockWidget( tr("Node description"), this);
+    dock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
+    nodeTextEdit = new GuiTextEdit;
+    nodeTextEdit->clear();
+    nodeTextEdit->setReadOnly( true);
+	connect(nodeTextEdit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT(doCentreOnNode( int)));
+    
+    saveTextButton = new QPushButton( tr( "Save &Text"));
+    saveTextButton->setEnabled( false);
+    saveTextButton->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect( saveTextButton, SIGNAL( clicked()), this, SLOT( saveTextToNode()));
+
+    textLayout = new QVBoxLayout( dock);
+    textLayout->addWidget( nodeTextEdit);
+    textLayout->addWidget( saveTextButton);
+
+    widget1 = new QWidget;
+    widget1->setLayout( textLayout);
+
+	dock->setWidget( widget1);
+    addDockWidget( Qt::RightDockWidgetArea, dock);
+	viewMenu->addAction(dock->toggleViewAction());
+	/* Dock 2*/
+	
+    dock = new QDockWidget( tr("Centre on node"), this);
+    dock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+
+	spinBox = new QSpinBox;
+	spinBox->setRange(0,100);
+
+    centreOnNodeButton = new QPushButton( tr("Jump"));
+    centreOnNodeButton->setEnabled( true);
+    centreOnNodeButton->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect( centreOnNodeButton, SIGNAL( clicked()), this, SLOT( centreOnNode()));
+
+	centreOnNodeLayout = new QVBoxLayout( dock);
+	centreOnNodeLayout->addWidget( spinBox);
+	centreOnNodeLayout->addWidget( centreOnNodeButton);
+
+    widget2 = new QWidget;
+    widget2->setLayout( centreOnNodeLayout);
+
+	dock->setWidget(widget2);
+    addDockWidget( Qt::RightDockWidgetArea, dock);
+	viewMenu->addAction(dock->toggleViewAction());
+}
 
 /**
  * Creat actions
@@ -246,10 +279,6 @@ void MainWindow::createActions()
     doLayoutAct->setStatusTip( tr( "Do Layout..."));
     connect( doLayoutAct, SIGNAL( triggered()), this, SLOT( doLayoutSlot()));
 
-    centreOnNodeAct = new QAction( tr( "&Centre On Node"), this);
-    centreOnNodeAct->setStatusTip( tr( "Centre On Node..."));
-    connect( centreOnNodeAct, SIGNAL( triggered()), this, SLOT( centreOnNode()));
-	
     convertDumpToXMLAct = new QAction( tr( "&Convert dump to XML..."), this);
     convertDumpToXMLAct->setStatusTip( tr( "Convert dump to XML..."));
     connect( convertDumpToXMLAct, SIGNAL( triggered()), this, SLOT( convertDumpToXMLSlot()));
@@ -265,9 +294,6 @@ void MainWindow::createActions()
     convertDumpToXMLAct = new QAction( tr( "&Show virtual nodes"), this);
     convertDumpToXMLAct->setStatusTip( tr( "Show virtual nodes"));
     connect( convertDumpToXMLAct, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
-
-	//delete_act = new QAction( tr( "&Delete"), this);
-	//connect( delete_act, SIGNAL( triggered()), this, SLOT( deleteSlot()));
 }
 
 /**
@@ -280,7 +306,6 @@ void MainWindow::createMenus()
     fileMenu->addAction( saveAct);
 
     viewMenu = menuBar()->addMenu( tr( "&View"));
-    viewMenu->addAction( centreOnNodeAct);
 
     toolsMenu = menuBar()->addMenu( tr( "&Tools"));
     toolsMenu->addAction( doLayoutAct);
@@ -314,14 +339,14 @@ void MainWindow::textHandle()
 			GuiNode *node = qgraphicsitem_cast< GuiNode*>( list[ 0]);
 			nodeTextEdit->setPlainText( node->myText);
 			nodeTextEdit->setReadOnly( false);
-			confirmButton->setEnabled( true);
+			saveTextButton->setEnabled( true);
 		}
     }
     else
     {
         nodeTextEdit->clear();
         nodeTextEdit->setReadOnly( true);
-        confirmButton->setEnabled( false);
+        saveTextButton->setEnabled( false);
     }
 }
 
@@ -338,7 +363,7 @@ void MainWindow::saveTextToNode()
 		node->textChange();
         nodeTextEdit->clear();
         nodeTextEdit->setReadOnly( true);
-        confirmButton->setEnabled( false);
+        saveTextButton->setEnabled( false);
     }
 }
 
