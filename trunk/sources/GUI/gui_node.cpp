@@ -35,7 +35,7 @@ GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id,
 	setTextWidth ( 100); //Set width of node
 	NodeAux::setWidth( 100);
 	setMyAdjust( real()? 3 : 1);
-	setMyColor( Qt::green);
+	setMyColor( Qt::green); // color here!!!
 	setMyText( "");
 	setFlag( QGraphicsItem::ItemIsMovable, true); // Set node can move
 	setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
