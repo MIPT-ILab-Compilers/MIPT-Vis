@@ -11,6 +11,7 @@
 MainWindow::MainWindow()
 {
     currentFile = "";
+	setCurrentFile( currentFile);
 
     graph = new GuiGraph();
     graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
@@ -18,12 +19,10 @@ MainWindow::MainWindow()
 
     view = new GuiView(graph);
     view->setScene(graph);
-	//setCentralWidget( view);
-    
+	
     if( graph->getNodeItem())
       view->centerOn( graph->getNodeItem());
-    
-    setCurrentFile( currentFile);
+       
 
     layout = new QHBoxLayout;
     layout->addWidget( view);
@@ -205,9 +204,34 @@ void MainWindow::doCentreOnNode( int nodeNumber)
  */
 void MainWindow::createDockWindows()
 {
+	/* Dock 2*/
+	QDockWidget *dock = new QDockWidget( tr("Centre on node"), this);
+    dock->setAllowedAreas( Qt::AllDockWidgetAreas);
+	dock->setFloating( false);
+
+	spinBox = new QSpinBox;
+	spinBox->setRange(0,100);
+
+    centreOnNodeButton = new QPushButton( tr("Jump"));
+    centreOnNodeButton->setEnabled( true);
+    centreOnNodeButton->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect( centreOnNodeButton, SIGNAL( clicked()), this, SLOT( centreOnNode()));
+
+	centreOnNodeLayout = new QVBoxLayout( dock);
+	centreOnNodeLayout->addWidget( spinBox);
+	centreOnNodeLayout->addWidget( centreOnNodeButton);
+
+    widget2 = new QWidget;
+    widget2->setLayout( centreOnNodeLayout);
+
+	dock->setWidget(widget2);
+    addDockWidget( Qt::RightDockWidgetArea, dock);
+	viewMenu->addAction(dock->toggleViewAction());
+
 	/* Dock 1*/
-    QDockWidget *dock = new QDockWidget( tr("Node description"), this);
-    dock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dock = new QDockWidget( tr("Node description"), this);
+    dock->setAllowedAreas( Qt::AllDockWidgetAreas);
+	dock->setFloating( false);
 
     nodeTextEdit = new GuiTextEdit;
     nodeTextEdit->clear();
@@ -227,29 +251,6 @@ void MainWindow::createDockWindows()
     widget1->setLayout( textLayout);
 
 	dock->setWidget( widget1);
-    addDockWidget( Qt::RightDockWidgetArea, dock);
-	viewMenu->addAction(dock->toggleViewAction());
-	/* Dock 2*/
-	
-    dock = new QDockWidget( tr("Centre on node"), this);
-    dock->setAllowedAreas( Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-
-	spinBox = new QSpinBox;
-	spinBox->setRange(0,100);
-
-    centreOnNodeButton = new QPushButton( tr("Jump"));
-    centreOnNodeButton->setEnabled( true);
-    centreOnNodeButton->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect( centreOnNodeButton, SIGNAL( clicked()), this, SLOT( centreOnNode()));
-
-	centreOnNodeLayout = new QVBoxLayout( dock);
-	centreOnNodeLayout->addWidget( spinBox);
-	centreOnNodeLayout->addWidget( centreOnNodeButton);
-
-    widget2 = new QWidget;
-    widget2->setLayout( centreOnNodeLayout);
-
-	dock->setWidget(widget2);
     addDockWidget( Qt::RightDockWidgetArea, dock);
 	viewMenu->addAction(dock->toggleViewAction());
 }

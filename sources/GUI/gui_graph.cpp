@@ -177,7 +177,7 @@ NodeAux * GuiGraph::createNode()
 {
     int num = incNodeId();
     
-	QString text =  QString( "Node %1").arg( num);//!!!!!!! here !!!!!!!
+	QString text =  QString( "Node %1").arg( num);// number here !!!!!!!
     GuiNode * node_p = new GuiNode( &text, this, num);
 
     node_p->setZValue( 1);
