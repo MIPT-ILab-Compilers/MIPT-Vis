@@ -115,6 +115,7 @@ public:
 	 *  Reading form XML
 	 */
 	xmlDoc *xml_doc;
+	virtual void readAttribsFromXml (xmlNode * a_node) {}//for additional properties
 	void readNodesFromXmlDoc( xmlNode * a_node);
 	void readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes);
 	void readFromXMLDoc( xmlNode * a_node);
@@ -207,7 +208,7 @@ public:
     /**
      * Print graph to stdout in DOT format
      */
-    void debugPrint();
+    virtual void debugPrint();
 
     /**
      * Obtain list of nodes in depth-first search order

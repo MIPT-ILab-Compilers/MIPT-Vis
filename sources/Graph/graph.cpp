@@ -428,6 +428,8 @@ Graph::readFromXMLDoc( xmlNode * a_node)
 				    nodes[ node->userId()] = node;
 
 			readEdgesFromXmlDoc( cur_node->children, nodes);
+
+			readAttribsFromXml (cur_node->children);
 			is_found = true;
 		}
     }

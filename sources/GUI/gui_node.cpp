@@ -13,7 +13,7 @@ bool VirtualNodesDrawing = false;
 /**
  * Init NodeProperties
  */
-NodeProperties::NodeProperties()
+NodeProperties::NodeProperties (StyleSheet* ss_) :ss_priv (ss_), style_priv (ss_->getId ("default"))
 {
     color_priv = 0;
 	label_priv = 0;
@@ -23,8 +23,9 @@ NodeProperties::NodeProperties()
 /**
  * Constructor of GuiNode class
  */
-GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, 
+GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, StyleSheet* ss,
         QGraphicsItem * parent, QGraphicsScene * scene):
+		NodeProperties (ss),
 	    myText(),
         myAdjust(0),
         QGraphicsTextItem( parent, scene),
@@ -110,10 +111,12 @@ void GuiNode::mouseReleaseEvent( QGraphicsSceneMouseEvent *event)
  */
 void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
+	applStyle (painter);
+//	(**style()).applayTo (painter);
 	if ( real())
 	{
-	    painter->setPen( QPen(Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-		painter->fillRect( boundingRect(), QBrush( myColor));
+//	    painter->setPen( QPen(Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
+		painter->fillRect( boundingRect(), painter->brush());
 		QGraphicsTextItem::paint( painter, option, widget);
 		myPolygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
 		                  << ( boundingRect().topRight()) << ( boundingRect().topLeft())
@@ -247,6 +250,10 @@ void GuiNode::readByXML( xmlNode * cur_node)
 		else if ( xmlStrEqual( props->name, xmlCharStrdup( "textPriv")))
 		{
 			setTextPriv( ( char *)( props->children->content));
+		}
+		else if ( xmlStrEqual( props->name, xmlCharStrdup( "style")))
+		{
+			setStyle( ( char *)( props->children->content));
 		}
 	}
 }

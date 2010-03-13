@@ -343,6 +343,14 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\StyleSheet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StyleSheet.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
