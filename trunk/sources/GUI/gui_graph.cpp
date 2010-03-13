@@ -4,6 +4,7 @@
  */
 
 #include "gui_impl.h"
+#include "StyleSheet.h"
 
 /**
  * Create element after double click mouse.
@@ -155,6 +156,14 @@ void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
     emit isClicked();
 }
 
+/**
+ * Read style table
+ */
+void GuiGraph::readAttribsFromXml (xmlNode * a_node)
+{
+	ss.loadFromXmlNode (a_node);
+	GraphAux::readAttribsFromXml (a_node);
+}
 
 /**
  * Allocation memory for edge
@@ -178,14 +187,13 @@ NodeAux * GuiGraph::createNode()
     int num = incNodeId();
     
 	QString text =  QString( "Node %1").arg( num);// number here !!!!!!!
-    GuiNode * node_p = new GuiNode( &text, this, num);
+    GuiNode * node_p = new GuiNode (&text, this, num, &ss);
 
     node_p->setZValue( 1);
     addItem( node_p);
 
     return node_p;
 }
-
 /**
  * adds remove item to graph::removeEdge
  */

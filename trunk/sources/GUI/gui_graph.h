@@ -6,6 +6,7 @@
 #define GUI_GRAPH_H
 #include <QtGui/QGraphicsScene>
 #include "../Layout/layout_iface.h"
+#include "StyleSheet.h"
 class GuiEdge;
 class GuiNode;
 
@@ -22,6 +23,8 @@ public:
     enum mode { insertLine, moveItem, insertRect};
     enum type { node, point, edge};
     
+	virtual void readAttribsFromXml (xmlNode * a_node);
+
     NodeAux * createNode();
     
     EdgeAux * createEdge( Node * pred, Node * succ); //!!! may be need another return type
@@ -47,6 +50,7 @@ private:
     mode myMode;
     QGraphicsLineItem * line;
     xmlDoc * xml_doc;
+	StyleSheet ss;
 
 signals:
     void isClicked();

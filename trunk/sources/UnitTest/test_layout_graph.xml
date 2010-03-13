@@ -33,4 +33,5 @@
 	</edge>
 	<edge id="0" from="10" to="8" label="simple edge" prob="100" thickness="10" color="green" style="solid">
 	</edge>
+  <style brush ="darkCyan"/>
 </graph>

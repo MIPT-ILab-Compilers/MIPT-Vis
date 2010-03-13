@@ -9,6 +9,7 @@
 #include <QtGui/QApplication>
 #include <QtCore/QLineF>
 #include "../Layout/layout_iface.h"
+#include "StyleSheet.h"
 class GuiEdge;
 class GuiNode;
 class GuiGraph;
@@ -26,8 +27,12 @@ class NodeProperties
 	char * label_priv;
 	char * shape_priv;
 	char * text_priv;
+
+	StId style_priv;
+	StyleSheet *ss_priv;
+
 public:
-	NodeProperties();
+	NodeProperties (StyleSheet* ss);
     /** Data reading */
     inline char * color() const 
     {
@@ -45,6 +50,14 @@ public:
     { 
         return text_priv;
     }
+	inline StId style () const
+    { 
+        return style_priv;
+    }
+	inline void applStyle (QPainter * painter)// const
+    { 
+        ss_priv->applayStyle (style_priv, painter);
+    }
     /** Data writing */ 
     inline void setColor( char * color)
     {
@@ -61,6 +74,10 @@ public:
 	inline void setTextPriv( char * textPriv) 
     { 
         text_priv = textPriv;
+    }
+	inline void setStyle (char * stName) 
+    { 
+        style_priv = ss_priv->getId (stName);
     }
 };
 
@@ -86,7 +103,7 @@ protected:
 public:
     QString myText;
     enum { Type = QGraphicsItem::UserType + 1};
-    GuiNode( QString * text, GuiGraph * graph_p, int _id, 
+    GuiNode( QString * text, GuiGraph * graph_p, int _id, StyleSheet *ss,
         QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
 	virtual ~GuiNode();
     inline QPolygonF polygon() const
