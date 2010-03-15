@@ -6,7 +6,7 @@
 #define GUI_GRAPH_H
 #include <QtGui/QGraphicsScene>
 #include "../Layout/layout_iface.h"
-#include "StyleSheet.h"
+#include "gui_style_sheet.h"
 class GuiEdge;
 class GuiNode;
 
@@ -24,6 +24,7 @@ public:
     enum type { node, point, edge};
     
 	virtual void readAttribsFromXml (xmlNode * a_node);
+	virtual void writeAttribsByXMLWriter (xmlTextWriterPtr writer);
 
     NodeAux * createNode();
     
@@ -38,6 +39,9 @@ public:
 	virtual void removeEdge (Edge* e);
 	virtual void removeNode (Node* n);
 
+	void switchVnodesShow();
+	bool showVnodes();
+
 protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
@@ -51,6 +55,7 @@ private:
     QGraphicsLineItem * line;
     xmlDoc * xml_doc;
 	StyleSheet ss;
+	bool drawVirtualNodes;
 
 signals:
     void isClicked();

@@ -124,6 +124,7 @@ public:
 	void writeToXML(const char *filename);
 	void writeNodesByXMLWriter( xmlTextWriterPtr writer);
 	void writeEdgesByXMLWriter( xmlTextWriterPtr writer);
+	virtual void writeAttribsByXMLWriter (xmlTextWriterPtr writer) {}//for additional properties
     
     /** Create new node in graph */
     Node * newNode();

@@ -40,7 +40,7 @@
 	</edge>
   <edge id="0" from="2" to="2" label="mesh edge" prob="99" thickness="9" color="red" style="solid">
   </edge>
-  <style            brush="green"/>
-  <style name="hyp" brush="yellow" pen="green"/>
+  <style            brush="green" penColor="yellow" penWidth="3"/>
+  <style name="hyp" brush="yellow" penColor="green"/>
   <style name="dark" brush="grey"/>
 </graph>

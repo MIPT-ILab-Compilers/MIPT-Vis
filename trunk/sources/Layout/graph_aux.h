@@ -116,7 +116,7 @@ public:
     /**
 	* Insert new node on edge in graph
 	*/
-    NodeAux * insertNodeOnEdge( EdgeAux* e)
+    virtual NodeAux * insertNodeOnEdge( EdgeAux* e)
     {
         NodeAux* n = static_cast< NodeAux*>( Graph::insertNodeOnEdge( static_cast< Edge*>( e)));
         n->firstSucc()->type = n->firstPred()->type;

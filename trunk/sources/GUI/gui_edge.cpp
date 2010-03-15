@@ -99,12 +99,20 @@ void GuiEdge::updatePosition()
 		QPointF delta = startP - endP;
 		delta.setX(0);
 
-		startDir = startP - delta/2;
-		endDir = endP + delta/2;
+		if (pre->real()) 
+			startDir = (startP + endP)/2;
+		else
+			startDir = startP - delta/2;
+
+		if (suc->real())
+			endDir = (startP + endP)/2;
+		else
+			endDir = endP + delta/2;
 
 		QPainterPath path;
 		path.moveTo (startP);
 		path.cubicTo (startDir, endDir, endP);
+
 		if (valid) curve = path;
 	}
 
@@ -185,7 +193,7 @@ void GuiEdge::paint( QPainter * painter,
 	GuiNode* suc = addGui ( succ());
 	GuiNode* pre = addGui ( pred());
 	
-	if (!pre->real() && pre->firstPred() == 0 && !VirtualNodesDrawing) return;
+	if (!pre->real() && pre->firstPred() == 0 && !addGui (graph)->showVnodes()) return;
 	if( suc->real())
     {
 		QPointF dir = (7*endDir + startP)/8 - endP;//!!! Mnemonic rule, it must be changed
@@ -195,9 +203,9 @@ void GuiEdge::paint( QPainter * painter,
 
 		painter->setBrush( Qt::transparent);//!!! change it to black, and you will see, what heppend. I can't explain this
     }
-    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-	painter->drawPoint (startDir);
-	painter->drawPoint (endDir);
+//    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
+//	painter->drawPoint (startDir);		//debug drawing
+//	painter->drawPoint (endDir);
 
 	painter->drawPath (curve);//!!! It is a very damp code, i write it to get understand curves
 
@@ -236,7 +244,7 @@ void GuiEdge::mouseDoubleClickEvent( QGraphicsSceneMouseEvent *event)
 /**
  * Insert node
  */
-GuiNode* GuiEdge::insertNode ( QPointF p)
+GuiNode* GuiEdge::insertNode ( QPointF p)	//!!! I think it's superannuated
 {
 	GuiNode* node = addGui ( graph->insertNodeOnEdge( this));
 	

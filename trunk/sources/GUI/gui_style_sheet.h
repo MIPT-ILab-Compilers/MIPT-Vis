@@ -4,6 +4,7 @@
 #include <QtGui/QPainter>
 #include <Qt/QVector.h>
 #include <Qt/QString.h>
+#include <libxml/xmlwriter.h>
 
 #include "libXml/tree.h"
 //struct xmlNode;
@@ -27,6 +28,9 @@ public:
 	{
 		return name_priv;
 	}
+	
+	virtual void loadFromXmlNode (xmlNode * a_node);
+	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
 };
 
 class EdgeStyle
@@ -44,10 +48,12 @@ public:
 	~StyleSheet();
 
 	void loadFromXmlNode (xmlNode * a_node);
+	void writeByXMLWriter( xmlTextWriterPtr writer);
 
 	StId getId (const QString& name);
 	void applayStyle (StId id, QPainter * painter);
 	void applayStyle (const QString& name, QPainter * painter);
+	const QString& getStName (StId id);
 	StId addStyle (Style* st);
 };
 

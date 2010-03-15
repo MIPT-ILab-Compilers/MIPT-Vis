@@ -152,11 +152,13 @@ void MainWindow::makeGravity()
 	graph->iterateGravity();
 }
 
+/*
+ *Switch showind virtual nodes in graph
+ */
 void MainWindow::switchVnodesShow()
 {
-	VirtualNodesDrawing = !VirtualNodesDrawing;
+	graph->switchVnodesShow();
 }
-
 /**
  * convertDumpToXML
  */
@@ -285,16 +287,16 @@ void MainWindow::createActions()
     connect( convertDumpToXMLAct, SIGNAL( triggered()), this, SLOT( convertDumpToXMLSlot()));
 	
 	enGravityAct = new QAction ( tr( "&Enable Gravity Correction"), this);
-    enGravityAct->setStatusTip ( tr( "&Enable Gravity Correction"));
+    enGravityAct->setStatusTip ( tr( "Enable Gravity Correction"));
 	disGravityAct = new QAction ( tr( "&Disable Gravity Correction"), this);
-    disGravityAct->setStatusTip ( tr( "&Disable Gravity Correction"));
+    disGravityAct->setStatusTip ( tr( "Disable Gravity Correction"));
     connect( enGravityAct, SIGNAL( triggered()), this, SLOT( enableGravity()));
 	connect( disGravityAct, SIGNAL( triggered()), this, SLOT( disableGravity()));
 
 	
-    convertDumpToXMLAct = new QAction( tr( "&Show virtual nodes"), this);
-    convertDumpToXMLAct->setStatusTip( tr( "Show virtual nodes"));
-    connect( convertDumpToXMLAct, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
+    showVirtualNodesAct = new QAction( tr( "Show &pseudonodes trigger"), this);
+    showVirtualNodesAct->setStatusTip( tr( "Show pseudonodes trigger"));
+    connect( showVirtualNodesAct, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
 }
 
 /**
@@ -313,6 +315,7 @@ void MainWindow::createMenus()
     toolsMenu->addAction( enGravityAct);
     toolsMenu->addAction( disGravityAct);
     toolsMenu->addAction( convertDumpToXMLAct);
+    toolsMenu->addAction( showVirtualNodesAct);
 
     helpMenu = menuBar()->addMenu( tr( "&Help"));
     helpMenu->addAction( helpAct);

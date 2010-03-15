@@ -72,6 +72,7 @@ private:
     QAction *convertDumpToXMLAct;
     QAction *enGravityAct;
     QAction *disGravityAct;
+    QAction *showVirtualNodesAct;
 
 	QTimer *gravity_timer;
 
