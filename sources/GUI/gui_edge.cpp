@@ -9,10 +9,11 @@
 /**
  * Constructor of GuiEdge class
  */
-GuiEdge::GuiEdge(  GuiGraph * graph_p, int _id, GuiNode * startItem, GuiNode * endItem, 
+GuiEdge::GuiEdge(  GuiGraph * graph_p, int _id, StyleSheet* ss, GuiNode * startItem, GuiNode * endItem, 
                  QGraphicsItem * parent, QGraphicsScene * scene)
             :QGraphicsItem( parent, scene), EdgeAux( ( GraphAux *)( graph_p), _id, 
-            static_cast< NodeAux *>( startItem), static_cast< NodeAux *>( endItem))
+            static_cast< NodeAux *>( startItem), static_cast< NodeAux *>( endItem)),
+			EdgeProperties (ss)
 {
     QGraphicsItem::setCursor( Qt::ArrowCursor);
     setFlag( QGraphicsItem::ItemIsSelectable, true);
@@ -186,10 +187,11 @@ void GuiEdge::paint( QPainter * painter,
 		return;
 	}
 	if (!valid) return;
-	
+
+	applStyle (painter);
 
     qreal arrowSize = 10;
-    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
+//    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 	GuiNode* suc = addGui ( succ());
 	GuiNode* pre = addGui ( pred());
 	
@@ -197,20 +199,17 @@ void GuiEdge::paint( QPainter * painter,
 	if( suc->real())
     {
 		QPointF dir = (7*endDir + startP)/8 - endP;//!!! Mnemonic rule, it must be changed
-		
-		painter->setBrush( Qt::darkRed);
 		drawLineHead (painter, endP, -atan2 (dir.y(), dir.x()), 10, false);
-
-		painter->setBrush( Qt::transparent);//!!! change it to black, and you will see, what heppend. I can't explain this
     }
 //    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 //	painter->drawPoint (startDir);		//debug drawing
 //	painter->drawPoint (endDir);
 
-	painter->drawPath (curve);//!!! It is a very damp code, i write it to get understand curves
+	painter->setBrush( Qt::transparent);//!!! change it to black, and you will see, what heppend. I can't explain this
+	painter->drawPath (curve);
 
 
-    update();
+//    update();
 }
 
 /**
@@ -263,7 +262,8 @@ void GuiEdge::writeByXMLWriter( xmlTextWriterPtr writer)
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "prob", "%d", prob());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "thickness", "%d", thickness());
 	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST style());
+	if (0 != stName().compare ("default", Qt::CaseInsensitive))
+		xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST stName().toAscii().data());
 }
 
 /**

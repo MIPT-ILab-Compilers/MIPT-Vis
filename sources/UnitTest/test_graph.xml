@@ -18,11 +18,11 @@
 	</edge>
 	<edge id="10" from="5" to="4" label="simple edge" prob="100" thickness="10" color="green" style="solid">
 	</edge>
-	<edge id="9" from="11" to="3" label="" prob="1" thickness="1" color="" style="Solid">
+	<edge id="9" from="11" to="3" label="" prob="1" thickness="1" color="" style="solid">
 	</edge>
 	<edge id="8" from="4" to="11" label="simple edge" prob="100" thickness="10" color="green" style="solid">
 	</edge>
-	<edge id="7" from="10" to="2" label="" prob="1" thickness="1" color="" style="Solid">
+	<edge id="7" from="10" to="2" label="" prob="1" thickness="1" color="" style="solid">
 	</edge>
 	<edge id="6" from="4" to="10" label="simple edge" prob="100" thickness="10" color="green" style="solid">
 	</edge>
@@ -30,11 +30,11 @@
 	</edge>
 	<edge id="4" from="1" to="0" label="simple edge" prob="100" thickness="10" color="green" style="solid">
 	</edge>
-	<edge id="3" from="9" to="5" label="" prob="1" thickness="1" color="" style="Solid">
+	<edge id="3" from="9" to="5" label="" prob="1" thickness="1" color="" style="solid">
 	</edge>
 	<edge id="2" from="3" to="9" label="back edge" prob="99" thickness="9" color="red" style="solid">
 	</edge>
-	<edge id="1" from="8" to="5" label="" prob="1" thickness="1" color="" style="Solid">
+	<edge id="1" from="8" to="5" label="" prob="1" thickness="1" color="" style="solid">
 	</edge>
 	<edge id="0" from="2" to="8" label="back edge" prob="99" thickness="9" color="red" style="solid">
 	</edge>
@@ -43,4 +43,5 @@
   <style            brush="green" penColor="yellow" penWidth="3"/>
   <style name="hyp" brush="yellow" penColor="green"/>
   <style name="dark" brush="grey"/>
+  <style name="solid" brush="yellow" penColor="gray" penWidth="2"/>
 </graph>

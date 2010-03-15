@@ -13,10 +13,13 @@ class EdgeProperties
     int prob_priv;
 	int thickness_priv;
 	char * color_priv;
-	char * style_priv;
 	char * label_priv;
+	
+	StId style_priv;
+	StyleSheet *ss_priv;
 public:
-    EdgeProperties()
+    EdgeProperties (StyleSheet* ss)
+		:ss_priv (ss)
     {
         /** Default values */
         prob_priv = 1;
@@ -37,13 +40,17 @@ public:
     {
         return color_priv;
     }
-	inline char * style() const
-	{
-        return style_priv;
-    }
     inline char * label() const
     {
         return label_priv;
+    }
+	inline const QString& stName() const
+    { 
+        return ss_priv->getStName (style_priv);
+    }
+	inline void applStyle (QPainter * painter)
+    { 
+        ss_priv->applayStyle (style_priv, painter);
     }
     /** Data writing routines */
     inline void setProb( int prob)
@@ -58,13 +65,13 @@ public:
     {
         color_priv = color;
     }
-	inline void setStyle( char * style)
-    {
-        style_priv = style;
-    }
 	inline void setLabel( char * label)
     {
         label_priv = label;
+    }
+	inline void setStyle (const QString& stName) 
+    { 
+        style_priv = ss_priv->getId (stName);
     }
 };
 
@@ -97,7 +104,7 @@ public:
     }
 
 protected:
-    void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
+    void paint (QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
     void mousePressEvent( QGraphicsSceneMouseEvent * event);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event);
@@ -105,7 +112,7 @@ protected:
 	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
 	virtual void readByXML ( xmlNode * cur_node);
 private:
-    GuiEdge( GuiGraph * graph_p, int _id, GuiNode * startItem, GuiNode * endItem, 
+    GuiEdge( GuiGraph * graph_p, int _id, StyleSheet* ss, GuiNode * startItem, GuiNode * endItem, 
                  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
 	virtual ~GuiEdge();
     friend class GuiGraph;

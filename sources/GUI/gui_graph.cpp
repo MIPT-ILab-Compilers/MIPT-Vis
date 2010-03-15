@@ -178,7 +178,7 @@ void GuiGraph::writeAttribsByXMLWriter (xmlTextWriterPtr writer)
  */
 EdgeAux * GuiGraph::createEdge( Node * pred, Node * succ)
 {
-    GuiEdge * e = new GuiEdge ( this, incEdgeId(), ( GuiNode *)pred, ( GuiNode *)succ);
+    GuiEdge * e = new GuiEdge ( this, incEdgeId(), &ss, ( GuiNode *)pred, ( GuiNode *)succ);
     addItem( e);
     e->setStyle( "Solid");
     e->setZValue( -1000.0);
@@ -201,6 +201,16 @@ NodeAux * GuiGraph::createNode()
     addItem( node_p);
 
     return node_p;
+}
+
+/**
+* Insert new node on edge in graph
+*/
+NodeAux * GuiGraph::insertNodeOnEdge (EdgeAux* e)
+{
+    NodeAux* n = GraphAux::insertNodeOnEdge( e);
+	addGui (n->firstSucc())->setStyle (addGui(n->firstPred())->stName());
+    return n;
 }
 /**
  * adds remove item to graph::removeEdge

@@ -35,6 +35,8 @@ public:
         GuiNode * gui_node_p = ( GuiNode *)firstNode();
         return (QGraphicsItem *) gui_node_p;       
     }
+	
+    virtual NodeAux * insertNodeOnEdge (EdgeAux* e);
 
 	virtual void removeEdge (Edge* e);
 	virtual void removeNode (Node* n);
