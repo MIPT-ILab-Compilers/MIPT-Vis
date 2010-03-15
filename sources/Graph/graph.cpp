@@ -540,10 +540,12 @@ Graph::writeToXML( const char *filename)
 
 	writeNodesByXMLWriter( writer);
     writeEdgesByXMLWriter( writer);
+	writeAttribsByXMLWriter (writer);
 
 	xmlTextWriterEndElement( writer);
 
 	xmlTextWriterEndDocument( writer);
+
 
 	xmlFreeTextWriter( writer);
 }

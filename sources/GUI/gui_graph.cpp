@@ -4,7 +4,6 @@
  */
 
 #include "gui_impl.h"
-#include "StyleSheet.h"
 
 /**
  * Create element after double click mouse.
@@ -166,6 +165,15 @@ void GuiGraph::readAttribsFromXml (xmlNode * a_node)
 }
 
 /**
+ * Read style table
+ */
+void GuiGraph::writeAttribsByXMLWriter (xmlTextWriterPtr writer)
+{
+	ss.writeByXMLWriter (writer);
+	GraphAux::writeAttribsByXMLWriter (writer);
+}
+
+/**
  * Allocation memory for edge
  */
 EdgeAux * GuiGraph::createEdge( Node * pred, Node * succ)
@@ -212,6 +220,18 @@ void GuiGraph::removeNode (Node* n)
 	Graph::removeNode (n);
 }
 
+/**
+ * Virtual nodes show switch
+ */
+void GuiGraph::switchVnodesShow()
+{
+	drawVirtualNodes = !drawVirtualNodes;
+}
+
+bool GuiGraph::showVnodes()
+{
+	return drawVirtualNodes;
+}
 /**
  * commit layout
  */

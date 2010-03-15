@@ -7,9 +7,6 @@
 #include<QtGui/QAction>
 #include<QtGui/QMenu>
 
-
-bool VirtualNodesDrawing = false;
-
 /**
  * Init NodeProperties
  */
@@ -36,7 +33,6 @@ GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, StyleSheet* ss,
 	setTextWidth ( 100); //Set width of node
 	NodeAux::setWidth( 100);
 	setMyAdjust( real()? 3 : 1);
-	setMyColor( Qt::green); // color here!!!
 	setMyText( "");
 	setFlag( QGraphicsItem::ItemIsMovable, true); // Set node can move
 	setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
@@ -112,11 +108,9 @@ void GuiNode::mouseReleaseEvent( QGraphicsSceneMouseEvent *event)
 void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
 	applStyle (painter);
-//	(**style()).applayTo (painter);
 	if ( real())
 	{
-//	    painter->setPen( QPen(Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-		painter->fillRect( boundingRect(), painter->brush());
+		painter->drawRect( boundingRect());
 		QGraphicsTextItem::paint( painter, option, widget);
 		myPolygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
 		                  << ( boundingRect().topRight()) << ( boundingRect().topLeft())
@@ -124,9 +118,9 @@ void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option
 	}
 	else
 	{
-		if (!VirtualNodesDrawing) return;//do not draw virtual nodes
+		if (!addGui (graph)->showVnodes()) return;//do not draw virtual nodes
 		painter->setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-		painter->fillRect( boundingRect(), QBrush( myColor));
+		painter->drawRect (boundingRect());
 		myPolygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
 		                  << ( boundingRect().topRight()) << ( boundingRect().topLeft())
 		                  << ( boundingRect().bottomLeft());
@@ -189,7 +183,7 @@ void GuiNode::commitPos( int x, int y)
  */
 void GuiNode::superscribe ( QColor color, QString text)
 {
-    setMyColor( color);
+//    setMyColor( color);
     setPlainText( text);
 }
 
@@ -225,7 +219,8 @@ void GuiNode::writeByXMLWriter( xmlTextWriterPtr writer)
 	if ( color()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
 	if ( NodeProperties::shape())
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST NodeProperties::shape());
-	if ( textPriv()) xmlTextWriterWriteAttribute( writer, BAD_CAST "textPriv", BAD_CAST textPriv());
+	if (0 != stName().compare ("default", Qt::CaseInsensitive))
+		xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST stName().toAscii().data());
 }
 
 /**

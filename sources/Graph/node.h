@@ -17,7 +17,9 @@ class Node: public Marked, public Numbered
     
     /** Connection with inclusive graph */
     int unique_id; // Unique id is given by graph and cannot be modified
-    Graph * graph;// Pointer to graph
+	protected:
+		Graph * graph;// Pointer to graph
+	private:
     NodeListItem my_it;//Item of graph's list
     
     //Lists of edges and iterators for them

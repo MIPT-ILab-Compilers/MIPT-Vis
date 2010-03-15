@@ -284,6 +284,14 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\gui_style_sheet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\gui_style_sheet.h"
+				>
+			</File>
+			<File
 				RelativePath=".\gui_textedit.cpp"
 				>
 			</File>
@@ -342,14 +350,6 @@
 						Outputs=" tmp\moc\moc_gui_view.cpp"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\StyleSheet.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\StyleSheet.h"
-				>
 			</File>
 		</Filter>
 	</Files>

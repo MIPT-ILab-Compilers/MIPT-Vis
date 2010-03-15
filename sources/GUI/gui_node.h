@@ -9,14 +9,12 @@
 #include <QtGui/QApplication>
 #include <QtCore/QLineF>
 #include "../Layout/layout_iface.h"
-#include "StyleSheet.h"
+#include "gui_style_sheet.h"
 class GuiEdge;
 class GuiNode;
 class GuiGraph;
 class GuiEdge;
 class GuiPoint;
-
-extern bool VirtualNodesDrawing;
 
 /**
  * Representation of various node attributes
@@ -54,7 +52,11 @@ public:
     { 
         return style_priv;
     }
-	inline void applStyle (QPainter * painter)// const
+	inline const QString& stName() const
+    { 
+        return ss_priv->getStName (style_priv);
+    }
+	inline void applStyle (QPainter * painter)
     { 
         ss_priv->applayStyle (style_priv, painter);
     }
@@ -90,7 +92,7 @@ class GuiNode:public QGraphicsTextItem, public NodeAux, public NodeProperties
 
 private:
     QPolygonF myPolygon;
-    QColor myColor;
+//    QColor myColor;
     qreal myAdjust;
     friend class GuiGraph;
     friend class GraphAux;
@@ -109,14 +111,6 @@ public:
     inline QPolygonF polygon() const
     {
         return myPolygon;
-    };
-    inline void setMyColor( QColor color)
-    {
-        myColor = color;
-    };
-    inline QColor getMyColor()
-    {
-        return myColor;
     };
     inline void setMyAdjust( qreal adjust)
     {
