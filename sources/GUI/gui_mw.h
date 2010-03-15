@@ -77,20 +77,18 @@ private:
 	QTimer *gravity_timer;
 
     GuiView *view;
-    QHBoxLayout *layout;
-    QWidget *widget;
-    QWidget *widget1;
-    QWidget *widget2;
-    QSplitter *splitter;
+    QHBoxLayout *viewLayout;
+    QWidget *viewWidget;
+    QWidget *nodeTextWidget;
+    QWidget *centreOnNodeWidget;
     GuiGraph *graph;
     QString currentFile;
     GuiTextEdit *nodeTextEdit;
-    QGroupBox *groupBox;
-    QVBoxLayout *textLayout;
+    QVBoxLayout *nodeTextLayout;
     QVBoxLayout *centreOnNodeLayout;
     QPushButton *saveTextButton;
     QPushButton *centreOnNodeButton;
-	QSpinBox *spinBox;
+	QSpinBox *centreOnNodeSpinBox;
 
 };
 
