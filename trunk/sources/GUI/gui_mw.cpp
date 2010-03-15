@@ -24,12 +24,12 @@ MainWindow::MainWindow()
       view->centerOn( graph->getNodeItem());
        
 
-    layout = new QHBoxLayout;
-    layout->addWidget( view);
+    viewLayout = new QHBoxLayout;
+    viewLayout->addWidget( view);
 
-    widget = new QWidget;
-    widget->setLayout(layout);
-	setCentralWidget( widget);
+    viewWidget = new QWidget;
+    viewWidget->setLayout(viewLayout);
+	setCentralWidget( viewWidget);
 
     createActions();
     createMenus();
@@ -182,8 +182,7 @@ void MainWindow::convertDumpToXMLSlot()
  */
 void MainWindow::centreOnNode()
 {
-    //int nodeId = QInputDialog::getInteger( this, "Center On Node", "Enter Node Number", 0, -1000, 1000, 1, 0, 0);
-	int nodeId = spinBox->value();
+	int nodeId = centreOnNodeSpinBox->value();
     doCentreOnNode( nodeId);
 } 
 
@@ -206,13 +205,13 @@ void MainWindow::doCentreOnNode( int nodeNumber)
  */
 void MainWindow::createDockWindows()
 {
-	/* Dock 2*/
+	/* centreOnNode dock*/
 	QDockWidget *dock = new QDockWidget( tr("Centre on node"), this);
     dock->setAllowedAreas( Qt::AllDockWidgetAreas);
 	dock->setFloating( false);
 
-	spinBox = new QSpinBox;
-	spinBox->setRange(0,100);
+	centreOnNodeSpinBox = new QSpinBox;
+	centreOnNodeSpinBox->setRange(0,100);
 
     centreOnNodeButton = new QPushButton( tr("Jump"));
     centreOnNodeButton->setEnabled( true);
@@ -220,17 +219,17 @@ void MainWindow::createDockWindows()
     QObject::connect( centreOnNodeButton, SIGNAL( clicked()), this, SLOT( centreOnNode()));
 
 	centreOnNodeLayout = new QVBoxLayout( dock);
-	centreOnNodeLayout->addWidget( spinBox);
+	centreOnNodeLayout->addWidget( centreOnNodeSpinBox);
 	centreOnNodeLayout->addWidget( centreOnNodeButton);
 
-    widget2 = new QWidget;
-    widget2->setLayout( centreOnNodeLayout);
+    centreOnNodeWidget = new QWidget;
+    centreOnNodeWidget->setLayout( centreOnNodeLayout);
 
-	dock->setWidget(widget2);
+	dock->setWidget(centreOnNodeWidget);
     addDockWidget( Qt::RightDockWidgetArea, dock);
 	viewMenu->addAction(dock->toggleViewAction());
 
-	/* Dock 1*/
+	/* nodeTextEdit dock*/
     dock = new QDockWidget( tr("Node description"), this);
     dock->setAllowedAreas( Qt::AllDockWidgetAreas);
 	dock->setFloating( false);
@@ -245,14 +244,14 @@ void MainWindow::createDockWindows()
     saveTextButton->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
     QObject::connect( saveTextButton, SIGNAL( clicked()), this, SLOT( saveTextToNode()));
 
-    textLayout = new QVBoxLayout( dock);
-    textLayout->addWidget( nodeTextEdit);
-    textLayout->addWidget( saveTextButton);
+    nodeTextLayout = new QVBoxLayout( dock);
+    nodeTextLayout->addWidget( nodeTextEdit);
+    nodeTextLayout->addWidget( saveTextButton);
 
-    widget1 = new QWidget;
-    widget1->setLayout( textLayout);
+    nodeTextWidget = new QWidget;
+    nodeTextWidget->setLayout( nodeTextLayout);
 
-	dock->setWidget( widget1);
+	dock->setWidget( nodeTextWidget);
     addDockWidget( Qt::RightDockWidgetArea, dock);
 	viewMenu->addAction(dock->toggleViewAction());
 }
