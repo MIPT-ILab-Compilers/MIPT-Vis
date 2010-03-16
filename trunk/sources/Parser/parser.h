@@ -11,9 +11,13 @@
 #include <list>
 #include <algorithm>
 #include <iostream>
-#include "QtCore/QString"
+#include <QtCore/QString>
 
-#include "../Graph/graph_iface.h"
+//#include "../Graph/graph_iface.h"
+//#include "../GUI/gui_iface.h"
+#include "graph_parser.h"
+#include "../Utils/utils_iface.h"
+
 
 /**
  * Implementation of Basic Block
@@ -37,6 +41,7 @@ public:
 	void addPred( int pred) { preds.push_back( pred); setPredsInstd(); }
 	void addSucc( int succ) { succs.push_back( succ); setSuccsInstd(); }
 	void addText( string & txt, int line);
+	const char * getText();
 	Lint::const_iterator getFirstSucc() { return succs.begin(); }
 	Lint::const_iterator getEndSucc() { return succs.end(); }
 };
@@ -59,7 +64,7 @@ public:
 	Function() { lastAdded = -1; }
 	BBlock * addBBlock( int number, int line, BBlock * bb = 0);
 	BBlock * getBBlock( int number);
-	Graph * getGraph();
+	ParserGraph * getGraph();
 };
 
 /**
@@ -76,7 +81,7 @@ public:
 	Function * getFunction( string & name = string("main"));
 	BBlock * addBBlock( int number, int line, string & name = string("main"), BBlock * bb = 0);
 	BBlock * getBBlock( int num, string & name = string("main"));
-	Graph * getGraph( const char *fname = NULL);
+	ParserGraph * getGraph( const char *fname = NULL);
 	list < string> & getFunctionList();
 };
 
@@ -175,6 +180,7 @@ const QString icc_patt_predstart = "^preds:.*";
 const QString icc_patt_succend = "^succs:.*";
 const QString icc_patt_edges = "(\\d+)([^\\d]*)";
 const QString icc_patt_context = "^context:.*";
+const QString icc_patt_root_context = "^Root\\sContext.*";
 const QString icc_patt_fnname = "^\\s*\\d+\\s+\\d+.*\\sentry.*\\s([a-zA-Z_][a-zA-Z0-9_]*)((\\(.*\\);)|$)";
 
 
@@ -195,7 +201,7 @@ public:
 	virtual ~Parser(){}
     bool parseFile( string filename);
 	static CompilerType getCompilerType( const char * file);
-	Graph * getGraph( const char *fname = NULL) { return dump_info.getGraph( fname); }
+	ParserGraph * getGraph( const char *fname = NULL) { return dump_info.getGraph( fname); }
 
 protected:
     virtual bool parseFromStream( istream & is) = 0;
@@ -228,6 +234,7 @@ private:
 	bool getPred( string &in, BBlock &bb);
 	bool getSucc( string &in, BBlock &bb);
 	bool isContext( string &in);
+	bool isRootContext( string &in);
 	string isFnName( string &in);
 	
 public:
@@ -235,6 +242,5 @@ public:
 	Icc_parser() { }
 	~Icc_parser() {	}
 };
-
 
 #endif //PARSER_H

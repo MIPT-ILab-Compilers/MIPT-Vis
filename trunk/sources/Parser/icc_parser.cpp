@@ -95,6 +95,15 @@ bool Icc_parser::isContext(std::string &in)
 	return regexp.indexIn( str) != -1;
 }
 
+bool Icc_parser::isRootContext(std::string &in)
+{
+	QRegExp regexp;
+	QString str(in.c_str());
+
+	regexp.setPattern( icc_patt_root_context);
+	return regexp.indexIn( str) != -1;
+}
+
 bool Icc_parser::parseFromStream(std::istream &is)
 {
 	int strnum = 0;
@@ -142,6 +151,9 @@ bool Icc_parser::parseFromStream(std::istream &is)
 			
 			continue;
 		}
+
+		if ( isRootContext( current))
+			isContextFound = false;
 		
 		if ( isContextFound)
 		{
@@ -153,7 +165,8 @@ bool Icc_parser::parseFromStream(std::istream &is)
 			{
 				fnname = t;
 				dump_info.addFunction( fnname);
-				dump_info.addBBlock( 0, zeroBlockStr, fnname, tbb);
+				tbb = dump_info.addBBlock( 0, zeroBlockStr, fnname, tbb);
+				delete zeroBlock;
 				zeroBlock = 0;
 			}
 			tbb->addText( current, strnum);

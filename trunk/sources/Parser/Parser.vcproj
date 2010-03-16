@@ -149,6 +149,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graph_parser.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\graph_parser.h"
+				>
+			</File>
+			<File
 				RelativePath=".\icc_parser.cpp"
 				>
 			</File>

@@ -4,6 +4,7 @@
  */
 #ifndef PARSER_IFACE_H_
 #define PARSER_IFACE_H_
-bool convertDumpToXML( const char * file);
+
+bool convertDumpToXML( QWidget * parent);
 
 #endif PARSER_IFACE_H_
