@@ -5,6 +5,12 @@
 
 
 #include "parser.h"
+#include <QtGui/QWidget>
+#include <QtGui/QFileDialog>
+#include <QtCore/QObject>
+#include <QtGui/QMessageBox>
+
+
 /**
  * BBlock class methods
  */
@@ -31,6 +37,11 @@ void BBlock::addText( string & txt, int line)
 	text += txt;
 	instd_text = true;
 	impl = ( impl == -1) ? line : impl;
+}
+
+const char * BBlock::getText() 
+{
+	return text.c_str();
 }
 
 
@@ -70,24 +81,29 @@ BBlock * Function::getBBlock( int number)
 	return &it->second;
 }
 
-Graph * Function::getGraph()
+ParserGraph * Function::getGraph()
 {
-	Graph * graph = new Graph;
-	map< int, Node *> node_list;
+	ParserGraph * graph = new ParserGraph;
+	map< int, ParserNode *> node_list;
 	BBlocks::const_iterator i;
 
 	for ( i = getFirstBBlock(); i != getEndBBlock(); i++)
-		node_list[ i->first] = graph->newNode();
+		node_list[ i->first] = (ParserNode *)graph->newNode();
 
 
-	map< int, Node *>::const_iterator node_index;
+	map< int, ParserNode *>::const_iterator node_index;
 	for ( node_index = node_list.begin();
 		  node_index != node_list.end();
 		  node_index++
 		)
 	{
+		
+
 		Lint::const_iterator to;
 		BBlock * bb= getBBlock( node_index->first);
+
+		node_list[node_index->first]->setColor( "Green");
+		node_list[node_index->first]->setText( (char*)bb->getText());
 
 		for ( to = bb->getFirstSucc();
 			  to != bb->getEndSucc();
@@ -131,7 +147,7 @@ BBlock * DumpInfo::addBBlock( int number, int line, string &name, BBlock * bb)
 	return getFunction( name)->addBBlock( number, line, bb);
 }
 
-Graph * DumpInfo::getGraph( const char *fname)
+ParserGraph * DumpInfo::getGraph( const char *fname)
 {
 	string tmp = ( fname)? string( fname) : "main";
 	return getFunction( tmp)->getGraph();
@@ -180,24 +196,41 @@ CompilerType Parser::getCompilerType( const char * file)
 	return unknown;
 }
 
-bool convertDumpToXML( const char * file)
+bool convertDumpToXML( QWidget * parent)
 {
 	Parser* P;
-	Graph * gr;
+	ParserGraph * gr;
 	CompilerType ct;
-	string fname( file);
+	QString file;
 
-	ct = Parser::getCompilerType( file);
+	Utils::out( "\nParser started");
+
+	file = QFileDialog::getOpenFileName( parent, parent->tr( "Select file to convert"), 
+		"", parent->tr( "All files(*.*)")); 
+    if ( file.isEmpty()) return false;
+
+	Utils::out( "Parsing file %s", file.toAscii().constData());
+
+	ct = Parser::getCompilerType( file.toAscii().constData());
 	if ( ct == GCC)
+	{
+		Utils::out( "Gcc compiler detected");
 		P = new Gcc_parser();
+	}
 	else if ( ct == ICC)
+	{
+		Utils::out( "Icc compiler detected");
 		P = new Icc_parser();
+	}
 	else
+	{
+		Utils::err( "Unknown compiler type");
 		return false;
+	}
 
 	try
 	{
-		P->parseFile( fname);
+		P->parseFile( file.toAscii().constData()); //( file.toStdString());
 		gr = P->getGraph();
 	}
 	catch( exSomething & ex)
@@ -205,9 +238,26 @@ bool convertDumpToXML( const char * file)
 		ex.print_error( std::cerr);
 		return false;
 	}
-	
-	fname += ".xml";
-	gr->writeToXML( fname.c_str());
+
+	Utils::out( "%s successfuly parsed", file.toAscii().constData());
+
+	file += ".xml";
+
+	file = QFileDialog::getSaveFileName( parent, parent->tr( "Save XML"), file,	parent->tr( "XML files (*.xml)"));
+
+	if ( !file.isEmpty())
+	{
+		gr->writeToXML( file.toAscii().constData());
+		Utils::out( "Dump %s wrote", file.toAscii().constData());
+
+		QMessageBox msgBox;
+		msgBox.setText("The dump " + file + " has been writen.");
+		msgBox.setModal( true);
+		msgBox.exec();
+	}
+
+	Utils::out( "End of parser job\n");
+
     delete P;
     delete gr;
 

@@ -164,16 +164,7 @@ void MainWindow::switchVnodesShow()
  */
 void MainWindow::convertDumpToXMLSlot()
 {
-    currentFile = QFileDialog::getOpenFileName( this, tr( "Select file to convert"), "", tr( "All files(*.*)")); 
-    if ( currentFile.isEmpty()) return;
-    QByteArray curFile = currentFile.toAscii();
-    char *file;
-    file = (char*) calloc( curFile.size(), sizeof(char));
-    if (file==NULL) return;
-    int i;
-    for (i=0;i<=curFile.size();i++) file[i]=curFile[i];
-
-	convertDumpToXML( file);
+	convertDumpToXML( this);
 } 
 
 
