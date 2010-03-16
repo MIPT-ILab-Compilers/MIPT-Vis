@@ -8,8 +8,7 @@
  * Test scene with rectangles and text
  */
 bool showScene( int argc, char * argv[], QApplication *app)
-{	
-	//Q_INIT_RESOURCE(GUI);
+{
     MainWindow mw;
     mw.show();
     app->exec();
