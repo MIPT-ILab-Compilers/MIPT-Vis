@@ -33,6 +33,7 @@ MainWindow::MainWindow()
 
     createActions();
     createMenus();
+	createToolBars();
     createStatusBar();
 	createDockWindows();
 
@@ -252,11 +253,12 @@ void MainWindow::createDockWindows()
  */
 void MainWindow::createActions()
 {
-    loadAct = new QAction( tr( "&Load"), this);
+    loadAct =  new QAction( QIcon("../GUI/images/load.bmp"),tr("&Load"), this);
     loadAct->setStatusTip( tr( "Load..."));
     connect( loadAct, SIGNAL( triggered()), this, SLOT( load()));
 
-    saveAct = new QAction( tr( "&Save"), this);
+    saveAct = new QAction( QIcon("../GUI/images/save.bmp"),tr( "&Save"), this);
+    saveAct->setShortcuts(QKeySequence::Save);
     saveAct->setStatusTip( tr( "Save..."));
     connect( saveAct, SIGNAL( triggered()), this, SLOT( save()));
 
@@ -268,7 +270,7 @@ void MainWindow::createActions()
     aboutAct->setStatusTip( tr( "About..."));
     connect( aboutAct, SIGNAL(triggered()), this, SLOT( about()));
 
-    doLayoutAct = new QAction( tr( "Do &Layout"), this);
+    doLayoutAct = new QAction( QIcon("../GUI/images/setLayout.bmp"),tr( "Do &Layout"), this);
     doLayoutAct->setStatusTip( tr( "Do Layout..."));
     connect( doLayoutAct, SIGNAL( triggered()), this, SLOT( doLayoutSlot()));
 
@@ -276,9 +278,9 @@ void MainWindow::createActions()
     convertDumpToXMLAct->setStatusTip( tr( "Convert dump to XML..."));
     connect( convertDumpToXMLAct, SIGNAL( triggered()), this, SLOT( convertDumpToXMLSlot()));
 	
-	enGravityAct = new QAction ( tr( "&Enable Gravity Correction"), this);
+	enGravityAct = new QAction ( QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Enable Gravity Correction"), this);
     enGravityAct->setStatusTip ( tr( "Enable Gravity Correction"));
-	disGravityAct = new QAction ( tr( "&Disable Gravity Correction"), this);
+	disGravityAct = new QAction (QIcon("../GUI/images/disGravityAct.bmp"),tr( "&Disable Gravity Correction"), this);
     disGravityAct->setStatusTip ( tr( "Disable Gravity Correction"));
     connect( enGravityAct, SIGNAL( triggered()), this, SLOT( enableGravity()));
 	connect( disGravityAct, SIGNAL( triggered()), this, SLOT( disableGravity()));
@@ -379,3 +381,15 @@ QString MainWindow::strippedName( const QString &fullFileName)
 {
     return QFileInfo( fullFileName).fileName();
 } 
+/**
+ * createToolBars
+ */
+void MainWindow::createToolBars()
+{
+    toolbar = addToolBar(tr("File"));
+	toolbar->addAction(loadAct);
+    toolbar->addAction(saveAct);
+	toolbar->addAction(doLayoutAct);
+	toolbar->addAction(enGravityAct);
+	toolbar->addAction(disGravityAct);
+}

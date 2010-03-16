@@ -56,6 +56,7 @@ private:
     void createStatusBar();
     void setCurrentFile( const QString & fileName);
 	void createDockWindows();
+	void createToolBars();
 
     QString strippedName( const QString &fullFileName);
     
@@ -73,6 +74,8 @@ private:
     QAction *enGravityAct;
     QAction *disGravityAct;
     QAction *showVirtualNodesAct;
+
+	QToolBar *toolbar;
 
 	QTimer *gravity_timer;
 
