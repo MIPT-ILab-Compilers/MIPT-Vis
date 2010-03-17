@@ -127,6 +127,10 @@ public:
 	{
 		return false;
 	}
+	int backedgeNumStat();
+	int edgeCrossNumStat();
+	bool interSection(EdgeAux* one_edge, EdgeAux* another_edge);
+	void debugPrint();
 };
 
 #endif

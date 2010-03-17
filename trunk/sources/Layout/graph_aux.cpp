@@ -669,3 +669,79 @@ void GraphAux::forceDirectedPosition()
 	}
 }
 //-----------------------------------------------------------------------------
+int GraphAux::backedgeNumStat()
+{
+	EdgeAux* temp = firstEdge();
+	int back_edge_num = 0;
+	while ( temp != NULL)
+	{
+		if(temp->pred()->rang() > temp->succ()->rang())
+		{
+			if(temp->succ()->real())
+			{
+				back_edge_num++;
+			}
+		}
+		temp = temp->nextEdge();
+	}
+	return back_edge_num;
+}
+//-----------------------------------------------------------------------------
+int GraphAux::edgeCrossNumStat()
+{
+	EdgeAux* temp_main = firstEdge();
+	EdgeAux* temp_aux = firstEdge();
+	int edgecrossnum = 0;
+	while ( temp_main != NULL)
+	{
+		temp_aux = firstEdge();
+		while(temp_aux != NULL)
+		{
+			if(interSection(temp_aux, temp_main))
+			{
+				if(temp_aux != temp_main)
+				{
+					edgecrossnum++;
+				}
+			}
+			temp_aux = temp_aux->nextEdge();
+		}
+		temp_main = temp_main->nextEdge();
+	}
+	return edgecrossnum/2;
+}
+//-----------------------------------------------------------------------------
+
+bool GraphAux::interSection(EdgeAux* one_edge, EdgeAux* another_edge)
+{
+	
+	if(one_edge->pred()->rang() == another_edge->pred()->rang() && one_edge->succ()->rang() == another_edge->succ()->rang())
+	{
+		if(one_edge->pred()->x() > another_edge->pred()->x())
+			if(one_edge->succ()->x() < another_edge->succ()->x())
+			{
+				return 1;
+			}
+		if(one_edge->pred()->x() < another_edge->pred()->x())
+			if(one_edge->succ()->x() > another_edge->succ()->x())
+				return 1;
+	}
+	if(one_edge->succ()->rang() == another_edge->pred()->rang() && one_edge->pred()->rang() == another_edge->succ()->rang())
+	{
+		if(one_edge->pred()->x() < another_edge->succ()->x())
+			if(one_edge->succ()->x() > another_edge->pred()->x())
+				return 1;
+		if(one_edge->succ()->x() < another_edge->pred()->x())
+			if(one_edge->pred()->x() > another_edge->succ()->x())
+				return 1;
+	}
+	return 0;
+}
+//-----------------------------------------------------------------------------
+void GraphAux::debugPrint()
+{
+	Graph::debugPrint();
+	out("Number of back edge - %i",backedgeNumStat());
+	out("Number of intersection - %i",edgeCrossNumStat());
+}
+//-----------------------------------------------------------------------------
