@@ -57,8 +57,8 @@ void GuiEdge::updatePosition()
 	GuiNode* pre = addGui (pred());
 	GuiNode* suc = addGui (succ());
 
-	startP = mapFromItem( pre, pre->width()/2, pre->height()/2);
-    endP = mapFromItem( suc, suc->width()/2, suc->height()/2);//!!!rarely it not work
+	start_point = mapFromItem( pre, pre->width()/2, pre->height()/2);
+    end_point = mapFromItem( suc, suc->width()/2, suc->height()/2);//!!!rarely it not work
 
 	if (pre == suc)//mesh edge
 	{
@@ -68,18 +68,18 @@ void GuiEdge::updatePosition()
 		QPointF middleDirUp = middle + heigh;
 		QPointF middleDirDown = middle - heigh;
 
-		startDir = startP + heigh;
-		endDir = endP - heigh;
+		start_dir = start_point + heigh;
+		end_dir = end_point - heigh;
 
 		QPolygonF polygon = suc->polygon();
 		polygon.translate (suc->pos());
-		getIntersection (QLineF (startP, startDir), polygon, &startP);
-		getIntersection (QLineF (endP, endDir), polygon, &endP);
+		getIntersection (QLineF (start_point, start_dir), polygon, &start_point);
+		getIntersection (QLineF (end_point, end_dir), polygon, &end_point);
 
 		QPainterPath path;
-		path.moveTo (startP);
-		path.cubicTo (startDir, middleDirUp, middle);
-		path.cubicTo (middleDirDown, endDir, endP);
+		path.moveTo (start_point);
+		path.cubicTo (start_dir, middleDirUp, middle);
+		path.cubicTo (middleDirDown, end_dir, end_point);
 		curve = path;
 	}
 	else
@@ -93,34 +93,34 @@ void GuiEdge::updatePosition()
 
 
 		if (suc->real())
-			valid = valid && getIntersection (QLineF (startP, endP), headPolygon, &endP) == QLineF::BoundedIntersection;
+			valid = valid && getIntersection (QLineF (start_point, end_point), headPolygon, &end_point) == QLineF::BoundedIntersection;
 		if (pre->real()) 
-			valid = valid && getIntersection (QLineF (startP, endP), tailPolygon, &startP) == QLineF::BoundedIntersection;
+			valid = valid && getIntersection (QLineF (start_point, end_point), tailPolygon, &start_point) == QLineF::BoundedIntersection;
 
-		QPointF delta = startP - endP;
+		QPointF delta = start_point - end_point;
 		delta.setX(0);
 
 		if (pre->real()) 
-			startDir = (startP + endP)/2;
+			start_dir = (start_point + end_point)/2;
 		else
-			startDir = startP - delta/2;
+			start_dir = start_point - delta/2;
 
 		if (suc->real())
-			endDir = (startP + endP)/2;
+			end_dir = (start_point + end_point)/2;
 		else
-			endDir = endP + delta/2;
+			end_dir = end_point + delta/2;
 
 		QPainterPath path;
-		path.moveTo (startP);
-		path.cubicTo (startDir, endDir, endP);
+		path.moveTo (start_point);
+		path.cubicTo (start_dir, end_dir, end_point);
 
 		if (valid) curve = path;
 	}
 
-    topLeft.setX( min< qreal>( startP.x(), endP.x()));
-    topLeft.setY( min< qreal>( startP.y(), endP.y()));
-    btmRight.setX( max< qreal>( startP.x(), endP.x()));
-    btmRight.setY( max< qreal>( startP.y(), endP.y())); 
+    top_left.setX( min< qreal>( start_point.x(), end_point.x()));
+    top_left.setY( min< qreal>( start_point.y(), end_point.y()));
+    bottom_right.setX( max< qreal>( start_point.x(), end_point.x()));
+    bottom_right.setY( max< qreal>( start_point.y(), end_point.y())); 
     update();
 }
 
@@ -130,9 +130,9 @@ void GuiEdge::updatePosition()
 QRectF GuiEdge::boundingRect() const
 {
     qreal adjust = 2;
-    return QRectF(topLeft,
-                   QSizeF( btmRight.x() - topLeft.x(),
-                           btmRight.y() - topLeft.y()))
+    return QRectF(top_left,
+                   QSizeF( bottom_right.x() - top_left.x(),
+                           bottom_right.y() - top_left.y()))
            .normalized()
            .adjusted(-adjust, -adjust, adjust, adjust);
 }
@@ -142,9 +142,9 @@ QRectF GuiEdge::boundingRect() const
  */
 QPainterPath GuiEdge::shape() const
 {
-//    QPainterPath path( startP);
+//    QPainterPath path( start_point);
     QPainterPathStroker stroker;
-//    path.lineTo( endP.x(), endP.y());
+//    path.lineTo( end_point.x(), end_point.y());
     stroker.setWidth( 10);
     return stroker.createStroke( curve);
 }
@@ -198,12 +198,12 @@ void GuiEdge::paint( QPainter * painter,
 	if (!pre->real() && pre->firstPred() == 0 && !addGui (graph)->showVnodes()) return;
 	if( suc->real())
     {
-		QPointF dir = (7*endDir + startP)/8 - endP;//!!! Mnemonic rule, it must be changed
-		drawLineHead (painter, endP, -atan2 (dir.y(), dir.x()), 10, false);
+		QPointF dir = (7*end_dir + start_point)/8 - end_point;//!!! Mnemonic rule, it must be changed
+		drawLineHead (painter, end_point, -atan2 (dir.y(), dir.x()), 10, false);
     }
 //    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-//	painter->drawPoint (startDir);		//debug drawing
-//	painter->drawPoint (endDir);
+//	painter->drawPoint (start_dir);		//debug drawing
+//	painter->drawPoint (end_dir);
 
 	painter->setBrush( Qt::transparent);//!!! change it to black, and you will see, what heppend. I can't explain this
 	painter->drawPath (curve);

@@ -27,10 +27,10 @@ class NodeProperties
 	char * text_priv;
 
 	StId style_priv;
-	StyleSheet *ss_priv;
+	StyleSheet *style_sheet_priv;
 
 public:
-	NodeProperties (StyleSheet* ss);
+	NodeProperties (StyleSheet* sheet_style);
     /** Data reading */
     inline char * color() const 
     {
@@ -54,11 +54,11 @@ public:
     }
 	inline const QString& stName() const
     { 
-        return ss_priv->getStName (style_priv);
+        return style_sheet_priv->getStName (style_priv);
     }
 	inline void applStyle (QPainter * painter, const QStyleOptionGraphicsItem * option)
     { 
-        ss_priv->applayStyle (style_priv, painter, option);
+        style_sheet_priv->applayStyle (style_priv, painter, option);
     }
     /** Data writing */ 
     inline void setColor( char * color)
@@ -79,7 +79,7 @@ public:
     }
 	inline void setStyle (char * stName) 
     { 
-        style_priv = ss_priv->getId (stName);
+        style_priv = style_sheet_priv->getId (stName);
     }
 };
 
@@ -91,9 +91,9 @@ class GuiNode:public QGraphicsTextItem, public NodeAux, public NodeProperties
     Q_OBJECT
 
 private:
-    QPolygonF myPolygon;
-//    QColor myColor;
-    qreal myAdjust;
+    QPolygonF gui_node_polygon;
+	//QColor myColor;
+    qreal gui_node_adjust;
     friend class GuiGraph;
     friend class GraphAux;
 
@@ -103,22 +103,22 @@ protected:
 	virtual void contextMenuEvent( QGraphicsSceneContextMenuEvent *event);
 
 public:
-    QString myText;
+    QString gui_node_text;
     enum { Type = QGraphicsItem::UserType + 1};
-    GuiNode( QString * text, GuiGraph * graph_p, int _id, StyleSheet *ss,
+    GuiNode( QString * text, GuiGraph * graph_p, int _id, StyleSheet *sheet_style,
         QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
 	virtual ~GuiNode();
     inline QPolygonF polygon() const
     {
-        return myPolygon;
+        return gui_node_polygon;
     };
-    inline void setMyAdjust( qreal adjust)
+    inline void setGuiNodeAdjust( qreal adjust)
     {
-        myAdjust = adjust;
+        gui_node_adjust = adjust;
     };
-	inline QString getMyText()
+	inline QString getGuiNodeText()
     {
-        return myText;
+        return gui_node_text;
     };
     QRectF boundingRect() const;
 
@@ -138,11 +138,11 @@ protected:
     void superscribe ( QColor color, QString text);
 
 public slots:
-    void setMyText( const QString & str);
+    void setGuiNodeText( const QString & str);
 	void textChange();
 	void emitDelete();
 
 signals:
-	void deleteMe( int number);
+	void deleteGuiNode( int number);
 };
 #endif

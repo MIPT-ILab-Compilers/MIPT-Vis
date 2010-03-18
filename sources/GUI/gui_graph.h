@@ -53,11 +53,11 @@ protected:
 
 private:
     int number;
-    mode myMode;
+    mode graph_mode;
     QGraphicsLineItem * line;
     xmlDoc * xml_doc;
-	StyleSheet ss;
-	bool drawVirtualNodes;
+	StyleSheet style_sheet;
+	bool draw_virtual_nodes;
 
 signals:
     void isClicked();

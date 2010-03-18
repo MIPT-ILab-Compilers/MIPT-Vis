@@ -33,7 +33,7 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 		QString text =  QString( "Node %1").arg( node->userId());
 		node->setPlainText(text);
 
-		QObject::connect(node, SIGNAL( deleteMe( int)), this, SLOT( deleteNode( int)));
+		QObject::connect(node, SIGNAL( deleteGuiNode( int)), this, SLOT( deleteNode( int)));
         QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
     }
     QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
@@ -44,7 +44,7 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 /**
  * Constructor for class GuiGraph.
  */
-GuiGraph::GuiGraph( QObject * parent):myMode( insertRect), GraphAux(), QGraphicsScene( parent)
+GuiGraph::GuiGraph( QObject * parent):graph_mode( insertRect), GraphAux(), QGraphicsScene( parent)
 {
     number = 0;
     line = NULL;
@@ -53,7 +53,7 @@ GuiGraph::GuiGraph( QObject * parent):myMode( insertRect), GraphAux(), QGraphics
 /**
  * Constructor for class GuiGraph.
  */
-GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), GraphAux(), QGraphicsScene( parent)
+GuiGraph::GuiGraph( char * filename, QObject * parent):graph_mode( insertRect), GraphAux(), QGraphicsScene( parent)
 {
     GuiNode * node;
     GuiEdge * edge;
@@ -65,15 +65,15 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):myMode( insertRect), Grap
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
         node->setPos( node->NodeAux::x(), node->NodeAux::y());
-		node->setMyText(QString( node->textPriv()));
+		node->setGuiNodeText(QString( node->textPriv()));
         node->setX( node->QGraphicsItem::x());
         node->setY( node->QGraphicsItem::y());
-		node->setMyAdjust( node->real()? 3 : 1);
+		node->setGuiNodeAdjust( node->real()? 3 : 1);
 
 		QString text =  QString( "Node %1").arg( node->userId());
 		node->setPlainText(text);
 
-		QObject::connect(node, SIGNAL( deleteMe( int)), this, SLOT( deleteNode( int)));
+		QObject::connect(node, SIGNAL( deleteGuiNode( int)), this, SLOT( deleteNode( int)));
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{
@@ -90,7 +90,7 @@ void GuiGraph::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
     if( mouseEvent->button() & Qt::RightButton)
     {
-        myMode = insertLine;
+        graph_mode = insertLine;
         line = new QGraphicsLineItem( QLineF( mouseEvent->scenePos(), mouseEvent->scenePos()));
         line->setPen( QPen( Qt::black));
         addItem( line);
@@ -107,12 +107,12 @@ void GuiGraph::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 void GuiGraph::mouseMoveEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
     update();
-    if ( myMode == insertLine && line != 0)
+    if ( graph_mode == insertLine && line != 0)
     {
         QLineF newLine( line->line().p1(), mouseEvent->scenePos());
         line->setLine( newLine);
     } 
-    else if ( myMode == moveItem)
+    else if ( graph_mode == moveItem)
     {
         QGraphicsScene::mouseMoveEvent( mouseEvent);
     }
@@ -124,7 +124,7 @@ void GuiGraph::mouseMoveEvent( QGraphicsSceneMouseEvent * mouseEvent)
 void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
     update();
-    if ( line != 0 && myMode == insertLine)
+    if ( line != 0 && graph_mode == insertLine)
     {
         QList<QGraphicsItem *> startItems = items( line->line().p1());
         if ( startItems.count() && startItems.first() == line)
@@ -150,7 +150,7 @@ void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
         }
     }
     line = NULL;
-    myMode = moveItem;
+    graph_mode = moveItem;
     QGraphicsScene::mouseReleaseEvent( mouseEvent);
     emit isClicked();
 }
@@ -160,7 +160,7 @@ void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
  */
 void GuiGraph::readAttribsFromXml (xmlNode * a_node)
 {
-	ss.loadFromXmlNode (a_node);
+	style_sheet.loadFromXmlNode (a_node);
 	GraphAux::readAttribsFromXml (a_node);
 }
 
@@ -169,7 +169,7 @@ void GuiGraph::readAttribsFromXml (xmlNode * a_node)
  */
 void GuiGraph::writeAttribsByXMLWriter (xmlTextWriterPtr writer)
 {
-	ss.writeByXMLWriter (writer);
+	style_sheet.writeByXMLWriter (writer);
 	GraphAux::writeAttribsByXMLWriter (writer);
 }
 
@@ -178,7 +178,7 @@ void GuiGraph::writeAttribsByXMLWriter (xmlTextWriterPtr writer)
  */
 EdgeAux * GuiGraph::createEdge( Node * pred, Node * succ)
 {
-    GuiEdge * e = new GuiEdge ( this, incEdgeId(), &ss, ( GuiNode *)pred, ( GuiNode *)succ);
+    GuiEdge * e = new GuiEdge ( this, incEdgeId(), &style_sheet, ( GuiNode *)pred, ( GuiNode *)succ);
     addItem( e);
     e->setStyle( "Solid");
     e->setZValue( -1000.0);
@@ -195,7 +195,7 @@ NodeAux * GuiGraph::createNode()
     int num = incNodeId();
     
 	QString text =  QString( "Node %1").arg( num);// number here !!!!!!!
-    GuiNode * node_p = new GuiNode (&text, this, num, &ss);
+    GuiNode * node_p = new GuiNode (&text, this, num, &style_sheet);
 
     node_p->setZValue( 1);
     addItem( node_p);
@@ -235,12 +235,12 @@ void GuiGraph::removeNode (Node* n)
  */
 void GuiGraph::switchVnodesShow()
 {
-	drawVirtualNodes = !drawVirtualNodes;
+	draw_virtual_nodes = !draw_virtual_nodes;
 }
 
 bool GuiGraph::showVnodes()
 {
-	return drawVirtualNodes;
+	return draw_virtual_nodes;
 }
 /**
  * commit layout
@@ -260,7 +260,7 @@ bool GuiGraph::applayLayout()
 
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
-        node->setMyAdjust ( node->real()? 3 : 1);
+        node->setGuiNodeAdjust ( node->real()? 3 : 1);
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{
