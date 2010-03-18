@@ -5,6 +5,7 @@
 #include <Qt/QVector.h>
 #include <Qt/QString.h>
 #include <libxml/xmlwriter.h>
+#include <Qt/QStyleOption.h>
 
 #include "libXml/tree.h"
 //struct xmlNode;
@@ -17,7 +18,7 @@ class Style
 
 public:
 	Style (QString name, QPen pen, QBrush brush);
-	virtual void applayTo (QPainter * painter) const;
+	virtual void applayTo (QPainter * painter, const QStyleOptionGraphicsItem * option = 0) const;
 
 	inline void rename (QString nname)
 	{
@@ -51,8 +52,8 @@ public:
 	void writeByXMLWriter( xmlTextWriterPtr writer);
 
 	StId getId (const QString& name);
-	void applayStyle (StId id, QPainter * painter);
-	void applayStyle (const QString& name, QPainter * painter);
+	void applayStyle (StId id, QPainter * painter, const QStyleOptionGraphicsItem * option = 0);
+	void applayStyle (const QString& name, QPainter * painter, const QStyleOptionGraphicsItem * option = 0);
 	const QString& getStName (StId id);
 	StId addStyle (Style* st);
 };
