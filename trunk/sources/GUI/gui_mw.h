@@ -60,38 +60,38 @@ private:
 
     QString strippedName( const QString &fullFileName);
     
-    QMenu *fileMenu;
-    QMenu *viewMenu;
-    QMenu *toolsMenu;
-    QMenu *helpMenu;
+    QMenu *file_menu;
+    QMenu *view_menu;
+    QMenu *tools_menu;
+    QMenu *help_menu;
 
-    QAction *loadAct;
-    QAction *saveAct;
-    QAction *helpAct;
-    QAction *aboutAct;
-    QAction *doLayoutAct;
-    QAction *convertDumpToXMLAct;
-    QAction *enGravityAct;
-    QAction *disGravityAct;
-    QAction *showVirtualNodesAct;
+    QAction *load_act;
+    QAction *save_act;
+    QAction *help_act;
+    QAction *about_act;
+    QAction *do_layout_act;
+    QAction *convert_dump_to_XML_act;
+    QAction *en_gravity_act;
+    QAction *dis_gravity_act;
+    QAction *show_virtual_nodes_act;
 
-	QToolBar *toolbar;
+	QToolBar *tool_bar;
 
 	QTimer *gravity_timer;
 
     GuiView *view;
-    QHBoxLayout *viewLayout;
-    QWidget *viewWidget;
-    QWidget *nodeTextWidget;
-    QWidget *centreOnNodeWidget;
+    QHBoxLayout *view_layout;
+    QWidget *view_widget;
+    QWidget *node_text_widget;
+    QWidget *centre_on_node_widget;
     GuiGraph *graph;
-    QString currentFile;
-    GuiTextEdit *nodeTextEdit;
-    QVBoxLayout *nodeTextLayout;
-    QVBoxLayout *centreOnNodeLayout;
-    QPushButton *saveTextButton;
-    QPushButton *centreOnNodeButton;
-	QSpinBox *centreOnNodeSpinBox;
+    QString current_file;
+    GuiTextEdit *node_text_edit;
+    QVBoxLayout *node_text_layout;
+    QVBoxLayout *centre_on_node_layout;
+    QPushButton *save_text_button;
+    QPushButton *centre_on_node_button;
+	QSpinBox *centre_on_node_spin_box;
 
 };
 
