@@ -10,8 +10,8 @@
  */
 MainWindow::MainWindow()
 {
-    currentFile = "";
-	setCurrentFile( currentFile);
+    current_file = "";
+	setCurrentFile( current_file);
 
     graph = new GuiGraph();
     graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
@@ -24,12 +24,12 @@ MainWindow::MainWindow()
       view->centerOn( graph->getNodeItem());
        
 
-    viewLayout = new QHBoxLayout;
-    viewLayout->addWidget( view);
+    view_layout = new QHBoxLayout;
+    view_layout->addWidget( view);
 
-    viewWidget = new QWidget;
-    viewWidget->setLayout(viewLayout);
-	setCentralWidget( viewWidget);
+    view_widget = new QWidget;
+    view_widget->setLayout(view_layout);
+	setCentralWidget( view_widget);
 
     createActions();
     createMenus();
@@ -47,14 +47,14 @@ MainWindow::MainWindow()
  */
 void MainWindow::load()
 {
-    currentFile = QFileDialog::getOpenFileName( this, tr( "Open File"), "", tr( "XML (*.xml);;All files(*.*)")); 
-    if ( currentFile.isEmpty()) return;
-    QByteArray curFile = currentFile.toAscii();
+    current_file = QFileDialog::getOpenFileName( this, tr( "Open File"), "", tr( "XML (*.xml);;All files(*.*)")); 
+    if ( current_file.isEmpty()) return;
+    QByteArray cur_file = current_file.toAscii();
     char *file;
-    file = (char*) calloc( curFile.size(), sizeof(char));
+    file = (char*) calloc( cur_file.size(), sizeof(char));
     if (file==NULL) return;
     int i;
-    for (i=0;i<=curFile.size();i++) file[i]=curFile[i];
+    for (i=0;i<=cur_file.size();i++) file[i]=cur_file[i];
 
     QApplication::setOverrideCursor( Qt::WaitCursor);
 
@@ -63,13 +63,13 @@ void MainWindow::load()
     view->setScene( graph);
     connect( graph, SIGNAL( isClicked()), this, SLOT( textHandle()));
 
-    nodeTextEdit->clear();
-    nodeTextEdit->setReadOnly( true);
-    saveTextButton->setEnabled( false);
+    node_text_edit->clear();
+    node_text_edit->setReadOnly( true);
+    save_text_button->setEnabled( false);
 
     QApplication::restoreOverrideCursor();
 
-    setCurrentFile( currentFile);
+    setCurrentFile( current_file);
 }
 
 /**
@@ -77,16 +77,16 @@ void MainWindow::load()
  */
 void MainWindow::save()
 {
-    currentFile = QFileDialog::getSaveFileName( this, tr("Save File"), "", tr("XML (*.xml);;All files(*.*)")); 
-    if ( currentFile.isEmpty()) return;
-    QByteArray curFile = currentFile.toAscii();
+    current_file = QFileDialog::getSaveFileName( this, tr("Save File"), "", tr("XML (*.xml);;All files(*.*)")); 
+    if ( current_file.isEmpty()) return;
+    QByteArray cur_file = current_file.toAscii();
     char *file;
-    file = ( char*) calloc( curFile.size(), sizeof( char));
+    file = ( char*) calloc( cur_file.size(), sizeof( char));
     if ( file==NULL) return;
     int i;
-    for ( i=0; i<=curFile.size(); ++i) file[i] = curFile[i];
+    for ( i=0; i<=cur_file.size(); ++i) file[i] = cur_file[i];
     graph->writeToXML( file);
-    setCurrentFile( currentFile);
+    setCurrentFile( current_file);
 }
 
 /**
@@ -174,7 +174,7 @@ void MainWindow::convertDumpToXMLSlot()
  */
 void MainWindow::centreOnNode()
 {
-	int nodeId = centreOnNodeSpinBox->value();
+	int nodeId = centre_on_node_spin_box->value();
     doCentreOnNode( nodeId);
 } 
 
@@ -202,50 +202,50 @@ void MainWindow::createDockWindows()
     dock->setAllowedAreas( Qt::AllDockWidgetAreas);
 	dock->setFloating( false);
 
-	centreOnNodeSpinBox = new QSpinBox;
-	centreOnNodeSpinBox->setRange(0,100);
+	centre_on_node_spin_box = new QSpinBox;
+	centre_on_node_spin_box->setRange(0,100);
 
-    centreOnNodeButton = new QPushButton( tr("Jump"));
-    centreOnNodeButton->setEnabled( true);
-    centreOnNodeButton->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect( centreOnNodeButton, SIGNAL( clicked()), this, SLOT( centreOnNode()));
+    centre_on_node_button = new QPushButton( tr("Jump"));
+    centre_on_node_button->setEnabled( true);
+    centre_on_node_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect( centre_on_node_button, SIGNAL( clicked()), this, SLOT( centreOnNode()));
 
-	centreOnNodeLayout = new QVBoxLayout( dock);
-	centreOnNodeLayout->addWidget( centreOnNodeSpinBox);
-	centreOnNodeLayout->addWidget( centreOnNodeButton);
+	centre_on_node_layout = new QVBoxLayout( dock);
+	centre_on_node_layout->addWidget( centre_on_node_spin_box);
+	centre_on_node_layout->addWidget( centre_on_node_button);
 
-    centreOnNodeWidget = new QWidget;
-    centreOnNodeWidget->setLayout( centreOnNodeLayout);
+    centre_on_node_widget = new QWidget;
+    centre_on_node_widget->setLayout( centre_on_node_layout);
 
-	dock->setWidget(centreOnNodeWidget);
+	dock->setWidget(centre_on_node_widget);
     addDockWidget( Qt::RightDockWidgetArea, dock);
-	viewMenu->addAction(dock->toggleViewAction());
+	view_menu->addAction(dock->toggleViewAction());
 
 	/* nodeTextEdit dock*/
     dock = new QDockWidget( tr("Node description"), this);
     dock->setAllowedAreas( Qt::AllDockWidgetAreas);
 	dock->setFloating( false);
 
-    nodeTextEdit = new GuiTextEdit;
-    nodeTextEdit->clear();
-    nodeTextEdit->setReadOnly( true);
-	connect(nodeTextEdit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT(doCentreOnNode( int)));
+    node_text_edit = new GuiTextEdit;
+    node_text_edit->clear();
+    node_text_edit->setReadOnly( true);
+	connect(node_text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT(doCentreOnNode( int)));
     
-    saveTextButton = new QPushButton( tr( "Save &Text"));
-    saveTextButton->setEnabled( false);
-    saveTextButton->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect( saveTextButton, SIGNAL( clicked()), this, SLOT( saveTextToNode()));
+    save_text_button = new QPushButton( tr( "Save &Text"));
+    save_text_button->setEnabled( false);
+    save_text_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect( save_text_button, SIGNAL( clicked()), this, SLOT( saveTextToNode()));
 
-    nodeTextLayout = new QVBoxLayout( dock);
-    nodeTextLayout->addWidget( nodeTextEdit);
-    nodeTextLayout->addWidget( saveTextButton);
+    node_text_layout = new QVBoxLayout( dock);
+    node_text_layout->addWidget( node_text_edit);
+    node_text_layout->addWidget( save_text_button);
 
-    nodeTextWidget = new QWidget;
-    nodeTextWidget->setLayout( nodeTextLayout);
+    node_text_widget = new QWidget;
+    node_text_widget->setLayout( node_text_layout);
 
-	dock->setWidget( nodeTextWidget);
+	dock->setWidget( node_text_widget);
     addDockWidget( Qt::RightDockWidgetArea, dock);
-	viewMenu->addAction(dock->toggleViewAction());
+	view_menu->addAction(dock->toggleViewAction());
 }
 
 /**
@@ -253,42 +253,42 @@ void MainWindow::createDockWindows()
  */
 void MainWindow::createActions()
 {
-    loadAct =  new QAction( QIcon("../GUI/images/load.bmp"),tr("&Load"), this);
-    loadAct->setStatusTip( tr( "Load..."));
-    connect( loadAct, SIGNAL( triggered()), this, SLOT( load()));
+    load_act =  new QAction( QIcon("../GUI/images/load.bmp"),tr("&Load"), this);
+    load_act->setStatusTip( tr( "Load..."));
+    connect( load_act, SIGNAL( triggered()), this, SLOT( load()));
 
-    saveAct = new QAction( QIcon("../GUI/images/save.bmp"),tr( "&Save"), this);
-    saveAct->setShortcuts(QKeySequence::Save);
-    saveAct->setStatusTip( tr( "Save..."));
-    connect( saveAct, SIGNAL( triggered()), this, SLOT( save()));
+    save_act = new QAction( QIcon("../GUI/images/save.bmp"),tr( "&Save"), this);
+    save_act->setShortcuts(QKeySequence::Save);
+    save_act->setStatusTip( tr( "Save..."));
+    connect( save_act, SIGNAL( triggered()), this, SLOT( save()));
 
-    helpAct = new QAction( tr( "Mipt-Vis &Help"), this);
-    helpAct->setStatusTip( tr( "Help..."));
-    connect( helpAct, SIGNAL( triggered()), this, SLOT( help()));
+    help_act = new QAction( tr( "Mipt-Vis &Help"), this);
+    help_act->setStatusTip( tr( "Help..."));
+    connect( help_act, SIGNAL( triggered()), this, SLOT( help()));
 
-    aboutAct = new QAction( tr( "&About Mipt-Vis"), this);
-    aboutAct->setStatusTip( tr( "About..."));
-    connect( aboutAct, SIGNAL(triggered()), this, SLOT( about()));
+    about_act = new QAction( tr( "&About Mipt-Vis"), this);
+    about_act->setStatusTip( tr( "About..."));
+    connect( about_act, SIGNAL(triggered()), this, SLOT( about()));
 
-    doLayoutAct = new QAction( QIcon("../GUI/images/setLayout.bmp"),tr( "Do &Layout"), this);
-    doLayoutAct->setStatusTip( tr( "Do Layout..."));
-    connect( doLayoutAct, SIGNAL( triggered()), this, SLOT( doLayoutSlot()));
+    do_layout_act = new QAction( QIcon("../GUI/images/setLayout.bmp"),tr( "Do &Layout"), this);
+    do_layout_act->setStatusTip( tr( "Do Layout..."));
+    connect( do_layout_act, SIGNAL( triggered()), this, SLOT( doLayoutSlot()));
 
-    convertDumpToXMLAct = new QAction( tr( "&Convert dump to XML..."), this);
-    convertDumpToXMLAct->setStatusTip( tr( "Convert dump to XML..."));
-    connect( convertDumpToXMLAct, SIGNAL( triggered()), this, SLOT( convertDumpToXMLSlot()));
+    convert_dump_to_XML_act = new QAction( tr( "&Convert dump to XML..."), this);
+    convert_dump_to_XML_act->setStatusTip( tr( "Convert dump to XML..."));
+    connect( convert_dump_to_XML_act, SIGNAL( triggered()), this, SLOT( convertDumpToXMLSlot()));
 	
-	enGravityAct = new QAction ( QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Enable Gravity Correction"), this);
-    enGravityAct->setStatusTip ( tr( "Enable Gravity Correction"));
-	disGravityAct = new QAction (QIcon("../GUI/images/disGravityAct.bmp"),tr( "&Disable Gravity Correction"), this);
-    disGravityAct->setStatusTip ( tr( "Disable Gravity Correction"));
-    connect( enGravityAct, SIGNAL( triggered()), this, SLOT( enableGravity()));
-	connect( disGravityAct, SIGNAL( triggered()), this, SLOT( disableGravity()));
+	en_gravity_act = new QAction ( QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Enable Gravity Correction"), this);
+    en_gravity_act->setStatusTip ( tr( "Enable Gravity Correction"));
+	dis_gravity_act = new QAction (QIcon("../GUI/images/disGravityAct.bmp"),tr( "&Disable Gravity Correction"), this);
+    dis_gravity_act->setStatusTip ( tr( "Disable Gravity Correction"));
+    connect( en_gravity_act, SIGNAL( triggered()), this, SLOT( enableGravity()));
+	connect( dis_gravity_act, SIGNAL( triggered()), this, SLOT( disableGravity()));
 
 	
-    showVirtualNodesAct = new QAction( tr( "Show &pseudonodes trigger"), this);
-    showVirtualNodesAct->setStatusTip( tr( "Show pseudonodes trigger"));
-    connect( showVirtualNodesAct, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
+    show_virtual_nodes_act = new QAction( tr( "Show &pseudonodes trigger"), this);
+    show_virtual_nodes_act->setStatusTip( tr( "Show pseudonodes trigger"));
+    connect( show_virtual_nodes_act, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
 }
 
 /**
@@ -296,22 +296,22 @@ void MainWindow::createActions()
  */
 void MainWindow::createMenus()
 {
-    fileMenu = menuBar()->addMenu( tr( "&File"));
-    fileMenu->addAction( loadAct);
-    fileMenu->addAction( saveAct);
+    file_menu = menuBar()->addMenu( tr( "&File"));
+    file_menu->addAction( load_act);
+    file_menu->addAction( save_act);
 
-    viewMenu = menuBar()->addMenu( tr( "&View"));
+    view_menu = menuBar()->addMenu( tr( "&View"));
 
-    toolsMenu = menuBar()->addMenu( tr( "&Tools"));
-    toolsMenu->addAction( doLayoutAct);
-    toolsMenu->addAction( enGravityAct);
-    toolsMenu->addAction( disGravityAct);
-    toolsMenu->addAction( convertDumpToXMLAct);
-    toolsMenu->addAction( showVirtualNodesAct);
+    tools_menu = menuBar()->addMenu( tr( "&Tools"));
+    tools_menu->addAction( do_layout_act);
+    tools_menu->addAction( en_gravity_act);
+    tools_menu->addAction( dis_gravity_act);
+    tools_menu->addAction( convert_dump_to_XML_act);
+    tools_menu->addAction( show_virtual_nodes_act);
 
-    helpMenu = menuBar()->addMenu( tr( "&Help"));
-    helpMenu->addAction( helpAct);
-    helpMenu->addAction( aboutAct);
+    help_menu = menuBar()->addMenu( tr( "&Help"));
+    help_menu->addAction( help_act);
+    help_menu->addAction( about_act);
 }
 
 /**
@@ -333,16 +333,16 @@ void MainWindow::textHandle()
 		if ( qgraphicsitem_cast< GuiNode*>( list[ 0]))
 		{
 			GuiNode *node = qgraphicsitem_cast< GuiNode*>( list[ 0]);
-			nodeTextEdit->setPlainText( node->gui_node_text);
-			nodeTextEdit->setReadOnly( false);
-			saveTextButton->setEnabled( true);
+			node_text_edit->setPlainText( node->gui_node_text);
+			node_text_edit->setReadOnly( false);
+			save_text_button->setEnabled( true);
 		}
     }
     else
     {
-        nodeTextEdit->clear();
-        nodeTextEdit->setReadOnly( true);
-        saveTextButton->setEnabled( false);
+        node_text_edit->clear();
+        node_text_edit->setReadOnly( true);
+        save_text_button->setEnabled( false);
     }
 }
 
@@ -355,41 +355,41 @@ void MainWindow::saveTextToNode()
     if ( list.size() == 1)
     {
 		GuiNode *node = qgraphicsitem_cast< GuiNode*>( list[0]);
-        node->setGuiNodeText(nodeTextEdit->toPlainText());
+        node->setGuiNodeText(node_text_edit->toPlainText());
 		node->textChange();
-        nodeTextEdit->clear();
-        nodeTextEdit->setReadOnly( true);
-        saveTextButton->setEnabled( false);
+        node_text_edit->clear();
+        node_text_edit->setReadOnly( true);
+        save_text_button->setEnabled( false);
     }
 }
 
 /**
  * setCurrentFile
  */
-void MainWindow::setCurrentFile( const QString & fileName)
+void MainWindow::setCurrentFile( const QString & file_name)
 {
-    QString shownName;
-    if ( fileName.isEmpty()) shownName = "untitled.xml";
-    else shownName = strippedName( fileName);
-    setWindowTitle( tr("%1[*] - %2").arg( shownName).arg( tr("MIPT-Vis")));
+    QString shown_name;
+    if ( file_name.isEmpty()) shown_name = "untitled.xml";
+    else shown_name = strippedName( file_name);
+    setWindowTitle( tr("%1[*] - %2").arg( shown_name).arg( tr("MIPT-Vis")));
 }
 
 /**
  * strippedName
  */
-QString MainWindow::strippedName( const QString &fullFileName)
+QString MainWindow::strippedName( const QString &full_file_name)
 {
-    return QFileInfo( fullFileName).fileName();
+    return QFileInfo( full_file_name).fileName();
 } 
 /**
  * createToolBars
  */
 void MainWindow::createToolBars()
 {
-    toolbar = addToolBar(tr("File"));
-	toolbar->addAction(loadAct);
-    toolbar->addAction(saveAct);
-	toolbar->addAction(doLayoutAct);
-	toolbar->addAction(enGravityAct);
-	toolbar->addAction(disGravityAct);
+    tool_bar = addToolBar(tr("File"));
+	tool_bar->addAction(load_act);
+    tool_bar->addAction(save_act);
+	tool_bar->addAction(do_layout_act);
+	tool_bar->addAction(en_gravity_act);
+	tool_bar->addAction(dis_gravity_act);
 }
