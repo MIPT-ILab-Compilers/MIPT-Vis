@@ -333,7 +333,7 @@ void MainWindow::textHandle()
 		if ( qgraphicsitem_cast< GuiNode*>( list[ 0]))
 		{
 			GuiNode *node = qgraphicsitem_cast< GuiNode*>( list[ 0]);
-			nodeTextEdit->setPlainText( node->myText);
+			nodeTextEdit->setPlainText( node->gui_node_text);
 			nodeTextEdit->setReadOnly( false);
 			saveTextButton->setEnabled( true);
 		}
@@ -355,7 +355,7 @@ void MainWindow::saveTextToNode()
     if ( list.size() == 1)
     {
 		GuiNode *node = qgraphicsitem_cast< GuiNode*>( list[0]);
-        node->setMyText(nodeTextEdit->toPlainText());
+        node->setGuiNodeText(nodeTextEdit->toPlainText());
 		node->textChange();
         nodeTextEdit->clear();
         nodeTextEdit->setReadOnly( true);

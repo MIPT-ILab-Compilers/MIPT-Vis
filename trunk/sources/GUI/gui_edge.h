@@ -16,10 +16,10 @@ class EdgeProperties
 	char * label_priv;
 	
 	StId style_priv;
-	StyleSheet *ss_priv;
+	StyleSheet *style_sheet_priv;
 public:
-    EdgeProperties (StyleSheet* ss)
-		:ss_priv (ss)
+    EdgeProperties (StyleSheet* style_sheet)
+		:style_sheet_priv (style_sheet)
     {
         /** Default values */
         prob_priv = 1;
@@ -46,11 +46,11 @@ public:
     }
 	inline const QString& stName() const
     { 
-        return ss_priv->getStName (style_priv);
+        return style_sheet_priv->getStName (style_priv);
     }
 	inline void applStyle (QPainter * painter, const QStyleOptionGraphicsItem * option)
     { 
-        ss_priv->applayStyle (style_priv, painter, option);
+        style_sheet_priv->applayStyle (style_priv, painter, option);
     }
     /** Data writing routines */
     inline void setProb( int prob)
@@ -71,7 +71,7 @@ public:
     }
 	inline void setStyle (const QString& stName) 
     { 
-        style_priv = ss_priv->getId (stName);
+        style_priv = style_sheet_priv->getId (stName);
     }
 };
 
@@ -80,16 +80,16 @@ public:
  */
 class GuiEdge:public QGraphicsItem, public EdgeAux, public EdgeProperties
 {
-    QPointF startP;
-	QPointF startDir;
-    QPointF endP;
-	QPointF endDir;
+    QPointF start_point;
+	QPointF start_dir;
+    QPointF end_point;
+	QPointF end_dir;
 
 	QPainterPath curve;
 	bool valid;
 
-    QPointF topLeft;
-    QPointF btmRight;
+    QPointF top_left;
+    QPointF bottom_right;
 
 public:
     enum { Type = QGraphicsItem::UserType + 2};//!!!I do not know what type here needed

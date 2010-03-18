@@ -10,7 +10,7 @@
 /**
  * Init NodeProperties
  */
-NodeProperties::NodeProperties (StyleSheet* ss_) :ss_priv (ss_), style_priv (ss_->getId ("default"))
+NodeProperties::NodeProperties (StyleSheet* style_sheet_) :style_sheet_priv (style_sheet_), style_priv (style_sheet_->getId ("default"))
 {
     color_priv = 0;
 	label_priv = 0;
@@ -20,11 +20,11 @@ NodeProperties::NodeProperties (StyleSheet* ss_) :ss_priv (ss_), style_priv (ss_
 /**
  * Constructor of GuiNode class
  */
-GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, StyleSheet* ss,
+GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, StyleSheet* style_sheet,
         QGraphicsItem * parent, QGraphicsScene * scene):
-		NodeProperties (ss),
-	    myText(),
-        myAdjust(0),
+		NodeProperties (style_sheet),
+	    gui_node_text(),
+        gui_node_adjust(0),
         QGraphicsTextItem( parent, scene),
         NodeAux( static_cast<GraphAux *> ( graph_p), _id)
 {
@@ -32,12 +32,12 @@ GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, StyleSheet* ss,
 	setPlainText( *text);
 	setTextWidth ( 100); //Set width of node
 	NodeAux::setWidth( 100);
-	setMyAdjust( real()? 3 : 1);
-	setMyText( "");
+	setGuiNodeAdjust( real()? 3 : 1);
+	setGuiNodeText( "");
 	setFlag( QGraphicsItem::ItemIsMovable, true); // Set node can move
 	setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
 	setTextInteractionFlags( Qt::NoTextInteraction);
-	myPolygon << (boundingRect().bottomLeft()) << (boundingRect().bottomRight())
+	gui_node_polygon << (boundingRect().bottomLeft()) << (boundingRect().bottomRight())
 				  << (boundingRect().topRight()) << (boundingRect().topLeft())
 				  << (boundingRect().bottomLeft());
 }
@@ -112,7 +112,7 @@ void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option
 	{
 		painter->drawRect( boundingRect());
 		QGraphicsTextItem::paint( painter, option, widget);
-		myPolygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
+		gui_node_polygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
 		                  << ( boundingRect().topRight()) << ( boundingRect().topLeft())
 		                  << ( boundingRect().bottomLeft());
 	}
@@ -121,7 +121,7 @@ void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option
 		if (!addGui (graph)->showVnodes()) return;//do not draw virtual nodes
 		painter->setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 		painter->drawRect (boundingRect());
-		myPolygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
+		gui_node_polygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
 		                  << ( boundingRect().topRight()) << ( boundingRect().topLeft())
 		                  << ( boundingRect().bottomLeft());
 	}
@@ -134,7 +134,7 @@ QRectF GuiNode::boundingRect() const
 {
 	if (!real()) return QRectF (0, 0, 15, 15);//!!! magic namber
     return QGraphicsTextItem::boundingRect()
-               .adjusted( -myAdjust, -myAdjust, myAdjust, myAdjust);
+               .adjusted( -gui_node_adjust, -gui_node_adjust, gui_node_adjust, gui_node_adjust);
 }
 
 
@@ -190,9 +190,9 @@ void GuiNode::superscribe ( QColor color, QString text)
 /**
  *  setMyText
  */
-void GuiNode::setMyText( const QString & str)
+void GuiNode::setGuiNodeText( const QString & str)
 {
-    myText = str;
+    gui_node_text = str;
 }
 
 /**
@@ -200,7 +200,7 @@ void GuiNode::setMyText( const QString & str)
  */
 void GuiNode::textChange()
 {
-    QByteArray strByteArray = getMyText().toAscii();
+    QByteArray strByteArray = getGuiNodeText().toAscii();
     char *strChar;
     strChar = ( char*) calloc( strByteArray.size(),sizeof( char));
     if ( strChar==NULL) return;
@@ -269,5 +269,5 @@ void GuiNode::contextMenuEvent( QGraphicsSceneContextMenuEvent *event)
  */
 void GuiNode::emitDelete()
 {
-	emit deleteMe( this->userId());
+	emit deleteGuiNode( this->userId());
 }
