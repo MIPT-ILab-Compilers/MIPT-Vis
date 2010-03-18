@@ -12,10 +12,17 @@ Style::Style (QString name_, QPen pen_, QBrush brush_)
 /*
  * apply style to painter
  */
-void Style::applayTo (QPainter * painter) const
+void Style::applayTo (QPainter * painter, const QStyleOptionGraphicsItem * option) const
 {
-	painter->setPen (pen);
-	painter->setBrush (brush);
+	if (pen.brush().style() == Qt::NoBrush && option != 0)
+		painter->setPen (QPen (option->palette.brush (QPalette::WindowText), 2));
+	else
+		painter->setPen (pen);
+
+	if (brush.style() == Qt::NoBrush && option != 0)
+		painter->setBrush (option->palette.brush (QPalette::Window));
+	else
+		painter->setBrush (brush);	
 }
 
 /*
@@ -24,8 +31,8 @@ void Style::applayTo (QPainter * painter) const
 void Style::loadFromXmlNode (xmlNode * a_node)
 {
 	xmlAttr * props = 0;
-	QColor brcol = "black";
-	QColor pcol = "magnetta";
+	const char* brcol = "";//"black";
+	const char* pcol = "";//"magnetta";
 	qreal pwidth = 2;
 
 	/** Find 'from' and 'to' */
@@ -37,19 +44,22 @@ void Style::loadFromXmlNode (xmlNode * a_node)
 		}
 		else if ( xmlStrEqual( props->name, xmlCharStrdup("brush")))
 		{
-			brcol = QColor (( const char *)( props->children->content));
+			brcol =  (( const char *)( props->children->content));
 		}
 		else if ( xmlStrEqual( props->name, xmlCharStrdup("penColor")))
 		{
-			pcol = QColor (( const char *)( props->children->content));
+			pcol =  (( const char *)( props->children->content));
 		}
 		else if ( xmlStrEqual( props->name, xmlCharStrdup("penWidth")))
 		{
 			pwidth = atof (( const char *)( props->children->content));
 		}
 	}
-	pen = QPen (pcol, pwidth);
-	brush = QBrush (brcol);
+	pen = QPen (QColor (pcol), pwidth);
+	if (brcol[0] != 0)
+		brush = QBrush (QColor (brcol));
+	else
+		brush = QBrush (Qt::NoBrush);
 }
 
 /*
@@ -58,9 +68,13 @@ void Style::loadFromXmlNode (xmlNode * a_node)
 void Style::writeByXMLWriter( xmlTextWriterPtr writer)
 {
 	xmlTextWriterWriteAttribute( writer, BAD_CAST "name", BAD_CAST name_priv.toAscii().data());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "brush", BAD_CAST brush.color().name().toAscii().data());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "penColor", BAD_CAST pen.color().name().toAscii().data());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "penWidth", "%d", BAD_CAST pen.width());
+	if (pen.brush().style() != Qt::NoBrush)
+	{
+		xmlTextWriterWriteAttribute( writer, BAD_CAST "penColor", BAD_CAST pen.color().name().toAscii().data());
+		xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "penWidth", "%d", BAD_CAST pen.width());
+	}
+	if (brush.style() != Qt::NoBrush)
+		xmlTextWriterWriteAttribute( writer, BAD_CAST "brush", BAD_CAST brush.color().name().toAscii().data());
 }
 
 /*
@@ -126,24 +140,24 @@ StId StyleSheet::getId (const QString& name)
 		if (sts[i]->name() == name)
 			return i;
 
-	sts.push_back (new Style (name, QPen(Qt::black), QBrush (Qt::white)));//if it unique, memorise it
+	sts.push_back (new Style (name, QPen(Qt::NoBrush), QBrush (Qt::NoBrush)));//if it unique, memorise it
 	return sts.count() - 1;
 }
 
 /*
  * Apply style by id
  */
-void StyleSheet::applayStyle (StId id, QPainter * painter)
+void StyleSheet::applayStyle (StId id, QPainter * painter, const QStyleOptionGraphicsItem * option)
 {
-	sts[id]->applayTo (painter);
+	sts[id]->applayTo (painter, option);
 }
 
 /*
  * Apply style by name
  */
-void StyleSheet::applayStyle (const QString& name, QPainter * painter)
+void StyleSheet::applayStyle (const QString& name, QPainter * painter, const QStyleOptionGraphicsItem * option)
 {
-	sts[getId (name)]->applayTo (painter);
+	sts[getId (name)]->applayTo (painter, option);
 }
 
 /*

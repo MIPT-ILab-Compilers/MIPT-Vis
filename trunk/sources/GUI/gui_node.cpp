@@ -107,7 +107,7 @@ void GuiNode::mouseReleaseEvent( QGraphicsSceneMouseEvent *event)
  */
 void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-	applStyle (painter);
+	applStyle (painter, option);
 	if ( real())
 	{
 		painter->drawRect( boundingRect());

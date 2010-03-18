@@ -48,9 +48,9 @@ public:
     { 
         return ss_priv->getStName (style_priv);
     }
-	inline void applStyle (QPainter * painter)
+	inline void applStyle (QPainter * painter, const QStyleOptionGraphicsItem * option)
     { 
-        ss_priv->applayStyle (style_priv, painter);
+        ss_priv->applayStyle (style_priv, painter, option);
     }
     /** Data writing routines */
     inline void setProb( int prob)

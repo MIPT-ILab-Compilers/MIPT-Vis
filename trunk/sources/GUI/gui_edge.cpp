@@ -188,7 +188,7 @@ void GuiEdge::paint( QPainter * painter,
 	}
 	if (!valid) return;
 
-	applStyle (painter);
+	applStyle (painter, option);
 
     qreal arrowSize = 10;
 //    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
