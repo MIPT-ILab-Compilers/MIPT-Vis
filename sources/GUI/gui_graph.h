@@ -52,12 +52,12 @@ protected:
     bool applayLayout();
 
 private:
-    int number;
-    mode graph_mode;
-    QGraphicsLineItem * line;
-    xmlDoc * xml_doc;
-	StyleSheet style_sheet;
-	bool draw_virtual_nodes;
+    int number_priv;
+    mode mode_priv;
+    QGraphicsLineItem * line_priv;
+    xmlDoc * xml_doc_priv;
+	StyleSheet graph_style_sheet_priv;
+	bool draw_virtual_nodes_priv;
 
 signals:
     void isClicked();

@@ -21,24 +21,24 @@ class GuiPoint;
  */
 class NodeProperties
 {
-    char * color_priv;
-	char * label_priv;
+    char * node_color_priv;
+	char * node_label_priv;
 	char * shape_priv;
 	char * text_priv;
 
-	StId style_priv;
-	StyleSheet *style_sheet_priv;
+	StId node_style_priv;
+	StyleSheet *node_style_sheet_priv;
 
 public:
 	NodeProperties (StyleSheet* sheet_style);
     /** Data reading */
-    inline char * color() const 
+    inline char * nodeColor() const 
     {
-        return color_priv;
+        return node_color_priv;
     }
-	inline char * label() const
+	inline char * nodeLabel() const
     { 
-        return label_priv;
+        return node_label_priv;
     }
 	inline char * shape() const
     { 
@@ -48,26 +48,26 @@ public:
     { 
         return text_priv;
     }
-	inline StId style () const
+	inline StId nodeStyle () const
     { 
-        return style_priv;
+        return node_style_priv;
     }
-	inline const QString& stName() const
+	inline const QString& nodeStName() const
     { 
-        return style_sheet_priv->getStName (style_priv);
+        return node_style_sheet_priv->getStName (node_style_priv);
     }
-	inline void applStyle (QPainter * painter, const QStyleOptionGraphicsItem * option)
+	inline void nodeApplStyle (QPainter * painter, const QStyleOptionGraphicsItem * option)
     { 
-        style_sheet_priv->applayStyle (style_priv, painter, option);
+        node_style_sheet_priv->applayStyle (node_style_priv, painter, option);
     }
     /** Data writing */ 
-    inline void setColor( char * color)
+    inline void setNodeColor( char * color)
     {
-        color_priv = color;
+        node_color_priv = color;
     }
-	inline void setLabel( char * label) 
+	inline void setNodeLabel( char * label) 
     {
-        label_priv = label;
+        node_label_priv = label;
     }
 	inline void setShape( char * shape) 
     { 
@@ -77,9 +77,9 @@ public:
     { 
         text_priv = textPriv;
     }
-	inline void setStyle (char * stName) 
+	inline void setNodeStyle (char * stName) 
     { 
-        style_priv = style_sheet_priv->getId (stName);
+        node_style_priv = node_style_sheet_priv->getId (stName);
     }
 };
 
@@ -91,9 +91,9 @@ class GuiNode:public QGraphicsTextItem, public NodeAux, public NodeProperties
     Q_OBJECT
 
 private:
-    QPolygonF gui_node_polygon;
+    QPolygonF polygon_priv;
 	//QColor myColor;
-    qreal gui_node_adjust;
+    qreal adjust_priv;
     friend class GuiGraph;
     friend class GraphAux;
 
@@ -103,22 +103,22 @@ protected:
 	virtual void contextMenuEvent( QGraphicsSceneContextMenuEvent *event);
 
 public:
-    QString gui_node_text;
+    QString node_text;
     enum { Type = QGraphicsItem::UserType + 1};
     GuiNode( QString * text, GuiGraph * graph_p, int _id, StyleSheet *sheet_style,
         QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
 	virtual ~GuiNode();
     inline QPolygonF polygon() const
     {
-        return gui_node_polygon;
+        return polygon_priv;
     };
-    inline void setGuiNodeAdjust( qreal adjust)
+    inline void setAdjust( qreal adjust)
     {
-        gui_node_adjust = adjust;
+        adjust_priv = adjust;
     };
-	inline QString getGuiNodeText()
+	inline QString getNodeText()
     {
-        return gui_node_text;
+        return node_text;
     };
     QRectF boundingRect() const;
 
@@ -138,7 +138,7 @@ protected:
     void superscribe ( QColor color, QString text);
 
 public slots:
-    void setGuiNodeText( const QString & str);
+    void setNodeText( const QString & str);
 	void textChange();
 	void emitDelete();
 

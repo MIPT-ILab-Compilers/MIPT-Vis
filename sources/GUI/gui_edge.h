@@ -12,21 +12,21 @@ class EdgeProperties
 {
     int prob_priv;
 	int thickness_priv;
-	char * color_priv;
-	char * label_priv;
+	char * edge_color_priv;
+	char * edge_label_priv;
 	
-	StId style_priv;
-	StyleSheet *style_sheet_priv;
+	StId edge_style_priv;
+	StyleSheet *edge_style_sheet_priv;
 public:
-    EdgeProperties (StyleSheet* style_sheet)
-		:style_sheet_priv (style_sheet)
+    EdgeProperties (StyleSheet* edge_style_sheet_priv)
+		:edge_style_sheet_priv (edge_style_sheet_priv)
     {
         /** Default values */
         prob_priv = 1;
 	    thickness_priv = 1;
-	    color_priv = NULL;
-	    style_priv = NULL;
-	    label_priv = NULL;
+	    edge_color_priv = NULL;
+	    edge_style_priv = NULL;
+	    edge_label_priv = NULL;
     }
     inline int prob() const
     {
@@ -36,21 +36,21 @@ public:
     {
         return thickness_priv;
     }
-	inline char * color() const
+	inline char * edgeColor() const
     {
-        return color_priv;
+        return edge_color_priv;
     }
-    inline char * label() const
+    inline char * edgeLabel() const
     {
-        return label_priv;
+        return edge_label_priv;
     }
-	inline const QString& stName() const
+	inline const QString& edgeStName() const
     { 
-        return style_sheet_priv->getStName (style_priv);
+        return edge_style_sheet_priv->getStName (edge_style_priv);
     }
-	inline void applStyle (QPainter * painter, const QStyleOptionGraphicsItem * option)
+	inline void edgeApplStyle (QPainter * painter, const QStyleOptionGraphicsItem * option)
     { 
-        style_sheet_priv->applayStyle (style_priv, painter, option);
+        edge_style_sheet_priv->applayStyle (edge_style_priv, painter, option);
     }
     /** Data writing routines */
     inline void setProb( int prob)
@@ -61,17 +61,17 @@ public:
     {
         thickness_priv = thickness;
     }
-	inline void setColor( char * color)
+	inline void setEdgeColor( char * color)
     {
-        color_priv = color;
+        edge_color_priv = color;
     }
-	inline void setLabel( char * label)
+	inline void setEdgeLabel( char * label)
     {
-        label_priv = label;
+        edge_label_priv = label;
     }
-	inline void setStyle (const QString& stName) 
+	inline void setEdgeStyle (const QString& stName) 
     { 
-        style_priv = style_sheet_priv->getId (stName);
+        edge_style_priv = edge_style_sheet_priv->getId (stName);
     }
 };
 
@@ -80,16 +80,16 @@ public:
  */
 class GuiEdge:public QGraphicsItem, public EdgeAux, public EdgeProperties
 {
-    QPointF start_point;
-	QPointF start_dir;
-    QPointF end_point;
-	QPointF end_dir;
+    QPointF edge_start_point_priv;
+	QPointF edge_start_dir_priv;
+    QPointF edge_end_point_priv;
+	QPointF edge_end_dir_priv;
 
-	QPainterPath curve;
-	bool valid;
+	QPainterPath edge_curve_priv;
+	bool edge_valid_priv;
 
-    QPointF top_left;
-    QPointF bottom_right;
+    QPointF edge_top_left_priv;
+    QPointF edge_bottom_right_priv;
 
 public:
     enum { Type = QGraphicsItem::UserType + 2};//!!!I do not know what type here needed

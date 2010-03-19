@@ -57,8 +57,8 @@ void GuiEdge::updatePosition()
 	GuiNode* pre = addGui (pred());
 	GuiNode* suc = addGui (succ());
 
-	start_point = mapFromItem( pre, pre->width()/2, pre->height()/2);
-    end_point = mapFromItem( suc, suc->width()/2, suc->height()/2);//!!!rarely it not work
+	edge_start_point_priv = mapFromItem( pre, pre->width()/2, pre->height()/2);
+    edge_end_point_priv = mapFromItem( suc, suc->width()/2, suc->height()/2);//!!!rarely it not work
 
 	if (pre == suc)//mesh edge
 	{
@@ -68,23 +68,23 @@ void GuiEdge::updatePosition()
 		QPointF middleDirUp = middle + heigh;
 		QPointF middleDirDown = middle - heigh;
 
-		start_dir = start_point + heigh;
-		end_dir = end_point - heigh;
+		edge_start_dir_priv = edge_start_point_priv + heigh;
+		edge_end_dir_priv = edge_end_point_priv - heigh;
 
 		QPolygonF polygon = suc->polygon();
 		polygon.translate (suc->pos());
-		getIntersection (QLineF (start_point, start_dir), polygon, &start_point);
-		getIntersection (QLineF (end_point, end_dir), polygon, &end_point);
+		getIntersection (QLineF (edge_start_point_priv, edge_start_dir_priv), polygon, &edge_start_point_priv);
+		getIntersection (QLineF (edge_end_point_priv, edge_end_dir_priv), polygon, &edge_end_point_priv);
 
 		QPainterPath path;
-		path.moveTo (start_point);
-		path.cubicTo (start_dir, middleDirUp, middle);
-		path.cubicTo (middleDirDown, end_dir, end_point);
-		curve = path;
+		path.moveTo (edge_start_point_priv);
+		path.cubicTo (edge_start_dir_priv, middleDirUp, middle);
+		path.cubicTo (middleDirDown, edge_end_dir_priv, edge_end_point_priv);
+		edge_curve_priv = path;
 	}
 	else
 	{
-		valid = true;
+		edge_valid_priv = true;
 		
 		QPolygonF headPolygon = suc->polygon();
 		headPolygon.translate (suc->pos());
@@ -93,34 +93,34 @@ void GuiEdge::updatePosition()
 
 
 		if (suc->real())
-			valid = valid && getIntersection (QLineF (start_point, end_point), headPolygon, &end_point) == QLineF::BoundedIntersection;
+			edge_valid_priv = edge_valid_priv && getIntersection (QLineF (edge_start_point_priv, edge_end_point_priv), headPolygon, &edge_end_point_priv) == QLineF::BoundedIntersection;
 		if (pre->real()) 
-			valid = valid && getIntersection (QLineF (start_point, end_point), tailPolygon, &start_point) == QLineF::BoundedIntersection;
+			edge_valid_priv = edge_valid_priv && getIntersection (QLineF (edge_start_point_priv, edge_end_point_priv), tailPolygon, &edge_start_point_priv) == QLineF::BoundedIntersection;
 
-		QPointF delta = start_point - end_point;
+		QPointF delta = edge_start_point_priv - edge_end_point_priv;
 		delta.setX(0);
 
 		if (pre->real()) 
-			start_dir = (start_point + end_point)/2;
+			edge_start_dir_priv = (edge_start_point_priv + edge_end_point_priv)/2;
 		else
-			start_dir = start_point - delta/2;
+			edge_start_dir_priv = edge_start_point_priv - delta/2;
 
 		if (suc->real())
-			end_dir = (start_point + end_point)/2;
+			edge_end_dir_priv = (edge_start_point_priv + edge_end_point_priv)/2;
 		else
-			end_dir = end_point + delta/2;
+			edge_end_dir_priv = edge_end_point_priv + delta/2;
 
 		QPainterPath path;
-		path.moveTo (start_point);
-		path.cubicTo (start_dir, end_dir, end_point);
+		path.moveTo (edge_start_point_priv);
+		path.cubicTo (edge_start_dir_priv, edge_end_dir_priv, edge_end_point_priv);
 
-		if (valid) curve = path;
+		if (edge_valid_priv) edge_curve_priv = path;
 	}
 
-    top_left.setX( min< qreal>( start_point.x(), end_point.x()));
-    top_left.setY( min< qreal>( start_point.y(), end_point.y()));
-    bottom_right.setX( max< qreal>( start_point.x(), end_point.x()));
-    bottom_right.setY( max< qreal>( start_point.y(), end_point.y())); 
+    edge_top_left_priv.setX( min< qreal>( edge_start_point_priv.x(), edge_end_point_priv.x()));
+    edge_top_left_priv.setY( min< qreal>( edge_start_point_priv.y(), edge_end_point_priv.y()));
+    edge_bottom_right_priv.setX( max< qreal>( edge_start_point_priv.x(), edge_end_point_priv.x()));
+    edge_bottom_right_priv.setY( max< qreal>( edge_start_point_priv.y(), edge_end_point_priv.y())); 
     update();
 }
 
@@ -130,9 +130,9 @@ void GuiEdge::updatePosition()
 QRectF GuiEdge::boundingRect() const
 {
     qreal adjust = 2;
-    return QRectF(top_left,
-                   QSizeF( bottom_right.x() - top_left.x(),
-                           bottom_right.y() - top_left.y()))
+    return QRectF(edge_top_left_priv,
+                   QSizeF( edge_bottom_right_priv.x() - edge_top_left_priv.x(),
+                           edge_bottom_right_priv.y() - edge_top_left_priv.y()))
            .normalized()
            .adjusted(-adjust, -adjust, adjust, adjust);
 }
@@ -142,11 +142,11 @@ QRectF GuiEdge::boundingRect() const
  */
 QPainterPath GuiEdge::shape() const
 {
-//    QPainterPath path( start_point);
+//    QPainterPath path( edge_start_point_priv);
     QPainterPathStroker stroker;
-//    path.lineTo( end_point.x(), end_point.y());
+//    path.lineTo( edge_end_point_priv.x(), edge_end_point_priv.y());
     stroker.setWidth( 10);
-    return stroker.createStroke( curve);
+    return stroker.createStroke( edge_curve_priv);
 }
 
 void drawLineHead (QPainter * painter, QPointF end, double angle, double size, bool figure)
@@ -186,9 +186,9 @@ void GuiEdge::paint( QPainter * painter,
 		out ("ERROR: the deleted edge is tried to paint!");
 		return;
 	}
-	if (!valid) return;
+	if (!edge_valid_priv) return;
 
-	applStyle (painter, option);
+	edgeApplStyle (painter, option);
 
     qreal arrowSize = 10;
 //    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
@@ -198,15 +198,15 @@ void GuiEdge::paint( QPainter * painter,
 	if (!pre->real() && pre->firstPred() == 0 && !addGui (graph)->showVnodes()) return;
 	if( suc->real())
     {
-		QPointF dir = (7*end_dir + start_point)/8 - end_point;//!!! Mnemonic rule, it must be changed
-		drawLineHead (painter, end_point, -atan2 (dir.y(), dir.x()), 10, false);
+		QPointF dir = (7*edge_end_dir_priv + edge_start_point_priv)/8 - edge_end_point_priv;//!!! Mnemonic rule, it must be changed
+		drawLineHead (painter, edge_end_point_priv, -atan2 (dir.y(), dir.x()), 10, false);
     }
 //    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 //	painter->drawPoint (start_dir);		//debug drawing
 //	painter->drawPoint (end_dir);
 
 	painter->setBrush( Qt::transparent);//!!! change it to black, and you will see, what heppend. I can't explain this
-	painter->drawPath (curve);
+	painter->drawPath (edge_curve_priv);
 
 
 //    update();
@@ -258,12 +258,12 @@ GuiNode* GuiEdge::insertNode ( QPointF p)	//!!! I think it's superannuated
 void GuiEdge::writeByXMLWriter( xmlTextWriterPtr writer)
 {
 	EdgeAux::writeByXMLWriter( writer);
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST edgeLabel());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "prob", "%d", prob());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "thickness", "%d", thickness());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
-	if (0 != stName().compare ("default", Qt::CaseInsensitive))
-		xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST stName().toAscii().data());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST edgeColor());
+	if (0 != edgeStName().compare ("default", Qt::CaseInsensitive))
+		xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST edgeStName().toAscii().data());
 }
 
 /**
@@ -282,13 +282,13 @@ void GuiEdge::readByXML( xmlNode * cur_node)
 			setThickness( strtoul( ( const char *)( props->children->content), NULL, 0) );
 		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "color")))
 		{
-			setColor( ( char *)( props->children->content));
+			setEdgeColor( ( char *)( props->children->content));
 		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "style")))
 		{
-			setStyle( ( char *)( props->children->content));
+			setEdgeStyle( ( char *)( props->children->content));
 		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "label")))
 		{
-			setLabel( ( char *)( props->children->content));
+			setEdgeLabel( ( char *)( props->children->content));
 		}
 	}
 }
