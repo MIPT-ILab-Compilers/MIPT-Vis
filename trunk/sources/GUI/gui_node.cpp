@@ -10,21 +10,21 @@
 /**
  * Init NodeProperties
  */
-NodeProperties::NodeProperties (StyleSheet* style_sheet_) :style_sheet_priv (style_sheet_), style_priv (style_sheet_->getId ("default"))
+NodeProperties::NodeProperties (StyleSheet* style_sheet_) :node_style_sheet_priv (style_sheet_), node_style_priv (style_sheet_->getId ("default"))
 {
-    color_priv = 0;
-	label_priv = 0;
+    node_color_priv = 0;
+	node_label_priv = 0;
 	shape_priv = 0;
 	text_priv = 0;
 }
 /**
  * Constructor of GuiNode class
  */
-GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, StyleSheet* style_sheet,
+GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, StyleSheet* node_style_sheet_priv,
         QGraphicsItem * parent, QGraphicsScene * scene):
-		NodeProperties (style_sheet),
-	    gui_node_text(),
-        gui_node_adjust(0),
+		NodeProperties (node_style_sheet_priv),
+	    node_text(),
+        adjust_priv(0),
         QGraphicsTextItem( parent, scene),
         NodeAux( static_cast<GraphAux *> ( graph_p), _id)
 {
@@ -32,12 +32,12 @@ GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, StyleSheet* styl
 	setPlainText( *text);
 	setTextWidth ( 100); //Set width of node
 	NodeAux::setWidth( 100);
-	setGuiNodeAdjust( real()? 3 : 1);
-	setGuiNodeText( "");
+	setAdjust( real()? 3 : 1);
+	setNodeText( "");
 	setFlag( QGraphicsItem::ItemIsMovable, true); // Set node can move
 	setFlag( QGraphicsItem::ItemIsSelectable, true); // Set node can select
 	setTextInteractionFlags( Qt::NoTextInteraction);
-	gui_node_polygon << (boundingRect().bottomLeft()) << (boundingRect().bottomRight())
+	polygon_priv << (boundingRect().bottomLeft()) << (boundingRect().bottomRight())
 				  << (boundingRect().topRight()) << (boundingRect().topLeft())
 				  << (boundingRect().bottomLeft());
 }
@@ -107,12 +107,12 @@ void GuiNode::mouseReleaseEvent( QGraphicsSceneMouseEvent *event)
  */
 void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-	applStyle (painter, option);
+	nodeApplStyle (painter, option);
 	if ( real())
 	{
 		painter->drawRect( boundingRect());
 		QGraphicsTextItem::paint( painter, option, widget);
-		gui_node_polygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
+		polygon_priv << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
 		                  << ( boundingRect().topRight()) << ( boundingRect().topLeft())
 		                  << ( boundingRect().bottomLeft());
 	}
@@ -121,7 +121,7 @@ void GuiNode::paint( QPainter * painter, const QStyleOptionGraphicsItem * option
 		if (!addGui (graph)->showVnodes()) return;//do not draw virtual nodes
 		painter->setPen( QPen( Qt::black, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
 		painter->drawRect (boundingRect());
-		gui_node_polygon << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
+		polygon_priv << ( boundingRect().bottomLeft()) << ( boundingRect().bottomRight())
 		                  << ( boundingRect().topRight()) << ( boundingRect().topLeft())
 		                  << ( boundingRect().bottomLeft());
 	}
@@ -134,7 +134,7 @@ QRectF GuiNode::boundingRect() const
 {
 	if (!real()) return QRectF (0, 0, 15, 15);//!!! magic namber
     return QGraphicsTextItem::boundingRect()
-               .adjusted( -gui_node_adjust, -gui_node_adjust, gui_node_adjust, gui_node_adjust);
+               .adjusted( -adjust_priv, -adjust_priv, adjust_priv, adjust_priv);
 }
 
 
@@ -190,9 +190,9 @@ void GuiNode::superscribe ( QColor color, QString text)
 /**
  *  setMyText
  */
-void GuiNode::setGuiNodeText( const QString & str)
+void GuiNode::setNodeText( const QString & str)
 {
-    gui_node_text = str;
+    node_text = str;
 }
 
 /**
@@ -200,7 +200,7 @@ void GuiNode::setGuiNodeText( const QString & str)
  */
 void GuiNode::textChange()
 {
-    QByteArray strByteArray = getGuiNodeText().toAscii();
+    QByteArray strByteArray = getNodeText().toAscii();
     char *strChar;
     strChar = ( char*) calloc( strByteArray.size(),sizeof( char));
     if ( strChar==NULL) return;
@@ -215,12 +215,12 @@ void GuiNode::textChange()
 void GuiNode::writeByXMLWriter( xmlTextWriterPtr writer)
 {
 	NodeAux::writeByXMLWriter ( writer);
-	if ( label()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST label());
-	if ( color()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST color());
+	if ( nodeLabel()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST nodeLabel());
+	if ( nodeColor()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST nodeColor());
 	if ( NodeProperties::shape())
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST NodeProperties::shape());
-	if (0 != stName().compare ("default", Qt::CaseInsensitive))
-		xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST stName().toAscii().data());
+	if (0 != nodeStName().compare ("default", Qt::CaseInsensitive))
+		xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST nodeStName().toAscii().data());
 }
 
 /**
@@ -234,10 +234,10 @@ void GuiNode::readByXML( xmlNode * cur_node)
 	{
 		if ( xmlStrEqual( props->name, xmlCharStrdup( "color")))
 		{
-			setColor( ( char *)( props->children->content));
+			setNodeColor( ( char *)( props->children->content));
 		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "label")))
 		{
-			setLabel( ( char *)( props->children->content));
+			setNodeLabel( ( char *)( props->children->content));
 		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "shape")))
 		{
 			setShape( ( char *)( props->children->content));
@@ -248,7 +248,7 @@ void GuiNode::readByXML( xmlNode * cur_node)
 		}
 		else if ( xmlStrEqual( props->name, xmlCharStrdup( "style")))
 		{
-			setStyle( ( char *)( props->children->content));
+			setNodeStyle( ( char *)( props->children->content));
 		}
 	}
 }
