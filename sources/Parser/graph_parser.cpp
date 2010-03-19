@@ -5,7 +5,7 @@
 
 #include "graph_parser.h"
 
-void ParserGraph::writeToXML( const char *filename)
+void ParserGraph::writeToXml( const char *filename)
 {
 	xmlTextWriterPtr writer;
 
@@ -22,8 +22,8 @@ void ParserGraph::writeToXML( const char *filename)
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "default_node_size",
 									   "%d", defaultNodeSize());
 
-	writeNodesByXMLWriter( writer);
-	writeEdgesByXMLWriter( writer);
+	writeNodesByXmlWriter( writer);
+	writeEdgesByXmlWriter( writer);
 
 
 	xmlTextWriterWriteString( writer, BAD_CAST "\t");
@@ -40,9 +40,9 @@ void ParserGraph::writeToXML( const char *filename)
 };
 
 
-void ParserNode::writeByXMLWriter( xmlTextWriterPtr writer)
+void ParserNode::writeByXmlWriter( xmlTextWriterPtr writer)
 {
-	Node::writeByXMLWriter( writer);
+	Node::writeByXmlWriter( writer);
 
 	if ( getColor())
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST getColor());

@@ -58,7 +58,7 @@ Edge::detachFromNode( GraphDir dir)
 /**
  * Write edge by xml writer
  */
-void Edge::writeByXMLWriter( xmlTextWriterPtr writer)
+void Edge::writeByXmlWriter( xmlTextWriterPtr writer)
 {
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "id", "%d", id());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "from", "%d", pred()->userId());
@@ -68,7 +68,7 @@ void Edge::writeByXMLWriter( xmlTextWriterPtr writer)
 /**
  *  Read from xml
  */
-void Edge::readByXML (xmlNode * cur_node)
+void Edge::readByXml (xmlNode * cur_node)
 {
 	for(xmlAttr * props = cur_node->properties; props; props = props->next)
 	{

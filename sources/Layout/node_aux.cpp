@@ -27,9 +27,9 @@ void NodeAux::debugPrint()
 /**
  *  Write to xml
  */
-void NodeAux::writeByXMLWriter( xmlTextWriterPtr writer)
+void NodeAux::writeByXmlWriter( xmlTextWriterPtr writer)
 {
-	Node::writeByXMLWriter (writer);
+	Node::writeByXmlWriter (writer);
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "x", "%d", x());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "y", "%d", y());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "width", "%d", width());
@@ -40,9 +40,9 @@ void NodeAux::writeByXMLWriter( xmlTextWriterPtr writer)
 /**
  *  Read from xml
  */
-void NodeAux::readByXML (xmlNode * cur_node)
+void NodeAux::readByXml (xmlNode * cur_node)
 {
-	Node::readByXML (cur_node);
+	Node::readByXml (cur_node);
 
 	for (xmlAttr* props = cur_node->properties; props; props = props->next)
 	{

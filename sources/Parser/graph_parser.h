@@ -41,7 +41,7 @@ public:
 		return color_priv;
 	}
 
-	void writeByXMLWriter( xmlTextWriterPtr writer);
+	void writeByXmlWriter( xmlTextWriterPtr writer);
 
 };
 
@@ -56,7 +56,7 @@ public:
 	ParserGraph() : Graph()
 	{};
 
-	void writeToXML( const char *filename);
+	void writeToXml( const char *filename);
 };
 
 

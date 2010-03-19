@@ -35,8 +35,8 @@ class Node: public Marked, public Numbered
         my_it.detach();
     }
 protected:
-	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
-	virtual void readByXML (xmlNode * cur_node);
+	virtual void writeByXmlWriter( xmlTextWriterPtr writer);
+	virtual void readByXml (xmlNode * cur_node);
 protected:
 
     /** We can't create nodes separately, do it through NewNode method of graph */

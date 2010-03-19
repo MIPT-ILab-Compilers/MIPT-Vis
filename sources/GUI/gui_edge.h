@@ -109,8 +109,8 @@ protected:
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event);
 	
-	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
-	virtual void readByXML ( xmlNode * cur_node);
+	virtual void writeByXmlWriter( xmlTextWriterPtr writer);
+	virtual void readByXml ( xmlNode * cur_node);
 private:
     GuiEdge( GuiGraph * graph_p, int _id, StyleSheet* ss, GuiNode * startItem, GuiNode * endItem, 
                  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);

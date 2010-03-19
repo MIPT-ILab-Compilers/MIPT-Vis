@@ -41,7 +41,7 @@ private slots:
     void doLayoutSlot();
     void textHandle();
     void centreOnNode();
-    void convertDumpToXMLSlot();
+    void convertDumpToXmlSlot();
     void doCentreOnNode( int nodeNumber);
     void saveTextToNode();
 
@@ -70,7 +70,7 @@ private:
     QAction *help_act;
     QAction *about_act;
     QAction *do_layout_act;
-    QAction *convert_dump_to_XML_act;
+    QAction *convert_dump_to_xml_act;
     QAction *en_gravity_act;
     QAction *dis_gravity_act;
     QAction *show_virtual_nodes_act;

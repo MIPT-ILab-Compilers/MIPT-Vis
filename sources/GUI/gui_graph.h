@@ -24,7 +24,7 @@ public:
     enum type { node, point, edge};
     
 	virtual void readAttribsFromXml (xmlNode * a_node);
-	virtual void writeAttribsByXMLWriter (xmlTextWriterPtr writer);
+	virtual void writeAttribsByXmlWriter (xmlTextWriterPtr writer);
 
     NodeAux * createNode();
     

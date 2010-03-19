@@ -65,7 +65,7 @@ void Style::loadFromXmlNode (xmlNode * a_node)
 /*
  * Write style to XML document
  */
-void Style::writeByXMLWriter( xmlTextWriterPtr writer)
+void Style::writeByXmlWriter( xmlTextWriterPtr writer)
 {
 	xmlTextWriterWriteAttribute( writer, BAD_CAST "name", BAD_CAST name_priv.toAscii().data());
 	if (pen.brush().style() != Qt::NoBrush)
@@ -114,14 +114,14 @@ void StyleSheet::loadFromXmlNode (xmlNode * a_node)
 /*
  * Write styles to XML document
  */
-void StyleSheet::writeByXMLWriter( xmlTextWriterPtr writer)
+void StyleSheet::writeByXmlWriter( xmlTextWriterPtr writer)
 {
 	for (int i = 0; i < sts.size(); ++i)
 	{
 		xmlTextWriterWriteString( writer, BAD_CAST "\t");
 		xmlTextWriterStartElement( writer, BAD_CAST "style");
 
-		sts[i]->writeByXMLWriter (writer);
+		sts[i]->writeByXmlWriter (writer);
 
 		xmlTextWriterEndElement( writer);
 	    xmlTextWriterWriteString( writer, BAD_CAST "\n");
