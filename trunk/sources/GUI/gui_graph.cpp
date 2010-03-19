@@ -60,7 +60,7 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):mode_priv( insertRect), G
     number_priv = 0;
     line_priv = NULL;
 
-    readFromXML( filename);
+    readFromXml( filename);
 
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
@@ -167,10 +167,10 @@ void GuiGraph::readAttribsFromXml (xmlNode * a_node)
 /**
  * Read style table
  */
-void GuiGraph::writeAttribsByXMLWriter (xmlTextWriterPtr writer)
+void GuiGraph::writeAttribsByXmlWriter (xmlTextWriterPtr writer)
 {
-	graph_style_sheet_priv.writeByXMLWriter (writer);
-	GraphAux::writeAttribsByXMLWriter (writer);
+	graph_style_sheet_priv.writeByXmlWriter (writer);
+	GraphAux::writeAttribsByXmlWriter (writer);
 }
 
 /**

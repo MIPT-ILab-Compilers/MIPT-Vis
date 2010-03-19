@@ -21,8 +21,8 @@ class Edge: public Marked, public Numbered
     int unique_id; //Unique ID
 
 protected:    Graph * graph; //Graph
-	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
-	virtual void readByXML (xmlNode * cur_node);
+	virtual void writeByXmlWriter( xmlTextWriterPtr writer);
+	virtual void readByXml (xmlNode * cur_node);
 private:
     EdgeListItem graph_it; //Position in Graph's list of edges
 

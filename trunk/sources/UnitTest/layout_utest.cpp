@@ -13,7 +13,7 @@ bool uTestLayout()
     char * file = _getcwd( NULL, 1024);
     strcat_s( file, 1024, "/test_graph.xml");
 
-	ga.readFromXML (file);
+	ga.readFromXml (file);
 	out ("\n============= testing Layout =============\nbefore ranking:\n");
 	ga.debugPrint();
 	

@@ -141,8 +141,8 @@ protected:
     NodeAux( GraphAux *graph_p, int _id);
     friend class GraphAux;
 
-	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
-	virtual void readByXML (xmlNode * cur_node);
+	virtual void writeByXmlWriter( xmlTextWriterPtr writer);
+	virtual void readByXml (xmlNode * cur_node);
 public:
 
 	/** Set corresponding item in layer's list */

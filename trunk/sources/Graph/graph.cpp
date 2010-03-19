@@ -351,7 +351,7 @@ Graph::readNodesFromXmlDoc( xmlNode * a_node)
 			 && xmlStrEqual( cur_node->name, xmlCharStrdup("node")))
 		{
 			Node *node = newNode();
-			node->readByXML (cur_node);
+			node->readByXml (cur_node);
 		}
 	}
 }
@@ -388,7 +388,7 @@ Graph::readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
 			if ( from == -1 || to == -1) continue;
 			edge = newEdge( nodes[from], nodes[to]);
 			/** Parse other properties */
-			edge->readByXML (cur_node);
+			edge->readByXml (cur_node);
 		}
 	}
 }
@@ -397,7 +397,7 @@ Graph::readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes)
  * Initializes graph form xmlDoc root node
  */
 void
-Graph::readFromXMLDoc( xmlNode * a_node)
+Graph::readFromXmlDoc( xmlNode * a_node)
 {
     xmlNode *cur_node = NULL;
 	vector<Node *> nodes;
@@ -440,7 +440,7 @@ Graph::readFromXMLDoc( xmlNode * a_node)
  *  Build graph from xml file.
  */
 void
-Graph::readFromXML(const char *filename)
+Graph::readFromXml(const char *filename)
 {
     xmlDoc *doc = NULL;
 	xmlNode *root_element = NULL;
@@ -460,7 +460,7 @@ Graph::readFromXML(const char *filename)
     /* get the root element node */
     root_element = xmlDocGetRootElement(doc);
 
-	readFromXMLDoc( root_element);
+	readFromXmlDoc( root_element);
 
 	this->xml_doc = doc;
 
@@ -474,14 +474,14 @@ Graph::readFromXML(const char *filename)
 Graph::Graph( char * filename)
 {
 	init();
-	readFromXML( filename);
+	readFromXml( filename);
 }
 
 /**
  *  Write nodes
  */
 void
-Graph::writeNodesByXMLWriter( xmlTextWriterPtr writer)
+Graph::writeNodesByXmlWriter( xmlTextWriterPtr writer)
 {
 	Node * node;
 	for ( node = firstNode(); isNotNullP( node); node = node->nextNode())
@@ -489,7 +489,7 @@ Graph::writeNodesByXMLWriter( xmlTextWriterPtr writer)
 		xmlTextWriterWriteString( writer, BAD_CAST "\t");
 		xmlTextWriterStartElement( writer, BAD_CAST "node");
 
-		node->writeByXMLWriter( writer);
+		node->writeByXmlWriter( writer);
 
 		xmlTextWriterEndElement( writer);
 	    xmlTextWriterWriteString( writer, BAD_CAST "\n");
@@ -500,7 +500,7 @@ Graph::writeNodesByXMLWriter( xmlTextWriterPtr writer)
  *  Write edges
  */
 void
-Graph::writeEdgesByXMLWriter( xmlTextWriterPtr writer)
+Graph::writeEdgesByXmlWriter( xmlTextWriterPtr writer)
 {
 	Edge * edge;
 	for ( edge = firstEdge(); isNotNullP( edge); edge = edge->nextEdge())
@@ -508,7 +508,7 @@ Graph::writeEdgesByXMLWriter( xmlTextWriterPtr writer)
 		xmlTextWriterWriteString( writer, BAD_CAST "\t");
 		xmlTextWriterStartElement( writer, BAD_CAST "edge");
 
-		edge->writeByXMLWriter( writer);
+		edge->writeByXmlWriter( writer);
 
 	    xmlTextWriterWriteString( writer, BAD_CAST "\n");
 		xmlTextWriterWriteString( writer, BAD_CAST "\t");
@@ -521,7 +521,7 @@ Graph::writeEdgesByXMLWriter( xmlTextWriterPtr writer)
  *  Write graph to xml file
  */
 void
-Graph::writeToXML( const char *filename)
+Graph::writeToXml( const char *filename)
 {
 	xmlTextWriterPtr writer;
 
@@ -538,9 +538,9 @@ Graph::writeToXML( const char *filename)
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "default_node_size",
 		                               "%d", defaultNodeSize());
 
-	writeNodesByXMLWriter( writer);
-    writeEdgesByXMLWriter( writer);
-	writeAttribsByXMLWriter (writer);
+	writeNodesByXmlWriter( writer);
+    writeEdgesByXmlWriter( writer);
+	writeAttribsByXmlWriter (writer);
 
 	xmlTextWriterEndElement( writer);
 

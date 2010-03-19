@@ -85,7 +85,7 @@ void MainWindow::save()
     if ( file==NULL) return;
     int i;
     for ( i=0; i<=cur_file.size(); ++i) file[i] = cur_file[i];
-    graph->writeToXML( file);
+    graph->writeToXml( file);
     setCurrentFile( current_file);
 }
 
@@ -163,9 +163,9 @@ void MainWindow::switchVnodesShow()
 /**
  * convertDumpToXML
  */
-void MainWindow::convertDumpToXMLSlot()
+void MainWindow::convertDumpToXmlSlot()
 {
-	convertDumpToXML( this);
+	convertDumpToXml( this);
 } 
 
 
@@ -274,9 +274,9 @@ void MainWindow::createActions()
     do_layout_act->setStatusTip( tr( "Do Layout..."));
     connect( do_layout_act, SIGNAL( triggered()), this, SLOT( doLayoutSlot()));
 
-    convert_dump_to_XML_act = new QAction( tr( "&Convert dump to XML..."), this);
-    convert_dump_to_XML_act->setStatusTip( tr( "Convert dump to XML..."));
-    connect( convert_dump_to_XML_act, SIGNAL( triggered()), this, SLOT( convertDumpToXMLSlot()));
+    convert_dump_to_xml_act = new QAction( tr( "&Convert dump to XML..."), this);
+    convert_dump_to_xml_act->setStatusTip( tr( "Convert dump to XML..."));
+    connect( convert_dump_to_xml_act, SIGNAL( triggered()), this, SLOT( convertDumpToXmlSlot()));
 	
 	en_gravity_act = new QAction ( QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Enable Gravity Correction"), this);
     en_gravity_act->setStatusTip ( tr( "Enable Gravity Correction"));
@@ -306,7 +306,7 @@ void MainWindow::createMenus()
     tools_menu->addAction( do_layout_act);
     tools_menu->addAction( en_gravity_act);
     tools_menu->addAction( dis_gravity_act);
-    tools_menu->addAction( convert_dump_to_XML_act);
+    tools_menu->addAction( convert_dump_to_xml_act);
     tools_menu->addAction( show_virtual_nodes_act);
 
     help_menu = menuBar()->addMenu( tr( "&Help"));

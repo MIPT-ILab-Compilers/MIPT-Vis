@@ -31,7 +31,7 @@ public:
 	}
 	
 	virtual void loadFromXmlNode (xmlNode * a_node);
-	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
+	virtual void writeByXmlWriter( xmlTextWriterPtr writer);
 };
 
 class EdgeStyle
@@ -49,7 +49,7 @@ public:
 	~StyleSheet();
 
 	void loadFromXmlNode (xmlNode * a_node);
-	void writeByXMLWriter( xmlTextWriterPtr writer);
+	void writeByXmlWriter( xmlTextWriterPtr writer);
 
 	StId getId (const QString& name);
 	void applayStyle (StId id, QPainter * painter, const QStyleOptionGraphicsItem * option = 0);

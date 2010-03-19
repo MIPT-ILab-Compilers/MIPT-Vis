@@ -98,8 +98,8 @@ private:
     friend class GraphAux;
 
 protected:
-	virtual void writeByXMLWriter( xmlTextWriterPtr writer);
-	virtual void readByXML ( xmlNode * cur_node);
+	virtual void writeByXmlWriter( xmlTextWriterPtr writer);
+	virtual void readByXml ( xmlNode * cur_node);
 	virtual void contextMenuEvent( QGraphicsSceneContextMenuEvent *event);
 
 public:

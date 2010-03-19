@@ -77,7 +77,7 @@ Node::debugPrint()
  *  Write to xml
  */
 void
-Node::writeByXMLWriter( xmlTextWriterPtr writer)
+Node::writeByXmlWriter( xmlTextWriterPtr writer)
 {
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "id", "%d", userId());
 }
@@ -85,7 +85,7 @@ Node::writeByXMLWriter( xmlTextWriterPtr writer)
 /**
  *  Read from xml
  */
-void Node::readByXML (xmlNode * cur_node)
+void Node::readByXml (xmlNode * cur_node)
 {
 	for (xmlAttr * props = cur_node->properties; props; props = props->next)
 	{

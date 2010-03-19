@@ -212,9 +212,9 @@ void GuiNode::textChange()
 /**
  *  Write to xml
  */
-void GuiNode::writeByXMLWriter( xmlTextWriterPtr writer)
+void GuiNode::writeByXmlWriter( xmlTextWriterPtr writer)
 {
-	NodeAux::writeByXMLWriter ( writer);
+	NodeAux::writeByXmlWriter ( writer);
 	if ( nodeLabel()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST nodeLabel());
 	if ( nodeColor()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST nodeColor());
 	if ( NodeProperties::shape())
@@ -226,9 +226,9 @@ void GuiNode::writeByXMLWriter( xmlTextWriterPtr writer)
 /**
  *  Read from xml
  */
-void GuiNode::readByXML( xmlNode * cur_node)
+void GuiNode::readByXml( xmlNode * cur_node)
 {
-	NodeAux::readByXML ( cur_node);
+	NodeAux::readByXml ( cur_node);
 	setTextPriv( "");
 	for ( xmlAttr* props = cur_node->properties; props; props = props->next)
 	{

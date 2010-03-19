@@ -196,7 +196,7 @@ CompilerType Parser::getCompilerType( const char * file)
 	return unknown;
 }
 
-bool convertDumpToXML( QWidget * parent)
+bool convertDumpToXml( QWidget * parent)
 {
 	Parser* P;
 	ParserGraph * gr;
@@ -247,7 +247,7 @@ bool convertDumpToXML( QWidget * parent)
 
 	if ( !file.isEmpty())
 	{
-		gr->writeToXML( file.toAscii().constData());
+		gr->writeToXml( file.toAscii().constData());
 		Utils::out( "Dump %s wrote", file.toAscii().constData());
 
 		QMessageBox msgBox;

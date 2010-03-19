@@ -255,9 +255,9 @@ GuiNode* GuiEdge::insertNode ( QPointF p)	//!!! I think it's superannuated
 /**
  * Write edge by xml writer
  */
-void GuiEdge::writeByXMLWriter( xmlTextWriterPtr writer)
+void GuiEdge::writeByXmlWriter( xmlTextWriterPtr writer)
 {
-	EdgeAux::writeByXMLWriter( writer);
+	EdgeAux::writeByXmlWriter( writer);
 	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST edgeLabel());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "prob", "%d", prob());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "thickness", "%d", thickness());
@@ -269,9 +269,9 @@ void GuiEdge::writeByXMLWriter( xmlTextWriterPtr writer)
 /**
  *  Read from xml
  */
-void GuiEdge::readByXML( xmlNode * cur_node)
+void GuiEdge::readByXml( xmlNode * cur_node)
 {
-	EdgeAux::readByXML( cur_node);
+	EdgeAux::readByXml( cur_node);
 	for ( xmlAttr * props = cur_node->properties; props; props = props->next)
 	{
 		if ( xmlStrEqual( props->name, xmlCharStrdup( "prob")))

@@ -118,13 +118,13 @@ public:
 	virtual void readAttribsFromXml (xmlNode * a_node) {}//for additional properties
 	void readNodesFromXmlDoc( xmlNode * a_node);
 	void readEdgesFromXmlDoc( xmlNode * a_node, vector<Node *> nodes);
-	void readFromXMLDoc( xmlNode * a_node);
-	void readFromXML(const char *filename);
+	void readFromXmlDoc( xmlNode * a_node);
+	void readFromXml(const char *filename);
 
-	void writeToXML(const char *filename);
-	void writeNodesByXMLWriter( xmlTextWriterPtr writer);
-	void writeEdgesByXMLWriter( xmlTextWriterPtr writer);
-	virtual void writeAttribsByXMLWriter (xmlTextWriterPtr writer) {}//for additional properties
+	void writeToXml(const char *filename);
+	void writeNodesByXmlWriter( xmlTextWriterPtr writer);
+	void writeEdgesByXmlWriter( xmlTextWriterPtr writer);
+	virtual void writeAttribsByXmlWriter (xmlTextWriterPtr writer) {}//for additional properties
     
     /** Create new node in graph */
     Node * newNode();
