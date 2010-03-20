@@ -15,11 +15,11 @@ public:
 	Mat_obj()
 	{
 	}
-	inline void setX( int x) 
+	inline void msetX( int x)//setX allready used in QGraphicsItem
     {
         r.setX (x);
     }
-	inline void setY( int y)
+	inline void msetY( int y)//setY allready used in QGraphicsItem
     { 
         r.setY (y);
     }

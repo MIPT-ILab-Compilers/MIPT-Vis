@@ -27,8 +27,8 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 		node->setTextPriv( "");        
         node->setWidth( node->boundingRect().width());
         node->setHeight( node->boundingRect().height());
-		node->setX( node->QGraphicsItem::x() + node->width()/2);
-		node->setY( node->QGraphicsItem::y() + node->height()/2);
+		node->msetX( node->QGraphicsItem::x() + node->width()/2);
+		node->msetY( node->QGraphicsItem::y() + node->height()/2);
 
 		QString text =  QString( "Node %1").arg( node->userId());
 		node->setPlainText(text);
@@ -66,8 +66,8 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):mode_priv( insertRect), G
 	{
         node->setPos( node->NodeAux::x(), node->NodeAux::y());
 		node->setNodeText(QString( node->textPriv()));
-        node->setX( node->QGraphicsItem::x());
-        node->setY( node->QGraphicsItem::y());
+        node->msetX( node->QGraphicsItem::x());
+        node->msetY( node->QGraphicsItem::y());
 		node->setAdjust( node->real()? 3 : 1);
 
 		QString text =  QString( "Node %1").arg( node->userId());

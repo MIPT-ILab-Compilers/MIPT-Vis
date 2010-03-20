@@ -499,7 +499,7 @@ void GraphAux::arrangeVertical()
 
 	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
 	{
-		iter->setY (ys[iter->rang()]);
+		iter->msetY (ys[iter->rang()]);
 	}
 	delete [] ys;
 }
@@ -518,7 +518,7 @@ void GraphAux::arrangeHorizontal()
 	}
 	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
 	{
-		iter->setX( iter->x() - min_x);
+		iter->msetX( iter->x() - min_x);
 	}
 }
 //-----------------------------------------------------------------------------
@@ -576,7 +576,7 @@ void GraphAux::decompact( int rank_num, int dir)
 			int dist = iter->x() -  iter->prevInLayer()->x();
 			if( dist < min_dist)
 			{
-				iter->setX( iter->x() + min_dist - dist);
+				iter->msetX( iter->x() + min_dist - dist);
 			}
 		}
 	}
@@ -588,7 +588,7 @@ void GraphAux::decompact( int rank_num, int dir)
 			int dist = - iter->x() + iter->nextInLayer()->x();
 			if( dist < min_dist)
 			{
-				iter->setX( iter->x() - min_dist + dist);
+				iter->msetX( iter->x() - min_dist + dist);
 			}
 		}
 	}
