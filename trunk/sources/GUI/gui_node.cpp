@@ -148,8 +148,8 @@ QVariant GuiNode::itemChange( GraphicsItemChange change, const QVariant &value)
     {
         setWidth( boundingRect().width());
         setHeight( boundingRect().height());
-        setX( QGraphicsItem::x() + width()/2);
-        setY( QGraphicsItem::y() + height()/2);
+        msetX( QGraphicsItem::x() + width()/2);
+        msetY( QGraphicsItem::y() + height()/2);
         
 		EdgeAux* iter;
 		ForEdges( this, iter, Succ)
@@ -166,8 +166,8 @@ QVariant GuiNode::itemChange( GraphicsItemChange change, const QVariant &value)
  */
 void GuiNode::commitPos( int x, int y)
 {
-    setX( x);
-    setY( y);
+    msetX( x);
+    msetY( y);
 
     setPos( x - width() / 2, y - height() / 2);
 

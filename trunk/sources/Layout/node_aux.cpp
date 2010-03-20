@@ -48,10 +48,10 @@ void NodeAux::readByXml (xmlNode * cur_node)
 	{
 		if ( xmlStrEqual( props->name, xmlCharStrdup("x")))
 		{
-			setX( strtoul( ( const char *)( props->children->content), NULL, 0));
+			msetX( strtoul( ( const char *)( props->children->content), NULL, 0));
 		} else if ( xmlStrEqual( props->name, xmlCharStrdup("y")))
 		{
-			setY( strtoul( ( const char *)( props->children->content), NULL, 0));
+			msetY( strtoul( ( const char *)( props->children->content), NULL, 0));
 		} else if ( xmlStrEqual( props->name, xmlCharStrdup("real")))
 		{
 			setReal ((bool)strtoul( ( const char *)( props->children->content), NULL, 0));
