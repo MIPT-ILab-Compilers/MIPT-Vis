@@ -135,7 +135,7 @@ protected:
     void mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
     void commitPos( int x, int y);
-    void superscribe ( QColor color, QString text);
+    void superScribe ( QColor color, QString text);
 
 public slots:
     void setNodeText( const QString & str);

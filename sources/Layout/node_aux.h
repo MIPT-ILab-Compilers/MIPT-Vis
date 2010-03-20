@@ -238,7 +238,7 @@ public:
     virtual void commitPos(int x,int y)
     {
     }
-    virtual void superscribe(QColor color, QString text)
+    virtual void superScribe(QColor color, QString text)
     {
     }
 };
