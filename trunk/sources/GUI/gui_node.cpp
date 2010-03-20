@@ -181,7 +181,7 @@ void GuiNode::commitPos( int x, int y)
 /**
  *  superscribe
  */
-void GuiNode::superscribe ( QColor color, QString text)
+void GuiNode::superScribe ( QColor color, QString text)
 {
 //    setMyColor( color);
     setPlainText( text);

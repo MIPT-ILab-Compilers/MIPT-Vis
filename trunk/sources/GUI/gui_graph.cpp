@@ -255,7 +255,7 @@ bool GuiGraph::applayLayout()
 	{
 		iter->commitPos (iter->x(), iter->y());
 		if (!iter->real())
-			iter->superscribe ( Qt::gray, "unreal");
+			iter->superScribe ( Qt::gray, "unreal");
 	}
 
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
