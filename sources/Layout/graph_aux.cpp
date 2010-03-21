@@ -6,6 +6,7 @@
 
 #include <Qt/QQueue.h>
 #include <Qt/QStack.h>
+#include <QtCore/QTime>
 #include <math.h>
 #include "layout_iface.h"
 
@@ -91,15 +92,30 @@ bool GraphAux::make_splines()
 */
 bool GraphAux::doLayout()
 {
+	QTime t;
+	t.start();
+	int t_rank, t_order, t_pos, t_splines;
+	
+	out("Layout starts...\n");
+
 	delVirtualNodes();
 	if (!ranking())			return false;
+	t_rank = t.restart();
 	if (!ordering())		return false;
+	t_order = t.restart();
 	if (!position())		return false;
+	t_pos = t.restart();
 	if (!make_splines())	return false;
+	t_splines = t.restart();
 	if (!applayLayout())	return false;
 	
 	debugPrint();
-
+	/* Time output */
+	out("Layout has finished.\n");
+	out("    ranking: %dms", t_rank);
+	out("    ordering: %dms", t_order);
+	out("    positioning: %dms", t_pos);
+	out("    splines: %dms", t_splines);
 	return true;
 }
 //-----------------------------------------------------------------------------
