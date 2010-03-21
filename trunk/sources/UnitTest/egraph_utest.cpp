@@ -165,7 +165,7 @@ bool uTestDomSearch()
 	/* Graph with 2 branches and one cycle */
 	EGraph* graph3 = new EGraph;
 	vector< ENode*> nodes3;
-	for( i = 0; i < 9; i++)
+	for(int i = 0; i < 9; i++)
 	{
 		nodes3.push_back( graph3->newNode());
 	}
