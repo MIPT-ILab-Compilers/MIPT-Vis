@@ -201,6 +201,7 @@ public:
 	virtual ~Parser(){}
     bool parseFile( string filename);
 	static CompilerType getCompilerType( const char * file);
+	list < string> getFunctionList() { return dump_info.getFunctionList(); }
 	ParserGraph * getGraph( const char *fname = NULL) { return dump_info.getGraph( fname); }
 
 protected:
