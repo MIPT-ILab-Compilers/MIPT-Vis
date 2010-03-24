@@ -9,6 +9,7 @@
 #include <QtGui/QFileDialog>
 #include <QtCore/QObject>
 #include <QtGui/QMessageBox>
+#include <QtGui/QInputDialog>
 
 
 /**
@@ -201,7 +202,7 @@ bool convertDumpToXml( QWidget * parent)
 	Parser* P;
 	ParserGraph * gr;
 	CompilerType ct;
-	QString file;
+	QString file, item;
 
 	Utils::out( "\nParser started");
 
@@ -225,13 +226,35 @@ bool convertDumpToXml( QWidget * parent)
 	else
 	{
 		Utils::err( "Unknown compiler type");
+		QMessageBox msgBox;
+		msgBox.setText( parent->tr( "Unknown compiler type!"));
+		msgBox.setIcon( QMessageBox::Critical);
+		msgBox.setModal( true);
+		msgBox.exec();
+
 		return false;
 	}
 
 	try
 	{
-		P->parseFile( file.toAscii().constData()); //( file.toStdString());
-		gr = P->getGraph();
+		P->parseFile( file.toAscii().constData());
+
+		QStringList items;
+		list < string> functions;
+
+		functions = P->getFunctionList();
+
+		list < string>::const_iterator it;
+		for( it = functions.begin(); it != functions.end(); it++)
+			items << QString::fromStdString( *it);
+
+		bool ok;
+		item = QInputDialog::getItem( parent, parent->tr("Select function"),
+			parent->tr("Function:"), items, 0, false, &ok);
+		if (ok && !item.isEmpty())
+			gr = P->getGraph( item.toAscii().constData());
+		else
+			return false;
 	}
 	catch( exSomething & ex)
 	{
@@ -241,9 +264,12 @@ bool convertDumpToXml( QWidget * parent)
 
 	Utils::out( "%s successfuly parsed", file.toAscii().constData());
 
+	file += "_";
+	file += item.toAscii().constData();
 	file += ".xml";
 
-	file = QFileDialog::getSaveFileName( parent, parent->tr( "Save XML"), file,	parent->tr( "XML files (*.xml)"));
+	file = QFileDialog::getSaveFileName( parent, parent->tr( "Save XML"),
+		file,	parent->tr( "XML files (*.xml)"));
 
 	if ( !file.isEmpty())
 	{
@@ -251,7 +277,12 @@ bool convertDumpToXml( QWidget * parent)
 		Utils::out( "Dump %s wrote", file.toAscii().constData());
 
 		QMessageBox msgBox;
-		msgBox.setText("The dump " + file + " has been writen.");
+		QString msg = parent->tr( "The dump of function \"")
+			+ item
+			+ parent->tr("\" has been writen to ")
+			+ file + ".";
+
+		msgBox.setText( msg);
 		msgBox.setModal( true);
 		msgBox.exec();
 	}
