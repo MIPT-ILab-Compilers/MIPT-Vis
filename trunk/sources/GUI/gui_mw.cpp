@@ -33,9 +33,9 @@ MainWindow::MainWindow()
 
     createActions();
     createMenus();
-	createToolBars();
     createStatusBar();
 	createDockWindows();
+	createToolBars();
 
 	gravity_timer = new QTimer ( this);
 	connect( gravity_timer, SIGNAL( timeout()), this, SLOT(makeGravity()));
@@ -262,11 +262,11 @@ void MainWindow::createActions()
     save_act->setStatusTip( tr( "Save..."));
     connect( save_act, SIGNAL( triggered()), this, SLOT( save()));
 
-    help_act = new QAction( tr( "Mipt-Vis &Help"), this);
+    help_act = new QAction(QIcon("../GUI/images/help.bmp"), tr( "Mipt-Vis &Help"), this);
     help_act->setStatusTip( tr( "Help..."));
     connect( help_act, SIGNAL( triggered()), this, SLOT( help()));
 
-    about_act = new QAction( tr( "&About Mipt-Vis"), this);
+    about_act = new QAction(QIcon("../GUI/images/about.bmp"), tr( "&About Mipt-Vis"), this);
     about_act->setStatusTip( tr( "About..."));
     connect( about_act, SIGNAL(triggered()), this, SLOT( about()));
 
@@ -274,21 +274,21 @@ void MainWindow::createActions()
     do_layout_act->setStatusTip( tr( "Do Layout..."));
     connect( do_layout_act, SIGNAL( triggered()), this, SLOT( doLayoutSlot()));
 
-    convert_dump_to_xml_act = new QAction( tr( "&Convert dump to XML..."), this);
+    convert_dump_to_xml_act = new QAction(QIcon("../GUI/images/conversion.bmp"),tr( "&Convert dump to XML..."), this);
     convert_dump_to_xml_act->setStatusTip( tr( "Convert dump to XML..."));
     connect( convert_dump_to_xml_act, SIGNAL( triggered()), this, SLOT( convertDumpToXmlSlot()));
-	
-	en_gravity_act = new QAction ( QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Enable Gravity Correction"), this);
-    en_gravity_act->setStatusTip ( tr( "Enable Gravity Correction"));
-	dis_gravity_act = new QAction (QIcon("../GUI/images/disGravityAct.bmp"),tr( "&Disable Gravity Correction"), this);
-    dis_gravity_act->setStatusTip ( tr( "Disable Gravity Correction"));
-    connect( en_gravity_act, SIGNAL( triggered()), this, SLOT( enableGravity()));
-	connect( dis_gravity_act, SIGNAL( triggered()), this, SLOT( disableGravity()));
-
-	
-    show_virtual_nodes_act = new QAction( tr( "Show &pseudonodes trigger"), this);
+		
+    show_virtual_nodes_act = new QAction(QIcon("../GUI/images/node_icon.bmp"),tr( "Show &pseudonodes trigger"), this);
     show_virtual_nodes_act->setStatusTip( tr( "Show pseudonodes trigger"));
+	show_virtual_nodes_act->setCheckable(true);
+	show_virtual_nodes_act->setChecked(false);
     connect( show_virtual_nodes_act, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
+
+	do_gravity_act = new QAction(QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Change Gravity"),this);
+	do_gravity_act->setStatusTip( tr( "&Change Gravity"));
+	do_gravity_act->setCheckable(true);
+	do_gravity_act->setChecked(false);
+	connect(do_gravity_act, SIGNAL(toggled(bool)), this, SLOT(reactToGravityToggle(bool)));
 }
 
 /**
@@ -304,8 +304,7 @@ void MainWindow::createMenus()
 
     tools_menu = menuBar()->addMenu( tr( "&Tools"));
     tools_menu->addAction( do_layout_act);
-    tools_menu->addAction( en_gravity_act);
-    tools_menu->addAction( dis_gravity_act);
+    tools_menu->addAction( do_gravity_act);
     tools_menu->addAction( convert_dump_to_xml_act);
     tools_menu->addAction( show_virtual_nodes_act);
 
@@ -390,6 +389,17 @@ void MainWindow::createToolBars()
 	tool_bar->addAction(load_act);
     tool_bar->addAction(save_act);
 	tool_bar->addAction(do_layout_act);
-	tool_bar->addAction(en_gravity_act);
-	tool_bar->addAction(dis_gravity_act);
+	tool_bar->addAction(convert_dump_to_xml_act);
+	tool_bar->addAction(show_virtual_nodes_act);
+	tool_bar->addAction(do_gravity_act);
 }
+/**
+ * reactToGravityToggle
+ */
+void MainWindow::reactToGravityToggle(bool checked)
+ {
+    if (checked) 
+		emit enableGravity();
+	else
+		emit disableGravity();
+ }
