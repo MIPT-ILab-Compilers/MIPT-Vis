@@ -3,6 +3,7 @@
  * Copyright (C) 2009  MiptVis, Le Manh Ha
  */
 #include <QtGui/QtGui>
+#include <QtCore/QTextCodec>
 #include "gui_mw.h"
 #include "../Parser/parser_iface.h"
 /**
@@ -47,7 +48,8 @@ MainWindow::MainWindow()
  */
 void MainWindow::load()
 {
-    current_file = QFileDialog::getOpenFileName( this, tr( "Open File"), "", tr( "XML (*.xml);;All files(*.*)")); 
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Windows-1251"));
+    current_file = QFileDialog::getOpenFileName( this, tr( "Open File"), ".", tr( "XML (*.xml);;All files(*.*)")); 
     if ( current_file.isEmpty()) return;
     QByteArray cur_file = current_file.toAscii();
     char *file;
