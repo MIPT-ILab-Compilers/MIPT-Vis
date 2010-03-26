@@ -49,6 +49,7 @@ private slots:
 	void disableGravity();
 	void makeGravity();
 	void switchVnodesShow();
+	void reactToGravityToggle(bool checked);
 
 private:
     void createMenus();
@@ -71,9 +72,8 @@ private:
     QAction *about_act;
     QAction *do_layout_act;
     QAction *convert_dump_to_xml_act;
-    QAction *en_gravity_act;
-    QAction *dis_gravity_act;
     QAction *show_virtual_nodes_act;
+	QAction *do_gravity_act;
 
 	QToolBar *tool_bar;
 
