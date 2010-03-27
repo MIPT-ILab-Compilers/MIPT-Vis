@@ -16,7 +16,7 @@ MainWindow::MainWindow()
 
     graph = new GuiGraph();
     graph->setSceneRect( QRectF( 0, 0, 5000, 5000));
-    connect( graph, SIGNAL( isClicked()), this, SLOT( textHandle()));
+    connect( graph, SIGNAL( newNodeCreated( int)), this, SLOT( addNewTextDock( int)));
 
     view = new GuiView(graph);
     view->setScene(graph);
@@ -63,11 +63,8 @@ void MainWindow::load()
     if ( graph!=NULL) delete graph;
     graph = new GuiGraph( file);
     view->setScene( graph);
-    connect( graph, SIGNAL( isClicked()), this, SLOT( textHandle()));
 
-    node_text_edit->clear();
-    node_text_edit->setReadOnly( true);
-    save_text_button->setEnabled( false);
+	createTextDockWindows();
 
     QApplication::restoreOverrideCursor();
 
@@ -188,10 +185,23 @@ void MainWindow::doCentreOnNode( int nodeNumber)
     GuiNode * node;
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 		if ( node->userId() == nodeNumber)
-      {
-		  view->centerOn( node);
-          break;
-	  }
+		{
+			view->centerOn( node);
+			break;
+		}
+} 
+
+/**
+ * create text dock windows
+ */
+void MainWindow::createTextDockWindows()
+{
+    GuiNode * node;
+    for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		{
+			addDockWidget( Qt::RightDockWidgetArea, node->text_dock);
+			connect(node->text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT( doCentreOnNode( int)));
+		}
 } 
 
 /**
@@ -223,31 +233,6 @@ void MainWindow::createDockWindows()
     addDockWidget( Qt::RightDockWidgetArea, dock);
 	view_menu->addAction(dock->toggleViewAction());
 
-	/* nodeTextEdit dock*/
-    dock = new QDockWidget( tr("Node description"), this);
-    dock->setAllowedAreas( Qt::AllDockWidgetAreas);
-	dock->setFloating( false);
-
-    node_text_edit = new GuiTextEdit;
-    node_text_edit->clear();
-    node_text_edit->setReadOnly( true);
-	connect(node_text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT(doCentreOnNode( int)));
-    
-    save_text_button = new QPushButton( tr( "Save &Text"));
-    save_text_button->setEnabled( false);
-    save_text_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect( save_text_button, SIGNAL( clicked()), this, SLOT( saveTextToNode()));
-
-    node_text_layout = new QVBoxLayout( dock);
-    node_text_layout->addWidget( node_text_edit);
-    node_text_layout->addWidget( save_text_button);
-
-    node_text_widget = new QWidget;
-    node_text_widget->setLayout( node_text_layout);
-
-	dock->setWidget( node_text_widget);
-    addDockWidget( Qt::RightDockWidgetArea, dock);
-	view_menu->addAction(dock->toggleViewAction());
 }
 
 /**
@@ -324,44 +309,17 @@ void MainWindow::createStatusBar()
 }
 
 /**
- * Text Handle
+ * Add new text dock
  */
-void MainWindow::textHandle()
+void MainWindow::addNewTextDock(int number)
 {
-    QList<QGraphicsItem*> list = graph->selectedItems();
-    if ( list.size() == 1)
-    {
-		if ( qgraphicsitem_cast< GuiNode*>( list[ 0]))
-		{
-			GuiNode *node = qgraphicsitem_cast< GuiNode*>( list[ 0]);
-			node_text_edit->setPlainText( node->node_text);
-			node_text_edit->setReadOnly( false);
-			save_text_button->setEnabled( true);
-		}
-    }
-    else
-    {
-        node_text_edit->clear();
-        node_text_edit->setReadOnly( true);
-        save_text_button->setEnabled( false);
-    }
-}
-
-/**
- * saveTextToNode
- */
-void MainWindow::saveTextToNode()
-{
-    QList<QGraphicsItem*> list = graph->selectedItems();
-    if ( list.size() == 1)
-    {
-		GuiNode *node = qgraphicsitem_cast< GuiNode*>( list[0]);
-        node->setNodeText(node_text_edit->toPlainText());
-		node->textChange();
-        node_text_edit->clear();
-        node_text_edit->setReadOnly( true);
-        save_text_button->setEnabled( false);
-    }
+    GuiNode * node;
+    for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		if ( node->userId() == number) 
+			{
+				addDockWidget( Qt::RightDockWidgetArea, node->text_dock);
+				connect(node->text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT( doCentreOnNode( int)));
+			}
 }
 
 /**

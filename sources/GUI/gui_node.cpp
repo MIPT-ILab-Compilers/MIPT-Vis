@@ -40,6 +40,7 @@ GuiNode::GuiNode(  QString * text, GuiGraph * graph_p, int _id, StyleSheet* node
 	polygon_priv << (boundingRect().bottomLeft()) << (boundingRect().bottomRight())
 				  << (boundingRect().topRight()) << (boundingRect().topLeft())
 				  << (boundingRect().bottomLeft());
+	createDock();
 }
 /**
  * Destructor of GuiNode class
@@ -76,6 +77,7 @@ void GuiNode::focusOutEvent( QFocusEvent * event)
  */
 void GuiNode::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
+	if (!text_dock->isVisible()) text_dock->show();
     if ( mouseEvent->button() & Qt::LeftButton)
     {
         if ( textInteractionFlags() == Qt::NoTextInteraction)
@@ -89,6 +91,7 @@ void GuiNode::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
  */
 void GuiNode::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
+	if (!text_dock->isVisible()) text_dock->show();
     update();
     QGraphicsTextItem::mousePressEvent( mouseEvent);
 }
@@ -270,4 +273,41 @@ void GuiNode::contextMenuEvent( QGraphicsSceneContextMenuEvent *event)
 void GuiNode::emitDelete()
 {
 	emit deleteGuiNode( this->userId());
+}
+
+/**
+ *  create dock
+ */
+void GuiNode::createDock()
+{
+	text_dock = new QDockWidget( QString( "Node %1").arg( this->userId()));
+	text_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
+	text_dock->setFloating( false);
+
+    text_edit = new GuiTextEdit;
+    text_edit->clear();
+    text_edit->setReadOnly( false);
+
+    text_save_button = new QPushButton( tr( "Save"));
+    text_save_button->setEnabled( true);
+    text_save_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
+	QObject::connect( text_save_button, SIGNAL( clicked()), this, SLOT( saveText()));
+
+    text_layout = new QVBoxLayout( text_dock);
+    text_layout->addWidget( text_edit);
+    text_layout->addWidget( text_save_button);
+
+	text_widget = new QWidget;
+	text_widget->setLayout( text_layout);
+
+	text_dock->setWidget( text_widget);
+	text_dock->hide();
+}
+
+/**
+ *  save text
+ */
+void GuiNode::saveText()
+{
+	node_text = text_edit->toPlainText();
 }

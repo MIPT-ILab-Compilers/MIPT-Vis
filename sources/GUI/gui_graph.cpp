@@ -31,14 +31,15 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 		node->msetY( node->QGraphicsItem::y() + node->height()/2);
 
 		QString text =  QString( "Node %1").arg( node->userId());
-		node->setPlainText(text);
+		node->setPlainText( text);
+		node->text_dock->setWindowTitle( text);
 
-		QObject::connect(node, SIGNAL( deleteGuiNode( int)), this, SLOT( deleteNode( int)));
+		QObject::connect( node, SIGNAL( deleteGuiNode( int)), this, SLOT( deleteNode( int)));
+		emit newNodeCreated( node->userId());
+
         QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
     }
     QGraphicsScene::mouseDoubleClickEvent( mouseEvent);
-    
-    emit isClicked();
 }
 
 /**
@@ -65,15 +66,19 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):mode_priv( insertRect), G
     for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 	{
         node->setPos( node->NodeAux::x(), node->NodeAux::y());
-		node->setNodeText(QString( node->textPriv()));
+
+		node->setNodeText( QString( node->textPriv()));
+		node->text_edit->setPlainText( node->textPriv());
+
         node->msetX( node->QGraphicsItem::x());
         node->msetY( node->QGraphicsItem::y());
 		node->setAdjust( node->real()? 3 : 1);
 
 		QString text =  QString( "Node %1").arg( node->userId());
-		node->setPlainText(text);
+		node->setPlainText( text);
+		node->text_dock->setWindowTitle( text);
 
-		QObject::connect(node, SIGNAL( deleteGuiNode( int)), this, SLOT( deleteNode( int)));
+		QObject::connect( node, SIGNAL( deleteGuiNode( int)), this, SLOT( deleteNode( int)));
 	}
 	for ( edge = ( GuiEdge *)firstEdge(); isNotNullP( edge); edge = ( GuiEdge *) edge->nextEdge())
 	{
@@ -97,8 +102,6 @@ void GuiGraph::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
     }
     update();
     QGraphicsScene::mousePressEvent( mouseEvent);
-    
-    emit isClicked();
 }
 
 /**
@@ -152,7 +155,6 @@ void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
     line_priv = NULL;
     mode_priv = moveItem;
     QGraphicsScene::mouseReleaseEvent( mouseEvent);
-    emit isClicked();
 }
 
 /**

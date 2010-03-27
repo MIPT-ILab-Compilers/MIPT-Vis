@@ -60,7 +60,7 @@ private:
 	bool draw_virtual_nodes_priv;
 
 signals:
-    void isClicked();
+    void newNodeCreated( int number);
 
 public slots:
 	void deleteNode( int number);
