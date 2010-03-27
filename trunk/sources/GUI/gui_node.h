@@ -15,6 +15,11 @@ class GuiNode;
 class GuiGraph;
 class GuiEdge;
 class GuiPoint;
+class GuiTextEdit;
+class QDockWidget;
+class QPushButton;
+class QVBoxLayout;
+class QWidget;
 
 /**
  * Representation of various node attributes
@@ -92,7 +97,6 @@ class GuiNode:public QGraphicsTextItem, public NodeAux, public NodeProperties
 
 private:
     QPolygonF polygon_priv;
-	//QColor myColor;
     qreal adjust_priv;
     friend class GuiGraph;
     friend class GraphAux;
@@ -103,6 +107,12 @@ protected:
 	virtual void contextMenuEvent( QGraphicsSceneContextMenuEvent *event);
 
 public:
+	GuiTextEdit *text_edit;
+	QDockWidget *text_dock;
+	QPushButton *text_save_button;
+	QVBoxLayout *text_layout;
+	QWidget *text_widget;
+
     QString node_text;
     enum { Type = QGraphicsItem::UserType + 1};
     GuiNode( QString * text, GuiGraph * graph_p, int _id, StyleSheet *sheet_style,
@@ -137,8 +147,12 @@ protected:
     void commitPos( int x, int y);
     void superScribe ( QColor color, QString text);
 
+private:
+	void createDock();
+
 public slots:
     void setNodeText( const QString & str);
+	void saveText();
 	void textChange();
 	void emitDelete();
 

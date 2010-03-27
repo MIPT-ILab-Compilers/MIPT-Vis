@@ -39,11 +39,10 @@ private slots:
     void help();
     void about();
     void doLayoutSlot();
-    void textHandle();
     void centreOnNode();
     void convertDumpToXmlSlot();
     void doCentreOnNode( int nodeNumber);
-    void saveTextToNode();
+	void addNewTextDock( int number);
 
 	void enableGravity();
 	void disableGravity();
@@ -56,6 +55,7 @@ private:
     void createActions();
     void createStatusBar();
     void setCurrentFile( const QString & fileName);
+	void createTextDockWindows();
 	void createDockWindows();
 	void createToolBars();
 
@@ -82,14 +82,10 @@ private:
     GuiView *view;
     QHBoxLayout *view_layout;
     QWidget *view_widget;
-    QWidget *node_text_widget;
     QWidget *centre_on_node_widget;
     GuiGraph *graph;
     QString current_file;
-    GuiTextEdit *node_text_edit;
-    QVBoxLayout *node_text_layout;
     QVBoxLayout *centre_on_node_layout;
-    QPushButton *save_text_button;
     QPushButton *centre_on_node_button;
 	QSpinBox *centre_on_node_spin_box;
 
