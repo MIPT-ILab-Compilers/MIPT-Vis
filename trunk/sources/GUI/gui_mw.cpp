@@ -286,8 +286,8 @@ void MainWindow::createActions()
 	show_virtual_nodes_act->setChecked(false);
     connect( show_virtual_nodes_act, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
 
-	do_gravity_act = new QAction(QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Change Gravity"),this);
-	do_gravity_act->setStatusTip( tr( "&Change Gravity"));
+	do_gravity_act = new QAction(QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Change Gravity..."),this);
+	do_gravity_act->setStatusTip( tr( "Change Gravity..."));
 	do_gravity_act->setCheckable(true);
 	do_gravity_act->setChecked(false);
 	connect(do_gravity_act, SIGNAL(toggled(bool)), this, SLOT(reactToGravityToggle(bool)));
