@@ -48,6 +48,9 @@ private:
 	void saveMinDist( int rank_num);
 	void decompact( int rank_num, int dir);
 
+	/* Horizontal coordinates calculation based on median value positioning */
+	void medianPosition();
+
 
 public://!!! Only for tests, it must be closed
 	bool ranking();

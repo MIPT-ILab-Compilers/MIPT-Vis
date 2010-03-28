@@ -154,6 +154,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\node_group.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\rank.cpp"
 				>
 			</File>
@@ -176,6 +180,10 @@
 		</File>
 		<File
 			RelativePath=".\node_aux.h"
+			>
+		</File>
+		<File
+			RelativePath=".\node_group.h"
 			>
 		</File>
 		<File
