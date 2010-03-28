@@ -281,7 +281,8 @@ void GuiGraph::deleteNode( int number)
 	for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 		if ( node->userId() == number)
 		{
-			removeNode(node);
+			node->text_dock->hide();
+			removeNode( node);
 			break;
 		}
 }
