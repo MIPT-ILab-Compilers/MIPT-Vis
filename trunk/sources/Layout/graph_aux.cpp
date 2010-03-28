@@ -525,7 +525,8 @@ void GraphAux::arrangeVertical()
 */
 void GraphAux::arrangeHorizontal()
 {
-	forceDirectedPosition();
+	//forceDirectedPosition();
+	medianPosition();
 	/* Set minimal coordinate to zero */
 	int min_x = 1000000000;
 	for (NodeAux* iter = addAux(firstNode()); iter != 0; iter = addAux(iter->nextNode()))
@@ -684,6 +685,45 @@ void GraphAux::forceDirectedPosition()
 		}
 	}
 }
+
+/**
+ * Horizontal positioning algorithm based on calculating median
+ * value for group of adjacent nodes on the rank.
+ */
+void GraphAux::medianPosition()
+{
+	/* Make node groups from all nodes */
+	QList<NodeGroup*> group_list;
+	for( int rank_num = 0; rank_num <= max_rank; rank_num++)
+	{
+		NodeGroup* prev = NULL, *cur = NULL;
+		prev = new NodeGroup(rank[rank_num].first());
+		group_list.append(prev);
+		for( NodeAux* iter = rank[rank_num].first()->nextInLayer(); iter; iter = iter->nextInLayer())
+		{
+			cur = new NodeGroup(iter);
+			group_list.append(cur);
+			cur->setPrev(prev);
+			prev->setNext(cur);
+			prev = cur;
+		}
+	}
+	/* Calculate median positions of groups */
+	int max_iter = 24;
+	for(int i = 0; i < max_iter; i++)
+	{
+		for(QList<NodeGroup*>::iterator iter = group_list.begin(); iter != group_list.end(); iter++)
+		{
+			(*iter)->update();
+		}
+	}
+	/* Free allocated memory */
+	for(QList<NodeGroup*>::iterator iter = group_list.begin(); iter != group_list.end(); iter++)
+	{
+		delete (*iter);
+	}
+};
+
 //-----------------------------------------------------------------------------
 int GraphAux::backedgeNumStat()
 {

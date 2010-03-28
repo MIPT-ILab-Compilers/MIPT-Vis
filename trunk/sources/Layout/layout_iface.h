@@ -11,6 +11,7 @@
 #include "node_aux.h"
 #include "rank.h"
 #include "graph_aux.h"
+#include "node_group.h"
 
 const int Big_way_len_value = 10000000;
 
