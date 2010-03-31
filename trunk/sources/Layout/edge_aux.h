@@ -50,6 +50,10 @@ public:
 	{
 		return type == EdgeAux::back;
 	}
+	inline bool cycle()
+	{
+		return type == EdgeAux::mesh;
+	}
 
 };
 

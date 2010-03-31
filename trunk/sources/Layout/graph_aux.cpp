@@ -116,6 +116,7 @@ bool GraphAux::doLayout()
 	out("    ordering: %dms", t_order);
 	out("    positioning: %dms", t_pos);
 	out("    splines: %dms", t_splines);
+	out("    total: %dms", t_rank + t_order + t_pos + t_splines);
 	return true;
 }
 //-----------------------------------------------------------------------------
@@ -693,13 +694,15 @@ void GraphAux::forceDirectedPosition()
 void GraphAux::medianPosition()
 {
 	/* Make node groups from all nodes */
+	QList<QList<NodeGroup*>> group_list_ranked;
 	QList<NodeGroup*> group_list;
 	for( int rank_num = 0; rank_num <= max_rank; rank_num++)
 	{
+		group_list.clear();
 		NodeGroup* prev = NULL, *cur = NULL;
 		prev = new NodeGroup(rank[rank_num].first());
 		group_list.append(prev);
-		for( NodeAux* iter = rank[rank_num].first()->nextInLayer(); iter; iter = iter->nextInLayer())
+		for( NodeAux* iter = rank[rank_num].first()->nextInLayer(); iter != NULL; iter = iter->nextInLayer())
 		{
 			cur = new NodeGroup(iter);
 			group_list.append(cur);
@@ -707,14 +710,22 @@ void GraphAux::medianPosition()
 			prev->setNext(cur);
 			prev = cur;
 		}
+		group_list_ranked.append(group_list);
 	}
 	/* Calculate median positions of groups */
 	int max_iter = 24;
 	for(int i = 0; i < max_iter; i++)
 	{
-		for(QList<NodeGroup*>::iterator iter = group_list.begin(); iter != group_list.end(); iter++)
+		for(QList<QList<NodeGroup*>>::iterator iter_rank = group_list_ranked.begin(); iter_rank != group_list_ranked.end(); iter_rank++)
 		{
-			(*iter)->update();
+			for(QList<NodeGroup*>::iterator iter = iter_rank->begin(); iter != iter_rank->end(); iter++)
+			{
+				if(!(*iter)->empty())(*iter)->median();
+			}
+			for(QList<NodeGroup*>::iterator iter = iter_rank->begin(); iter != iter_rank->end(); iter++)
+			{
+				if(!(*iter)->empty())(*iter)->update();
+			}
 		}
 	}
 	/* Free allocated memory */

@@ -22,9 +22,6 @@ private:
 	/* Next and previous node group in rank */
 	NodeGroup* next_priv, *prev_priv;
 
-	/* Return median position of group */
-	int median();
-
 	/* Updates coordinates of nodes in group */
 	void updatePos();
 
@@ -52,8 +49,14 @@ public:
 	void append();
 	void prepend();
 
+	/* Calculate median position of group */
+	void median();
+
 	/* Update position on group */
 	void update();
+
+	/* Check if group is empty */
+	bool empty();
 };
 
 #endif
