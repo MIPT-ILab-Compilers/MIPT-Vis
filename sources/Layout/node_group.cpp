@@ -51,24 +51,24 @@ int NodeGroup::width()
 	return width_priv;
 }
 
-int NodeGroup::median()
+void NodeGroup::median()
 {
 	QList<int> adj_pos; // Positions of andjacent to this group nodes
 	for( QList<NodeAux*>::iterator v = node_list.begin(); v != node_list.end(); v++)
 	{
 		for( EdgeAux* iter = (*v)->firstSucc(); iter != NULL; iter = iter->nextSucc())
 		{
-			adj_pos.append(iter->succ()->x());
+			if(!iter->cycle())adj_pos.append(iter->succ()->x());
 		}
 		for( EdgeAux* iter = (*v)->firstPred(); iter != NULL; iter = iter->nextPred())
 		{
-			adj_pos.append(iter->pred()->x());
+			if(!iter->cycle())adj_pos.append(iter->pred()->x());
 		}
 	}
 	qSort(adj_pos);
 	/* Remove repeat elements */
 	QList<int>::iterator prev = adj_pos.begin();
-	for(QList<int>::iterator iter = ++adj_pos.begin(); iter != adj_pos.end();)
+	for(QList<int>::iterator iter = ++adj_pos.begin(); iter < adj_pos.end();)
 	{
 		if(*iter == *prev)iter = adj_pos.erase(iter);
 		else prev = iter++;
@@ -76,27 +76,32 @@ int NodeGroup::median()
 	/* Calculate median position */
 	int s = adj_pos.size();
 	int m = s / 2;
-	if(s == 0) return pos;
-	if(s == 1) return adj_pos[0];
-	if(s == 2) return (adj_pos[0] + adj_pos[1]) / 2;
-	if(s % 2 == 1) return adj_pos[m];
-	if(s > 2)
+	int ret = 0;
+	if(s == 0) ret = pos;
+	if(s == 1) ret = adj_pos[0];
+	if(s == 2) ret = (adj_pos[0] + adj_pos[1]) / 2;
+	if((s > 2) && (s % 2 == 1)) ret = adj_pos[m];
+	if((s > 2) && (s % 2 == 0))
 	{
 		int l = adj_pos[m - 1] - adj_pos[0];
 		int r = adj_pos[s - 1] - adj_pos[m];
-		if(l + r)return (adj_pos[m - 1] * r + adj_pos[m] * l) / (l + r);
-		else return 0;
+		if(l + r)ret = (adj_pos[m - 1] * r + adj_pos[m] * l) / (l + r);
+		else ret = 0;
 	}
-	return pos;
+	pos = ret;
 };
 
 void NodeGroup::append()
 {
 	node_list.append(next()->node_list);
-	next()->node_list.clear();
-	if(next()->next())next()->next()->setPrev(this);
+	if(next()->next() != NULL)next()->next()->setPrev(this);
 	width_priv += next()->width();
+	NodeGroup* next_tmp = next();
 	setNext(next()->next());
+	next_tmp->setNext(NULL);
+	next_tmp->setPrev(NULL);
+	next_tmp->node_list.clear();
+	median();
 	update();
 };
 
@@ -117,11 +122,15 @@ void NodeGroup::updatePos()
 
 void NodeGroup::update()
 {
-	if(!node_list.isEmpty())
+	if(!empty())
 	{
-		pos = median();
 		updatePos();
-		if(prev()) if(left() <= prev()->right()) prepend();
-		if(next()) if(right() >= next()->left()) append();
+		if(prev() != NULL) if(left() <= prev()->right()) prepend();
+		if(next() != NULL) if(right() >= next()->left()) append();
 	}
+};
+
+bool NodeGroup::empty()
+{
+	return node_list.isEmpty();
 };
