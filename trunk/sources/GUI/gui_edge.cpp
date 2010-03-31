@@ -121,7 +121,7 @@ void GuiEdge::updatePosition()
     edge_top_left_priv.setY( min< qreal>( edge_start_point_priv.y(), edge_end_point_priv.y()));
     edge_bottom_right_priv.setX( max< qreal>( edge_start_point_priv.x(), edge_end_point_priv.x()));
     edge_bottom_right_priv.setY( max< qreal>( edge_start_point_priv.y(), edge_end_point_priv.y())); 
-    update();
+    prepareGeometryChange();
 }
 
 /**
