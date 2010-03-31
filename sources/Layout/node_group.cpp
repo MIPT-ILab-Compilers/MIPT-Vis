@@ -53,16 +53,16 @@ int NodeGroup::width()
 
 void NodeGroup::median()
 {
-	QList<int> adj_pos; // Positions of andjacent to this group nodes
+	QList<int> adj_pos; // Positions of adjacent to this group nodes
 	for( QList<NodeAux*>::iterator v = node_list.begin(); v != node_list.end(); v++)
 	{
 		for( EdgeAux* iter = (*v)->firstSucc(); iter != NULL; iter = iter->nextSucc())
 		{
-			if(!iter->cycle())adj_pos.append(iter->succ()->x());
+			if(iter->backward())adj_pos.append(iter->succ()->x());
 		}
 		for( EdgeAux* iter = (*v)->firstPred(); iter != NULL; iter = iter->nextPred())
 		{
-			if(!iter->cycle())adj_pos.append(iter->pred()->x());
+			if(iter->ahead())adj_pos.append(iter->pred()->x());
 		}
 	}
 	qSort(adj_pos);

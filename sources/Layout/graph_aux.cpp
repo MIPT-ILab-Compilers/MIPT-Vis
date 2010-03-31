@@ -713,7 +713,7 @@ void GraphAux::medianPosition()
 		group_list_ranked.append(group_list);
 	}
 	/* Calculate median positions of groups */
-	int max_iter = 24;
+	int max_iter = 40;
 	for(int i = 0; i < max_iter; i++)
 	{
 		for(QList<QList<NodeGroup*>>::iterator iter_rank = group_list_ranked.begin(); iter_rank != group_list_ranked.end(); iter_rank++)
