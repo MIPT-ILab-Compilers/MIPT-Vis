@@ -21,7 +21,6 @@ GuiView::GuiView( GuiGraph *graph)
     setResizeAnchor( QGraphicsView::AnchorViewCenter);
     setDragMode( QGraphicsView::ScrollHandDrag); 
     setMinimumSize( 400, 400);
-    setSceneRect( -400, -400, 1400, 1400);
 }
 
 
