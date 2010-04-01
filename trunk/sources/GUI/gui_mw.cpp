@@ -19,6 +19,9 @@ MainWindow::MainWindow()
     connect( graph, SIGNAL( newNodeCreated( int)), this, SLOT( addNewTextDock( int)));
 
     view = new GuiView(graph);
+	(void) new QShortcut(Qt::Key_Plus, this, SLOT(increaseView(void)));
+	(void) new QShortcut(Qt::Key_Equal, this, SLOT(increaseView(void)));
+	(void) new QShortcut(Qt::Key_Minus, this, SLOT(decreaseView(void)));
     view->setScene(graph);
 	
     if( graph->getNodeItem())
@@ -41,6 +44,7 @@ MainWindow::MainWindow()
 	gravity_timer = new QTimer ( this);
 	connect( gravity_timer, SIGNAL( timeout()), this, SLOT(makeGravity()));
 	gravity_timer->setInterval ( 100);
+
 }
 
 /**
@@ -120,6 +124,14 @@ void MainWindow::about()
 }
 
 /**
+ * HotKeys
+ */
+void MainWindow::hotKeys()
+{
+	QMessageBox::about( this, tr("Hot Keys"), tr("asdasdasdasd"));
+}
+
+/**
  * Do Layout
  */
 void MainWindow::doLayoutSlot()
@@ -153,11 +165,18 @@ void MainWindow::makeGravity()
 }
 
 /*
- *Switch showind virtual nodes in graph
+ *Switch showing virtual nodes in graph
  */
 void MainWindow::switchVnodesShow()
 {
 	graph->switchVnodesShow();
+}
+/*
+ *Switch showing edge notes in graph
+ */
+void MainWindow::switchEdgeLabelsShow()
+{
+	graph->switchEdgeLabelsShow();
 }
 /**
  * convertDumpToXML
@@ -265,17 +284,28 @@ void MainWindow::createActions()
     convert_dump_to_xml_act->setStatusTip( tr( "Convert dump to XML..."));
     connect( convert_dump_to_xml_act, SIGNAL( triggered()), this, SLOT( convertDumpToXmlSlot()));
 		
-    show_virtual_nodes_act = new QAction(QIcon("../GUI/images/node_icon.bmp"),tr( "Show &pseudonodes trigger"), this);
-    show_virtual_nodes_act->setStatusTip( tr( "Show pseudonodes trigger"));
+    show_virtual_nodes_act = new QAction(QIcon("../GUI/images/node_icon.bmp"),tr( "Show &pseudonodes trigger..."), this);
+    show_virtual_nodes_act->setStatusTip( tr( "Show pseudonodes trigger..."));
 	show_virtual_nodes_act->setCheckable(true);
 	show_virtual_nodes_act->setChecked(false);
     connect( show_virtual_nodes_act, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
+	
+    show_edge_labels_act = new QAction(QIcon(),tr( "Show labels on graph edges..."), this);
+    show_edge_labels_act->setStatusTip( tr( "Show labels on graph edges..."));
+	show_edge_labels_act->setCheckable(true);
+	show_edge_labels_act->setChecked(false);
+	connect( show_edge_labels_act, SIGNAL( triggered()), this, SLOT( switchEdgeLabelsShow()));
 
 	do_gravity_act = new QAction(QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Change Gravity..."),this);
 	do_gravity_act->setStatusTip( tr( "Change Gravity..."));
 	do_gravity_act->setCheckable(true);
 	do_gravity_act->setChecked(false);
 	connect(do_gravity_act, SIGNAL(toggled(bool)), this, SLOT(reactToGravityToggle(bool)));
+	
+	hot_keys_act = new QAction(QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Hot keys..."),this);
+	hot_keys_act->setStatusTip( tr( "Hot keys..."));
+	connect(hot_keys_act, SIGNAL(toggled(bool)), this, SLOT(hotKeys()));
+
 }
 
 /**
@@ -293,7 +323,10 @@ void MainWindow::createMenus()
     tools_menu->addAction( do_layout_act);
     tools_menu->addAction( do_gravity_act);
     tools_menu->addAction( convert_dump_to_xml_act);
-    tools_menu->addAction( show_virtual_nodes_act);
+    tools_menu->addAction( show_edge_labels_act);
+
+	settings_menu = menuBar()->addMenu( tr("&Settings"));
+	settings_menu->addAction(hot_keys_act);
 
     help_menu = menuBar()->addMenu( tr( "&Help"));
     help_menu->addAction( help_act);
@@ -345,13 +378,14 @@ QString MainWindow::strippedName( const QString &full_file_name)
  */
 void MainWindow::createToolBars()
 {
-    tool_bar = addToolBar(tr("File"));
-	tool_bar->addAction(load_act);
-    tool_bar->addAction(save_act);
-	tool_bar->addAction(do_layout_act);
-	tool_bar->addAction(convert_dump_to_xml_act);
-	tool_bar->addAction(show_virtual_nodes_act);
-	tool_bar->addAction(do_gravity_act);
+    tool_bar = addToolBar (tr("File"));
+	tool_bar->addAction (load_act);
+    tool_bar->addAction (save_act);
+	tool_bar->addAction (do_layout_act);
+	tool_bar->addAction (convert_dump_to_xml_act);
+	tool_bar->addAction (show_virtual_nodes_act);
+	tool_bar->addAction (show_edge_labels_act);
+	tool_bar->addAction (do_gravity_act);
 }
 /**
  * reactToGravityToggle
@@ -363,3 +397,17 @@ void MainWindow::reactToGravityToggle(bool checked)
 	else
 		emit disableGravity();
  }
+/**
+ * increaseView
+ */
+void MainWindow::increaseView()
+{
+	view->scaleView (1.5);
+}
+/**
+ * decreaseView
+ */
+void MainWindow::decreaseView()
+{
+	view->scaleView (0.666);
+}

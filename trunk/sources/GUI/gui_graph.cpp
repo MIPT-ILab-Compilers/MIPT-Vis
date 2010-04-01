@@ -245,6 +245,18 @@ bool GuiGraph::showVnodes()
 	return draw_virtual_nodes_priv;
 }
 /**
+ * Edge labels show switch
+ */
+void GuiGraph::switchEdgeLabelsShow()
+{
+	draw_edge_labels_priv = !draw_edge_labels_priv;
+}
+
+bool GuiGraph::showEdgeLabels()
+{
+	return draw_edge_labels_priv;
+}
+/**
  * commit layout
  */
 bool GuiGraph::applayLayout()
