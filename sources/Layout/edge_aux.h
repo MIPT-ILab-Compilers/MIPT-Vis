@@ -15,7 +15,7 @@ class EdgeAux : public Edge
 		tree,
 		forward,
 		back,
-		mesh //the same as: A->A
+		mesh //the such case: A->A
 	} type;
 
 protected:
@@ -37,6 +37,8 @@ public:
 	inline NodeAux* getNode( GraphDir dir);
 	inline NodeAux* succ();
 	inline NodeAux* pred();
+
+	bool isVirtualRootEdge();
 
 	
 	/*

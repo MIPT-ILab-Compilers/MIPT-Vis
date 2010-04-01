@@ -48,7 +48,11 @@ private slots:
 	void disableGravity();
 	void makeGravity();
 	void switchVnodesShow();
+	void switchEdgeLabelsShow();
 	void reactToGravityToggle(bool checked);
+	void increaseView();
+	void decreaseView();
+	void hotKeys();
 
 private:
     void createMenus();
@@ -65,6 +69,7 @@ private:
     QMenu *view_menu;
     QMenu *tools_menu;
     QMenu *help_menu;
+	QMenu *settings_menu;
 
     QAction *load_act;
     QAction *save_act;
@@ -73,7 +78,9 @@ private:
     QAction *do_layout_act;
     QAction *convert_dump_to_xml_act;
     QAction *show_virtual_nodes_act;
+    QAction *show_edge_labels_act;
 	QAction *do_gravity_act;
+	QAction *hot_keys_act;
 
 	QToolBar *tool_bar;
 

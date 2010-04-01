@@ -103,12 +103,20 @@ void GuiEdge::updatePosition()
 		if (pre->real()) 
 			edge_start_dir_priv = (edge_start_point_priv + edge_end_point_priv)/2;
 		else
-			edge_start_dir_priv = edge_start_point_priv - delta/2;
+		{
+			if (pre->firstPred() != 0)
+				edge_start_dir_priv = (suc->coor() - pre->firstPred()->pred()->coor())/8 + pre->coor();
+			else
+				edge_start_dir_priv = edge_start_point_priv - delta/2;
+		}
 
 		if (suc->real())
 			edge_end_dir_priv = (edge_start_point_priv + edge_end_point_priv)/2;
 		else
-			edge_end_dir_priv = edge_end_point_priv + delta/2;
+			if (suc->firstSucc() != 0)
+				edge_end_dir_priv = (pre->coor() - suc->firstSucc()->succ()->coor())/8 + suc->coor();
+			else
+				edge_end_dir_priv = edge_end_point_priv + delta/2;
 
 		QPainterPath path;
 		path.moveTo (edge_start_point_priv);
@@ -195,15 +203,44 @@ void GuiEdge::paint( QPainter * painter,
 	GuiNode* suc = addGui ( succ());
 	GuiNode* pre = addGui ( pred());
 	
-	if (!pre->real() && pre->firstPred() == 0 && !addGui (graph)->showVnodes()) return;
+	if (isVirtualRootEdge() && !addGui (graph)->showVnodes()) return;//Do not show virtual root edges
 	if( suc->real())
     {
 		QPointF dir = (7*edge_end_dir_priv + edge_start_point_priv)/8 - edge_end_point_priv;//!!! Mnemonic rule, it must be changed
 		drawLineHead (painter, edge_end_point_priv, -atan2 (dir.y(), dir.x()), 10, false);
     }
-//    painter->setPen( QPen( Qt::darkRed, 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-//	painter->drawPoint (start_dir);		//debug drawing
-//	painter->drawPoint (end_dir);
+
+	if (edgeLabel() != 0 && addGui (graph)->showEdgeLabels())
+	{
+		int len = strlen (edgeLabel());
+		float k = 0.7;
+		float start = 0.15;
+		QPointF delta = edge_end_point_priv - edge_start_point_priv;
+		float letter_size = 2*edge_curve_priv.length()/len;
+		if (letter_size > 18) letter_size = 18;
+		if (letter_size > 5 && !cycle())
+		{
+			if (delta.x() + delta.y() < 0)
+			{
+				k *= -1;
+				start = 1 - start;
+			}
+
+			for (int i = 0; i < len; ++i)
+			{
+				float slope = edge_curve_priv.slopeAtPercent (start + k*float(i)/len);
+				float ang = atan(slope);
+				QPointF pos = edge_curve_priv.pointAtPercent(start + k*float(i)/len);
+				pos += QPointF (cos (Pi/2 + ang), sin(Pi/2 + ang))*letter_size;
+//				painter->rotate (slope);
+				QFont curf = painter->font();
+				curf.setPixelSize (letter_size);
+				painter->setFont (curf);
+				painter->drawText (pos, QString(*(edgeLabel() + i)));
+//				painter->rotate (-slope);
+			}
+		}
+	}
 
 	painter->setBrush( Qt::transparent);//!!! change it to black, and you will see, what heppend. I can't explain this
 	painter->drawPath (edge_curve_priv);

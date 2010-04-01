@@ -42,7 +42,10 @@ public:
 	virtual void removeNode (Node* n);
 
 	void switchVnodesShow();
+	void switchEdgeLabelsShow();
+
 	bool showVnodes();
+	bool showEdgeLabels();
 
 protected:
     void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent);
@@ -58,6 +61,7 @@ private:
     xmlDoc * xml_doc_priv;
 	StyleSheet graph_style_sheet_priv;
 	bool draw_virtual_nodes_priv;
+	bool draw_edge_labels_priv;
 
 signals:
     void newNodeCreated( int number);

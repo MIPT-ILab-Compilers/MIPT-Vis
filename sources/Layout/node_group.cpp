@@ -93,7 +93,7 @@ void NodeGroup::median()
 
 void NodeGroup::append()
 {
-	node_list.append(next()->node_list);
+	node_list += (next()->node_list);
 	if(next()->next() != NULL)next()->next()->setPrev(this);
 	width_priv += next()->width();
 	NodeGroup* next_tmp = next();
