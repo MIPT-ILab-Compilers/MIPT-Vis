@@ -50,9 +50,9 @@ private slots:
 	void switchVnodesShow();
 	void switchEdgeLabelsShow();
 	void reactToGravityToggle(bool checked);
-	void increaseView();
-	void decreaseView();
-	void hotKeys();
+	void zoomViewIn();
+	void zoomViewOut();
+	void hotKeysInfo();
 
 private:
     void createMenus();
@@ -62,6 +62,7 @@ private:
 	void createTextDockWindows();
 	void createDockWindows();
 	void createToolBars();
+	void createHotKeys();
 
     QString strippedName( const QString &fullFileName);
     
