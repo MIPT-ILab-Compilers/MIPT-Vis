@@ -58,16 +58,17 @@ void NodeGroup::median()
 	{
 		for( EdgeAux* iter = (*v)->firstSucc(); iter != NULL; iter = iter->nextSucc())
 		{
-			if(iter->backward())adj_pos.append(iter->succ()->x());
+			if(iter->backward() && (!(*v)->real() || iter->succ()->real() || (iter->succ()->rang() == 0)))adj_pos.append(iter->succ()->x());
 		}
 		for( EdgeAux* iter = (*v)->firstPred(); iter != NULL; iter = iter->nextPred())
 		{
-			if(iter->ahead())adj_pos.append(iter->pred()->x());
+			if(iter->ahead() && (!(*v)->real() || iter->pred()->real()) || (iter->pred()->rang() == 0))adj_pos.append(iter->pred()->x());
 		}
 	}
 	qSort(adj_pos);
 	/* Remove repeat elements */
 	QList<int>::iterator prev = adj_pos.begin();
+	if(adj_pos.size() == 0)out("zero!!!!!");
 	for(QList<int>::iterator iter = ++adj_pos.begin(); iter < adj_pos.end();)
 	{
 		if(*iter == *prev)iter = adj_pos.erase(iter);
@@ -89,6 +90,11 @@ void NodeGroup::median()
 		else ret = 0;
 	}
 	pos = ret;
+	/*for(QList<int>::iterator iter = ++adj_pos.begin(); iter < adj_pos.end(); iter++)
+	{
+		ret += (*iter);
+	}
+	if (adj_pos.size() != 0)pos = ret / adj_pos.size();*/
 };
 
 void NodeGroup::append()
