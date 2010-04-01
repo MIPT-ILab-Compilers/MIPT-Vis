@@ -238,6 +238,7 @@ void GuiGraph::removeNode (Node* n)
 void GuiGraph::switchVnodesShow()
 {
 	draw_virtual_nodes_priv = !draw_virtual_nodes_priv;
+	update();
 }
 
 bool GuiGraph::showVnodes()
@@ -250,6 +251,7 @@ bool GuiGraph::showVnodes()
 void GuiGraph::switchEdgeLabelsShow()
 {
 	draw_edge_labels_priv = !draw_edge_labels_priv;
+	update();
 }
 
 bool GuiGraph::showEdgeLabels()

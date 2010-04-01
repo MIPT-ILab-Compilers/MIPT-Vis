@@ -290,7 +290,7 @@ void MainWindow::createActions()
 	show_virtual_nodes_act->setChecked(false);
     connect( show_virtual_nodes_act, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
 	
-    show_edge_labels_act = new QAction(QIcon(),tr( "Show labels on graph edges..."), this);
+    show_edge_labels_act = new QAction(QIcon("../GUI/images/showLabel.bmp"),tr( "Show labels on graph edges..."), this);
     show_edge_labels_act->setStatusTip( tr( "Show labels on graph edges..."));
 	show_edge_labels_act->setCheckable(true);
 	show_edge_labels_act->setChecked(false);
