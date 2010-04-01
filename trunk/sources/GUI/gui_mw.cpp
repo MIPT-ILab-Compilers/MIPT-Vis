@@ -19,9 +19,6 @@ MainWindow::MainWindow()
     connect( graph, SIGNAL( newNodeCreated( int)), this, SLOT( addNewTextDock( int)));
 
     view = new GuiView(graph);
-	(void) new QShortcut(Qt::Key_Plus, this, SLOT(increaseView(void)));
-	(void) new QShortcut(Qt::Key_Equal, this, SLOT(increaseView(void)));
-	(void) new QShortcut(Qt::Key_Minus, this, SLOT(decreaseView(void)));
     view->setScene(graph);
 	
     if( graph->getNodeItem())
@@ -35,16 +32,16 @@ MainWindow::MainWindow()
     view_widget->setLayout(view_layout);
 	setCentralWidget( view_widget);
 
-    createActions();
+	gravity_timer = new QTimer ( this);
+	connect( gravity_timer, SIGNAL( timeout()), this, SLOT(makeGravity()));
+	gravity_timer->setInterval ( 100);
+    
+	createActions();
     createMenus();
     createStatusBar();
 	createDockWindows();
 	createToolBars();
-
-	gravity_timer = new QTimer ( this);
-	connect( gravity_timer, SIGNAL( timeout()), this, SLOT(makeGravity()));
-	gravity_timer->setInterval ( 100);
-
+	createHotKeys();
 }
 
 /**
@@ -52,7 +49,7 @@ MainWindow::MainWindow()
  */
 void MainWindow::load()
 {
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("Windows-1251"));
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf-8"));
     current_file = QFileDialog::getOpenFileName( this, tr( "Open File"), ".", tr( "XML (*.xml);;All files(*.*)")); 
     if ( current_file.isEmpty()) return;
     QByteArray cur_file = current_file.toAscii();
@@ -93,6 +90,14 @@ void MainWindow::save()
 }
 
 /**
+ * HotKeysInfo
+ */
+void MainWindow::hotKeysInfo()
+{
+	QMessageBox::about( this, tr("Hot Keys"), tr("Available Hot Keys\n\'+\':scaling view closer\n\'-\':scaling view off"));
+}
+
+/**
  * Help
  */
 void MainWindow::help()
@@ -126,9 +131,11 @@ void MainWindow::about()
 /**
  * HotKeys
  */
-void MainWindow::hotKeys()
-{
-	QMessageBox::about( this, tr("Hot Keys"), tr("asdasdasdasd"));
+void MainWindow::createHotKeys()
+{   
+	(void) new QShortcut(Qt::Key_Plus, this, SLOT(zoomViewIn(void)));	
+	(void) new QShortcut(Qt::Key_Equal, this, SLOT(zoomViewIn(void)));
+	(void) new QShortcut(Qt::Key_Minus, this, SLOT(zoomViewOut(void)));
 }
 
 /**
@@ -269,42 +276,42 @@ void MainWindow::createActions()
     connect( save_act, SIGNAL( triggered()), this, SLOT( save()));
 
     help_act = new QAction(QIcon("../GUI/images/help.bmp"), tr( "Mipt-Vis &Help"), this);
-    help_act->setStatusTip( tr( "Help..."));
+    help_act->setStatusTip( tr( "Help"));
     connect( help_act, SIGNAL( triggered()), this, SLOT( help()));
 
     about_act = new QAction(QIcon("../GUI/images/about.bmp"), tr( "&About Mipt-Vis"), this);
-    about_act->setStatusTip( tr( "About..."));
+    about_act->setStatusTip( tr( "About"));
     connect( about_act, SIGNAL(triggered()), this, SLOT( about()));
 
     do_layout_act = new QAction( QIcon("../GUI/images/setLayout.bmp"),tr( "Do &Layout"), this);
-    do_layout_act->setStatusTip( tr( "Do Layout..."));
+    do_layout_act->setStatusTip( tr( "Do Layout"));
     connect( do_layout_act, SIGNAL( triggered()), this, SLOT( doLayoutSlot()));
 
     convert_dump_to_xml_act = new QAction(QIcon("../GUI/images/conversion.bmp"),tr( "&Convert dump to XML..."), this);
     convert_dump_to_xml_act->setStatusTip( tr( "Convert dump to XML..."));
     connect( convert_dump_to_xml_act, SIGNAL( triggered()), this, SLOT( convertDumpToXmlSlot()));
 		
-    show_virtual_nodes_act = new QAction(QIcon("../GUI/images/node_icon.bmp"),tr( "Show &pseudonodes trigger..."), this);
-    show_virtual_nodes_act->setStatusTip( tr( "Show pseudonodes trigger..."));
+    show_virtual_nodes_act = new QAction(QIcon("../GUI/images/node_icon.bmp"),tr( "Show &pseudonodes"), this);
+    show_virtual_nodes_act->setStatusTip( tr( "Show pseudonodes trigger"));
 	show_virtual_nodes_act->setCheckable(true);
 	show_virtual_nodes_act->setChecked(false);
     connect( show_virtual_nodes_act, SIGNAL( triggered()), this, SLOT( switchVnodesShow()));
 	
-    show_edge_labels_act = new QAction(QIcon("../GUI/images/showLabel.bmp"),tr( "Show labels on graph edges..."), this);
-    show_edge_labels_act->setStatusTip( tr( "Show labels on graph edges..."));
+    show_edge_labels_act = new QAction(QIcon("../GUI/images/showLabel.bmp"),tr( "Show &labels on graph edges"), this);
+    show_edge_labels_act->setStatusTip( tr( "Show labels on graph edges"));
 	show_edge_labels_act->setCheckable(true);
 	show_edge_labels_act->setChecked(false);
 	connect( show_edge_labels_act, SIGNAL( triggered()), this, SLOT( switchEdgeLabelsShow()));
 
-	do_gravity_act = new QAction(QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Change Gravity..."),this);
-	do_gravity_act->setStatusTip( tr( "Change Gravity..."));
+	do_gravity_act = new QAction(QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Change Gravity"),this);
+	do_gravity_act->setStatusTip( tr( "Change Gravity"));
 	do_gravity_act->setCheckable(true);
 	do_gravity_act->setChecked(false);
 	connect(do_gravity_act, SIGNAL(toggled(bool)), this, SLOT(reactToGravityToggle(bool)));
 	
-	hot_keys_act = new QAction(QIcon("../GUI/images/enGravityAct.bmp"),tr( "&Hot keys..."),this);
-	hot_keys_act->setStatusTip( tr( "Hot keys..."));
-	connect(hot_keys_act, SIGNAL(toggled(bool)), this, SLOT(hotKeys()));
+	hot_keys_act = new QAction(QIcon("../GUI/images/HotKeys.bmp"),tr( "&Hot keys"),this);
+	hot_keys_act->setStatusTip( tr( "Hot keys"));
+	connect(hot_keys_act, SIGNAL(triggered()), this, SLOT(hotKeysInfo()));
 
 }
 
@@ -334,7 +341,7 @@ void MainWindow::createMenus()
 }
 
 /**
- * Creat status bar
+ * Create status bar
  */
 void MainWindow::createStatusBar()
 {
@@ -398,16 +405,16 @@ void MainWindow::reactToGravityToggle(bool checked)
 		emit disableGravity();
  }
 /**
- * increaseView
+ * zoomViewIn
  */
-void MainWindow::increaseView()
+void MainWindow::zoomViewIn()
 {
 	view->scaleView (1.5);
 }
 /**
- * decreaseView
+ * zoomViewOut
  */
-void MainWindow::decreaseView()
+void MainWindow::zoomViewOut()
 {
 	view->scaleView (0.666);
 }
