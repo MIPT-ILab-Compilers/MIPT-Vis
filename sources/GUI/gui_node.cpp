@@ -229,6 +229,9 @@ void GuiNode::writeByXmlWriter( xmlTextWriterPtr writer)
 	if ( nodeColor()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST nodeColor());
 	if ( NodeProperties::shape())
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST NodeProperties::shape());
+
+	if ( textPriv()) xmlTextWriterWriteAttribute( writer, BAD_CAST "textPriv", BAD_CAST textPriv());
+
 	if (0 != nodeStName().compare ("default", Qt::CaseInsensitive))
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST nodeStName().toAscii().data());
 }
