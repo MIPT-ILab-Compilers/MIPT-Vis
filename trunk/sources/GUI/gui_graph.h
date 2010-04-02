@@ -53,6 +53,8 @@ protected:
     void mouseMoveEvent( QGraphicsSceneMouseEvent * mouseEvent);
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent);
     bool applayLayout();
+	void setEnabledToNodes();
+	void setDisabledToNodes();
 
 private:
     int number_priv;
