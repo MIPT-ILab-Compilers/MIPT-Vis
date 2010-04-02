@@ -109,7 +109,6 @@ protected:
 public:
 	GuiTextEdit *text_edit;
 	QDockWidget *text_dock;
-	QPushButton *text_save_button;
 	QVBoxLayout *text_layout;
 	QWidget *text_widget;
 
@@ -147,16 +146,14 @@ protected:
     void commitPos( int x, int y);
     void superScribe ( QColor color, QString text);
 
-private:
-	void createDock();
-
 public slots:
     void setNodeText( const QString & str);
-	void saveText();
-	void textChange();
+	void saveText(); //??
+	void textChange(); //??
 	void emitDelete();
 
 signals:
 	void deleteGuiNode( int number);
+	void createNodeTextDock( int number);
 };
 #endif

@@ -59,10 +59,12 @@ private:
     void createActions();
     void createStatusBar();
     void setCurrentFile( const QString & fileName);
-	void createTextDockWindows();
+	void createConnectionsToNodes();
 	void createDockWindows();
 	void createToolBars();
 	void createHotKeys();
+	void saveNodeTexts();
+	void closeOldDocks();
 
     QString strippedName( const QString &fullFileName);
     
