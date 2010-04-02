@@ -79,7 +79,7 @@ void MainWindow::load()
  */
 void MainWindow::save()
 {
-	//saveNodeTexts();
+	saveNodeTexts();
 
     current_file = QFileDialog::getSaveFileName( this, tr("Save File"), "", tr("XML (*.xml);;All files(*.*)")); 
     if ( current_file.isEmpty()) return;
@@ -447,6 +447,7 @@ void MainWindow::saveNodeTexts()
 {
     GuiNode * node;
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		if (node->text_dock != NULL)
 		{
 			node->saveText();
 			node->textChange();
