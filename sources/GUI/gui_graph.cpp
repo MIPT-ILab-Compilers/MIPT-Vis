@@ -93,6 +93,7 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):mode_priv( insertRect), G
  */
 void GuiGraph::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
+	setEnabledToNodes();
     if( mouseEvent->button() & Qt::RightButton)
     {
         mode_priv = insertLine;
@@ -145,16 +146,17 @@ void GuiGraph::mouseReleaseEvent( QGraphicsSceneMouseEvent * mouseEvent)
             startItems.first() != endItems.first() && 
             startItems.first()->type() == GuiNode::Type &&
             endItems.first()->type() == GuiNode::Type)
-        {
-            GuiNode * startItem = qgraphicsitem_cast< GuiNode *> ( startItems.first());
-            GuiNode * endItem = qgraphicsitem_cast< GuiNode *> ( endItems.first());
-            GuiEdge * lin = (GuiEdge *)newEdge( startItem, endItem);
-
-        }
+			{
+				GuiNode * startItem = qgraphicsitem_cast< GuiNode *> ( startItems.first());
+				GuiNode * endItem = qgraphicsitem_cast< GuiNode *> ( endItems.first());
+				GuiEdge * lin = (GuiEdge *)newEdge( startItem, endItem);
+				setDisabledToNodes();
+			}
     }
     line_priv = NULL;
     mode_priv = moveItem;
     QGraphicsScene::mouseReleaseEvent( mouseEvent);
+	update();
 }
 
 /**
@@ -298,5 +300,29 @@ void GuiGraph::deleteNode( int number)
 			node->text_dock->hide();
 			removeNode( node);
 			break;
+		}
+}
+
+/**
+ * set enabled to nodes
+ */
+void GuiGraph::setEnabledToNodes()
+{
+	GuiNode *node;
+	for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		{
+			node->setEnabled( true);
+		}
+}
+
+/**
+ * set disabled to nodes
+ */
+void GuiGraph::setDisabledToNodes()
+{
+	GuiNode *node;
+	for ( node = ( GuiNode *)firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		{
+			node->setEnabled( false);
 		}
 }
