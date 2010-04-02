@@ -49,6 +49,8 @@ MainWindow::MainWindow()
  */
 void MainWindow::load()
 {
+	closeOldDocks();
+
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf-8"));
     current_file = QFileDialog::getOpenFileName( this, tr( "Open File"), ".", tr( "XML (*.xml);;All files(*.*)")); 
     if ( current_file.isEmpty()) return;
@@ -65,7 +67,7 @@ void MainWindow::load()
     graph = new GuiGraph( file);
     view->setScene( graph);
 
-	createTextDockWindows();
+	createConnectionsToNodes();
 
     QApplication::restoreOverrideCursor();
 
@@ -77,6 +79,8 @@ void MainWindow::load()
  */
 void MainWindow::save()
 {
+	//saveNodeTexts();
+
     current_file = QFileDialog::getSaveFileName( this, tr("Save File"), "", tr("XML (*.xml);;All files(*.*)")); 
     if ( current_file.isEmpty()) return;
     QByteArray cur_file = current_file.toAscii();
@@ -218,15 +222,14 @@ void MainWindow::doCentreOnNode( int nodeNumber)
 } 
 
 /**
- * create text dock windows
+ * createConnectionsToNodes
  */
-void MainWindow::createTextDockWindows()
+void MainWindow::createConnectionsToNodes()
 {
     GuiNode * node;
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 		{
-			addDockWidget( Qt::RightDockWidgetArea, node->text_dock);
-			connect(node->text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT( doCentreOnNode( int)));
+			connect(node, SIGNAL( createNodeTextDock( int)), this, SLOT( addNewTextDock( int)));
 		}
 } 
 
@@ -258,7 +261,6 @@ void MainWindow::createDockWindows()
 	dock->setWidget(centre_on_node_widget);
     addDockWidget( Qt::RightDockWidgetArea, dock);
 	view_menu->addAction(dock->toggleViewAction());
-
 }
 
 /**
@@ -357,6 +359,23 @@ void MainWindow::addNewTextDock(int number)
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 		if ( node->userId() == number) 
 			{
+				node->text_dock = new QDockWidget( QString( "Node %1").arg( node->userId()),this);
+				node->text_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
+				node->text_dock->setFloating( false);
+
+				node->text_edit = new GuiTextEdit;
+				node->text_edit->setPlainText( node->getNodeText());
+				node->text_edit->setReadOnly( false);
+
+				node->text_layout = new QVBoxLayout( node->text_dock);
+				node->text_layout->addWidget( node->text_edit);
+
+				node->text_widget = new QWidget;
+				node->text_widget->setLayout( node->text_layout);
+
+				node->text_dock->setWidget( node->text_widget);
+				node->text_dock->show();
+
 				addDockWidget( Qt::RightDockWidgetArea, node->text_dock);
 				connect(node->text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT( doCentreOnNode( int)));
 			}
@@ -404,6 +423,7 @@ void MainWindow::reactToGravityToggle(bool checked)
 	else
 		emit disableGravity();
  }
+
 /**
  * zoomViewIn
  */
@@ -411,10 +431,34 @@ void MainWindow::zoomViewIn()
 {
 	view->scaleView (1.5);
 }
+
 /**
  * zoomViewOut
  */
 void MainWindow::zoomViewOut()
 {
 	view->scaleView (0.666);
+}
+
+/**
+ * saveNodeTexts
+ */
+void MainWindow::saveNodeTexts()
+{
+    GuiNode * node;
+    for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		{
+			node->saveText();
+			node->textChange();
+		}
+}
+/**
+ * closeOldDocks
+ */
+void MainWindow::closeOldDocks()
+{
+    GuiNode * node;
+    for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		if (node->text_dock != NULL) 
+			node->text_dock->close();
 }

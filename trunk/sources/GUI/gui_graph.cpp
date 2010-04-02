@@ -32,7 +32,6 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 
 		QString text =  QString( "Node %1").arg( node->userId());
 		node->setPlainText( text);
-		node->text_dock->setWindowTitle( text);
 
 		QObject::connect( node, SIGNAL( deleteGuiNode( int)), this, SLOT( deleteNode( int)));
 		emit newNodeCreated( node->userId());
@@ -68,7 +67,6 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):mode_priv( insertRect), G
         node->setPos( node->NodeAux::x(), node->NodeAux::y());
 
 		node->setNodeText( QString( node->textPriv()));
-		node->text_edit->setPlainText( node->textPriv());
 
         node->msetX( node->QGraphicsItem::x());
         node->msetY( node->QGraphicsItem::y());
@@ -76,7 +74,6 @@ GuiGraph::GuiGraph( char * filename, QObject * parent):mode_priv( insertRect), G
 
 		QString text =  QString( "Node %1").arg( node->userId());
 		node->setPlainText( text);
-		node->text_dock->setWindowTitle( text);
 
 		QObject::connect( node, SIGNAL( deleteGuiNode( int)), this, SLOT( deleteNode( int)));
 	}
