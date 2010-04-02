@@ -21,6 +21,10 @@ class GuiGraph;
 class GuiTextEdit;
 class QGroupBox;
 class QPushButton;
+class QPlainTextEdit;
+class QListWidget;
+class QListWidgetItem;
+class QDockWidget;
 QT_END_NAMESPACE
 
 /**
@@ -43,6 +47,9 @@ private slots:
     void convertDumpToXmlSlot();
     void doCentreOnNode( int nodeNumber);
 	void addNewTextDock( int number);
+	void enableSearchButton();
+	void searchButtonClicked();
+	void nodeClickedFromList();
 
 	void enableGravity();
 	void disableGravity();
@@ -92,13 +99,26 @@ private:
     GuiView *view;
     QHBoxLayout *view_layout;
     QWidget *view_widget;
-    QWidget *centre_on_node_widget;
     GuiGraph *graph;
     QString current_file;
+
     QVBoxLayout *centre_on_node_layout;
     QPushButton *centre_on_node_button;
 	QSpinBox *centre_on_node_spin_box;
+    QWidget *centre_on_node_widget;
+	QDockWidget *centre_on_node_dock;
 
+	QPlainTextEdit *search_text_edit;
+	QPushButton *search_push_button;
+	QHBoxLayout *search_layout;
+	QWidget *search_widget;
+	QDockWidget *search_dock;	
+
+	QList<GuiNode*> result_list;
+	QListWidget *search_result_list;
+	QVBoxLayout *search_result_layout;
+	QWidget *search_result_widget;
+	QDockWidget *search_result_dock;
 };
 
 #endif

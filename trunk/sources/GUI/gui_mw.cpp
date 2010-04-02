@@ -72,6 +72,10 @@ void MainWindow::load()
     QApplication::restoreOverrideCursor();
 
     setCurrentFile( current_file);
+
+	search_text_edit->clear();
+	search_result_list->clear();
+	search_result_dock->hide();
 }
 
 /**
@@ -239,9 +243,9 @@ void MainWindow::createConnectionsToNodes()
 void MainWindow::createDockWindows()
 {
 	/* centreOnNode dock*/
-	QDockWidget *dock = new QDockWidget( tr("Centre on node"), this);
-    dock->setAllowedAreas( Qt::AllDockWidgetAreas);
-	dock->setFloating( false);
+	centre_on_node_dock = new QDockWidget( tr("Centre on node"), this);
+    centre_on_node_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
+	centre_on_node_dock->setFloating( false);
 
 	centre_on_node_spin_box = new QSpinBox;
 	centre_on_node_spin_box->setRange(0,100);
@@ -251,16 +255,59 @@ void MainWindow::createDockWindows()
     centre_on_node_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
     QObject::connect( centre_on_node_button, SIGNAL( clicked()), this, SLOT( centreOnNode()));
 
-	centre_on_node_layout = new QVBoxLayout( dock);
+	centre_on_node_layout = new QVBoxLayout( centre_on_node_dock);
 	centre_on_node_layout->addWidget( centre_on_node_spin_box);
 	centre_on_node_layout->addWidget( centre_on_node_button);
 
     centre_on_node_widget = new QWidget;
     centre_on_node_widget->setLayout( centre_on_node_layout);
 
-	dock->setWidget(centre_on_node_widget);
-    addDockWidget( Qt::RightDockWidgetArea, dock);
-	view_menu->addAction(dock->toggleViewAction());
+	centre_on_node_dock->setWidget(centre_on_node_widget);
+    addDockWidget( Qt::RightDockWidgetArea, centre_on_node_dock);
+	view_menu->addAction(centre_on_node_dock->toggleViewAction());
+
+	/* Search dock widget*/
+	search_dock = new QDockWidget( tr("Search Node"), this);
+    search_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
+	search_dock->setFloating( false);
+
+	search_text_edit = new QPlainTextEdit;
+
+	search_push_button = new QPushButton( tr("Search"));
+	search_push_button->setEnabled( false);
+	QObject::connect( search_text_edit, SIGNAL( textChanged()), this, SLOT( enableSearchButton()));
+	QObject::connect( search_push_button, SIGNAL( clicked()), this, SLOT( searchButtonClicked()));
+
+	search_layout = new QHBoxLayout( search_dock);
+	search_layout->addWidget( search_text_edit);
+	search_layout->addWidget( search_push_button);
+
+	search_widget = new QWidget;
+	search_widget->setLayout( search_layout);
+
+	search_dock->setWidget(search_widget);
+    addDockWidget( Qt::RightDockWidgetArea, search_dock);
+	view_menu->addAction(search_dock->toggleViewAction());
+
+	/* Search result dock widget*/
+	search_result_dock = new QDockWidget( tr("Search result"), this);
+    search_result_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
+	search_result_dock->setFloating( false);
+
+	search_result_list = new QListWidget;
+	QObject::connect(search_result_list, SIGNAL( itemSelectionChanged()), 
+		             this, SLOT( nodeClickedFromList()));
+
+	search_result_layout = new QVBoxLayout( search_result_dock);
+	search_result_layout->addWidget( search_result_list);
+
+	search_result_widget = new QWidget;
+	search_result_widget->setLayout( search_result_layout);
+
+	search_result_dock->setWidget(search_result_widget);
+    addDockWidget( Qt::RightDockWidgetArea, search_result_dock);
+	
+	search_result_dock->hide();
 }
 
 /**
@@ -359,25 +406,28 @@ void MainWindow::addNewTextDock(int number)
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 		if ( node->userId() == number) 
 			{
-				node->text_dock = new QDockWidget( QString( "Node %1").arg( node->userId()),this);
-				node->text_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
-				node->text_dock->setFloating( false);
+				if (node->text_dock == NULL)
+				{
+					node->text_dock = new QDockWidget( QString( "Node %1").arg( node->userId()),this);
+					node->text_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
+					node->text_dock->setFloating( false);
 
-				node->text_edit = new GuiTextEdit;
-				node->text_edit->setPlainText( node->getNodeText());
-				node->text_edit->setReadOnly( false);
+					node->text_edit = new GuiTextEdit;
+					node->text_edit->setPlainText( node->getNodeText());
+					node->text_edit->setReadOnly( false);
 
-				node->text_layout = new QVBoxLayout( node->text_dock);
-				node->text_layout->addWidget( node->text_edit);
+					node->text_layout = new QVBoxLayout( node->text_dock);
+					node->text_layout->addWidget( node->text_edit);
 
-				node->text_widget = new QWidget;
-				node->text_widget->setLayout( node->text_layout);
+					node->text_widget = new QWidget;
+					node->text_widget->setLayout( node->text_layout);
 
-				node->text_dock->setWidget( node->text_widget);
+					node->text_dock->setWidget( node->text_widget);
+
+					addDockWidget( Qt::RightDockWidgetArea, node->text_dock);
+					connect(node->text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT( doCentreOnNode( int)));
+				}
 				node->text_dock->show();
-
-				addDockWidget( Qt::RightDockWidgetArea, node->text_dock);
-				connect(node->text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT( doCentreOnNode( int)));
 			}
 }
 
@@ -453,6 +503,7 @@ void MainWindow::saveNodeTexts()
 			node->textChange();
 		}
 }
+
 /**
  * closeOldDocks
  */
@@ -462,4 +513,39 @@ void MainWindow::closeOldDocks()
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
 		if (node->text_dock != NULL) 
 			node->text_dock->close();
+}
+
+/**
+ * enableSearchButton
+ */
+void MainWindow::enableSearchButton()
+{
+	search_push_button->setEnabled( true);
+}
+
+/**
+ * searchButtonClicked
+ */
+void MainWindow::searchButtonClicked()
+{
+	search_result_list->clear();
+	result_list.clear();
+    GuiNode * node;
+    for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
+		if (node->node_text.contains( search_text_edit->toPlainText(),Qt::CaseInsensitive))
+		{
+			search_result_list->addItem(QString( "Node %1").arg( node->userId()));
+			result_list.append( node);
+		}
+	search_result_dock->show();
+}
+
+/**
+ * nodeClickedFromList
+ */
+void MainWindow::nodeClickedFromList()
+{
+	int selected_node_id = result_list[search_result_list->currentRow()]->userId();
+	doCentreOnNode( selected_node_id);
+	addNewTextDock( selected_node_id);
 }
