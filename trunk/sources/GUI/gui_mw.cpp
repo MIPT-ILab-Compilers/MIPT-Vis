@@ -64,8 +64,11 @@ void MainWindow::load()
     QApplication::setOverrideCursor( Qt::WaitCursor);
 
     if ( graph!=NULL) delete graph;
+
+
     graph = new GuiGraph( file);
-    view->setScene( graph);
+    connect( graph, SIGNAL( newNodeCreated( int)), this, SLOT( addNewTextDock( int)));
+	view->setScene( graph);
 
 	createConnectionsToNodes();
 
