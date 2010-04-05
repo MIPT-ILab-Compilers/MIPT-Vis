@@ -47,9 +47,8 @@ private slots:
     void convertDumpToXmlSlot();
     void doCentreOnNode( int nodeNumber);
 	void addNewTextDock( int number);
-	void enableSearchButton();
 	void searchButtonClicked();
-	void nodeClickedFromList();
+	void nodeClickedFromList( QListWidgetItem * item);
 
 	void enableGravity();
 	void disableGravity();
@@ -102,13 +101,13 @@ private:
     GuiGraph *graph;
     QString current_file;
 
-    QVBoxLayout *centre_on_node_layout;
+    QHBoxLayout *centre_on_node_layout;
     QPushButton *centre_on_node_button;
 	QSpinBox *centre_on_node_spin_box;
     QWidget *centre_on_node_widget;
 	QDockWidget *centre_on_node_dock;
 
-	QPlainTextEdit *search_text_edit;
+	QLineEdit *search_text_edit;
 	QPushButton *search_push_button;
 	QHBoxLayout *search_layout;
 	QWidget *search_widget;
