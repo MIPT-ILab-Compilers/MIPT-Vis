@@ -54,7 +54,7 @@ bool GraphAux::ordering()
 	}
 	freeNum( dfs_num);
 
-	const int max_iter = 24;
+	const int max_iter = 4;
 	for( int i = 0; i < max_iter; i++)
 	{
 		for( int j = 1; j < max_rank; j++)
@@ -70,7 +70,7 @@ bool GraphAux::ordering()
 }
 //-----------------------------------------------------------------------------
 /**
-* Position. Includes vertical arangement, posiotion of nodes within layers depend on order.
+* Position. Includes vertical arangement, position of nodes within layers depend on order.
 */
 bool GraphAux::position()
 {
@@ -713,7 +713,7 @@ void GraphAux::medianPosition()
 		group_list_ranked.append(group_list);
 	}
 	/* Calculate median positions of groups */
-	int max_iter = 40;
+	int max_iter = 10;
 	for(int i = 0; i < max_iter; i++)
 	{
 		for(QList<QList<NodeGroup*>>::iterator iter_rank = group_list_ranked.begin(); iter_rank != group_list_ranked.end(); iter_rank++)
