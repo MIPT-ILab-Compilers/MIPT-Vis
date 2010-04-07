@@ -7,6 +7,26 @@
 #include "layout_iface.h" 
 #include <QtCore/QtAlgorithms>
 
+/* Retun median value of given list */
+int getMedian(QList<int> list)
+{
+	int s = list.size();
+	int m = s / 2;
+	int ret = 0;
+	if(s == 0) ret = 0;
+	if(s == 1) ret = list[0];
+	if(s == 2) ret = (list[0] + list[1]) / 2;
+	if((s > 2) && (s % 2 == 1)) ret = list[m];
+	if((s > 2) && (s % 2 == 0))
+	{
+		int l = list[m - 1] - list[0];
+		int r = list[s - 1] - list[m];
+		if(l + r)ret = (list[m - 1] * r + list[m] * l) / (l + r);
+		else ret = 0;
+	}
+	return ret;
+}
+
 NodeGroup::NodeGroup(NodeAux* node)
 {
 	node_list.append(node);
@@ -38,12 +58,12 @@ NodeGroup* NodeGroup::next()
 
 int NodeGroup::left()
 {
-	return pos - width_priv / 2;
+	return node_list.first()->x() - node_list.first()->width() / 2 - offset / 2;
 };
 
 int NodeGroup::right()
 {
-	return pos + width_priv / 2;
+	return node_list.last()->x() + node_list.last()->width() / 2 + offset / 2;
 };
 
 int NodeGroup::width()
@@ -53,48 +73,40 @@ int NodeGroup::width()
 
 void NodeGroup::median()
 {
-	QList<int> adj_pos; // Positions of adjacent to this group nodes
+	QList<int> adj_pos, adj_pos_real, adj_pos_virt; // Positions of adjacent to this group nodes
+	/* Get positions of all adjacent nodes */
 	for( QList<NodeAux*>::iterator v = node_list.begin(); v != node_list.end(); v++)
 	{
 		for( EdgeAux* iter = (*v)->firstSucc(); iter != NULL; iter = iter->nextSucc())
 		{
-			if(iter->backward() && (!(*v)->real() || iter->succ()->real() || (iter->succ()->rang() == 0)))adj_pos.append(iter->succ()->x());
+			if(iter->backward())
+			{
+				if((*v)->real() && (iter->succ()->real() || (iter->succ()->rang() == 0)))adj_pos_real.append(iter->succ()->x());
+				if(!(*v)->real())adj_pos_virt.append(iter->succ()->x());
+			}
 		}
 		for( EdgeAux* iter = (*v)->firstPred(); iter != NULL; iter = iter->nextPred())
 		{
-			if(iter->ahead() && (!(*v)->real() || iter->pred()->real()) || (iter->pred()->rang() == 0))adj_pos.append(iter->pred()->x());
+			if(iter->ahead())
+			{
+				if((*v)->real() && (iter->pred()->real() || (iter->pred()->rang() == 0)))adj_pos_real.append(iter->pred()->x());
+				if(!(*v)->real())adj_pos_virt.append(iter->pred()->x());
+			}
 		}
 	}
-	qSort(adj_pos);
+	/* We consider only real nodes if possible */
+	adj_pos.append(adj_pos_real);
+	if(adj_pos.empty())adj_pos.append(adj_pos_virt);
 	/* Remove repeat elements */
+	qSort(adj_pos);
 	QList<int>::iterator prev = adj_pos.begin();
-	if(adj_pos.size() == 0)out("zero!!!!!");
 	for(QList<int>::iterator iter = ++adj_pos.begin(); iter < adj_pos.end();)
 	{
 		if(*iter == *prev)iter = adj_pos.erase(iter);
 		else prev = iter++;
 	}
 	/* Calculate median position */
-	int s = adj_pos.size();
-	int m = s / 2;
-	int ret = 0;
-	if(s == 0) ret = pos;
-	if(s == 1) ret = adj_pos[0];
-	if(s == 2) ret = (adj_pos[0] + adj_pos[1]) / 2;
-	if((s > 2) && (s % 2 == 1)) ret = adj_pos[m];
-	if((s > 2) && (s % 2 == 0))
-	{
-		int l = adj_pos[m - 1] - adj_pos[0];
-		int r = adj_pos[s - 1] - adj_pos[m];
-		if(l + r)ret = (adj_pos[m - 1] * r + adj_pos[m] * l) / (l + r);
-		else ret = 0;
-	}
-	pos = ret;
-	/*for(QList<int>::iterator iter = ++adj_pos.begin(); iter < adj_pos.end(); iter++)
-	{
-		ret += (*iter);
-	}
-	if (adj_pos.size() != 0)pos = ret / adj_pos.size();*/
+	if(!adj_pos.empty())pos = getMedian(adj_pos);
 };
 
 void NodeGroup::append()
@@ -118,11 +130,29 @@ void NodeGroup::prepend()
 
 void NodeGroup::updatePos()
 {
-	int x = left() + offset / 2;
+	/* Calculate private position inside this group  */
+	int x = pos - width_priv / 2 + offset / 2;
 	for( QList<NodeAux*>::iterator iter = node_list.begin(); iter != node_list.end(); iter++)
 	{
 		(*iter)->msetX(x + (*iter)->width() / 2);
 		x += offset + (*iter)->width();
+	}
+	/* Calculate median position between nodes of this group */
+	QList<int> pos_real, pos_virt, pos_list;
+	for(QList<NodeAux*>::iterator iter = node_list.begin(); iter != node_list.end(); iter++)
+	{
+		if((*iter)->real())pos_real.append((*iter)->x());
+		if(!(*iter)->real())pos_virt.append((*iter)->x());
+	}
+	/* Consider only real nodes if possible */
+	pos_list.append(pos_real);
+	if(pos_list.empty())pos_list.append(pos_virt);
+	qSort(pos_list);
+	int shift = pos - getMedian(pos_list);
+	/* Update positions */
+	for(QList<NodeAux*>::iterator iter = node_list.begin(); iter != node_list.end(); iter++)
+	{
+		(*iter)->msetX((*iter)->x() + shift);
 	}
 };
 
