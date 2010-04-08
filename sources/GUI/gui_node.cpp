@@ -6,6 +6,7 @@
 #include "gui_impl.h"
 #include<QtGui/QAction>
 #include<QtGui/QMenu>
+#include<QtGui/QMenu>
 
 /**
  * Init NodeProperties
@@ -77,20 +78,6 @@ void GuiNode::focusOutEvent( QFocusEvent * event)
  */
 void GuiNode::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 {
-	if (!text_dock->isVisible()) text_dock->show();
-    if ( mouseEvent->button() & Qt::LeftButton)
-    {
-        if ( textInteractionFlags() == Qt::NoTextInteraction)
-            setTextInteractionFlags( Qt::TextEditorInteraction);
-    }
-    QGraphicsTextItem::mouseDoubleClickEvent( mouseEvent);
-}
-
-/**
- * Actions for mouse press event
- */
-void GuiNode::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
-{
 	if ( text_dock==NULL)
 	{
 		emit createNodeTextDock( userId());
@@ -99,6 +86,21 @@ void GuiNode::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
 	{
 		if (!text_dock->isVisible()) text_dock->show();
 	}
+/*
+    if ( mouseEvent->button() & Qt::LeftButton)
+    {
+        if ( textInteractionFlags() == Qt::NoTextInteraction)
+            setTextInteractionFlags( Qt::TextEditorInteraction);
+    }
+*/
+    QGraphicsTextItem::mouseDoubleClickEvent( mouseEvent);
+}
+
+/**
+ * Actions for mouse press event
+ */
+void GuiNode::mousePressEvent( QGraphicsSceneMouseEvent * mouseEvent)
+{
 	update();
     QGraphicsTextItem::mousePressEvent( mouseEvent);
 }
@@ -272,8 +274,13 @@ void GuiNode::readByXml( xmlNode * cur_node)
 void GuiNode::contextMenuEvent( QGraphicsSceneContextMenuEvent *event)
 {
 	QMenu menu;
-    QAction *deleteAct = menu.addAction( "Delete");
+
+	QAction *deleteAct = menu.addAction( "Delete");
 	connect( deleteAct, SIGNAL( triggered()), this, SLOT( emitDelete()));
+
+	QAction *editLabelAct = menu.addAction( "Edit label");
+	connect( editLabelAct, SIGNAL( triggered()), this, SLOT( editNodeLabel()));
+
 	menu.exec( event->screenPos());
 }
 
@@ -284,10 +291,20 @@ void GuiNode::emitDelete()
 {
 	emit deleteGuiNode( this->userId());
 }
+
 /**
  *  save text
  */
 void GuiNode::saveText()
 {
 	node_text = text_edit->toPlainText();
+}
+
+/**
+ *  editNodeLabel
+ */
+void GuiNode::editNodeLabel()
+{
+	if ( textInteractionFlags() == Qt::NoTextInteraction)
+		setTextInteractionFlags( Qt::TextEditorInteraction);
 }
