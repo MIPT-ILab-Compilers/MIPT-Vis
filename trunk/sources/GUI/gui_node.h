@@ -151,6 +151,7 @@ public slots:
 	void saveText(); //??
 	void textChange(); //??
 	void emitDelete();
+	void editNodeLabel();
 
 signals:
 	void deleteGuiNode( int number);

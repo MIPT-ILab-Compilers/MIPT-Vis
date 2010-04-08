@@ -252,14 +252,14 @@ void MainWindow::createDockWindows()
 	setCorner( Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
 	/* centreOnNode dock*/
-	centre_on_node_dock = new QDockWidget( tr("Centre on node"), this);
+	centre_on_node_dock = new QDockWidget( tr("Centre on node"),this);
     centre_on_node_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
 	centre_on_node_dock->setFloating( false);
 
 	centre_on_node_spin_box = new QSpinBox;
 	centre_on_node_spin_box->setRange(0,1000);
 
-    centre_on_node_button = new QPushButton( tr("Jump"));
+    centre_on_node_button = new QPushButton( tr("Go to node"));
     centre_on_node_button->setEnabled( true);
     centre_on_node_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
     QObject::connect( centre_on_node_button, SIGNAL( clicked()), this, SLOT( centreOnNode()));
@@ -270,20 +270,20 @@ void MainWindow::createDockWindows()
 
     centre_on_node_widget = new QWidget;
     centre_on_node_widget->setLayout( centre_on_node_layout);
-	centre_on_node_widget->setMaximumSize(150,55);
+	centre_on_node_widget->setMaximumWidth( 150);
 
 	centre_on_node_dock->setWidget(centre_on_node_widget);
     addDockWidget( Qt::TopDockWidgetArea, centre_on_node_dock, Qt::Horizontal);
 	view_menu->addAction(centre_on_node_dock->toggleViewAction());
 
 	/* Search dock widget*/
-	search_dock = new QDockWidget( tr("Search Node"), this);
+	search_dock = new QDockWidget( tr("Find node"),this);
     search_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
 	search_dock->setFloating( false);
 
 	search_text_edit = new QLineEdit;
 
-	search_push_button = new QPushButton( tr("Search"));
+	search_push_button = new QPushButton( tr("Find text"));
     search_push_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
 	QObject::connect( search_push_button, SIGNAL( clicked()), this, SLOT( searchButtonClicked()));
 
@@ -293,7 +293,7 @@ void MainWindow::createDockWindows()
 
 	search_widget = new QWidget;
 	search_widget->setLayout( search_layout);
-	search_widget->setMaximumSize(400,55);
+	search_widget->setMaximumWidth( 250);
 
 	search_dock->setWidget(search_widget);
     addDockWidget( Qt::TopDockWidgetArea, search_dock, Qt::Horizontal);
@@ -305,7 +305,7 @@ void MainWindow::createDockWindows()
 	search_result_dock->setFloating( false);
 
 	search_result_list = new QListWidget;
-	QObject::connect(search_result_list, SIGNAL( itemClicked( QListWidgetItem *)), 
+	QObject::connect(search_result_list, SIGNAL( itemDoubleClicked( QListWidgetItem *)), 
 		             this, SLOT( nodeClickedFromList( QListWidgetItem *)));
 
 	search_result_layout = new QVBoxLayout( search_result_dock);
@@ -313,6 +313,7 @@ void MainWindow::createDockWindows()
 
 	search_result_widget = new QWidget;
 	search_result_widget->setLayout( search_result_layout);
+	search_result_widget->setMaximumHeight( 80);
 
 	search_result_dock->setWidget(search_result_widget);
     addDockWidget( Qt::RightDockWidgetArea, search_result_dock, Qt::Vertical);
@@ -431,6 +432,7 @@ void MainWindow::addNewTextDock(int number)
 
 					node->text_widget = new QWidget;
 					node->text_widget->setLayout( node->text_layout);
+					node->text_widget->setMaximumHeight( 80);
 
 					node->text_dock->setWidget( node->text_widget);
 
