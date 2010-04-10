@@ -251,54 +251,6 @@ void MainWindow::createDockWindows()
 	setCorner( Qt::TopRightCorner, Qt::RightDockWidgetArea);
 	setCorner( Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 
-	/* centreOnNode dock*/
-	centre_on_node_dock = new QDockWidget( tr("Centre on node"),this);
-    centre_on_node_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
-	centre_on_node_dock->setFloating( false);
-
-	centre_on_node_spin_box = new QSpinBox;
-	centre_on_node_spin_box->setRange(0,1000);
-
-    centre_on_node_button = new QPushButton( tr("Go to node"));
-    centre_on_node_button->setEnabled( true);
-    centre_on_node_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
-    QObject::connect( centre_on_node_button, SIGNAL( clicked()), this, SLOT( centreOnNode()));
-
-	centre_on_node_layout = new QHBoxLayout( centre_on_node_dock);
-	centre_on_node_layout->addWidget( centre_on_node_spin_box);
-	centre_on_node_layout->addWidget( centre_on_node_button);
-
-    centre_on_node_widget = new QWidget;
-    centre_on_node_widget->setLayout( centre_on_node_layout);
-	centre_on_node_widget->setMaximumWidth( 150);
-
-	centre_on_node_dock->setWidget(centre_on_node_widget);
-    addDockWidget( Qt::TopDockWidgetArea, centre_on_node_dock, Qt::Horizontal);
-	view_menu->addAction(centre_on_node_dock->toggleViewAction());
-
-	/* Search dock widget*/
-	search_dock = new QDockWidget( tr("Find node"),this);
-    search_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
-	search_dock->setFloating( false);
-
-	search_text_edit = new QLineEdit;
-
-	search_push_button = new QPushButton( tr("Find text"));
-    search_push_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
-	QObject::connect( search_push_button, SIGNAL( clicked()), this, SLOT( searchButtonClicked()));
-
-	search_layout = new QHBoxLayout( search_dock);
-	search_layout->addWidget( search_text_edit);
-	search_layout->addWidget( search_push_button);
-
-	search_widget = new QWidget;
-	search_widget->setLayout( search_layout);
-	search_widget->setMaximumWidth( 250);
-
-	search_dock->setWidget(search_widget);
-    addDockWidget( Qt::TopDockWidgetArea, search_dock, Qt::Horizontal);
-	view_menu->addAction(search_dock->toggleViewAction());
-
 	/* Search result dock widget*/
 	search_result_dock = new QDockWidget( tr("Search result"), this);
     search_result_dock->setAllowedAreas( Qt::AllDockWidgetAreas);
@@ -317,6 +269,7 @@ void MainWindow::createDockWindows()
 
 	search_result_dock->setWidget(search_result_widget);
     addDockWidget( Qt::RightDockWidgetArea, search_result_dock, Qt::Vertical);
+	view_menu->addAction(search_result_dock->toggleViewAction());
 	
 	search_result_dock->hide();
 }
@@ -466,21 +419,67 @@ QString MainWindow::strippedName( const QString &full_file_name)
  */
 void MainWindow::createToolBars()
 {
-    tool_bar = addToolBar (tr("File"));
-	tool_bar->addAction (load_act);
-    tool_bar->addAction (save_act);
-	tool_bar->addAction (do_layout_act);
-	tool_bar->addAction (convert_dump_to_xml_act);
-	tool_bar->addAction (show_virtual_nodes_act);
-	tool_bar->addAction (show_edge_labels_act);
-	tool_bar->addAction (do_gravity_act);
+	/* file toolbar */
+    file_tool_bar = addToolBar( tr( "File Toolbar"));
+	file_tool_bar->addAction( load_act);
+    file_tool_bar->addAction( save_act);
+	file_tool_bar->addAction( do_layout_act);
+	file_tool_bar->addAction( convert_dump_to_xml_act);
+	file_tool_bar->addAction( show_virtual_nodes_act);
+	file_tool_bar->addAction( show_edge_labels_act);
+	file_tool_bar->addAction( do_gravity_act);
+	view_menu->addAction(file_tool_bar->toggleViewAction());
+
+	/* find toolbar */
+	
+	find_tool_bar = addToolBar( tr( "Find Toolbar"));
+
+	centre_on_node_spin_box = new QSpinBox;
+	centre_on_node_spin_box->setRange(0,1000);
+
+    centre_on_node_button = new QPushButton( tr("Go to node"));
+    centre_on_node_button->setEnabled( true);
+    centre_on_node_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect( centre_on_node_button, SIGNAL( clicked()), this, SLOT( centreOnNode()));
+
+	centre_on_node_layout = new QHBoxLayout();
+	centre_on_node_layout->addWidget( centre_on_node_spin_box);
+	centre_on_node_layout->addWidget( centre_on_node_button);
+
+    centre_on_node_widget = new QWidget;
+    centre_on_node_widget->setLayout( centre_on_node_layout);
+	centre_on_node_widget->setMaximumSize( 150, 50);
+
+	find_tool_bar->addWidget( centre_on_node_widget);
+	view_menu->addAction(find_tool_bar->toggleViewAction());
+
+	/* goto toolbar */
+	
+	focus_tool_bar = addToolBar( tr("Focus Toolbar"));
+
+	search_text_edit = new QLineEdit;
+
+	search_push_button = new QPushButton( tr("Find text"));
+    search_push_button->setSizePolicy( QSizePolicy::Fixed, QSizePolicy::Fixed);
+	QObject::connect( search_push_button, SIGNAL( clicked()), this, SLOT( searchButtonClicked()));
+
+	search_layout = new QHBoxLayout();
+	search_layout->addWidget( search_text_edit);
+	search_layout->addWidget( search_push_button);
+
+	search_widget = new QWidget;
+	search_widget->setLayout( search_layout);
+	search_widget->setMaximumSize( 250, 50);
+
+	focus_tool_bar->addWidget( search_widget);
+	view_menu->addAction(focus_tool_bar->toggleViewAction());
 }
 /**
  * reactToGravityToggle
  */
-void MainWindow::reactToGravityToggle(bool checked)
+void MainWindow::reactToGravityToggle( bool checked)
  {
-    if (checked) 
+    if ( checked) 
 		emit enableGravity();
 	else
 		emit disableGravity();
@@ -491,7 +490,7 @@ void MainWindow::reactToGravityToggle(bool checked)
  */
 void MainWindow::zoomViewIn()
 {
-	view->scaleView (1.5);
+	view->scaleView( 1.5);
 }
 
 /**
@@ -499,7 +498,7 @@ void MainWindow::zoomViewIn()
  */
 void MainWindow::zoomViewOut()
 {
-	view->scaleView (0.666);
+	view->scaleView( 0.666);
 }
 
 /**
@@ -509,7 +508,7 @@ void MainWindow::saveNodeTexts()
 {
     GuiNode * node;
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
-		if (node->text_dock != NULL)
+		if ( node->text_dock != NULL)
 		{
 			node->saveText();
 			node->textChange();
@@ -523,7 +522,7 @@ void MainWindow::closeOldDocks()
 {
     GuiNode * node;
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
-		if (node->text_dock != NULL) 
+		if ( node->text_dock != NULL) 
 			node->text_dock->close();
 }
 
@@ -536,9 +535,9 @@ void MainWindow::searchButtonClicked()
 	result_list.clear();
     GuiNode * node;
     for ( node = ( GuiNode *)graph->firstNode(); isNotNullP( node); node = ( GuiNode *)node->nextNode())
-		if (node->node_text.contains( search_text_edit->text(),Qt::CaseInsensitive))
+		if ( node->node_text.contains( search_text_edit->text(), Qt::CaseInsensitive))
 		{
-			search_result_list->addItem(QString( "Node %1").arg( node->userId()));
+			search_result_list->addItem( QString( "Node %1").arg( node->userId()));
 			result_list.append( node);
 		}
 	search_result_dock->show();

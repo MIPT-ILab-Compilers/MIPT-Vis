@@ -25,6 +25,7 @@ class QPlainTextEdit;
 class QListWidget;
 class QListWidgetItem;
 class QDockWidget;
+class QToolBar;
 QT_END_NAMESPACE
 
 /**
@@ -91,7 +92,9 @@ private:
 	QAction *do_gravity_act;
 	QAction *hot_keys_act;
 
-	QToolBar *tool_bar;
+	QToolBar *file_tool_bar;
+	QToolBar *find_tool_bar;
+	QToolBar *focus_tool_bar;
 
 	QTimer *gravity_timer;
 
@@ -105,13 +108,11 @@ private:
     QPushButton *centre_on_node_button;
 	QSpinBox *centre_on_node_spin_box;
     QWidget *centre_on_node_widget;
-	QDockWidget *centre_on_node_dock;
 
 	QLineEdit *search_text_edit;
 	QPushButton *search_push_button;
 	QHBoxLayout *search_layout;
 	QWidget *search_widget;
-	QDockWidget *search_dock;	
 
 	QList<GuiNode*> result_list;
 	QListWidget *search_result_list;
