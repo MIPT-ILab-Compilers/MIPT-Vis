@@ -105,7 +105,11 @@ void MainWindow::save()
  */
 void MainWindow::hotKeysInfo()
 {
-	QMessageBox::about( this, tr("Hot Keys"), tr("Available Hot Keys\n\'+\':scaling view closer\n\'-\':scaling view off"));
+	QString HotInfo;	
+	for(int i=0;i<list_of_hot_keys->count();i++)
+			HotInfo+=list_of_hot_keys->at(i)->whatsThis();
+	
+		QMessageBox::about( this, tr("Hot Keys"), HotInfo);
 }
 
 /**
@@ -144,9 +148,20 @@ void MainWindow::about()
  */
 void MainWindow::createHotKeys()
 {   
-	(void) new QShortcut(Qt::Key_Plus, this, SLOT(zoomViewIn(void)));	
-	(void) new QShortcut(Qt::Key_Equal, this, SLOT(zoomViewIn(void)));
-	(void) new QShortcut(Qt::Key_Minus, this, SLOT(zoomViewOut(void)));
+	list_of_hot_keys = new QList<QShortcut*>();	
+
+	QShortcut *shortcut;
+	shortcut = new QShortcut (Qt::Key_Plus, this, SLOT(zoomViewIn(void)));
+	shortcut->setWhatsThis(tr("\'+\':scaling view closer\n"));
+	list_of_hot_keys->append(shortcut);	
+	 
+	shortcut = new QShortcut(Qt::Key_Equal, this, SLOT(zoomViewIn(void)));
+	shortcut->setWhatsThis(tr("\'=\':scaling view closer\n"));
+	list_of_hot_keys->append(shortcut);
+	
+	shortcut = new QShortcut(Qt::Key_Minus, this, SLOT(zoomViewOut(void)));
+	shortcut->setWhatsThis(tr("\'-\':scaling view off\n"));
+	list_of_hot_keys->append(shortcut);
 }
 
 /**
