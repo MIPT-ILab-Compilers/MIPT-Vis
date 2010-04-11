@@ -68,7 +68,6 @@ void GuiNode::focusInEvent( QFocusEvent * event)
  */
 void GuiNode::focusOutEvent( QFocusEvent * event)
 {
-    setTextInteractionFlags( Qt::NoTextInteraction);
     setSelected( false);
     QGraphicsTextItem::focusOutEvent( event);
 }
@@ -86,13 +85,6 @@ void GuiNode::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
 	{
 		if (!text_dock->isVisible()) text_dock->show();
 	}
-/*
-    if ( mouseEvent->button() & Qt::LeftButton)
-    {
-        if ( textInteractionFlags() == Qt::NoTextInteraction)
-            setTextInteractionFlags( Qt::TextEditorInteraction);
-    }
-*/
     QGraphicsTextItem::mouseDoubleClickEvent( mouseEvent);
 }
 
@@ -278,8 +270,12 @@ void GuiNode::contextMenuEvent( QGraphicsSceneContextMenuEvent *event)
 	QAction *deleteAct = menu.addAction( "Delete");
 	connect( deleteAct, SIGNAL( triggered()), this, SLOT( emitDelete()));
 
-	QAction *editLabelAct = menu.addAction( "Edit label");
-	connect( editLabelAct, SIGNAL( triggered()), this, SLOT( editNodeLabel()));
+	QString mode_text;
+	if ( textInteractionFlags() == Qt::NoTextInteraction) mode_text = QString( "Set Edit Mode");
+	else mode_text = QString( "Set Drag Mode");
+
+	QAction *editLabelAct = menu.addAction( mode_text);
+	connect( editLabelAct, SIGNAL( triggered()), this, SLOT( changeMode()));
 
 	menu.exec( event->screenPos());
 }
@@ -301,10 +297,16 @@ void GuiNode::saveText()
 }
 
 /**
- *  editNodeLabel
+ *  changeMode
  */
-void GuiNode::editNodeLabel()
+void GuiNode::changeMode()
 {
 	if ( textInteractionFlags() == Qt::NoTextInteraction)
+	{ 
 		setTextInteractionFlags( Qt::TextEditorInteraction);
+	}
+	else 
+	{
+		setTextInteractionFlags( Qt::NoTextInteraction);
+	}
 }
