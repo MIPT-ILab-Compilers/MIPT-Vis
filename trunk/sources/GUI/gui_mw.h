@@ -119,6 +119,8 @@ private:
 	QVBoxLayout *search_result_layout;
 	QWidget *search_result_widget;
 	QDockWidget *search_result_dock;
+
+	QList<QShortcut*> *list_of_hot_keys;
 };
 
 #endif
