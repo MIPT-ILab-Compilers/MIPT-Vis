@@ -265,7 +265,6 @@ void MainWindow::createDockWindows()
 
 	search_result_widget = new QWidget;
 	search_result_widget->setLayout( search_result_layout);
-	search_result_widget->setMaximumHeight( 80);
 
 	search_result_dock->setWidget(search_result_widget);
     addDockWidget( Qt::RightDockWidgetArea, search_result_dock, Qt::Vertical);
@@ -385,7 +384,6 @@ void MainWindow::addNewTextDock(int number)
 
 					node->text_widget = new QWidget;
 					node->text_widget->setLayout( node->text_layout);
-					node->text_widget->setMaximumHeight( 80);
 
 					node->text_dock->setWidget( node->text_widget);
 
