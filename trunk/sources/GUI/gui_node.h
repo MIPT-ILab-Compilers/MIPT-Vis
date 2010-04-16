@@ -109,8 +109,6 @@ protected:
 public:
 	GuiTextEdit *text_edit;
 	QDockWidget *text_dock;
-	QVBoxLayout *text_layout;
-	QWidget *text_widget;
 
     QString node_text;
     enum { Type = QGraphicsItem::UserType + 1};
