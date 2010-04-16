@@ -24,13 +24,7 @@ MainWindow::MainWindow()
     if( graph->getNodeItem())
       view->centerOn( graph->getNodeItem());
        
-
-    view_layout = new QHBoxLayout;
-    view_layout->addWidget( view);
-
-    view_widget = new QWidget;
-    view_widget->setLayout(view_layout);
-	setCentralWidget( view_widget);
+	setCentralWidget( view);
 
 	gravity_timer = new QTimer ( this);
 	connect( gravity_timer, SIGNAL( timeout()), this, SLOT(makeGravity()));
@@ -275,13 +269,7 @@ void MainWindow::createDockWindows()
 	QObject::connect(search_result_list, SIGNAL( itemDoubleClicked( QListWidgetItem *)), 
 		             this, SLOT( nodeClickedFromList( QListWidgetItem *)));
 
-	search_result_layout = new QVBoxLayout( search_result_dock);
-	search_result_layout->addWidget( search_result_list);
-
-	search_result_widget = new QWidget;
-	search_result_widget->setLayout( search_result_layout);
-
-	search_result_dock->setWidget(search_result_widget);
+	search_result_dock->setWidget( search_result_list);
     addDockWidget( Qt::RightDockWidgetArea, search_result_dock, Qt::Vertical);
 	view_menu->addAction(search_result_dock->toggleViewAction());
 	
@@ -394,14 +382,7 @@ void MainWindow::addNewTextDock(int number)
 					node->text_edit->setPlainText( node->getNodeText());
 					node->text_edit->setReadOnly( false);
 
-					node->text_layout = new QVBoxLayout( node->text_dock);
-					node->text_layout->addWidget( node->text_edit);
-
-					node->text_widget = new QWidget;
-					node->text_widget->setLayout( node->text_layout);
-
-					node->text_dock->setWidget( node->text_widget);
-
+					node->text_dock->setWidget( node->text_edit);
 					addDockWidget( Qt::RightDockWidgetArea, node->text_dock, Qt::Vertical);
 					connect(node->text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT( doCentreOnNode( int)));
 				}

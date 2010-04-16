@@ -99,8 +99,6 @@ private:
 	QTimer *gravity_timer;
 
     GuiView *view;
-    QHBoxLayout *view_layout;
-    QWidget *view_widget;
     GuiGraph *graph;
     QString current_file;
 
@@ -116,8 +114,6 @@ private:
 
 	QList<GuiNode*> result_list;
 	QListWidget *search_result_list;
-	QVBoxLayout *search_result_layout;
-	QWidget *search_result_widget;
 	QDockWidget *search_result_dock;
 
 	QList<QShortcut*> *list_of_hot_keys;
