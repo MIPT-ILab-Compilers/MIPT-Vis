@@ -5,7 +5,7 @@
 #ifndef TEXTEDIT_H
 #define TEXTEDIT_H
 
-#include <QtGui/QPlainTextEdit>
+#include <QtGui/QTextEdit>
 #include "gui_impl.h"
 
 QT_BEGIN_NAMESPACE
@@ -14,7 +14,7 @@ QT_END_NAMESPACE
 /**
  * Class GuiTextEdit
  */
-class GuiTextEdit : public QPlainTextEdit
+class GuiTextEdit : public QTextEdit
 {
     Q_OBJECT
 

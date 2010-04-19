@@ -16,7 +16,7 @@ GuiTextEdit::GuiTextEdit()
  */
 void GuiTextEdit::mousePressEvent( QMouseEvent * mouseEvent)
 {
-	QPlainTextEdit::mousePressEvent( mouseEvent);
+	QTextEdit::mousePressEvent( mouseEvent);
 	QTextCursor cursor = textCursor();
 	cursor.select( QTextCursor::WordUnderCursor);
 	QString str = cursor.selectedText();
