@@ -385,15 +385,12 @@ void MainWindow::addNewTextDock(int number)
 					
 					// super text!!! /*
 
-					QTextCharFormat text_format_with_anchor;
 					node->text_edit->text_format_with_anchor.setAnchor( true);
-
-					QTextCharFormat text_format_without_anchor;
-					text_format_without_anchor.setAnchor( false);
+					node->text_edit->text_format_without_anchor.setAnchor( false);
 
 					GuiEdge * edge;
 	
-					node->text_edit->setCurrentCharFormat( node->text_edit->text_format_with_anchor);
+					node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
 					node->text_edit->insertPlainText( "succ : ");
 					int count = 0;
 					for ( edge = ( GuiEdge *)graph->firstEdge(); isNotNullP( edge); edge = ( GuiEdge *)edge->nextEdge())
@@ -406,14 +403,14 @@ void MainWindow::addNewTextDock(int number)
 							count++;
 							if (count>1) 
 							{
-								node->text_edit->setCurrentCharFormat( text_format_without_anchor);
+								node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
 								node->text_edit->insertPlainText( ", ");
 							}
-							node->text_edit->setCurrentCharFormat( text_format_with_anchor);
+							node->text_edit->setCurrentCharFormat( node->text_edit->text_format_with_anchor);
 							node->text_edit->insertPlainText( st);
 						}
 					}
-					node->text_edit->setCurrentCharFormat( text_format_without_anchor);
+					node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
 					node->text_edit->insertPlainText("\n");
 
 					node->text_edit->insertPlainText( "pred : ");
@@ -426,24 +423,24 @@ void MainWindow::addNewTextDock(int number)
 						{
 							QString st = QString::number( node_succ->userId());
 							count++;
-							if (count>1) 
+							if ( count>1) 
 							{
-								node->text_edit->setCurrentCharFormat( text_format_without_anchor);
+								node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
 								node->text_edit->insertPlainText( ", ");
 							}
-							node->text_edit->setCurrentCharFormat( text_format_with_anchor);
+							node->text_edit->setCurrentCharFormat( node->text_edit->text_format_with_anchor);
 							node->text_edit->insertPlainText( st);
 						}
 					}
-					node->text_edit->setCurrentCharFormat( text_format_without_anchor);
-					node->text_edit->insertPlainText("\n\nNode info : \n\n");
+					node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
+					node->text_edit->insertPlainText( "\n\nNode info : \n\n");
 					
 					// super text */!!!!!!!!!!!!!
 					node->text_edit->insertPlainText( node->getNodeText());
 					
 					node->text_dock->setWidget( node->text_edit);
 					addDockWidget( Qt::RightDockWidgetArea, node->text_dock, Qt::Vertical);
-					connect(node->text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT( doCentreOnNode( int)));
+					connect( node->text_edit, SIGNAL( nodeToBeCentreOn( int)), this, SLOT( doCentreOnNode( int)));
 				}
 				node->text_dock->show();
 			}
