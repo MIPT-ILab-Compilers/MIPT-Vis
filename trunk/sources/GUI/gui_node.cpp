@@ -224,7 +224,7 @@ void GuiNode::writeByXmlWriter( xmlTextWriterPtr writer)
 	if ( NodeProperties::shape())
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST NodeProperties::shape());
 
-	//if ( textPriv()) xmlTextWriterWriteAttribute( writer, BAD_CAST "textPriv", BAD_CAST textPriv());
+	if ( textPriv()) xmlTextWriterWriteAttribute( writer, BAD_CAST "textPriv", BAD_CAST textPriv());
 
 	if (0 != nodeStName().compare ("default", Qt::CaseInsensitive))
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST nodeStName().toAscii().data());
@@ -249,12 +249,12 @@ void GuiNode::readByXml( xmlNode * cur_node)
 		{
 			setShape( ( char *)( props->children->content));
 		}
-		/*
+		
 		else if ( xmlStrEqual( props->name, xmlCharStrdup( "textPriv")))
 		{
 			setTextPriv( ( char *)( props->children->content));
 		}
-		*/
+		
 		else if ( xmlStrEqual( props->name, xmlCharStrdup( "style")))
 		{
 			setNodeStyle( ( char *)( props->children->content));
