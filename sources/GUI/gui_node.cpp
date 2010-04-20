@@ -13,7 +13,6 @@
  */
 NodeProperties::NodeProperties (StyleSheet* style_sheet_) :node_style_sheet_priv (style_sheet_), node_style_priv (style_sheet_->getId ("default"))
 {
-    node_color_priv = 0;
 	node_label_priv = 0;
 	shape_priv = 0;
 	text_priv = 0;
@@ -220,7 +219,6 @@ void GuiNode::writeByXmlWriter( xmlTextWriterPtr writer)
 {
 	NodeAux::writeByXmlWriter ( writer);
 	if ( nodeLabel()) xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST nodeLabel());
-	if ( nodeColor()) xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST nodeColor());
 	if ( NodeProperties::shape())
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "shape", BAD_CAST NodeProperties::shape());
 
@@ -239,10 +237,7 @@ void GuiNode::readByXml( xmlNode * cur_node)
 	setTextPriv( "");
 	for ( xmlAttr* props = cur_node->properties; props; props = props->next)
 	{
-		if ( xmlStrEqual( props->name, xmlCharStrdup( "color")))
-		{
-			setNodeColor( ( char *)( props->children->content));
-		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "label")))
+		if ( xmlStrEqual( props->name, xmlCharStrdup( "label")))
 		{
 			setNodeLabel( ( char *)( props->children->content));
 		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "shape")))

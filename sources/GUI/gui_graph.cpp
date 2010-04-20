@@ -21,7 +21,6 @@ void GuiGraph::mouseDoubleClickEvent( QGraphicsSceneMouseEvent * mouseEvent)
         number_priv++;
         GuiNode * node = ( GuiNode *)newNode();
         node->setPos( mouseEvent->scenePos());
-        node->setNodeColor( "green");
 		node->setNodeLabel( "Node" + number_priv);
 		node->setShape( "rectangle");
 		node->setTextPriv( "");        

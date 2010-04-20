@@ -171,6 +171,14 @@ public:
      * Get node's corresponding auxiliary graph
      */
     inline GraphAux * getGraph() const;
+	
+     /**
+     * Check if this node is a root
+     */
+	inline bool isRoot()
+	{
+		return !firstPred();
+	}
 
     /**
        * Add an edge to this node in specified direction

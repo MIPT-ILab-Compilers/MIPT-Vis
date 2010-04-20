@@ -52,7 +52,7 @@ QLineF::IntersectType getIntersection (const QLineF& l, const QPolygonF& p, QPoi
 /**
  * Update position the edge
  */
-void GuiEdge::updatePosition()
+void GuiEdge::updatePosition (bool original_run)
 {
 	GuiNode* pre = addGui (pred());
 	GuiNode* suc = addGui (succ());
@@ -129,7 +129,92 @@ void GuiEdge::updatePosition()
     edge_top_left_priv.setY( min< qreal>( edge_start_point_priv.y(), edge_end_point_priv.y()));
     edge_bottom_right_priv.setX( max< qreal>( edge_start_point_priv.x(), edge_end_point_priv.x()));
     edge_bottom_right_priv.setY( max< qreal>( edge_start_point_priv.y(), edge_end_point_priv.y())); 
+
+	if (original_run)
+	{
+		if (Edge::succ() && !addAux (Edge::succ())->real() && Edge::succ()->firstSucc())
+			addGui (Edge::succ()->firstSucc())->updatePosition (false);//avoidance sharp corners
+		
+		if (Edge::pred() && !addAux (Edge::pred())->real() && Edge::pred()->firstPred())
+			addGui (Edge::pred()->firstPred())->updatePosition (false);//avoidance sharp corners
+		
+		GuiEdge* i = this;
+		for (i; !i->startEdge(); i->pred()->firstPred() && (i = addGui (i->pred()->firstPred())));
+		i->updateLabels();
+	}
     prepareGeometryChange();
+}
+
+/**
+ * Update text distribution between edges
+ */
+void GuiEdge::updateLabels()
+{
+	float sum_len = 0;
+	QPoint end_sequence;
+
+	bool first_run = full_label.length() == 0;
+
+	for (GuiEdge* i = this;;
+		i->succ()->firstSucc() && (i = addGui (i->succ()->firstSucc())))
+	{
+		sum_len += i->length();
+		if (first_run) full_label += i->edgeLabel();
+		if (i->succ() && i->succ()->real())
+		{
+			end_sequence = addAux(i->succ())->coor();
+			break;
+		}
+	}
+
+	float n_letters = 0;
+	float last_round_up = 0;
+	int full_len = full_label.length();
+	
+	QPoint delta = end_sequence - edge_start_point_priv.toPoint();
+	reverse = -delta.x() > delta.y();
+
+	QString buf = full_label;
+
+	for (GuiEdge* i = this;;
+		i->succ()->firstSucc() && (i = addGui (i->succ()->firstSucc())))
+	{
+		i->reverse = reverse;
+		n_letters = full_len*i->length()/sum_len + last_round_up;	//give an appropriate substring
+		last_round_up = n_letters - (int)n_letters;
+
+		if (i->succ() && i->succ()->real())//take the last character
+			n_letters ++;
+
+		if (reverse)
+		{
+			i->setEdgeLabel (buf.right (n_letters));
+			buf.remove (buf.length() + 1 - n_letters, n_letters);
+		}
+		else
+		{
+			i->setEdgeLabel (buf.left (n_letters));
+			buf.remove (0, n_letters);
+		}
+		if (i->succ() && i->succ()->real()) break;
+
+	}
+}
+
+/**
+ * Return lenght of the edge
+ */
+float GuiEdge::length() const
+{
+	return edge_valid_priv ? edge_curve_priv.length() : 0;
+}
+
+/**
+ * Return if this edge first in a sequence
+ */
+bool GuiEdge::startEdge() const
+{//		   pred exists and, it real					or it is a root
+	return Edge::pred() && (addAux (Edge::pred())->real() || addAux (Edge::pred())->isRoot());
 }
 
 /**
@@ -157,6 +242,9 @@ QPainterPath GuiEdge::shape() const
     return stroker.createStroke( edge_curve_priv);
 }
 
+/**
+ * Paint arrow
+ */
 void drawLineHead (QPainter * painter, QPointF end, double angle, double size, bool figure)
 {
     QPointF lineP1 = end + QPointF( sin( angle + Pi / 3) * size, cos( angle + Pi / 3) * size);
@@ -184,7 +272,7 @@ void drawLineHead (QPainter * painter, QPointF end, double angle, double size, b
 }
 
 /**
- * Paint arrow
+ * Paint edge
  */
 void GuiEdge::paint( QPainter * painter,
                          const QStyleOptionGraphicsItem * option, QWidget * widget)
@@ -210,43 +298,55 @@ void GuiEdge::paint( QPainter * painter,
 		drawLineHead (painter, edge_end_point_priv, -atan2 (dir.y(), dir.x()), 10, false);
     }
 
-	if (edgeLabel() != 0 && addGui (graph)->showEdgeLabels())
+	if (edgeLabel().size() && addGui (graph)->showEdgeLabels())
 	{
-		int len = strlen (edgeLabel());
-		float k = 0.7;
-		float start = 0.15;
-		QPointF delta = edge_end_point_priv - edge_start_point_priv;
-		float letter_size = 2*edge_curve_priv.length()/len;
-		if (letter_size > 18) letter_size = 18;
-		if (letter_size > 5 && !cycle())
-		{
-			if (delta.x() + delta.y() < 0)
-			{
-				k *= -1;
-				start = 1 - start;
-			}
-
-			for (int i = 0; i < len; ++i)
-			{
-				float slope = edge_curve_priv.slopeAtPercent (start + k*float(i)/len);
-				float ang = atan(slope);
-				QPointF pos = edge_curve_priv.pointAtPercent(start + k*float(i)/len);
-				pos += QPointF (cos (Pi/2 + ang), sin(Pi/2 + ang))*letter_size;
-//				painter->rotate (slope);
-				QFont curf = painter->font();
-				curf.setPixelSize (letter_size);
-				painter->setFont (curf);
-				painter->drawText (pos, QString(*(edgeLabel() + i)));
-//				painter->rotate (-slope);
-			}
-		}
+		drawText (painter);
 	}
 
 	painter->setBrush( Qt::transparent);//!!! change it to black, and you will see, what heppend. I can't explain this
 	painter->drawPath (edge_curve_priv);
+}
 
+/**
+ * Draws a label near the edge
+ */
+void GuiEdge::drawText (QPainter * painter) const
+{
+	int len = edgeLabel().length();
+	float k = 0.8f;
+	float start = 0.1f;
+	if (Edge::pred() && !addAux (Edge::pred())->real())//press letters to the virtual nodes
+	{
+		k += start;
+		start = 0;
+	}
+	if (Edge::succ() && !addAux (Edge::succ())->real())//press letters to the virtual nodes
+	{
+		k = 1 - start;
+	}
+	if (reverse)
+	{
+		k = -k;
+		start = 1 - start;
+	}
+	QPointF delta = edge_end_point_priv - edge_start_point_priv;
+	float letter_size = 1.3*edge_curve_priv.length()/len;
+	if (letter_size > 25) letter_size = 25;
+	if (letter_size > 8 && !cycle())
+	{
 
-//    update();
+		for (int i = 0; i < len; ++i)
+		{
+			float slope = edge_curve_priv.slopeAtPercent (start + k*float(i)/len);
+			float ang = atan(slope);
+			QPointF pos = edge_curve_priv.pointAtPercent(start + k*float(i)/len);
+			pos += QPointF (cos (Pi/2 + ang), sin(Pi/2 + ang))*letter_size;
+			QFont curf = painter->font();
+			curf.setPixelSize (letter_size);
+			painter->setFont (curf);
+			painter->drawText (pos, QString(edgeLabel().at(i)));
+		}
+	}
 }
 
 /**
@@ -295,10 +395,8 @@ GuiNode* GuiEdge::insertNode ( QPointF p)	//!!! I think it's superannuated
 void GuiEdge::writeByXmlWriter( xmlTextWriterPtr writer)
 {
 	EdgeAux::writeByXmlWriter( writer);
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST edgeLabel());
+	xmlTextWriterWriteAttribute( writer, BAD_CAST "label", BAD_CAST edgeLabel().toAscii().data());
 	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "prob", "%d", prob());
-	xmlTextWriterWriteFormatAttribute( writer, BAD_CAST "thickness", "%d", thickness());
-	xmlTextWriterWriteAttribute( writer, BAD_CAST "color", BAD_CAST edgeColor());
 	if (0 != edgeStName().compare ("default", Qt::CaseInsensitive))
 		xmlTextWriterWriteAttribute( writer, BAD_CAST "style", BAD_CAST edgeStName().toAscii().data());
 }
@@ -314,12 +412,6 @@ void GuiEdge::readByXml( xmlNode * cur_node)
 		if ( xmlStrEqual( props->name, xmlCharStrdup( "prob")))
 		{
 			setProb( strtoul( ( const char *)( props->children->content), NULL, 0) );
-		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "thickness")))
-		{
-			setThickness( strtoul( ( const char *)( props->children->content), NULL, 0) );
-		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "color")))
-		{
-			setEdgeColor( ( char *)( props->children->content));
 		} else if ( xmlStrEqual( props->name, xmlCharStrdup( "style")))
 		{
 			setEdgeStyle( ( char *)( props->children->content));

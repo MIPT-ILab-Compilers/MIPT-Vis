@@ -44,15 +44,15 @@ public:
 	/*
 	 * These functions are not take into a mesh edges
 	 */
-	inline bool ahead()
+	inline bool ahead() const
 	{
 		return type == EdgeAux::tree || type == EdgeAux::forward;
 	}
-	inline bool backward()
+	inline bool backward() const
 	{
 		return type == EdgeAux::back;
 	}
-	inline bool cycle()
+	inline bool cycle() const
 	{
 		return type == EdgeAux::mesh;
 	}
