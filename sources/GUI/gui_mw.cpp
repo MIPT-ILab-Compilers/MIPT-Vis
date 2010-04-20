@@ -383,59 +383,57 @@ void MainWindow::addNewTextDock(int number)
 					node->text_edit->clear();
 					node->text_edit->setReadOnly( true);
 					
-					// super text!!! /*
-
+					// <super text>
 					node->text_edit->text_format_with_anchor.setAnchor( true);
+					node->text_edit->text_format_with_anchor.setForeground( Qt::blue);
+					node->text_edit->text_format_with_anchor.setFontUnderline( true);
+
 					node->text_edit->text_format_without_anchor.setAnchor( false);
 
 					GuiEdge * edge;
 	
 					node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
+
 					node->text_edit->insertPlainText( "succ : ");
 					int count = 0;
-					for ( edge = ( GuiEdge *)graph->firstEdge(); isNotNullP( edge); edge = ( GuiEdge *)edge->nextEdge())
+					for ( edge = ( GuiEdge *)node->firstPred(); isNotNullP( edge); edge = ( GuiEdge *)edge->nextPred())
 					{
-						GuiNode *node_succ = addGui( edge->succ());
 						GuiNode *node_pred = addGui( edge->pred());
-						if (node_succ->userId() == node->userId())
+						QString st = QString::number( node_pred->userId());
+						count++;
+						if ( count>1) 
 						{
-							QString st = QString::number( node_pred->userId());
-							count++;
-							if (count>1) 
-							{
-								node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
-								node->text_edit->insertPlainText( ", ");
-							}
-							node->text_edit->setCurrentCharFormat( node->text_edit->text_format_with_anchor);
-							node->text_edit->insertPlainText( st);
+							node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
+							node->text_edit->insertPlainText( ", ");
 						}
+						node->text_edit->setCurrentCharFormat( node->text_edit->text_format_with_anchor);
+						node->text_edit->text_format_with_anchor.setAnchorHref( st);
+						node->text_edit->insertPlainText( st);
 					}
 					node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
 					node->text_edit->insertPlainText("\n");
 
 					node->text_edit->insertPlainText( "pred : ");
 					count = 0;
-					for ( edge = ( GuiEdge *)graph->firstEdge(); isNotNullP( edge); edge = ( GuiEdge *)edge->nextEdge())
-					{
+					for ( edge = ( GuiEdge *)node->firstSucc(); isNotNullP( edge); edge = ( GuiEdge *)edge->nextSucc())
+					{ 
 						GuiNode *node_succ = addGui( edge->succ());
-						GuiNode *node_pred = addGui( edge->pred());
-						if (node_pred->userId() == node->userId())
+						QString st = QString::number( node_succ->userId());
+						count++;
+						if (count>1) 
 						{
-							QString st = QString::number( node_succ->userId());
-							count++;
-							if ( count>1) 
-							{
-								node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
-								node->text_edit->insertPlainText( ", ");
-							}
-							node->text_edit->setCurrentCharFormat( node->text_edit->text_format_with_anchor);
-							node->text_edit->insertPlainText( st);
+							node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
+							node->text_edit->insertPlainText( ", ");
 						}
+						node->text_edit->setCurrentCharFormat( node->text_edit->text_format_with_anchor);
+						node->text_edit->text_format_with_anchor.setAnchorHref( st);
+						node->text_edit->insertPlainText( st);
 					}
 					node->text_edit->setCurrentCharFormat( node->text_edit->text_format_without_anchor);
-					node->text_edit->insertPlainText( "\n\nNode info : \n\n");
 					
-					// super text */!!!!!!!!!!!!!
+					// </super text>
+
+					node->text_edit->insertPlainText( "\n\nNode info : \n\n");
 					node->text_edit->insertPlainText( node->getNodeText());
 					
 					node->text_dock->setWidget( node->text_edit);
