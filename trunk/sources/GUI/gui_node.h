@@ -26,7 +26,6 @@ class QWidget;
  */
 class NodeProperties
 {
-    char * node_color_priv;
 	char * node_label_priv;
 	char * shape_priv;
 	char * text_priv;
@@ -37,10 +36,6 @@ class NodeProperties
 public:
 	NodeProperties (StyleSheet* sheet_style);
     /** Data reading */
-    inline char * nodeColor() const 
-    {
-        return node_color_priv;
-    }
 	inline char * nodeLabel() const
     { 
         return node_label_priv;
@@ -65,11 +60,7 @@ public:
     { 
         node_style_sheet_priv->applayStyle (node_style_priv, painter, option);
     }
-    /** Data writing */ 
-    inline void setNodeColor( char * color)
-    {
-        node_color_priv = color;
-    }
+    /** Data writing */
 	inline void setNodeLabel( char * label) 
     {
         node_label_priv = label;

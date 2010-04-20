@@ -10,10 +10,8 @@
  */
 class EdgeProperties
 {
-    int prob_priv;
-	int thickness_priv;
-	char * edge_color_priv;
-	char * edge_label_priv;
+    int prob_priv;			//What is it?
+	QString edge_label_priv;
 	
 	StId edge_style_priv;
 	StyleSheet *edge_style_sheet_priv;
@@ -23,24 +21,13 @@ public:
     {
         /** Default values */
         prob_priv = 1;
-	    thickness_priv = 1;
-	    edge_color_priv = NULL;
 	    edge_style_priv = NULL;
-	    edge_label_priv = NULL;
     }
     inline int prob() const
     {
         return prob_priv;
     }
-    inline int thickness() const
-    {
-        return thickness_priv;
-    }
-	inline char * edgeColor() const
-    {
-        return edge_color_priv;
-    }
-    inline char * edgeLabel() const
+    inline const QString& edgeLabel() const
     {
         return edge_label_priv;
     }
@@ -57,15 +44,11 @@ public:
     {
         prob_priv = prob;
     }
-	inline void setThickness( int thickness)
-    {
-        thickness_priv = thickness;
-    }
-	inline void setEdgeColor( char * color)
-    {
-        edge_color_priv = color;
-    }
 	inline void setEdgeLabel( char * label)
+    {
+        edge_label_priv = label;
+    }
+	inline void setEdgeLabel( const QString& label)
     {
         edge_label_priv = label;
     }
@@ -86,15 +69,21 @@ class GuiEdge:public QGraphicsItem, public EdgeAux, public EdgeProperties
 	QPointF edge_end_dir_priv;
 
 	QPainterPath edge_curve_priv;
+	QString full_label;
 	bool edge_valid_priv;
+	bool reverse;
 
     QPointF edge_top_left_priv;
     QPointF edge_bottom_right_priv;
 
+	void updateLabels();//must be call only by start edge (see startEdge)
+	void drawText (QPainter * painter) const;
+	bool startEdge() const;
+
 public:
-    enum { Type = QGraphicsItem::UserType + 2};//!!!I do not know what type here needed
+    enum { Type = QGraphicsItem::UserType + 2};
 public:
-    void updatePosition();
+    void updatePosition (bool original_run = true);
     QRectF boundingRect() const;
     QPainterPath shape() const;
 	GuiNode* insertNode ( QPointF p);
@@ -102,6 +91,7 @@ public:
     {
         return Type;
     }
+	float length() const;
 
 protected:
     void paint (QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget);
