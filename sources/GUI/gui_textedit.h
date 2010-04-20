@@ -21,6 +21,7 @@ class GuiTextEdit : public QTextEdit
 public:
     GuiTextEdit();
 	QTextCharFormat text_format_with_anchor;
+	QTextCharFormat text_format_without_anchor;
 protected:
 	void mousePressEvent( QMouseEvent * mouseEvent);
 signals:
