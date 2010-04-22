@@ -9,6 +9,7 @@
  */
 GuiTextEdit::GuiTextEdit()
 {
+	setOpenLinks( false);
 }
 
 /**

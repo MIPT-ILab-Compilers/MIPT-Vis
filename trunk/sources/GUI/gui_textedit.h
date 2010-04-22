@@ -5,7 +5,7 @@
 #ifndef TEXTEDIT_H
 #define TEXTEDIT_H
 
-#include <QtGui/QTextEdit>
+#include <QtGui/QTextBrowser>
 #include "gui_impl.h"
 
 QT_BEGIN_NAMESPACE
@@ -14,7 +14,7 @@ QT_END_NAMESPACE
 /**
  * Class GuiTextEdit
  */
-class GuiTextEdit : public QTextEdit
+class GuiTextEdit : public QTextBrowser
 {
     Q_OBJECT
 
